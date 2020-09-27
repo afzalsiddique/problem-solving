@@ -1,8 +1,27 @@
 import collections
+import math
+
 
 class Solution:
     def findTheCity(self, n, edges, distanceThreshold) -> int:
-        graph = collections.defaultdict(dict)
+        g = [[math.inf]*n for i in range(n)]
         for i in range(n):
+            g[i][i] = 0
+        for u,v,w in edges:
+            g[u][v] = w
+            g[v][u] = w
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    g[i][j] = min(g[i][j], g[i][k]+g[k][j])
+        res_node = -1
+        res_connected = math.inf
+        for i in range(n):
+            conn = 0
             for j in range(n):
-                graph[i][j] = 999999
+                if g[i][j] <= distanceThreshold:
+                    conn+=1
+            if conn <= res_connected:
+                res_connected = conn
+                res_node = i
+        return res_node
