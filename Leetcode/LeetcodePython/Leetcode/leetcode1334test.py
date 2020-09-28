@@ -1,6 +1,6 @@
 import unittest
 
-from Leetcode1334SmallestNumberofNeighbors.leetcode1334 import *
+from Leetcode.leetcode1334 import *
 
 
 class MyTestCase(unittest.TestCase):

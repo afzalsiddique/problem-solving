@@ -1,6 +1,6 @@
 import unittest
 
-from leetcode1462CourseScheduleIV.leetcode1462 import *
+from Leetcode.leetcode1462 import *
 
 
 class MyTestCase(unittest.TestCase):

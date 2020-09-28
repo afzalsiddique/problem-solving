@@ -1,6 +1,6 @@
 import unittest
 
-from Leetcode743NetworkDelayTime.Solution import Solution
+from Leetcode.leetcode743 import Solution
 
 
 class MyTestCase(unittest.TestCase):
