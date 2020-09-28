@@ -1,9 +1,10 @@
 import collections
 import math
+from typing import List
 
 
 class Solution:
-    def findTheCity(self, n, edges, distanceThreshold) -> int:
+    def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
         g = [[math.inf]*n for i in range(n)]
         for i in range(n):
             g[i][i] = 0

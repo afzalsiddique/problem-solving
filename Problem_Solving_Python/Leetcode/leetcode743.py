@@ -1,9 +1,10 @@
 import collections
 import heapq
+from typing import List
 
 
 class Solution:
-    def networkDelayTime(self, times, N, K) -> int:
+    def networkDelayTime(self, times: List[List[int]], N: int, K: int) -> int:
         dist = [float("inf") for _ in range(N)]
         dist[K-1] = 0
         for _ in range(N-1):
