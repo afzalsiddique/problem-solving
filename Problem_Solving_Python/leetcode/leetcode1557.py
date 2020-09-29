@@ -2,7 +2,7 @@ from typing import List
 
 
 class Solution:
-    def findSmallestSetOfVertices(self, n, edges):
+    def findSmallestSetOfVertices(self, n: int, edges: List[List[int]]) -> List[int]:
         in_degree = [0] * n
         for u, v in edges:
             in_degree[v] += 1
@@ -11,9 +11,3 @@ class Solution:
             if in_degree[i] == 0:
                 vertices.append(i)
         return vertices
-
-
-
-
-
-        # return list(set(range(n)) - set(e[1] for e in edges))
