@@ -12,5 +12,6 @@ class MyTestCase(unittest.TestCase):
         expected = [5,4,2]
         self.assertEqual(expected, items)
 
+
 if __name__ == '__main__':
     unittest.main()

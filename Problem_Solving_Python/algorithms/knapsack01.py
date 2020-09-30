@@ -2,9 +2,7 @@
 def knapsack(capacity, WEIGHT, VALUE):
     N = len(WEIGHT)
     dp = [[0] * (capacity+1) for _ in range(N+1)]
-    W, V = [], []
-    W.append(0)
-    V.append(0)
+    W, V = [0], [0]
     for i in range(N): # converting to 1 based indexing
         W.append(WEIGHT[i])
         V.append(VALUE[i])
