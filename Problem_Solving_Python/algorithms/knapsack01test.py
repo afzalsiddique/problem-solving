@@ -6,10 +6,11 @@ class MyTestCase(unittest.TestCase):
         capacity = 7
         W = [3,1,3,4,2]
         V = [2,2,4,5,3]
-        actual = knapsack(capacity, W, V)
+        actual, items = knapsack(capacity, W, V)
         expected = 10
         self.assertEqual(expected, actual)
-
+        expected = [4,3,1]
+        self.assertEqual(expected, items)
 
 if __name__ == '__main__':
     unittest.main()

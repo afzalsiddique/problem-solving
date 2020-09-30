@@ -9,6 +9,10 @@ class MyTestCase(unittest.TestCase):
         N = 4
         K = 2
         solution = Solution()
-        actual = solution.networkDelayTime(times,N,K)
+        actual = solution.networkDelayTime(times, N, K)
         expected = 2
-        self.assertEqual(expected,actual)
+        self.assertEqual(expected, actual)
+
+
+if __name__ == '__main__':
+    unittest.main()
