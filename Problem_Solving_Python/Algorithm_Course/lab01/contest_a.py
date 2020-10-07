@@ -1,3 +1,5 @@
+# lightoj 1004
+# this problem doesn't support python
 def calculate_bananas(diamond, dp, i, j, k):
     if diamond[i][j] == 0:
         return 0
