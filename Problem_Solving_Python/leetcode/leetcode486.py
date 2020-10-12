@@ -16,33 +16,22 @@ class Solution:
 
 
 
+class Solution2:
+    memo = []
 
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        n = len(nums)
+        self.memo = [[float('inf')] * n for _ in range(n)]
+        for i in range(n):
+            self.memo[i][i] = nums[i]
+        return True if self.helper(0, n - 1) >= 0 else False
 
-
-
-
-
-
-
-
-# from typing import List
-#
-#
-# class Solution:
-#     nums = []
-#     memo = []
-#     def PredictTheWinner(self, nums: List[int]) -> bool:
-#         self.nums = nums
-#         n = len(nums)
-#         self.memo = [[float('inf')]*n for _ in range(n)]
-#     def helper(self, l, r, player1, score):
-#         if l>r:
-#             return 0
-#         if self.memo[l][r] != float('inf'):
-#             return self.memo[l][r]
-#         next = abs(player1-1)
-#         if player1:
-#             self.memo[l][r] = max(self.helper(l+1,r, next), self.helper(l, r+1, next))
-#
-#
-#
+    def helper(self, left, right):
+        if left == right:
+            return self.memo[left][left]
+        if self.memo[left][right] != float('inf'):
+            return self.memo[left][right]
+        option1 = self.memo[left][left] - self.helper(left + 1, right)
+        option2 = self.memo[right][right] - self.helper(left, right - 1)
+        self.memo[left][right] = max(option1, option2)
+        return self.memo[left][right]

@@ -28,5 +28,30 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, acutal)
 
 
+    def test_2_1(self):
+        solution = Solution2()
+        expected = False
+        acutal = solution.PredictTheWinner([1, 5, 2])
+        self.assertEqual(expected, acutal)
+
+    def test_2_2(self):
+        solution = Solution2()
+        expected = True
+        acutal = solution.PredictTheWinner([1, 5, 233, 7])
+        self.assertEqual(expected, acutal)
+
+    def test_2_3(self):
+        solution = Solution2()
+        expected = False
+        acutal = solution.PredictTheWinner([1, 5, 3, 8, 2])
+        self.assertEqual(expected, acutal)
+
+    def test_2_4(self):
+        solution = Solution2()
+        expected = True
+        acutal = solution.PredictTheWinner([0])
+        self.assertEqual(expected, acutal)
+
+
 if __name__ == '__main__':
     unittest.main()
