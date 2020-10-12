@@ -7,6 +7,13 @@
 # rec_mat = [
 #     [0, 8, 16],
 #     [1, 9, 17],
+#     [2, 10, 18]
+#        ]
+
+
+# rec_mat = [
+#     [0, 8, 16],
+#     [1, 9, 17],
 #     [2, 10, 18],
 #     [3, 11, 19],
 #     [4, 12, 20],
@@ -14,8 +21,8 @@
 #     [6, 14, 22],
 #     [7, 15, 23]
 #        ]
-#
-#
+
+
 # def rectangle_to_all_possible_square_matrices(rec_mat):
 #     sq_matrices = []
 #     r = len(rec_mat)
@@ -32,13 +39,10 @@
 #     return sq_matrices
 #
 #
-# # sq_matrices = rectangle_to_all_possible_square_matrices(rec_mat)
-# # for matrix in sq_matrices:
-# #     print(matrix)
-#
-#
-#
-#
+# sq_matrices = rectangle_to_all_possible_square_matrices(rec_mat)
+# for matrix in sq_matrices:
+#     print(matrix)
+
 
 # mat = [
 #     [1,2,3,4],
@@ -46,6 +50,10 @@
 #     [9,10,11,12],
 #     [13,14,15,16]
 # ]
+
+
+
+
 from typing import List
 
 
@@ -56,6 +64,7 @@ class Solution:
 
     def countSquares(self, matrix: List[List[int]]) -> int:
         self.matrix = matrix
+        self.one_zero_matrix_to_true_false_matrix(matrix)
         self.helper(0, len(matrix) - 1, 0, len(matrix[0]) - 1)
         return self.count
 
@@ -84,5 +93,6 @@ class Solution:
             for j in range(no_col):
                 if self.matrix[i][j]:
                     self.matrix[i][j] = True
+                    self.count += 1
                 else:
                     self.matrix[i][j] = False
