@@ -77,4 +77,12 @@ class Solution:
         return self.memo[(r1, r2, c1, c2)]
 
 
-
+    def one_zero_matrix_to_true_false_matrix(self, matrix):
+        no_row = len(matrix)
+        no_col = len(matrix[0])
+        for i in range(no_row):
+            for j in range(no_col):
+                if self.matrix[i][j]:
+                    self.matrix[i][j] = True
+                else:
+                    self.matrix[i][j] = False
