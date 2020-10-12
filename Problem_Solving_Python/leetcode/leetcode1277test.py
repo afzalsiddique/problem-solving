@@ -25,6 +25,17 @@ class MyTestCase(unittest.TestCase):
         actual = solution.countSquares(matrix)
         self.assertEqual(expected, actual)
 
+    def test_3(self):
+        solution = Solution()
+        matrix = [
+              [0,1,1,1],
+              [1,1,1,1],
+              [0,1,1,1]
+        ]
+        expected = 15
+        actual = solution.countSquares(matrix)
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
