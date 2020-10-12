@@ -46,34 +46,35 @@
 #     [9,10,11,12],
 #     [13,14,15,16]
 # ]
+from typing import List
+
 
 class Solution:
-    mat = [
-        [False,False,True, True],
-        [True,True, True,True],
-        [True, True, True,True],
-        [True,True,True,True],
-    ]
     memo = {}
     count = 0
-    def break_matrix(self,r1,r2,c1,c2):
-        if r1==r2 and c1==c2:
-            return self.mat[r1][c1]
-        if (r1,r2,c1,c2) in self.memo:
-            return self.memo[(r1,r2,c1,c2)]
+    matrix = []
+
+    def countSquares(self, matrix: List[List[int]]) -> int:
+        self.matrix = matrix
+        self.helper(0, len(matrix) - 1, 0, len(matrix[0]) - 1)
+        return self.count
+
+    def helper(self, r1, r2, c1, c2):
+        if r1 == r2 and c1 == c2:
+            return self.matrix[r1][c1]
+        if (r1, r2, c1, c2) in self.memo:
+            return self.memo[(r1, r2, c1, c2)]
 
         # print(r1,r2,c1,c2)
-        first = self.break_matrix(r1+1,r2,c1+1,c2)
-        second = self.break_matrix(r1+1,r2,c1,c2-1)
-        third = self.break_matrix(r1,r2-1,c1+1,c2)
-        fourth = self.break_matrix(r1,r2-1,c1,c2-1)
+        first = self.helper(r1 + 1, r2, c1 + 1, c2)
+        second = self.helper(r1 + 1, r2, c1, c2 - 1)
+        third = self.helper(r1, r2 - 1, c1 + 1, c2)
+        fourth = self.helper(r1, r2 - 1, c1, c2 - 1)
         temp = first and second and third and fourth
         if temp:
-            self.count+=1
-        self.memo[(r1,r2,c1,c2)] = temp
-        return self.memo[(r1,r2,c1,c2)]
+            self.count += 1
+        self.memo[(r1, r2, c1, c2)] = temp
+        return self.memo[(r1, r2, c1, c2)]
 
-solution = Solution()
-solution.break_matrix(0,3,0,3)
-print(solution.memo)
-print(solution.count)
+
+
