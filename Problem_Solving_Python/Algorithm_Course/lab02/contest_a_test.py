@@ -1,5 +1,5 @@
 import unittest
-from Algorithm_Course.lab01.contest_a import *
+
 
 class MyTestCase(unittest.TestCase):
     def test_bottom_index(self):

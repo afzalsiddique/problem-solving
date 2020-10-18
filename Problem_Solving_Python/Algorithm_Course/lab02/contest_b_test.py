@@ -1,5 +1,5 @@
 import unittest
-from Algorithm_Course.lab01.contest_b import *
+from Algorithm_Course.lab02.contest_b import *
 
 class MyTestCase(unittest.TestCase):
     def test_2(self):

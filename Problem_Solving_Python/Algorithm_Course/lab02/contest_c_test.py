@@ -1,5 +1,5 @@
 import unittest
-from Algorithm_Course.lab01.contest_c import *
+from Algorithm_Course.lab02.contest_c import *
 
 
 
