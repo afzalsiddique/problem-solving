@@ -9,8 +9,7 @@ def lcs(a, b, m, n, dp):
 
 while True:
     try:
-        a = input()
-        b = input()
+        a, b = input().split()
         m = len(a)
         n = len(b)
         dp = [[0] * (n + 1) for _ in range(m + 1)]
