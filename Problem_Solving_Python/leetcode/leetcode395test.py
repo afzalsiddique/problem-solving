@@ -7,7 +7,8 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'ababb'
         k = 2
-        actual = solution.isValid(s, k)
+        di = {}
+        actual = solution.isValid(s, k, di)
         expected = True
         self.assertEqual(expected, actual)
 
@@ -15,7 +16,8 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'ababbc'
         k = 2
-        actual = solution.isValid(s, k)
+        di = {}
+        actual = solution.isValid(s, k, di)
         expected = False
         self.assertEqual(expected, actual)
 
@@ -31,7 +33,9 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'ababbc'
         k = 2
-        actual = solution.tell_me_where_to_divide(s, k)
+        di = {}
+        solution.isValid(s, k, di)
+        actual = solution.find_the_indices_of_the_problematic_letters(s, k, di)
         expected = [5]
         self.assertEqual(expected, actual)
 
@@ -39,7 +43,9 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'abacabbc'
         k = 3
-        actual = solution.tell_me_where_to_divide(s, k)
+        di = {}
+        solution.isValid(s, k, di)
+        actual = solution.find_the_indices_of_the_problematic_letters(s, k, di)
         expected = [3,7]
         self.assertEqual(expected, actual)
 
@@ -47,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'ababababbabcabababbacbabaaab'
         indices = [11,20]
-        actual = solution.divide_and_return(s, indices)
+        actual = solution.divide(s, indices)
         actual = sorted(actual)
         expected = sorted(['ababababbab','abababba', 'babaaab'])
         self.assertEqual(expected, actual)
@@ -56,7 +62,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         s = 'ababaaabcc'
         indices = [8,9]
-        actual = solution.divide_and_return(s, indices)
+        actual = solution.divide(s, indices)
         actual = sorted(actual)
         expected = sorted(['ababaaab','', ''])
         self.assertEqual(expected, actual)
