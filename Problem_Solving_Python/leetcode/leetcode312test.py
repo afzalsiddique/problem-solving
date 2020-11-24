@@ -28,7 +28,14 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         nums = [7,9,8,0,7,1,3,5,5,2,3]
         actual = solution.maxCoins(nums)
-        expected = 1686 # not sure
+        expected = 1654
+        self.assertEqual(expected, actual)
+
+    def test_5(self):
+        solution = Solution()
+        nums = [5,8]
+        actual = solution.maxCoins(nums)
+        expected =  48
         self.assertEqual(expected, actual)
 
 

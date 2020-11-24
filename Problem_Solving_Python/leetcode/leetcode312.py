@@ -1,32 +1,17 @@
-from typing import List
-
-
-class Solution:
-    def maxCoins(self, nums: List[int]) -> int:
-        di = {}
-        return self.helper(nums, di)
-
-    def helper(self, nums: List[int], di) -> int:
-        if not nums:
-            return 0
+# https://www.youtube.com/watch?v=uG_MtaCJIrM
+class Solution(object):
+    def maxCoins(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        nums = [1] + nums + [1]  # build the complete array
         n = len(nums)
-        if n == 1:
-            return nums[0]
-        burstAll = float('-inf')
-        for i in range(n):
-            balloons_after_burst = nums[:i] + nums[i + 1:]
-            if i == 0:
-                burstCurrent = nums[0] * nums[1]
-            elif i == n - 1:
-                burstCurrent = nums[n - 1] * nums[n - 2]
-            else:
-                burstCurrent = nums[i - 1] * nums[i] * nums[i + 1]
+        dp = [[0] * n for _ in range(n)]
 
-            if tuple(balloons_after_burst) in di:
-                burstNext = di[tuple(balloons_after_burst)]
-            else:
-                burstNext = self.helper(balloons_after_burst, di)
-            burstAll = max(burstAll, burstCurrent + burstNext)
-
-        di[tuple(nums)] = burstAll
-        return burstAll
+        for window in range(1, n):
+            for left in range(n - window):
+                right = left + window
+                for k in range(left + 1, right):
+                    dp[left][right] = max(dp[left][right], nums[left] * nums[k] * nums[right] + dp[left][k] + dp[k][right])
+        return dp[0][n - 1]
