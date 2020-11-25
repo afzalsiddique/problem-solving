@@ -1,21 +1,16 @@
-class Solution:
-    def isValid(self, s, k, problematic_letter):
-        di = {}
-        for letter in s:
-            if letter in di:
-                di[letter] += 1
-            else:
-                di[letter] = 1
-        ans = True
-        for letter in di:
-            if di[letter] < k:
-                problematic_letter.append(letter)
-                ans = False
-        return ans
+from collections import Counter
 
+
+class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
         problematic_letters = []
-        if self.isValid(s, k, problematic_letters):
+        valid = True
+        counter = Counter(s)
+        for letter in counter:
+            if counter[letter] < k:
+                problematic_letters.append(letter)
+                valid = False
+        if valid:
             return len(s)
 
         for letter in problematic_letters:
