@@ -83,6 +83,14 @@ class MyTestCase(unittest.TestCase):
         expected = 5
         self.assertEqual(expected, actual)
 
+    def test_10(self):
+        solution = Solution()
+        s = 'weitong'
+        k = 2
+        actual = solution.longestSubstring(s, k)
+        expected = 0
+        self.assertEqual(expected, actual)
+
 
 
 if __name__ == '__main__':
