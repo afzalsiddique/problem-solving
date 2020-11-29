@@ -50,3 +50,6 @@ class MyTestClass(unittest.TestCase):
         actual = solution.lengthOfLongestSubstring(s)
         expected = 3
         self.assertEqual(expected, actual)
+
+if __name__ == '__main__':
+    unittest.main()

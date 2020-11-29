@@ -14,13 +14,13 @@ class Solution:
             if di[s[right + 1]] == 0:
                 di[s[right + 1]] += 1
                 right += 1
-            elif left == right:
+            elif di[s[right + 1]] == 1 and left<right:
+                di[s[left]] -= 1
+                left += 1
+            else:
                 di[s[left]] -= 1
                 di[s[right + 1]] += 1
                 left += 1
                 right += 1
-            elif di[s[right + 1]] == 1:
-                di[s[left]] -= 1
-                left += 1
             ans = max(ans, right - left + 1)
         return ans
