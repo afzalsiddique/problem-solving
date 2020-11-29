@@ -1,8 +1,0 @@
-leetcode395
-https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/87768/4-lines-Python/772471
-https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/948338/Python-solution-with-video-explanation
-
-leetcode169
-https://leetcode.com/problems/majority-element/discuss/51712/Python-different-solutions/771926
-https://leetcode.com/problems/majority-element/discuss/948321/Divide-and-Conquer-solution-with-video-explanation
-
