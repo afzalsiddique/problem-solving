@@ -28,3 +28,21 @@ if __name__ == '__main__':
     nums = [3,7,5]
     k = 3
     print(sol.canPartitionKSubsets(nums, k))
+
+
+
+def canPartitionKSubsets(nums: List[int]):
+    n = len(nums)
+    dp = [-1] * (1 << n)
+    dp[0] = 0
+    summ = sum(nums)
+    if summ % 3: return False
+    tar = summ//3
+    for mask in range(1<<n):
+        if dp[mask] == -1: # states that were not calculated because sum of included items crosses the target
+            continue
+        for i in range(n):
+            if not (mask&(1<<i)) and dp[mask]+nums[i] <= tar:
+                dp[mask|(1<<i)] = (dp[mask]+nums[i]) % tar
+
+    return dp[(1<<n)-1] == 0

@@ -27,3 +27,6 @@ class Solution:
 if __name__ == '__main__':
     sol = Solution()
     print(sol.canPartition([6,4,7,5]))
+
+
+
