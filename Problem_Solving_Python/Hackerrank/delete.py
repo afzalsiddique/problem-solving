@@ -1,17 +1,9 @@
-def make_board(nums):
-    n = len(nums)
-    actual_board = []
-    board = [['.']*n for _ in range(n)]
-    for row, col in enumerate(nums):
-        board[row][col] = 'Q'
-    for row in board:
-        actual_board.append("".join(row))
-    return actual_board
+from collections import Counter
 
-def make_all_board(res):
-    actual_boards = []
-    for nums in res:
-        actual_boards.append(make_board(nums))
-    return actual_boards
-
-print(make_all_board([[1,3,0,2],[2,0,3,1]]))
+a = [1,2,3,5]
+b = [2,3,4]
+aa = Counter(a)
+bb = Counter(b)
+c = aa - bb
+print(c)
+print(sum(c.values()))

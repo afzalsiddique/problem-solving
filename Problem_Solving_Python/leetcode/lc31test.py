@@ -1,5 +1,5 @@
-import unittest
 from leetcode.lc31 import *
+import unittest
 class MyTestCase(unittest.TestCase):
 
 
