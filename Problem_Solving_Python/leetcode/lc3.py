@@ -1,5 +1,46 @@
 import unittest
-from leetcode.leetcode3 import *
+from collections import defaultdict
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s)->int:
+        start = maxLength = 0
+        usedChar = {} # (key,value) = (char, index)
+
+        for i in range(len(s)):
+            if s[i] in usedChar and start <= usedChar[s[i]]:
+                # In the example, "abcdefb" when right pointer is at 2nd 'b',
+                # the left pointer will move to 'c'
+                start = usedChar[s[i]] + 1
+            else:
+                maxLength = max(maxLength, i - start + 1)
+
+            usedChar[s[i]] = i
+
+        return maxLength
+
+
+    def lengthOfLongestSubstring2(self, s: str) -> int:
+        n = len(s)
+        sett = set()
+        l, r = 0, 0
+        while r<n:
+            if s[r] in sett:
+                break
+            sett.add(s[r])
+            r += 1
+        maxx = r - l
+        while r < n:
+            if s[r] in sett:
+                sett.remove(s[l])
+                l += 1
+            else:
+                sett.add(s[r])
+                r += 1
+            maxx = max(maxx, r - l)
+        return maxx
+
+
 
 class MyTestClass(unittest.TestCase):
     def test_1(self):
@@ -51,5 +92,9 @@ class MyTestClass(unittest.TestCase):
         expected = 3
         self.assertEqual(expected, actual)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_8(self):
+        solution = Solution()
+        s = ' '
+        actual = solution.lengthOfLongestSubstring(s)
+        expected = 1
+        self.assertEqual(expected, actual)

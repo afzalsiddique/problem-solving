@@ -1,5 +1,24 @@
+# https://www.youtube.com/watch?v=sEQk8xgjx64
 import unittest
 from typing import List
+
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        lo, mid, high = 0, 0, len(nums) - 1
+        while mid <= high:
+            if nums[mid] == 0:
+                nums[mid], nums[lo] = nums[lo], nums[mid]
+                lo += 1
+                mid += 1
+            elif nums[mid] == 1:
+                mid  += 1
+            else:
+                nums[mid], nums[high] = nums[high], nums[mid]
+                high -= 1
 
 
 class MyTestCase(unittest.TestCase):
