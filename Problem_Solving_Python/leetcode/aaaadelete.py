@@ -1,34 +1,18 @@
-from collections import defaultdict
-
-
-def subarrayXor(arr, n, k):
-    ans,mp=0,defaultdict(int)
-    xor = [0 for _ in range(n)]
-    xor[0] = arr[0]
-    for i in range(1,n):
-        xor[i] = xor[i-1] ^ arr[i]
-    for i in range(n):
-        if xor[i] == k:
-            ans+=1
-        y = k ^ xor[i]
-        if y in mp:
-            ans += mp[y]
-        mp[xor[i]] += 1
+def maxLen(n, arr):
+    di,curr,ans={},0,0
+    for i in range(0,n):
+        curr+=arr[i]
+        if curr==0:
+            ans=i+1
+        if curr not in di:
+            di[curr] = i
+        else:
+            ans=max(ans, i-di[curr])
     return ans
 
-
-
-def subarraySum(nums,n ,k):
-    ans,mp=0,defaultdict(int)
-    pre = [0 for _ in range(n)]
-    pre[0] = nums[0]
-    for i in range(1,n):
-        pre[i] = pre[i-1] + nums[i]
-    for i in range(n):
-        if pre[i] == k:
-            ans+=1
-        y = pre[i] - k
-        if y in mp:
-            ans+=mp[y]
-        mp[pre[i]]+=1
-    return ans
+arr = [15,-2,2,-8,1,7,10,23]
+print(maxLen(len(arr),arr))
+arr = [0,0,0,0]
+print(maxLen(len(arr),arr))
+arr = [-1,1,-1,1]
+print(maxLen(len(arr),arr))
