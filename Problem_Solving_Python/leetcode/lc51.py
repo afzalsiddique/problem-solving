@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/n-queens/
 # https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
+import unittest
 from typing import List
 
 class Solution:
@@ -13,21 +14,22 @@ class Solution:
         # [..Q.]
         # index represents row no and value represents col no
 
-        def dfs(index):
-            if index == len(queens): # n queens have been placed correctly
+        def place_queen(nth_row): # dfs
+            if nth_row == len(queens): # n queens have been placed correctly
                 res.append(queens[:])
                 return  # backtracking
-            for i in range(len(queens)):
-                queens[index] = i
-                if valid(index):  # pruning
-                    dfs(index + 1, )
+            for col_no in range(len(queens)):
+                queens[nth_row] = col_no
+                if valid(nth_row):  # pruning
+                    place_queen(nth_row + 1)
+                queens[nth_row] = -1
 
-        # check whether nth queens can be placed
-        def valid(n):
-            for i in range(n):
-                if abs(queens[i] - queens[n]) == n - i:  # same digonal
+        # check whether queen can be placed in nth row
+        def valid(nth_row):
+            for i in range(nth_row):
+                if abs(queens[i] - queens[nth_row]) == nth_row - i:  # same digonal
                     return False
-                if queens[i] == queens[n]:  # same column
+                if queens[i] == queens[nth_row]:  # same column
                     return False
             return True
 
@@ -53,9 +55,51 @@ class Solution:
                 actual_boards.append(make_board(queens))
             return actual_boards
 
-        dfs(0)
+        place_queen(0)
         return make_all_boards(res)
 
+
+
+class MyTestCase(unittest.TestCase):
+
+    def test_1(self):
+        solution = Solution()
+        actual = sorted(solution.solveNQueens(4))
+        expected = sorted([[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]])
+        self.assertEqual(expected, actual)
+
+    def test_2(self):
+        solution = Solution()
+        actual = sorted(solution.solveNQueens(5))
+        expected = sorted([['....Q', '..Q..', 'Q....', '...Q.', '.Q...'],
+                         ['....Q', '.Q...', '...Q.', 'Q....', '..Q..'],
+                         ['...Q.', '.Q...', '....Q', '..Q..', 'Q....'],
+                         ['...Q.', 'Q....', '..Q..', '....Q', '.Q...'],
+                         ['..Q..', '....Q', '.Q...', '...Q.', 'Q....'],
+                         ['..Q..', 'Q....', '...Q.', '.Q...', '....Q'],
+                         ['.Q...', '....Q', '..Q..', 'Q....', '...Q.'],
+                         ['.Q...', '...Q.', 'Q....', '..Q..', '....Q'],
+                         ['Q....', '...Q.', '.Q...', '....Q', '..Q..'],
+                         ['Q....', '..Q..', '....Q', '.Q...', '...Q.']] )
+        self.assertEqual(expected, actual)
+
+    def test_3(self):
+        solution = Solution()
+        actual = sorted(solution.solveNQueens(3))
+        expected = sorted([])
+        self.assertEqual(expected, actual)
+
+    def test_4(self):
+        solution = Solution()
+        actual = sorted(solution.solveNQueens(2))
+        expected = sorted([])
+        self.assertEqual(expected, actual)
+
+    def test_5(self):
+        solution = Solution()
+        actual = sorted(solution.solveNQueens(1))
+        expected = sorted([['Q']])
+        self.assertEqual(expected, actual)
 
 
 

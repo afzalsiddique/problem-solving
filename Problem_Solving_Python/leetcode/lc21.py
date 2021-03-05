@@ -40,14 +40,24 @@ class Solution:
                 cur.next = l2
                 l2 = l2.next
             cur = cur.next
+
         cur.next = l1 if l1 else l2 # if one of them is at the end(means None), then the other one will append to the result directly.
+        # the above line same as
+        # while l1:
+        #     cur.next=l1
+        #     l1=l1.next
+        #     cur=cur.next
+        # while l2:
+        #     cur.next=l2
+        #     l2=l2.next
+        #     cur=cur.nex
         return dummy.next
 
     def mergeTwoLists2(self, a, b):
         if (not a) or (b and a.val > b.val): #First make sure that a is the "better" one (meaning b is None or has larger/equal value). Then merge the remainders behind a.
             a, b = b, a
         if a:
-            a.next = self.mergeTwoLists(a.next, b)
+            a.next = self.mergeTwoLists2(a.next, b)
         return a
 
 

@@ -39,3 +39,8 @@ class MyTestCase(unittest.TestCase):
         expected = 9
         self.assertEqual(expected, actual)
 
+    def test_3(self):
+        sol = Solution()
+        actual = sol.trap([])
+        expected = 0
+        self.assertEqual(expected, actual)
