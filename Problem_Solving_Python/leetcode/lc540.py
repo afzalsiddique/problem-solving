@@ -1,4 +1,4 @@
-# https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/100754/Java-Binary-Search-short-(7l)-O(log(n))-w-explanations
+# https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/627921/Java-or-C%2B%2B-or-Python3-or-Easy-explanation-or-O(logn)-or-O(1)
 import unittest
 from typing import List
 
@@ -6,19 +6,30 @@ from typing import List
 class Solution:
     def singleNonDuplicate(self, nums: List[int]) -> int:
         lo,hi=0,len(nums)-1
-        while lo<hi:
+        # we can observe that for each pair,
+        # first element takes even position and second element takes odd position
+        # Our target is to find "the first even position index which does not equal to its next element"
+        while lo<hi: # why it is "<"? -> because "hi=mid" and not "hi=mid-1"
+            # https://leetcode.com/problems/search-insert-position/discuss/249092/Java-solution-with-detailsexplanation-for-every-line-code
+            # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/100754/Java-Binary-Search-short-(7l)-O(log(n))-w-explanations/263150
             mid= (lo+hi)//2
             if mid%2==1:
                 mid-=1
             if nums[mid]!=nums[mid+1]:
-                hi=mid
+                hi=mid # not "hi = mid -1". because at this point mid is still a possibility. case-> [1,1,2,3,3].
+                        # This also changes the while loop condition to become "lo<hi" and not "lo<=hi".
             else:
-                lo=mid+2
+                lo=mid+2 # because the matching value of the mid exists just after the mid. "lo = mid + 1" will should work as well
         return nums[lo]
 
 
 class MyTestCase(unittest.TestCase):
 
+    def test_0(self):
+        sol = Solution()
+        expected = 1
+        actual = sol.singleNonDuplicate([1,2,2])
+        self.assertEqual(expected, actual)
     def test_1(self):
         sol = Solution()
         expected = 2

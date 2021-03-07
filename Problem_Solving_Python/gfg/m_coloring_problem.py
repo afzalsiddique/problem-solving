@@ -1,27 +1,30 @@
-def graphColoring(mat, m):
-    def isCorrect(cur, color):
+def graphColoring(mat,m):
+
+    def valid(vertex, color):
         for i in range(len(mat)):
-            if (mat[cur][i] == 1 and colors[i] == color):
+            if mat[vertex][i]==1 and colors[i]==color:
                 return False
         return True
 
-    def graphCol(m, cur):
-        if cur == len(mat):
-            return True
-
-        for color in range(1, m + 1):
-            if (isCorrect(cur, color)):
-                colors[cur] = color
-                if (graphCol(m, cur + 1)):
+    def dfs(vertex):
+        if vertex==n:return True
+        for col in range(m):
+            if valid(vertex, col):
+                colors[vertex] = col
+                if dfs(vertex+1):
                     return True
-                colors[cur] = 0
+                colors[vertex] = -1
         return False
 
-    v = len(mat)
-    colors = [0] * v
-    if graphCol(m, 0):
-        # print(colors)
-        return "YES"
+    n = len(mat)
+    colors = [-1]*n
+    if dfs(0):return "YES"
     return "NO"
-mat = [[0,1, 0],[1, 0, 1],[0, 1, 0]]
-print(graphColoring(mat, 3))
+
+
+mat = [[0,1,0],[1, 0, 1], [0, 1, 0]]
+m=3
+print(graphColoring(mat, m),True)
+mat = [[0,1,0],[1, 0, 1], [0, 1, 0]]
+m=1
+print(graphColoring(mat, m),False)

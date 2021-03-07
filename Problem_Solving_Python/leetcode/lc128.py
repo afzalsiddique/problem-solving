@@ -1,9 +1,35 @@
 import unittest
+from collections import defaultdict
 from typing import List
 
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
+        di = {num:1 for num in nums}
+        sett = set(nums)
+        for num in di:
+            prev = num - di[num]
+            while prev in sett:
+                di[num] += di[prev]
+                sett.remove(prev)
+                prev = num -di[num]
+        return max(di.values())
+
+    def longestConsecutive2(self, nums: List[int]) -> int:
+        if len(nums)==0:return 0
+        di = defaultdict(int)
+        for num in nums:
+            di[num] = 1
+        for num in nums:
+            prev = num - di[num]
+            while di[prev] != 0:
+                di[num] += di[prev]
+                di[prev]=0
+                prev = num -di[num]
+        return max(di.values())
+
+    # another version
+    def longestConsecutive3(self, nums: List[int]) -> int:
         def check_left(x, di):
             if x not in di:return 0
             prev = x-1

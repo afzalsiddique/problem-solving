@@ -6,6 +6,17 @@ from typing import List
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
+        n, res = len(nums),[]
+
+        def dfs(start, path):
+            res.append(path)
+
+            for i in range(start, n):
+                dfs(i+1, path+[nums[i]])
+
+        dfs(0,[])
+        return res
+        # similar but with one more parameter
         n, res, comb = len(nums), [], []
 
         def backtrack(start):
