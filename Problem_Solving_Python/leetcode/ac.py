@@ -1,46 +1,23 @@
-# https://leetcode.com/problems/combination-sum/discuss/16502/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
 import unittest
 from typing import List
 
 
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        res,n= [],len(candidates)
+        res,sett= [],set()
 
-        def dfs(target, start, path):
+        def dfs(target, path):
             if target==0:
                 res.append(path)
                 return
-            if target<0:return
-            for i in range(start, n):
-                dfs(target-candidates[i], i, path+[candidates[i]])
+            if target in sett:
+                return
+            for num in candidates:
+                dfs(target-num, path+[num])
+            sett.add(target)
 
-        candidates.sort()
-        dfs(target,0,[])
+        dfs(target,[])
         return res
-
-        # version 2
-        li = []
-        n = len(candidates)
-        combination = []
-        candidates.sort()
-
-        def helper(start, summ):
-            if summ == target:
-                li.append(combination[:])
-                return
-
-            if summ > target:
-                return
-
-            for i in range(start, n):
-                combination.append(candidates[i])
-                helper(i, summ+candidates[i])
-                combination.pop(-1)
-
-        helper(0,0)
-        return li
-
 
 class MyTestCase(unittest.TestCase):
 

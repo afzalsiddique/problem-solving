@@ -6,14 +6,27 @@ from typing import List
 
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
-        li = []
-        n = len(candidates)
-        combination = []
+        res,n= [],len(candidates)
+
+        def dfs(target, start, path):
+            if target==0:
+                res.append(path)
+                return
+            if target<0:return
+            for i in range(start, n):
+                if i>start and candidates[i]==candidates[i-1]:continue
+                dfs(target-candidates[i], i+1, path+[candidates[i]])
+
+        candidates.sort()
+        dfs(target,0,[])
+        return res
+        # version 2
+        res,path, n = [],[],len(candidates)
         candidates.sort()
 
         def helper(start, summ):
             if summ == target:
-                li.append(combination[:])
+                res.append(path[:])
                 return
 
             if summ > target:
@@ -22,12 +35,12 @@ class Solution:
             for i in range(start, n):
                 if i > start and candidates[i] == candidates[i-1]:
                     continue
-                combination.append(candidates[i])
+                path.append(candidates[i])
                 helper(i + 1, summ + candidates[i])
-                combination.pop(-1)
+                path.pop(-1)
 
         helper(0,0)
-        return li
+        return res
 
 class MyTestCase(unittest.TestCase):
 

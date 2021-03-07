@@ -4,7 +4,26 @@ from typing import List
 
 
 class Solution:
+
     def search(self, nums: List[int], target: int) -> int:
+        l,r=0,len(nums)-1
+        while l<=r:
+            mid = l+(r-l)//2
+            if nums[mid]==target:
+                return mid
+            if nums[mid] <nums[r]:
+                if nums[mid] < target <=nums[r]:
+                    l=mid+1
+                else:
+                    r=mid-1
+            else:
+                if nums[l]<=target<nums[mid]:
+                    r=mid-1
+                else:
+                    l=mid+1
+        return -1
+
+    def search_v2(self, nums: List[int], target: int) -> int:
         n=len(nums)
         lo,hi=0,n-1
         while lo<=hi:
@@ -34,65 +53,83 @@ class MyTestCase(unittest.TestCase):
     def test_1(self):
         sol = Solution()
         expected = 4
-        actual = sol.search(nums = [4,5,6,7,0,1,2], target = 0)
+        actual = sol.search(nums=[4, 5, 6, 7, 0, 1, 2], target=0)
         self.assertEqual(expected, actual)
 
     def test_2(self):
         sol = Solution()
         expected = -1
-        actual = sol.search(nums = [4,5,6,7,0,1,2], target = 3)
+        actual = sol.search(nums=[4, 5, 6, 7, 0, 1, 2], target=3)
         self.assertEqual(expected, actual)
+
     #
     def test_3(self):
         sol = Solution()
         expected = -1
-        actual = sol.search(nums = [1], target = 0)
+        actual = sol.search(nums=[1], target=0)
         self.assertEqual(expected, actual)
 
     def test_4(self):
         sol = Solution()
         expected = 0
-        actual = sol.search(nums = [4,5,6,7,0,1,2], target = 4)
+        actual = sol.search(nums=[4, 5, 6, 7, 0, 1, 2], target=4)
         self.assertEqual(expected, actual)
 
     def test_5(self):
         sol = Solution()
         expected = 6
-        actual = sol.search(nums = [4,5,6,7,0,1,2], target = 2)
+        actual = sol.search(nums=[4, 5, 6, 7, 0, 1, 2], target=2)
         self.assertEqual(expected, actual)
 
     def test_6(self):
         sol = Solution()
         expected = 2
-        actual = sol.search(nums = [5,6,4], target = 4)
+        actual = sol.search(nums=[5, 6, 4], target=4)
         self.assertEqual(expected, actual)
 
     def test_7(self):
         sol = Solution()
         expected = 1
-        actual = sol.search(nums = [4,5,6], target = 5)
+        actual = sol.search(nums=[4, 5, 6], target=5)
         self.assertEqual(expected, actual)
 
     def test_8(self):
         sol = Solution()
         expected = 2
-        actual = sol.search(nums = [4,5,6], target = 6)
+        actual = sol.search(nums=[4, 5, 6], target=6)
         self.assertEqual(expected, actual)
 
     def test_9(self):
         sol = Solution()
         expected = 0
-        actual = sol.search(nums = [4,5], target = 4)
+        actual = sol.search(nums=[4, 5], target=4)
         self.assertEqual(expected, actual)
 
     def test_10(self):
         sol = Solution()
         expected = 0
-        actual = sol.search(nums = [5,4], target = 5)
+        actual = sol.search(nums=[5, 4], target=5)
         self.assertEqual(expected, actual)
 
     def test_11(self):
         sol = Solution()
         expected = -1
-        actual = sol.search([1,3,5], 2)
+        actual = sol.search([1, 3, 5], 2)
+        self.assertEqual(expected, actual)
+
+    def test_12(self):
+        sol = Solution()
+        expected = 0
+        actual = sol.search([5, 1, 3], 5)
+        self.assertEqual(expected, actual)
+
+    def test_13(self):
+        sol = Solution()
+        expected = 1
+        actual = sol.search([1, 3], 3)
+        self.assertEqual(expected, actual)
+    def test_14(self):
+        sol = Solution()
+        expected = 0
+        actual = sol.search([6,7,1,2,3,4,5], 6)
         self.assertEqual(expected, actual)

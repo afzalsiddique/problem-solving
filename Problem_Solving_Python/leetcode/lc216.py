@@ -5,6 +5,22 @@ from typing import List
 
 class Solution:
     def combinationSum3(self, k: int, target: int) -> List[List[int]]:
+        res  = []
+
+        def dfs(target, start, path):
+            if len(path)==k:
+                if target==0:
+                    res.append(path)
+                return
+            if target<0:return
+
+            for i in range(start, 9+1):
+                dfs(target-i, i+1, path+[i])
+
+        dfs(target, 1, [])
+        return res
+
+        # similar
         res, comb = [], []
 
         def helper(start, depth, summ):
@@ -22,24 +38,6 @@ class Solution:
         helper(1, 0, 0)
         return res
 
-        # almost similar. same approch but with one less parameter
-        res,comb = [],[]
-
-        def helper(start, target):
-            if len(comb)==k:
-                if target!=0:
-                    return
-                else:
-                    res.append(comb[:])
-                    return
-
-            for i in range(start,10):
-                comb.append(i)
-                helper(i+1, target-i)
-                comb.pop(-1)
-
-        helper(1,target)
-        return res
 
 class MyTestCase(unittest.TestCase):
 

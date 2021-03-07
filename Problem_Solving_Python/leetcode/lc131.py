@@ -9,19 +9,17 @@ class Solution:
                 return True
             return False
 
-        def dfs(s, path, res):
+        def dfs(s,path):
             if not s:
-                res.append(path[:])
+                res.append(path)
                 return
             for i in range(1, len(s) + 1):
                 first, last = s[:i], s[i:]
                 if palindrome(first):
-                    path.append(s[:i])
-                    dfs(last, path, res)
-                    path.pop()
+                    dfs(last, path + [first])
 
         res = []
-        dfs(s, [], res)
+        dfs(s,[])
         return res
 
     def partition2(self, s: str) -> List[List[str]]:
@@ -53,6 +51,7 @@ class Solution:
         return helper(s)
 
 
+
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
@@ -65,46 +64,35 @@ class MyTestCase(unittest.TestCase):
         sol = Solution()
         actual = sol.partition(s="aab")
         expected = [["a", "a", "b"], ["aa", "b"]]
-        self.assertEqual(expected, actual)
+        self.assertEqual(sorted(expected),sorted( actual))
+
 
     def test_3(self):
         sol = Solution()
         actual = sol.partition('bbaca')
         expected = [['b', 'b', 'aca'], ['b', 'b', 'a', 'c', 'a'], ['bb', 'aca'], ['bb', 'a', 'c', 'a']]
-        self.assertEqual(expected, actual)
+        self.assertEqual(sorted(expected),sorted( actual))
 
     def test_4(self):
         sol = Solution()
         actual = sol.partition('a')
         expected = [['a']]
-        self.assertEqual(expected, actual)
+        self.assertEqual(sorted(expected),sorted( actual))
 
     def test_5(self):
         sol = Solution()
         actual = sol.partition('aa')
         expected = [['a', 'a'], ['aa']]
-        self.assertEqual(expected, actual)
+        self.assertEqual(sorted(expected),sorted( actual))
+
 
     def test_6(self):
         sol = Solution()
         actual = sol.partition('aabaa')
-        expected = [[]]
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        actual = sol.partition(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        actual = sol.partition(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        actual = sol.partition(0)
-        expected = 0
-        self.assertEqual(expected, actual)
+        expected = [['a', 'a', 'b', 'a', 'a'],
+ ['a', 'a', 'b', 'aa'],
+ ['a', 'aba', 'a'],
+ ['aa', 'b', 'a', 'a'],
+ ['aa', 'b', 'aa'],
+ ['aabaa']]
+        self.assertEqual(sorted(expected),sorted( actual))

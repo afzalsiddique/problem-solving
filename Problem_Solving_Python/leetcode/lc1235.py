@@ -1,63 +1,28 @@
-######### TLE #######
-##### need to include binary search ##########
 import unittest
+from bisect import *
 from typing import List
 
 
-class Job:
-    def __init__(self, start, end, profit):
-        self.dur = (start, end)
-        self.profit = profit
-
-    def __repr__(self):
-        return str(self.dur[0]) + " " + str(self.dur[1]) + " " + str(self.profit)
-
-
 class Solution:
+    def jobScheduling(self, start: List[int], end: List[int], profit: List[int]) -> int:
+        n = len(start)
+        start, end, profit = zip(*sorted(zip(start, end, profit)))
+        jump = {i: bisect_left(start, end[i]) for i in range(n)}
 
-    def helper(self, jobs: List[Job]):
-        def overlap(a, b):  # a and b are tuples -> (start,end)
-            if a[1] > b[1]:
-                a, b = b, a
-            if b[0] >= a[1]:
-                return False
-            return True
+        dp = [0 for _ in range(n + 1)]
+        for i in range(n - 1, -1, -1):
+            dp[i] = max(dp[i + 1], profit[i] + dp[jump[i]])
 
-        n = len(jobs)
-        jobs.sort(key=lambda x: x.dur[1])  # sort by endTime
-        dp = [job.profit for job in jobs]
-        for i in range(1, n):
-            for j in range(0, i):
-                dur_i = jobs[i].dur
-                dur_j = jobs[j].dur
-                pro_i = jobs[i].profit
-                if not overlap(dur_i, dur_j):
-                    dp[i] = max(dp[i], dp[j] + pro_i)
-        return max(dp)
-
-    def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
-        jobs = []
-        for i in range(len(startTime)):
-            jobs.append(Job(startTime[i], endTime[i], profit[i]))
-        return self.helper(jobs)
+        return dp[0]
 
 
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
         sol = Solution()
-        actual = sol.jobScheduling(startTime=[1, 2, 3, 3], endTime=[3, 4, 5, 6], profit=[50, 10, 40, 70])
+        startTime = [1, 2, 3, 3]
+        endTime = [3, 4, 5, 4]
+        profit = [50, 10, 40, 70]
+        actual = sol.jobScheduling(startTime, endTime,profit)
         expected = 120
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        actual = sol.jobScheduling(startTime=[1, 2, 3, 4, 6], endTime=[3, 5, 10, 6, 9], profit=[20, 20, 100, 70, 60])
-        expected = 150
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        actual = sol.jobScheduling(startTime = [1,1,1], endTime = [2,3,4], profit = [5,6,4])
-        expected = 6
         self.assertEqual(expected, actual)

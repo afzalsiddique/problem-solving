@@ -3,33 +3,25 @@ import unittest
 
 class Solution:
     def findPath(self, mat, n):
-        def dfs(row, col):
+        def dfs(row, col,path):
             if row==col==n-1 and mat[row][col]==1:
-                res.append(''.join(path[:]))
+                res.append(''.join(path))
                 return
             mat[row][col]=0
             if row+1<n and mat[row+1][col]==1:
-                path.append('D')
-                dfs(row+1, col)
-                path.pop(-1)
+                dfs(row+1, col, path+['D'])
             if col-1>=0 and mat[row][col-1]==1:
-                path.append('L')
-                dfs(row, col-1)
-                path.pop(-1)
+                dfs(row, col-1, path+['L'])
             if col+1<n and mat[row][col+1]==1:
-                path.append('R')
-                dfs(row,col+1)
-                path.pop(-1)
+                dfs(row,col+1, path+['R'])
             if row-1>=0 and mat[row-1][col]==1:
-                path.append('U')
-                dfs(row-1,col)
-                path.pop(-1)
+                dfs(row-1,col, path+['U'])
             mat[row][col]=1
 
 
         res,path = [],[]
         if mat[0][0]!=1:return []
-        dfs(0,0)
+        dfs(0,0,[])
         return res
 
 class MyTestCase(unittest.TestCase):
