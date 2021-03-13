@@ -11,8 +11,50 @@ class Solution:
         # 1. Find the largest index k such that nums[k] < nums[k + 1].If no such index exists, just reverse nums and done.
         # 2. Find the largest index l > k such that nums[k] < nums[l].
         # 3. Swap nums[k] and nums[l].
-        # 4. Reverse the from k+1 index to last index
+        # 4. Reverse the sub - array nums[k + 1:].
         
+        n = len(nums)
+
+        k = 'not found'
+        # step 1a
+        i = n - 1
+        while i >= 0:
+            if i < n - 1 and nums[i] < nums[i + 1]:
+                k = i
+                break
+            i -= 1
+
+        # step 1b
+        if k == 'not found':
+            nums.reverse()
+            return
+
+        # step 2:
+        i = n - 1
+        while i >= 0:
+            if nums[i] > nums[k]:
+                # step 3
+                nums[i], nums[k] = nums[k], nums[i]
+                break
+            i -= 1
+
+        # step 4
+        right = n - 1
+        left = k + 1
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+
+    def nextPermutation_(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # 1. Find the largest index k such that nums[k] < nums[k + 1].If no such index exists, just reverse nums and done.
+        # 2. Find the largest index l > k such that nums[k] < nums[l].
+        # 3. Swap nums[k] and nums[l].
+        # 4. Reverse the from k+1 index to last index
+
         n = len(nums)
 
         k = 'not found'
@@ -41,7 +83,6 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
-
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):

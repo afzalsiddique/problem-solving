@@ -1,10 +1,8 @@
 import unittest
 from typing import List
 
-
+# https://leetcode.com/problems/palindrome-partitioning/discuss/42100/Python-easy-to-understand-backtracking-solution/650652
 class Solution:
-
-    ######## MEMOIZED VERSION AND THIS IS NOT BETTER IN TIME COMPLEXITY ##############
     def partition(self, s: str) -> List[List[str]]:
         dp = {}
 
@@ -36,60 +34,11 @@ class Solution:
 
         return helper(s)
 
-    def partition2(self, s):
-        def palindrome(s: str):
-            if s == s[::-1]:
-                return True
-            return False
-
-        def dfs(s,path):
-            if not s:
-                res.append(path)
-                return
-            for i in range(1, len(s) + 1):
-                first, last = s[:i], s[i:]
-                if palindrome(first):
-                    dfs(last, path + [first])
-
-        res = []
-        dfs(s,[])
-        return res
-
-    def partition3(self, s: str) -> List[List[str]]:
-        res, n = [], len(s)
-
-        def palindrome(s: str):
-            if s == s[::-1]:
-                return True
-            return False
-
-        def helper(s: str):
-            res, n = [], len(s)
-            if n == 1:
-                res.append(s)
-                return res
-            if palindrome(s):
-                res.append([s])
-            for i in range(n - 1):
-                first, second = s[:i + 1], s[i + 1:]
-                if palindrome(first):
-                    ans = helper(second)
-                    for sub_ans in ans:
-                        print('sub_ans type:', type(sub_ans))
-                        res.append([first] + list(sub_ans))
-            return res
-
-        if n == 1:
-            return [[s]]
-        return helper(s)
-
-
-
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
         sol = Solution()
-        actual = sol.partition('ab')
+        actual = sol.partition('aaaawaaaawaaaawaaaawaaaaw')
         expected = [['a', 'b']]
         self.assertEqual(expected, actual)
 
@@ -123,9 +72,9 @@ class MyTestCase(unittest.TestCase):
         sol = Solution()
         actual = sol.partition('aabaa')
         expected = [['a', 'a', 'b', 'a', 'a'],
- ['a', 'a', 'b', 'aa'],
- ['a', 'aba', 'a'],
- ['aa', 'b', 'a', 'a'],
- ['aa', 'b', 'aa'],
- ['aabaa']]
+                     ['a', 'a', 'b', 'aa'],
+                     ['a', 'aba', 'a'],
+                     ['aa', 'b', 'a', 'a'],
+                     ['aa', 'b', 'aa'],
+                     ['aabaa']]
         self.assertEqual(sorted(expected),sorted( actual))

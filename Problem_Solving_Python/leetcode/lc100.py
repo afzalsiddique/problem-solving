@@ -1,0 +1,40 @@
+from collections import deque
+
+
+class TreeNode:
+    def __init__(self, x, left=None, right =None):
+        self.val = x
+        self.left = left
+        self.right = right
+
+    def __repr__(self):
+        return str(self.val)
+
+
+
+class Solution:
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        if p and not q:return False
+        if not p and q:return False
+        if not p and not q:return True
+        q1,q2=deque([p]),deque([q])
+
+        while q1 and q2:
+            node1,node2 = q1.popleft(), q2.popleft()
+            if node1.val != node2.val: return False
+            if len(q1) != len(q2): return False
+            if node1.left and not node2.left:return False
+            if not node1.left and node2.left:return False
+            if node1.right and not node2.right:return False
+            if not node1.right and node2.right:return False
+            if node1.left:
+                q1.append(node1.left)
+            if node1.right:
+                q1.append(node1.right)
+            if node2.left:
+                q2.append(node2.left)
+            if node2.right:
+                q2.append(node2.right)
+        if not q1 and not q2:
+            return True
+        return False

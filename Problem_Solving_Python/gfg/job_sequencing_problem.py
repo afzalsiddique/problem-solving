@@ -22,7 +22,7 @@ class Solution:
         cnt,ans = 0,0
         seq=[-1]*highest # this array holds the sequence of job ids in the order they should be scheduled
         for job in Jobs:
-            tmp=job.deadline-1 # '-1' to avoid index out of bounds
+            tmp=job.deadline-1 # '-1' deadline is 1-indexed. You can't do any job at 0-th day
             while True:
                 if seq[tmp]==-1: # found space
                     break

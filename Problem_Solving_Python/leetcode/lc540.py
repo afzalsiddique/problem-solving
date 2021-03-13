@@ -4,7 +4,27 @@ from typing import List
 
 
 class Solution:
+    # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/100754/Java-Binary-Search-short-(7l)-O(log(n))-w-explanations/235525
     def singleNonDuplicate(self, nums: List[int]) -> int:
+        lo,hi=0,len(nums)-1
+        while lo<hi: # why it is "<"? -> because "hi=mid" and not "hi=mid-1"
+            mid= (lo+hi)//2
+            if mid%2==0:
+                # if mid is even, then it's duplicate should be in next index.
+                # or if mid is odd, then it's duplicate  should be in previous index.
+                if nums[mid]==nums[mid+1]:
+                    lo = mid+2
+                else:
+                    hi=mid
+            else:
+                if nums[mid]==nums[mid-1]:
+                    lo = mid +1
+                else:
+                    hi = mid
+        return nums[lo]
+
+
+    def singleNonDuplicate_(self, nums: List[int]) -> int:
         lo,hi=0,len(nums)-1
         # we can observe that for each pair,
         # first element takes even position and second element takes odd position

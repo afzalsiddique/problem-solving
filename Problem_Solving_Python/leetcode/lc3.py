@@ -20,7 +20,7 @@ class Solution:
         return maxLength
 
 
-    def lengthOfLongestSubstring2(self, s: str) -> int:
+    def lengthOfLongestSubstring_(self, s: str) -> int:
         n = len(s)
         sett = set()
         l, r = 0, 0
@@ -29,7 +29,7 @@ class Solution:
                 break
             sett.add(s[r])
             r += 1
-        maxx = r - l
+        maxx = r
         while r < n:
             if s[r] in sett:
                 sett.remove(s[l])

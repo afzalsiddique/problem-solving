@@ -4,6 +4,15 @@ from typing import List
 
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        cnt, maxx = 0, 0
+        for num in nums:
+            if num == 1:
+                cnt += 1
+                maxx = max(maxx, cnt)
+            else:
+                cnt = 0
+        return maxx
+        # sliding window
         n=len(nums)
         l,r=0,0
         maxx = 0
@@ -13,6 +22,7 @@ class Solution:
             if nums[r] == 1 and nums[l] == 1:
                 maxx = max(maxx, r - l + 1)
         return maxx
+
 
 class MyTestCase(unittest.TestCase):
 
@@ -46,3 +56,8 @@ class MyTestCase(unittest.TestCase):
         expected = 1
         self.assertEqual(expected, actual)
 
+    def test_6(self):
+        sol = Solution()
+        actual = sol.findMaxConsecutiveOnes([1,0,1,1,0,1])
+        expected = 2
+        self.assertEqual(expected, actual)

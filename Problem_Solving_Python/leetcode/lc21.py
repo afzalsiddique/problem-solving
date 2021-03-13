@@ -43,14 +43,10 @@ class Solution:
 
         cur.next = l1 if l1 else l2 # if one of them is at the end(means None), then the other one will append to the result directly.
         # the above line same as
-        # while l1:
-        #     cur.next=l1
-        #     l1=l1.next
-        #     cur=cur.next
-        # while l2:
-        #     cur.next=l2
-        #     l2=l2.next
-        #     cur=cur.nex
+        # if l1:
+        #     cur.next = l1
+        # if l2:
+        #     cur.next = l2
         return dummy.next
 
     def mergeTwoLists2(self, a, b):
@@ -69,4 +65,18 @@ class MyTestCase(unittest.TestCase):
         head2 = make_linked_list([2,4,6])
         actual = sol.mergeTwoLists(head1, head2)
         expected = make_linked_list([1,2,3,4,5,6])
+        self.assertEqual(expected, actual)
+    def test_2(self):
+        sol = Solution()
+        head1 = make_linked_list([])
+        head2 = make_linked_list([])
+        actual = sol.mergeTwoLists(head1, head2)
+        expected = make_linked_list([])
+        self.assertEqual(expected, actual)
+    def test_3(self):
+        sol = Solution()
+        head1 = make_linked_list([1])
+        head2 = make_linked_list([])
+        actual = sol.mergeTwoLists(head1, head2)
+        expected = make_linked_list([1])
         self.assertEqual(expected, actual)
