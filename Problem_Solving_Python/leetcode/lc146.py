@@ -20,7 +20,7 @@ class LRUCache:
             n = self.dic[key]
             self._remove(n)
             self._add(n)
-            return n.val
+            return n.value
         return -1
 
     def set(self, key, value):

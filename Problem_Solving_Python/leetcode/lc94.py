@@ -31,7 +31,7 @@ class Solution:
                 stack.append(cur)
                 cur = cur.left
             cur = stack.pop() # this node has no left child
-            res.append(cur.val) # so let's append the node value
+            res.append(cur.value) # so let's append the node value
             cur = cur.right # visit its right child --> if it has left child ? append left and left.val, otherwise append node.val, then visit right child again... cur = node.right
         return res
 
@@ -41,6 +41,6 @@ class Solution:
             if head is None:
                 return []
             else:
-                return f(head.left) + [head.val] + f(head.right)
+                return f(head.left) + [head.value] + f(head.right)
 
         return f(root)

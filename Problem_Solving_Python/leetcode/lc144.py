@@ -32,7 +32,7 @@ class Solution:
         while stack:
             node = stack.pop()
             if node:
-                ret.append(node.val)
+                ret.append(node.value)
                 stack.append(node.right)
                 stack.append(node.left)
         return ret
@@ -44,7 +44,7 @@ class Solution:
             cur, visited = stack.pop()  # the last element
             if cur:
                 if visited:
-                    res.append(cur.val)
+                    res.append(cur.value)
                 else:  # preorder: root -> left -> right
                     stack.append((cur.right, False))
                     stack.append((cur.left, False))

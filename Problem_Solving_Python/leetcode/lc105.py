@@ -8,8 +8,30 @@ class TreeNode:
         self.left = left
         self.right = right
 
-
+## time: n
+# https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/565412/Detailed-Python-Walkthrough-from-an-O(n2)-solution-to-O(n).-Faster-than-99.77
 class Solution:
+    def __init__(self):
+        self.pre_idx=0
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        di = {inorder[i]:i for i in range(len(inorder))} # di->(value, index)
+
+        def create(in_lo, in_hi):
+            if self.pre_idx>=len(preorder) or in_lo>in_hi:
+                return None
+
+            node = TreeNode(preorder[self.pre_idx])
+            self.pre_idx+=1
+            pos = di[node.val]
+            node.left = create(in_lo, pos - 1)
+            node.right = create(pos + 1, in_hi)
+            return node
+
+
+        return create(0,len(inorder)-1)
+
+## time: n^^2
+class Solution2:
     def __init__(self):
         self.pre_idx=0
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
@@ -20,7 +42,7 @@ class Solution:
 
             node = TreeNode(preorder[self.pre_idx])
             for i in range(in_lo, in_hi + 1): # here "in_end+1" because "hi" index is inclusive
-                if inorder[i]==node.val:
+                if inorder[i]==node.val: # here it becomes n^^2
                     pos = i
                     break
             self.pre_idx+=1
