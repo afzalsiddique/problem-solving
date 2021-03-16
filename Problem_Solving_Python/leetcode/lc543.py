@@ -14,7 +14,7 @@ class Solution:
             left_depth=max_depth(root.left)
             right_depth=max_depth(root.right)
 
-            self.maxx=max(self.maxx,left_depth+right_depth)
+            self.maxx=max(self.maxx,left_depth+right_depth) # update globally
 
             return max(left_depth,right_depth)+1
 

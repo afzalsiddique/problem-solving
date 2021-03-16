@@ -1,47 +1,56 @@
+# https://leetcode.com/problems/rotting-oranges/discuss/563686/Python-Clean-and-Well-Explained-(faster-than-greater-90)
 # https://www.youtube.com/watch?v=CxrnOTUlNJE
 import math
 import unittest
+from collections import deque
 from typing import List
 
 
-
+# without destroying the input
 class Solution:
+
+    def get_grid_state(self, grid):
+
+        fresh, rotten = set(), set()
+        rows = len(grid)
+        cols = len(grid[0])
+        for row in range(rows):
+            for col in range(cols):
+                pos = (row,col)
+                if grid[row][col] == 2:
+                    rotten.add(pos)
+                elif grid[row][col] == 1:
+                    fresh.add(pos)
+
+        return fresh, rotten
+
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        m,n,fresh_orange=len(grid),len(grid[0]),False
-        for i in range(m):
-            for j in range(n):
-                if grid[i][j]==1:
-                    fresh_orange = True
-                    break
-        if not fresh_orange:return 0
+        # get (row,col) for fresh and rotten oranges (as a set)
+        fresh, rotten = self.get_grid_state(grid)
 
-        q,day = [],0
-        for i in range(m):
-            for j in range(n):
-                if grid[i][j]==2:
-                    q.append((day,i,j))
+        # convert rotten set to list for adding it to queue
+        q = deque(list(rotten))
+        mins_to_rotten = 0
 
-        while q:
-            day,i,j= q.pop(0)
-            grid[i][j]=3 # 3 indicates visited
-            if i>0 and grid[i-1][j]==1:
-                q.append((day+1,i-1,j))
-                grid[i-1][j]=3
-            if i+1<m and grid[i+1][j]==1:
-                q.append((day+1, i+1,j))
-                grid[i+1][j]=3
-            if j>0 and grid[i][j-1]==1:
-                q.append((day+1,i,j-1))
-                grid[i][j-1]=3
-            if j+1<n and grid[i][j+1]==1:
-                q.append((day+1, i,j+1))
-                grid[i][j+1]=3
+        # peform BFS while we have rotten oranges and fresh oranges
+        while q and fresh:
+            mins_to_rotten += 1
 
-        for i in range(m):
-            for j in range(n):
-                if grid[i][j]==1:
-                    return -1
-        return day
+            # iterate rotten oranges at this level only
+            for _ in range(len(q)):
+                rotten_row, rotten_col = q.popleft()
+
+                # iterate thru neighboring grids
+                for delta_row, delta_col in [(1,0), (-1,0), (0,1), (0,-1)]:
+                    next_pos = (rotten_row+delta_row, rotten_col+delta_col)
+                    if next_pos in fresh:
+                        # next_pos has a fresh orange. NOTE: we don't have to worry about out of bounds check since fresh will only contain valid cell positions
+                        q.append(next_pos)
+                        # add fresh orange to the q and remove it from the fresh set
+                        # ensures a loop free BFS traversal without explicity taking care of visited positions
+                        fresh.remove(next_pos)
+
+        return -1 if len(fresh) != 0 else mins_to_rotten
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):

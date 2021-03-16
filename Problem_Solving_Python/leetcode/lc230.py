@@ -6,6 +6,21 @@ class TreeNode:
     def __repr__(self):
         return str(self.val)
 class Solution:
+    def kthSmallest(self, root, k):
+        stack = []
+
+        while True:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            k -= 1
+            if not k:
+                return root.val
+            root = root.right
+
+# using global varialbes might be bad
+class Solution2:
     def __init__(self):
         self.cnt = None
         self.value = None
