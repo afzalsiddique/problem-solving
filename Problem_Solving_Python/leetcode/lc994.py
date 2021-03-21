@@ -51,6 +51,33 @@ class Solution:
                         fresh.remove(next_pos)
 
         return -1 if len(fresh) != 0 else mins_to_rotten
+    def orangesRotting2(self, grid: List[List[int]]) -> int:
+        m,n = len(grid), len(grid[0])
+        q = deque()
+
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col]==2:
+                    q.append((row,col))
+
+
+        fresh = any([grid[i][j]==1 for i in range(m) for j in range(n)])
+        if not q and not fresh:return 0
+        day = -1
+        while q:
+            for _ in range(len(q)):
+                r,c=q.popleft()
+                if grid[r][c]!=2:continue
+                grid[r][c]=0
+                for (dr,dc) in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    i = r+dr
+                    j = c + dc
+                    if i < m and j < n and i>=0 and j>=0 and grid[i][j]==1:
+                        grid[i][j]=2
+                        q.append((i,j))
+            day+=1
+        fresh = any([grid[i][j]==1 for i in range(m) for j in range(n)]) # fresh apple remains
+        return day if not fresh else -1
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):

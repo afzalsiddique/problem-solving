@@ -23,6 +23,24 @@ class Solution:
 
         return helper(s)
 
+    # longest common subsequecne
+    def minInsertions2(self, s: str) -> int:
+        n = len(s)
+        s2 = s[::-1]
+        dp = [[-1]*n for _ in range(n)]
+
+        def helper(m,n):#longest common subsequence
+            if m==-1 or n==-1:return 0
+            if dp[m][n]!=-1:return dp[m][n]
+            if s[m]==s2[n]:
+                dp[m][n] = 1 + helper(m-1,n-1)
+            else:
+                dp[m][n] = max(helper(m-1,n),helper(m,n-1))
+            return dp[m][n]
+
+
+        return n - helper(n-1,n-1)
+
 
 
 class MyTestCase(unittest.TestCase):

@@ -3,6 +3,21 @@ from typing import List
 
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        n = len(intervals)
+        if n==1: return intervals
+
+        intervals.sort(key=lambda x:x[0])
+        last_start, last_end = intervals[0][0], intervals[0][1]
+        result = []
+        for i in range(1,n):
+            cur_start, cur_end = intervals[i][0],intervals[i][1]
+            if cur_start>last_end:
+                result.append([last_start,last_end])
+                last_start = cur_start
+            last_end = max(last_end, cur_end)
+        result.append([last_start, last_end])
+        return result
+    def merge2(self, intervals: List[List[int]]) -> List[List[int]]:
         n,results= len(intervals),[]
         intervals.sort(key=lambda x:x[0])
         start,end = intervals[0][0],intervals[0][1]
@@ -18,7 +33,7 @@ class Solution:
         return results
 
     # the idea is that for the result distinct interval, the latter one's start must > previous one's end.
-    def merge_(self, intervals: List[List[int]]) -> List[List[int]]:
+    def merge3(self, intervals: List[List[int]]) -> List[List[int]]:
         n = len(intervals)
         starts = sorted([x[0] for x in intervals])
         ends = sorted([x[1] for x in intervals])

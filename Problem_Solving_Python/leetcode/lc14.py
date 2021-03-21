@@ -18,6 +18,18 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
 
+    def test_00(self):
+        a = Solution().longestCommonPrefix([""])
+        e = ""
+        self.assertEqual(e,a)
+    def test_0(self):
+        a = Solution().longestCommonPrefix(["","",""])
+        e = ""
+        self.assertEqual(e,a)
+    def test_01(self):
+        a = Solution().longestCommonPrefix(["flower","flower","flower"])
+        e = "flower"
+        self.assertEqual(e,a)
     def test_1(self):
         a = Solution().longestCommonPrefix(["dog","racecar","car"])
         e = ""

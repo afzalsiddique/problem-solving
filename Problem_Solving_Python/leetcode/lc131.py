@@ -4,7 +4,7 @@ from typing import List
 
 class Solution:
 
-    ######## MEMOIZED VERSION AND THIS IS NOT BETTER IN TIME COMPLEXITY ##############
+    ######## THOUGH MEMOIZED VERSION BUT THIS IS NOT BETTER IN TIME COMPLEXITY ##############
     def partition(self, s: str) -> List[List[str]]:
         dp = {}
 

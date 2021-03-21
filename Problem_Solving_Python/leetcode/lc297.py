@@ -1,5 +1,5 @@
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/74260/Recursive-DFS-Iterative-DFS-and-BFS/77427
-import collections
+from collections import deque
 import unittest
 
 
@@ -18,10 +18,10 @@ class Codec3:
         self.en = '#'
         self.sep = ','
 
-    def serialize(self, root):
+    def serialize(self, root): #   "1,2,3,#,#,4,5" (no # at the end)
         if not root: return ''
 
-        q = collections.deque()
+        q = deque()
         res = [str(root.val)]
         q.append(root)
         while q:
@@ -35,12 +35,27 @@ class Codec3:
 
         return self.sep.join(res)
 
+    def serialize2(self, root): #   "1,2,3,#,#,4,5,#,#,#,#" (# at the end)
+        if not root:return ""
+        q = deque()
+        q.append(root)
+        li = []
+        while q:
+            node = q.popleft()
+            if node:
+                li.append(str(node.val))
+                q.append(node.left)
+                q.append(node.right)
+            else:
+                li.append("#")
+        return ",".join(li)
+
     def deserialize(self, data):
         data = data.split(self.sep)
         l = len(data)
         if l<=1:return None
         root = TreeNode(int(data[0]))
-        q = collections.deque()
+        q = deque()
         q.append(root)
         i=1
         while i<l and q:
@@ -58,5 +73,12 @@ class Codec3:
         return root
 
 
-c = Codec3()
-print(a)
+class mytestcase(unittest.TestCase):
+    def test_1(self):
+        n5 = TreeNode(5)
+        n4 = TreeNode(4)
+        n3 = TreeNode(3, n4,n5)
+        n2 = TreeNode(2)
+        root = TreeNode(1,n2,n3)
+        a = Codec3().serialize(root)
+        self.assertEqual("1,2,3,#,#,4,5",a)

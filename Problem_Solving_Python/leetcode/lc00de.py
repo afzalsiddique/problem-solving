@@ -1,3 +1,5 @@
+from collections import deque, defaultdict
+from heapq import *
 import unittest
 from typing import List
 
@@ -7,10 +9,8 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-
     def __repr__(self):
-        return str(self.val) + "->" + str(self.next)
-
+        return str(self.val)
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         if not head:return None
@@ -22,18 +22,6 @@ class Solution:
             curr.next=prev
             prev=curr
         return curr
-class Solution2:
-    def reverseList(self, head: ListNode) -> ListNode:
-        if head == None:
-            return None
-        if head.next == None:
-            return head
-        curr = head.next
-        prev = head
-        while curr!=None:
-            curr.next, prev, curr = prev, curr, curr.next # this line is very bad. avoid this. Does not do the job simultaneously
-        head.next = None # to avoid cycle
-        return prev
 
 
 def make_linked_list(li:List) -> ListNode:
@@ -49,8 +37,6 @@ def make_linked_list(li:List) -> ListNode:
     for i in range(n-2,-1,-1):
         temp = ListNode(li[i],temp)
     return temp
-
-
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):

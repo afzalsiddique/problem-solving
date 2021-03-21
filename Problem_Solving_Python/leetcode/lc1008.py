@@ -10,16 +10,19 @@ class TreeNode:
     def __repr__(self):
         return str(self.val)
 class Solution:
-    ## very bad solution. n^^2
+    ## this maybe a n^^2 solution which is very bad
     def bstFromPreorder(self, preorder: List[int]) -> TreeNode:
-        def construct(l, r):
-            if l>=r:return None
+        def preorder_traversal(l, r):
+            if l>r:return None
             root = TreeNode(preorder[l])
-            i = l + 1
-            while i<r and preorder[i]<root.val:
-                i+=1
-            root.left = construct(l + 1, i)
-            root.right = construct(i, r)
+
+            pos = l + 1
+            while pos<=r and preorder[pos]<root.val:
+                pos+=1
+
+            root.left = preorder_traversal(l + 1, pos-1)
+            root.right = preorder_traversal(pos, r)
             return root
 
-        return construct(0,len(preorder))
+        return preorder_traversal(0,len(preorder)-1)
+

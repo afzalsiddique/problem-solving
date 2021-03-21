@@ -1,9 +1,12 @@
-# https://www.youtube.com/watch?v=elqKCreFLAc
+# https://www.youtube.com/watch?v=CE2b_-XfVDk
 # https://www.youtube.com/watch?v=22s1xxRvy28
+# https://www.youtube.com/watch?v=TocJOW6vx_I
+import unittest
 from typing import List
 
 
 class Solution:
+    ## n log n
     def lengthOfLIS(self, nums):
 
         def binarySearch(sub, val):
@@ -26,11 +29,17 @@ class Solution:
             else:
                 sub[pos] = val
         return len(sub)
+class Solution2:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        dp=[1]*n
+        for i in range(1, n):
+            for j in range(i):
+                if nums[i]>nums[j]:
+                    dp[i]=max(dp[j]+1,dp[i])
+        return max(dp)
 
-
-import unittest
 class MyTestCase(unittest.TestCase):
-
     def test_1(self):
         solution = Solution()
         self.assertEqual(4, solution.lengthOfLIS([10,9,2,5,3,7,101,18]))
@@ -46,15 +55,3 @@ class MyTestCase(unittest.TestCase):
     def test_4(self):
         solution = Solution()
         self.assertEqual(6, solution.lengthOfLIS([1,3,6,7,9,4,10,5,6]))
-
-    def test_5(self):
-        solution = Solution()
-        self.assertEqual(3, solution.lengthOfLIS([1,6,7,3]))
-
-    def test_6(self):
-        solution = Solution()
-        self.assertEqual(3, solution.lengthOfLIS([1,6,7]))
-
-    def test_7(self):
-        solution = Solution()
-        self.assertEqual(6, solution.lengthOfLIS([2,5,3,4,11,8,10,13,6]))

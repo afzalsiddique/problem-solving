@@ -1,8 +1,16 @@
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock/discuss/39038/Kadane's-Algorithm-Since-no-one-has-mentioned-about-this-so-far-%3A)-(In-case-if-interviewer-twists-the-input)
 from typing import List
 
-
 class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        prev = prices[0]
+        profit = 0
+        for i in range(1,len(prices)):
+            profit = max(profit, prices[i]-prev)
+            prev = min(prev, prices[i])
+        return profit
+
+class Solution2:
     def maxProfit(self, prices: List[int]) -> int:
         cur_max, max_so_far = 0, 0
         for i in range(1, len(prices)):

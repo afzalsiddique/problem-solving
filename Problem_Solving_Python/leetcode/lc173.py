@@ -28,7 +28,8 @@ class BSTIterator:
         return False
 
 
-class Case(unittest.TestCase):
+class MyTestCase(unittest.TestCase):
+
     def test_1(self):
         n9=TreeNode(9)
         n20=TreeNode(20)
@@ -40,8 +41,11 @@ class Case(unittest.TestCase):
         self.assertEqual(3,a)
         a = i.next()
         self.assertEqual(7,a)
-        a = i.hasNext()
-        self.assertEqual(True, a)
+        # a = i.hasNext()
+        # self.assertEqual(True, a)
         a = i.next()
         self.assertEqual(9,a)
-
+        a = i.next()
+        self.assertEqual(15,a)
+        a = i.next()
+        self.assertEqual(20,a)

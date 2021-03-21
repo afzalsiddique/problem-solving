@@ -1,11 +1,28 @@
-# Recursive-> https://www.youtube.com/watch?v=hLQYQ4zj0qg
-# Iterative-> https://www.youtube.com/watch?v=WepWFGxiwRs
 import unittest
 from typing import List
 
 class Solution:
-    # Recursive -> easier to write and read
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        di = {}
+        def helper(s:str):
+            n = len(s)
+            if n==0:
+                return True
+            if s in di:return di[s]
+            for word in wordDict:
+                if n < len(word):continue
+                else:
+                    if word == s[:len(word)]:
+                        if helper(s[len(word):]):
+                            di[s]=True
+                            return di[s]
+            di[s]=False
+            return di[s]
+        return helper(s)
+
+    # Recursive -> easier to write and read
+    # Recursive-> https://www.youtube.com/watch?v=hLQYQ4zj0qg
+    def wordBreak_recursive(self, s: str, wordDict: List[str]) -> bool:
         di = {}
         def helper(s):
             if not s:return True
@@ -23,6 +40,7 @@ class Solution:
         return helper(s)
 
     # Iterative
+    # Iterative-> https://www.youtube.com/watch?v=WepWFGxiwRs
     def wordBreak_iterative(self, s: str, wordDict: List[str]) -> bool:
         di = {}
         for word in wordDict:

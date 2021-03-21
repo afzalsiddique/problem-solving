@@ -14,15 +14,15 @@ class Solution:
         # [..Q.]
         # index represents row no and value represents col no
 
-        def place_queen(nth_row): # dfs
-            if nth_row == len(queens): # n queens have been placed correctly
+        def place_queen(ith_row): # dfs
+            if ith_row == len(queens): # n queens have been placed correctly
                 res.append(queens[:])
                 return  # backtracking
             for col_no in range(len(queens)):
-                queens[nth_row] = col_no
-                if valid(nth_row):  # pruning
-                    place_queen(nth_row + 1)
-                queens[nth_row] = -1
+                queens[ith_row] = col_no
+                if valid(ith_row):  # pruning
+                    place_queen(ith_row + 1)
+                queens[ith_row] = -1
 
         # check whether queen can be placed in nth row
         def valid(nth_row):
@@ -59,6 +59,44 @@ class Solution:
         return make_all_boards(res)
 
 
+class Solution2:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        queens = [-1]*n
+        res = []
+        def valid(row,col):
+            for i in range(n):
+                if queens[i]==-1:break
+                if col==queens[i]:return False
+                if abs(row-i)==abs(col-queens[i]):return False
+            return True
+        def dfs(ith_row):
+            if ith_row==n:
+                res.append(queens[:])
+                return
+            for col in range(n):
+                if valid(ith_row, col):
+                    queens[ith_row]=col
+                    dfs(ith_row + 1)
+                    queens[ith_row]=-1
+
+        def make_board(queens):
+            n = len(queens)
+            board = []
+            board_temp = [['.'] * n for _ in range(n)]
+            for row, col in enumerate(queens):
+                board_temp[row][col] = 'Q'
+            for row in board_temp:
+                board.append("".join(row))
+            return board
+
+        def make_all_boards(res):
+            actual_boards = []
+            for queens in res:
+                actual_boards.append(make_board(queens))
+            return actual_boards
+
+        dfs(0)
+        return make_all_boards(res)
 
 class MyTestCase(unittest.TestCase):
 

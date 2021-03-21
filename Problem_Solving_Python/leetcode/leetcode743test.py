@@ -1,6 +1,6 @@
 import unittest
 
-from leetcode.leetcode743 import Solution
+from leetcode.lc743 import Solution
 
 
 class MyTestCase(unittest.TestCase):

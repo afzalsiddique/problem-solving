@@ -25,6 +25,8 @@ print("Number of subarrays having given XOR is",
 # subarray sum equals to k
 
 def subarraySum(nums,n ,k):
+    ## best example for thinking process ##
+    # [3,4,7,2,-3,1,4,2,-13,0,7], k= 7
     ans,mp=0,defaultdict(int)
     pre = [0 for _ in range(n)] # could be replaced by currentSum. no need for this array
     pre[0] = nums[0]

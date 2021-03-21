@@ -10,7 +10,7 @@ from collections import deque
 
 class Solution:
     def isBipartite(self, graph):
-
+        pass
 
 
 class MyTestCase(unittest.TestCase):

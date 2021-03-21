@@ -9,7 +9,7 @@ class Solution:
     def kthSmallest(self, root, k):
         stack = []
 
-        while True:
+        while True: # while root or stack: will do the job as well
             while root:
                 stack.append(root)
                 root = root.left
@@ -19,23 +19,42 @@ class Solution:
                 return root.val
             root = root.right
 
-# using global varialbes might be bad
 class Solution2:
+    def kthSmallest(self, root, k):
+        def helper(node):
+            if self.k==0:return
+            if not node:
+                return
+            helper(node.left)
+            self.k -= 1
+            if self.k == 0:
+                self.res = node.val
+                return
+            helper(node.right)
+
+        self.k = k
+        self.res = None
+        helper(root)
+        return self.res
+
+
+# using global varialbes might be bad
+class Solution3:
     def __init__(self):
-        self.cnt = None
+        self.remain = None
         self.value = None
     def kthSmallest(self, root: TreeNode, k: int) -> int:
         def find(root:TreeNode):
             if not root:return
             find(root.left)
-            if self.cnt==0:
+            if self.remain==0:
                 self.value=root.val
-                self.cnt-=1
+                self.remain-=1
             else:
-                self.cnt-=1
+                self.remain-=1
             find(root.right)
 
-        self.cnt = k
+        self.remain = k
         find(root)
         return self.value
 

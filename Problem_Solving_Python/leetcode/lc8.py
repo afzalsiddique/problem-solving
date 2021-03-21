@@ -51,3 +51,7 @@ class Case(unittest.TestCase):
         self.assertEqual(2147483646,Solution().myAtoi("2147483646"))
     def test_10(self):
         self.assertEqual(2147483647,Solution().myAtoi("2147483648"))
+    def test_11(self):
+        self.assertEqual(0,Solution().myAtoi(""))
+    def test_12(self):
+        self.assertEqual(0,Solution().myAtoi(" "))

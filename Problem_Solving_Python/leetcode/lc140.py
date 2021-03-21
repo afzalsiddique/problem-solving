@@ -10,6 +10,28 @@ class Solution:
 
         def word_break(s):
             if s in dp: return dp[s]
+            result = []
+            for word in wordDict:
+                n = len(word)
+                if s[:n] == word:
+                    if n == len(s):
+                        result.append(word)
+                    else:
+                        ans = word_break(s[len(word):])
+                        for sub_ans in ans:
+                            result.append(word + " " + sub_ans)
+            dp[s] = result
+            return result
+
+        return word_break(s)
+
+
+class Solution2:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        dp = {}
+
+        def word_break(s):
+            if s in dp: return dp[s]
             n = len(s)
             result = []
             for i in range(1, n + 1):
@@ -25,8 +47,6 @@ class Solution:
             return result
 
         return word_break(s)
-
-
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):

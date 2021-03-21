@@ -18,20 +18,3 @@ class Solution:
                     idx = i
 
         return idx
-
-x = 3
-y = 4
-points = [[1,2],[3,1],[2,4],[2,3],[4,4]]
-print(nearestValidPoint(x,y,points))
-
-
-x = 3
-y = 4
-points = [[3,4]]
-print(nearestValidPoint(x,y,points))
-
-
-x = 3
-y = 4
-points = [[2,3]]
-print(nearestValidPoint(x,y,points))

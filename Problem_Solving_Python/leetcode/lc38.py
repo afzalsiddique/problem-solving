@@ -1,6 +1,27 @@
 import unittest
 class Solution:
     def countAndSay(self, n: int) -> str:
+        def helper(s:str):
+            result = []
+            j=0
+            i=0
+            while i<len(s):
+                if i>0 and s[i]!=s[i-1]:
+                    result.append(str(i-j) + s[j])
+                    j=i
+                i+=1
+            result.append(str(i-j)+s[j])
+            return "".join(result)
+
+
+        if n==1:return "1"
+        temp = '1'
+        for i in range(n-1):
+            temp = helper(temp)
+        return temp
+
+
+    def countAndSay__(self, n: int) -> str:
         result = '1'
         for _ in range(1,n):
             result = self.string_build(result)
@@ -18,6 +39,7 @@ class Solution:
             res.append(str(cnt))
             res.append(ch)
         return "".join(res)
+
 
     # less readable
     def countAndSay_(self, n: int) -> str:

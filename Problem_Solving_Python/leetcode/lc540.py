@@ -1,4 +1,5 @@
 # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/627921/Java-or-C%2B%2B-or-Python3-or-Easy-explanation-or-O(logn)-or-O(1)
+# https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/627786/C++-O(log-n)-time-O(1)-space-or-Simple-and-clean-or-Use-xor-to-keep-track-of-odd-even-pair/537615
 import unittest
 from typing import List
 
