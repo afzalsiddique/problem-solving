@@ -1,4 +1,4 @@
-# https://www.youtube.com/watch?v=CE2b_-XfVDk
+# https://www.youtube.com/watch?v=1RpMc3fv0y4
 # https://www.youtube.com/watch?v=22s1xxRvy28
 # https://www.youtube.com/watch?v=TocJOW6vx_I
 import unittest
@@ -9,9 +9,9 @@ class Solution:
     ## n log n
     def lengthOfLIS(self, nums):
 
-        def binarySearch(sub, val):
+        def binarySearch(val):
             lo, hi = 0, len(sub) - 1
-            while (lo <= hi):
+            while lo <= hi:
                 mid = lo + (hi - lo) // 2
                 if sub[mid] < val:
                     lo = mid + 1
@@ -23,7 +23,7 @@ class Solution:
 
         sub = []
         for val in nums:
-            pos = binarySearch(sub, val)
+            pos = binarySearch(val)
             if pos == len(sub):
                 sub.append(val)
             else:

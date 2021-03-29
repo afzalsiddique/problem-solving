@@ -3,8 +3,24 @@
 import unittest
 from typing import List
 
+# don't understand why dp is slower? Ans: consider this case: ['aaaaaaaa'], ['a','aa','aaa','aaaa']
+class Solution3: # AC. 32 ms
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        res = []
+        def helper(s,path):
+            if len(s)==0:res.append(" ".join(path))
+            n = len(s)
+            for word in wordDict:
+                w = len(word)
+                if w>n:continue
+                first,second = s[:w], s[w:]
+                if first==word:
+                    helper(second, path+[first])
 
-class Solution:
+        helper(s,[])
+        return res
+
+class Solution: # AC. 100 ms
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         dp = {}
 

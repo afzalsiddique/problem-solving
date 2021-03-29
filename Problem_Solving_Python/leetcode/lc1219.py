@@ -18,8 +18,8 @@ class Solution:
             prev_value = grid[row][col]
             grid[row][col]=0
             temp = float('-inf')
-            for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
-                i,j=row+dr,col+dc
+            for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                i,j=row+dx,col+dy
                 temp = max(temp,dfs(i,j))
             grid[row][col]=prev_value
             return ans+temp

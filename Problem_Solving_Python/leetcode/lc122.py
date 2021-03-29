@@ -4,13 +4,27 @@ from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
+        n=len(prices)
+        if n==1:return 0
+        cur_buy_price=prices[0]
+        total_profit=0
+        for i in range(1,n):
+            if prices[i]<cur_buy_price: # if price is lower buy it
+                cur_buy_price=prices[i]
+            else: # if price is higher sell it and buy it again
+                profit=prices[i]-cur_buy_price
+                cur_buy_price=prices[i]
+                total_profit+=profit
+        return total_profit
+class Solution2:
+    def maxProfit(self, prices: List[int]) -> int:
         profit = 0
         for i in range(len(prices)-1):
             if prices[i]<prices[i+1]:
                 profit+=prices[i+1]-prices[i]
         return profit
 
-class Solution2:
+class Solution3:
     def maxProfit(self, prices: List[int]) -> int:
         cur_max, max_so_far = 0, 0
         for i in range(1, len(prices)):

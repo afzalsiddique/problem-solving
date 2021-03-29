@@ -40,6 +40,26 @@ class Solution:
         slow.next = None
         return fake.next
 
+    def rotateRight2(self, head: ListNode, k: int) -> ListNode:
+        if not head:return None
+        if not head.next:return head
+        cnt = 1
+        cur = head
+        while cur.next:
+            cur=cur.next
+            cnt+=1
+        if k%cnt==0:return head
+        k=k%cnt
+        cur.next = head
+        temp = cnt-k-1
+        cur = head
+        while temp:
+            cur=cur.next
+            temp-=1
+        head = cur.next
+        cur.next=None
+        return head
+
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
@@ -60,44 +80,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_3(self):
         sol = Solution()
-        two = ListNode(2,None)
-        one = ListNode(1,two)
-        actual = sol.rotateRight(one, 2)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        actual = sol.rotateRight(0)
-        expected = 0
+        li = [1,2]
+        head = make_linked_list(li)
+        actual = sol.rotateRight(head, 4)
+        expected = make_linked_list([1,2])
         self.assertEqual(expected, actual)

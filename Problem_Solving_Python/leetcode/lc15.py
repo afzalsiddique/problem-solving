@@ -1,9 +1,23 @@
 # https://www.youtube.com/watch?v=jzZsG8n2R9A
 import unittest
+from bisect import bisect_left
 from typing import List
 
-
 class Solution:
+    def threeSum(self, nums):
+        nums.sort()
+        res,n=[],len(nums)
+        for i in range(n):
+            if i>0 and nums[i]==nums[i-1]:continue
+            for j in range(i+1,n):
+                if j>i+1 and nums[j]==nums[j-1]:continue
+                target = -(nums[i]+nums[j])
+                idx = bisect_left(nums,target,j+1)
+                if idx!=n and nums[idx]==target:
+                    res.append([nums[i],nums[j],target])
+        return res
+
+class Solution2:
     def threeSum(self, nums):
         res = []
         nums.sort()
@@ -25,7 +39,7 @@ class Solution:
                         l += 1
                     while l < r and nums[r] == nums[r - 1]:
                         r -= 1
-                    l += 1;
+                    l += 1
                     r -= 1
         return res
 

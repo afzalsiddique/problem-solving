@@ -30,7 +30,13 @@ def make_linked_list(li:List) -> ListNode:
 
 
 class Solution:
-    def middleNode(self, head: ListNode) -> ListNode:
+    def middleNode(self, head):
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+    def middleNode2(self, head: ListNode) -> ListNode:
         n = 0
         curr = head
         while curr.next != None:

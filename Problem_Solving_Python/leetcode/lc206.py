@@ -10,7 +10,7 @@ class ListNode:
 
     def __repr__(self):
         return str(self.val) + "->" + str(self.next)
-
+# iterative
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         if not head:return None
@@ -22,7 +22,17 @@ class Solution:
             curr.next=prev
             prev=curr
         return curr
+# recursive
 class Solution2:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head==None:return None
+        if head.next==None:
+            return head # head will be the first node in the reversed list. so return first node
+        first_node = self.reverseList(head.next)
+        head.next.next = head
+        head.next=None
+        return first_node
+class Solution3:
     def reverseList(self, head: ListNode) -> ListNode:
         if head == None:
             return None

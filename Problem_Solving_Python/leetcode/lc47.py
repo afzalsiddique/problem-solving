@@ -2,6 +2,21 @@ from typing import List
 
 
 class Solution:
+    def permuteUnique2(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(nums,path):
+            n=len(nums)
+            if n==1:
+                res.append(path+nums)
+                return
+            for i in range(n):
+                if i>0 and nums[i]==nums[i-1]:continue
+                temp = nums[:i]+nums[i+1:8]
+                backtrack(temp, path+[nums[i]])
+
+        res = []
+        nums.sort()
+        backtrack(nums,[])
+        return res
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         dp = {}
 

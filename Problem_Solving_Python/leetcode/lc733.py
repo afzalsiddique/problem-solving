@@ -8,15 +8,14 @@ class Solution:
         m,n=len(image), len(image[0])
         srcColor= image[sr][sc]
 
-        def dfs(i, j):
-            if i>=m or i<0 or j>=n or j<0:
-                return
-            if image[i][j]==newColor:return # test 2 will fail if this line is omitted
-            if image[i][j]==srcColor:
-                image[i][j]=newColor
-                for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
-                    r,c=i+dr,j+dc
-                    dfs(r,c)
+        def dfs(x, y):
+            if x>=m or y>=n or x<0 or y<0: return
+            if image[x][y]==newColor:return # if coloring is not required at all
+            if image[x][y]!=srcColor:return
+            image[x][y]=newColor
+            for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                i,j = x + dx, y + dy
+                dfs(i,j)
 
         dfs(sr,sc)
         return image

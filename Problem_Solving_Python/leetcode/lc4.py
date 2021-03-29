@@ -13,51 +13,30 @@ class Solution:
         high  = n1 # !!! need to set as n1 and not "n1-1", because this means number of elements on the left side or right side, not the index
 
         while low<=high:
-            partition_x = (low+high)//2
-            partition_y = (n1+n2+1)//2-partition_x
+            mid1 = (low+high)//2
+            mid2 = (n1+n2+1)//2-mid1 # here +1 is for taking one extra element in the left side when n1+n2 is odd
 
             # Why "else float('-inf')" and similarly others?
             # -> Run this case: [1,2,3,4], [5,6,7,8]
-            # these are used to satisfy the conditions "maxLeft_x <= minRight_y and maxLeft_y <= minRight_x"
+            # these are used to satisfy the conditions "x1 <= y2 and y1 <= x2"
             # -INF 0 1 2 3 4 5 +INF
             # -INF 0 1 2 3 4 5 +INF
-            maxLeft_x = nums1[partition_x-1] if partition_x!=0 else float('-inf')
-            minRight_x = nums1[partition_x] if partition_x!=n1 else float('inf')
+            x1 = nums1[mid1-1] if mid1!=0 else float('-inf')
+            x2 = nums1[mid1] if mid1!=n1 else float('inf')
 
-            maxLeft_y = nums2[partition_y-1] if partition_y!=0 else float('-inf')
-            minRight_y = nums2[partition_y] if partition_y!=n2 else float('inf')
+            y1 = nums2[mid2-1] if mid2!=0 else float('-inf')
+            y2 = nums2[mid2] if mid2!=n2 else float('inf')
 
-            if maxLeft_x <= minRight_y and maxLeft_y <= minRight_x:
+            if x1 <= y2 and y1 <= x2:
                 if (n1+n2)%2==0:
-                    return (max(maxLeft_x,maxLeft_y)+min(minRight_x,minRight_y))/2
+                    return (max(x1,y1)+min(x2,y2))/2
                 else:
-                    return max(maxLeft_x,maxLeft_y)
-            elif maxLeft_x > minRight_y:
-                high = partition_x-1
+                    return max(x1,y1)
+            elif x1 > y2:
+                high = mid1-1
             else:
-                low = partition_x+1
+                low = mid1+1
 
-class Solution2:
-    def findMedianSortedArrays(self, nums1, nums2):
-        if len(nums2) > len(nums1):
-            return self.findMedianSortedArrays(nums2, nums1)
-
-        low, high = 0, 2 * len(nums2)
-        while low <= high:
-            mid2 = (low + high) // 2
-            mid1 = len(nums1) + len(nums2) - mid2
-
-            L2 = nums2[(mid2 - 1) // 2] if mid2 != 0 else float('-inf')
-            R2 = nums2[mid2 // 2] if mid2 != 2*len(nums2) else float('inf')
-            L1 = nums1[(mid1 - 1) // 2] if mid1 != 0 else float('-inf')
-            R1 = nums1[mid1 // 2] if mid1 != 2*len(nums1) else float('inf')
-
-            if L2 > R1:
-                high = mid2 - 1
-            elif L1 > R2:
-                low = mid2 + 1
-            else:
-                return (max(L1, L2) + min(R1, R2)) / 2.0
 
 class MyTestClass(unittest.TestCase):
     def test_1(self):
@@ -65,95 +44,14 @@ class MyTestClass(unittest.TestCase):
         nums1 = [1]
         nums2 = [7,11,18,19,21,25]
         actual = solution.findMedianSortedArrays(nums1, nums2)
-        expected = 11
+        expected = 18
         self.assertEqual(expected, actual)
     def test_2(self):
         solution = Solution()
         nums1 = [1,2,3,4]
         nums2 = [5,6,7,8]
         actual = solution.findMedianSortedArrays(nums1, nums2)
-        expected = 11
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        solution = Solution()
-        nums1 = [1,3,8,9,15]
-        nums2 = [7,11,18,19,21,25]
-        actual = solution.findMedianSortedArrays(nums1, nums2)
-        expected = 11
-        self.assertEqual(expected, actual)
-import unittest
-from typing import List
-
-
-class Solution:
-    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        if len(nums1)>len(nums2):return self.findMedianSortedArrays(nums2,nums1)
-        n1 = len(nums1)
-        n2 = len(nums2)
-        low = 0
-        high  = n1 # !!! need to set as n1 and not "n1-1", because this means number of elements on the left side or right side, not the index
-
-        while low<=high:
-            partition_x = (low+high)//2
-            partition_y = (n1+n2+1)//2-partition_x
-
-            # Why "else float('-inf')" and similarly others?
-            # -> Run this case: [1,2,3,4], [5,6,7,8]
-            # these are used to satisfy the conditions "maxLeft_x <= minRight_y and maxLeft_y <= minRight_x"
-            # -INF 0 1 2 3 4 5 +INF
-            # -INF 0 1 2 3 4 5 +INF
-            maxLeft_x = nums1[partition_x-1] if partition_x!=0 else float('-inf')
-            minRight_x = nums1[partition_x] if partition_x!=n1 else float('inf')
-
-            maxLeft_y = nums2[partition_y-1] if partition_y!=0 else float('-inf')
-            minRight_y = nums2[partition_y] if partition_y!=n2 else float('inf')
-
-            if maxLeft_x <= minRight_y and maxLeft_y <= minRight_x:
-                if (n1+n2)%2==0:
-                    return (max(maxLeft_x,maxLeft_y)+min(minRight_x,minRight_y))/2
-                else:
-                    return max(maxLeft_x,maxLeft_y)
-            elif maxLeft_x > minRight_y:
-                high = partition_x-1
-            else:
-                low = partition_x+1
-
-class Solution2:
-    def findMedianSortedArrays(self, nums1, nums2):
-        if len(nums2) > len(nums1):
-            return self.findMedianSortedArrays(nums2, nums1)
-
-        low, high = 0, 2 * len(nums2)
-        while low <= high:
-            mid2 = (low + high) // 2
-            mid1 = len(nums1) + len(nums2) - mid2
-
-            L2 = nums2[(mid2 - 1) // 2] if mid2 != 0 else float('-inf')
-            R2 = nums2[mid2 // 2] if mid2 != 2*len(nums2) else float('inf')
-            L1 = nums1[(mid1 - 1) // 2] if mid1 != 0 else float('-inf')
-            R1 = nums1[mid1 // 2] if mid1 != 2*len(nums1) else float('inf')
-
-            if L2 > R1:
-                high = mid2 - 1
-            elif L1 > R2:
-                low = mid2 + 1
-            else:
-                return (max(L1, L2) + min(R1, R2)) / 2.0
-
-class MyTestClass(unittest.TestCase):
-    def test_1(self):
-        solution = Solution()
-        nums1 = [1]
-        nums2 = [7,11,18,19,21,25]
-        actual = solution.findMedianSortedArrays(nums1, nums2)
-        expected = 11
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        solution = Solution()
-        nums1 = [1,2,3,4]
-        nums2 = [5,6,7,8]
-        actual = solution.findMedianSortedArrays(nums1, nums2)
-        expected = 11
+        expected = 4.5
         self.assertEqual(expected, actual)
     def test_3(self):
         solution = Solution()
