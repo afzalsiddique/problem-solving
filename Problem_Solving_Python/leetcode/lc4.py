@@ -60,3 +60,10 @@ class MyTestClass(unittest.TestCase):
         actual = solution.findMedianSortedArrays(nums1, nums2)
         expected = 11
         self.assertEqual(expected, actual)
+    def test_4(self):
+        solution = Solution()
+        nums1 = [0,0]
+        nums2 = [0,0]
+        actual = solution.findMedianSortedArrays(nums1, nums2)
+        expected = 0.0
+        self.assertEqual(expected, actual)

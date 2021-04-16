@@ -14,9 +14,15 @@ class BSTIterator:
         self.st = []
         self.put_left(root)
     def put_left(self, root:TreeNode):
-        if not root:return None
+        if not root:return
         self.st.append(root)
         self.put_left(root.left)
+
+    # iterative
+    # def put_left(self,root:TreeNode):
+    #     while root:
+    #         self.st.append(root)
+    #         root = root.left
 
     def next(self) -> int:
         nxt = self.st.pop()

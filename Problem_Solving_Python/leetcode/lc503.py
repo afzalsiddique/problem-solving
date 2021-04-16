@@ -1,6 +1,7 @@
 import unittest
 from typing import List
-
+# impossibilities
+# 1. using a dictionary (key,value) = (current element, next greater element). because there might be duplicates values
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
         result,stack = [-1]*len(nums),[]

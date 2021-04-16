@@ -34,8 +34,7 @@ class Solution:
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        sol = Solution()
-        actual = sol.largestRectangleArea([2,1,5,6,2,3])
+        actual = Solution().largestRectangleArea([2,1,5,6,2,3])
         expected = 10
         self.assertEqual(expected, actual)
 

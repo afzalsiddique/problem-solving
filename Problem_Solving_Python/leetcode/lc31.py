@@ -4,6 +4,34 @@ from typing import List
 
 
 class Solution:
+    # all are same
+    def nextPermutation__(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # 1. Find the largest index k such that nums[k] < nums[k + 1].If no such index exists, just reverse nums and done.
+        # 2. Find the largest index l > k such that  nums[l]>nums[k]
+        # 3. Swap nums[k] and nums[l].
+        # 4. Reverse the sub-array nums[k + 1:].
+        n = len(nums)
+        found=None
+        for k in reversed(range(n)):
+            if k==n-1:continue
+            if nums[k]<nums[k+1]:
+                found=True
+                break
+        if not found:
+            nums.reverse()
+            return
+        for l in reversed(range(n)):
+            if nums[l]>nums[k]:
+                nums[l],nums[k]=nums[k],nums[l]
+                break
+        left,right=k+1,n-1
+        while left<right:
+            nums[left],nums[right]=nums[right],nums[left]
+            left+=1
+            right-=1
     def nextPermutation(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.

@@ -5,25 +5,20 @@ import unittest
 
 class Solution:
     def minCut(self, s: str) -> int:
-        dp = {}
-        def palindrome(s:str):
-            return s==s[::-1]
+        di={}
+        def palindrome(s):
+            return True if s==s[::-1] else False
         def helper(s:str):
-            n = len(s)
-            if n==0: return 0
-            if n==1:return 0
-            if n==2:
-                if s[0]==s[1]:return 0
-                else:return 1
-            if s in dp:return dp[s]
             if palindrome(s):return 0
+            if s in di:return di[s]
             minn = float('inf')
-            for i in range(1,len(s)+1):
-                first,second = s[:i], s[i:]
+            for i in range(1,len(s)):
+                first = s[:i]
                 if palindrome(first):
-                    minn = min(minn,helper(second))
-            dp[s] = 1+minn
-            return dp[s]
+                    minn =min(minn,helper(s[i:]))
+            di[s] = 1+minn
+            return di[s]
+
         return helper(s)
 
 

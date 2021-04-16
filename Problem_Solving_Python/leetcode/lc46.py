@@ -4,7 +4,7 @@ from typing import List
 
 class Solution:
     def permute(self, nums):
-        # approach 1
+        # backtracking 1
         res, path = [], []
 
         def dfs(nums):
@@ -18,7 +18,7 @@ class Solution:
         dfs(nums)
         return res
 
-        # approach 2
+        # backtracking 2
         res = []
 
         def dfs(nums, path):
@@ -29,6 +29,8 @@ class Solution:
 
         dfs(nums, [])
         return res
+
+# https://leetcode.com/problems/permutations/discuss/18462/Share-my-three-different-solutions
 
 class MyTestCase(unittest.TestCase):
 

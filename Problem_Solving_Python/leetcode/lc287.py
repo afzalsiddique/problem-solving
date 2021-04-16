@@ -7,23 +7,25 @@ from typing import List
 class Solution:
     # this will not work if array is in the range [0,n] (inclusive). It has to be [1,n]
     # floyd cycle detection by changing the input array
-    def findDuplicate(self, nums: List[int]) -> int:
-        p_slow, p_fast = nums[0], nums[0]
+    def findDuplicate1(self, nums: List[int]) -> int:
+        slow, fast = nums[0], nums[0]
         while True:
-            p_slow = nums[p_slow]
-            p_fast = nums[nums[p_fast]]
-            if p_slow == p_fast:
+            slow = nums[slow]
+            fast = nums[fast]
+            fast = nums[fast]
+            if slow == fast:
                 break
-        p_fast = nums[0]
-        while p_slow!=p_fast:
-            p_slow = nums[p_slow]
-            p_fast = nums[p_fast]
-        return p_slow
+        fast = nums[0]
+        while slow!=fast:
+            slow = nums[slow]
+            fast = nums[fast]
+        return slow
 
     # this will work even if the array contains 0
-    def findDuplicate2(self, nums: List[int]) -> int:
+    def findDuplicate(self, nums: List[int]) -> int:
         for i in range(len(nums)):
-            idx = abs(nums[i])-1
+            idx = abs(nums[i])-1 # will work even if the array contains 0
+            # idx = abs(nums[i]) # will not work if the array contains 0
             if nums[idx]<0:
                 return abs(nums[i])
             else:

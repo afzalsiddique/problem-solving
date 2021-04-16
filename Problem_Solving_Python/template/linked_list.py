@@ -14,7 +14,22 @@ class ListNode:
         return str(self)==str(other)
 
 
-def make_linked_list(li:List) -> ListNode:
+def make_linked_list(li,i=0):
+    if i==len(li)-1:return ListNode(li[i])
+    cur = ListNode(li[i])
+    cur.next = make_linked_list(li,i+1)
+    return cur
+def make_linked_list2(nums):
+    """
+    given a list it creates a linked list and returns the head of the linked list
+    """
+    if not nums:return None
+    if len(nums)==1:return ListNode(nums[0])
+    cur = ListNode(nums[0])
+    nxt = make_linked_list(nums[1:])
+    cur.next = nxt
+    return cur
+def make_linked_list3(li:List) -> ListNode:
     """
     given a list the function creates a linked list and returns the head of the linked list
     """
@@ -34,6 +49,6 @@ def make_linked_list(li:List) -> ListNode:
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        head1 = make_linked_list([1,2,3,4,5])
-        head2 = make_linked_list([1,2,3,4,5])
+        head1 = make_linked_list2([1, 2, 3, 4, 5])
+        head2 = make_linked_list2([1, 2, 3, 4, 5])
         self.assertEqual(head1, head2)

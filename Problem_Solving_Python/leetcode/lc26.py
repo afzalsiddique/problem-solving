@@ -12,6 +12,18 @@ class Solution:
                 j+=1
         return j+1
 
+    def removeDuplicates2(self, nums: List[int]) -> int:
+        n=len(nums)
+        if n==0 or n==1: return n
+        l,r=0,0
+        while r<n:
+            if nums[l]==nums[r]:
+                r+=1
+                continue
+            nums[l+1]=nums[r]
+            l+=1
+            r+=1
+        return l+1
 
 
 class MyTestCase(unittest.TestCase):

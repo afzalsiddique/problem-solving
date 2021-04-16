@@ -6,8 +6,29 @@ from typing import List
 
 # https://www.youtube.com/watch?v=cJayBq38VYw
 class Solution:
-    ## priority queue
+    # constant space
     def trap(self, height: List[int]) -> int:
+        n=len(height)
+        l,r=0,n-1
+        ans=0
+        l_max,r_max=0,0
+        while l<=r:
+            if l_max<r_max:
+                if l_max<height[l]:
+                    l_max=height[l]
+                else:
+                    ans+=l_max-height[l]
+                l+=1
+            else:
+                if r_max<height[r]:
+                    r_max=height[r]
+                else:
+                    ans+=r_max-height[r]
+                r-=1
+        return ans
+
+    ## priority queue
+    def trap1(self, height: List[int]) -> int:
         n =len(height)
         if n==0 or n==1 or n==2:
             return 0
@@ -28,27 +49,6 @@ class Solution:
                 heappush(pq,(height[idx-1],idx-1))
                 vis[idx-1]=True
         return res
-
-    # constant space
-    def trap2(self, height: List[int]) -> int:
-        n=len(height)
-        l,r=0,n-1
-        ans=0
-        l_max,r_max=0,0
-        while l<=r:
-            if l_max<=r_max:
-                if l_max<=height[l]:
-                    l_max=height[l]
-                else:
-                    ans+=l_max-height[l]
-                l+=1
-            else:
-                if r_max<=height[r]:
-                    r_max=height[r]
-                else:
-                    ans+=r_max-height[r]
-                r-=1
-        return ans
 
     # linear space
     def trap3(self, height: List[int]) -> int:

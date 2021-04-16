@@ -20,6 +20,15 @@ class Solution:
         return True
 
 
+class Solution2:
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        def helper(root1:TreeNode, root2:TreeNode):
+            if not root1 and not root2:return True
+            if not root1 or not root2:return False
+            if root1.val!=root2.val:return False
+            return helper(root1.left,root2.left) and helper(root1.right,root2.right)
+
+        return helper(p,q)
 
 l1 = TreeNode(3)
 r1 = TreeNode(4)

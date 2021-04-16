@@ -10,6 +10,19 @@ class ListNode:
     def __repr__(self):
         return str(self.val) + "->" + str(self.next)
 class Solution:
+    def removeNthFromEnd_(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(0, head)
+        fast = slow = dummy
+        # Advances fast pointer so that the gap between fast and slow is n nodes apart
+        while n:
+            fast = fast.next
+            n-=1
+        # move the first per maintaining the gap
+        while fast.next:
+            slow = slow.next
+            fast= fast.next
+        slow.next = slow.next.next
+        return dummy.next
     # one pass
     def removeNthFromEnd(self, head, n):
         fast = slow = head
@@ -18,7 +31,7 @@ class Solution:
             fast = fast.next
         if not fast:
             return head.next
-        # move the first pointer maintaing the gap
+        # move the first pointer maintaining the gap
         while fast.next:
             fast = fast.next
             slow = slow.next

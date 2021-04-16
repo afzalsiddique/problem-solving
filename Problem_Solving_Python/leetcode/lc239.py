@@ -13,12 +13,12 @@ class Solution:
         res = []
         dq = deque()  # store index
         for i in range(len(nums)):
-            if dq and dq[0]<i-k+1:  # out of the window
+            if dq and dq[0]<=i-k:  # out of the window
                 dq.popleft()
-            while dq and nums[dq[-1]]<nums[i]:  # remove impossible candidate
+            while dq and nums[dq[-1]]<=nums[i]:  # remove impossible candidate
                 dq.pop()
             dq.append(i)
-            if i>k-2:
+            if i>=k-1:
                 res.append(nums[dq[0]])
         return res
 

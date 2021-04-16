@@ -5,10 +5,8 @@ import unittest
 from collections import deque
 from typing import List
 
-
 # without destroying the input
-class Solution:
-
+class Solution1:
     def get_grid_state(self, grid):
 
         fresh, rotten = set(), set()
@@ -51,33 +49,54 @@ class Solution:
                         fresh.remove(next_pos)
 
         return -1 if len(fresh) != 0 else mins_to_rotten
-    def orangesRotting2(self, grid: List[List[int]]) -> int:
+
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
         m,n = len(grid), len(grid[0])
-        q = deque()
-
-        for row in range(m):
-            for col in range(n):
-                if grid[row][col]==2:
-                    q.append((row,col))
-
-
-        fresh = any([grid[i][j]==1 for i in range(m) for j in range(n)])
-        if not q and not fresh:return 0
+        FRESH,ROTTEN,INVISIBLE = 1,2,0 # Fresh apple gets rotten, rotten apple turns invisible
+        fresh_apples = any([grid[i][j]==FRESH for i in range(m) for j in range(n)])
+        if not fresh_apples:return 0
+        q=deque([(x,y) for x in range(m) for y in range(n) if grid[x][y]==2]) # queue only contains rotten apples
         day = -1
         while q:
+            day+=1
             for _ in range(len(q)):
-                r,c=q.popleft()
-                if grid[r][c]!=2:continue
-                grid[r][c]=0
+                r,c=q.popleft() # queue only pops out rotten apple
+                grid[r][c]=INVISIBLE # rotten apple turns invisible
                 for (dr,dc) in [(1,0),(-1,0),(0,1),(0,-1)]:
                     i = r+dr
                     j = c + dc
-                    if i < m and j < n and i>=0 and j>=0 and grid[i][j]==1:
-                        grid[i][j]=2
+                    if i < m and j < n and i>=0 and j>=0 and grid[i][j]==FRESH:
+                        grid[i][j]=ROTTEN # fresh apple gets rotten
                         q.append((i,j))
-            day+=1
-        fresh = any([grid[i][j]==1 for i in range(m) for j in range(n)]) # fresh apple remains
-        return day if not fresh else -1
+        fresh_apples = any([grid[i][j]==FRESH for i in range(m) for j in range(n)]) # fresh apple remains
+        return day if not fresh_apples else -1
+
+class Solution3:
+    # uses too much memory and not readable.
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        m,n=len(grid),len(grid[0])
+        fresh = any(grid[x][y]==1 for x in range(m) for y in range(n))
+        if not fresh:return 0
+        q=deque([(x,y) for x in range(m) for y in range(n) if grid[x][y]==2])
+        rotten = set(q)
+        cnt=-1
+        while q:
+            cnt+=1
+            sett = set()
+            for _ in range(len(q)):
+                x,y=q.popleft()
+                grid[x][y]=2
+                for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    i,j=x+dx,y+dy
+                    if i>=m or j>=n or i<0 or j<0:continue
+                    if grid[i][j]==2 or grid[i][j]==0:continue
+                    if (i,j) in rotten:continue
+                    sett.add((i,j))
+            rotten.update(sett)
+            q = deque(sett)
+        fresh = any(grid[i][j]==1 for i in range(m) for j in range(n))
+        return cnt if not fresh else -1
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):
@@ -99,4 +118,9 @@ class MyTestCase(unittest.TestCase):
         grid = [[2,2],[1,1],[0,0],[2,0]]
         actual = Solution().orangesRotting(grid)
         expected = 1
+        self.assertEqual(expected,actual)
+    def test_5(self):
+        grid = [[0]]
+        actual = Solution().orangesRotting(grid)
+        expected = 0
         self.assertEqual(expected,actual)

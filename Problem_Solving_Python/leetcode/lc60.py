@@ -1,6 +1,21 @@
 import unittest
 from typing import List
 class Solution:
+    def getPermutation(self, n: int, k: int) -> str:
+        res = []
+        def fact(n):
+            return n*fact(n-1) if n!=0 else 1
+        k-=1
+        nums=[x for x in range(1,n+1)]
+        while len(nums)!=0:
+            f = fact(len(nums)-1)
+            idx = k//f
+            res.append(nums[idx])
+            nums.pop(idx)
+            k=k%f
+        res = map(str,res)
+        return ''.join(res)
+class Solution2:
     def getPermutation(self, n: int, k: int):
         def factorial(x):
             return x*factorial(x-1) if x!=0 else 1

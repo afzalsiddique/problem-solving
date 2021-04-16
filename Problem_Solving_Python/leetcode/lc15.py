@@ -3,6 +3,50 @@ import unittest
 from bisect import bisect_left
 from typing import List
 
+# two pointer
+# time:n^2 space:1
+class Solution2:
+    def threeSum(self, nums):
+        res = []
+        nums.sort()
+        for i in range(len(nums) - 2):
+            # optimization
+            if nums[i] > 0:
+                break  # nums sorted, impossible for nums[i]+nums[l]+nums[r] == 0
+            if i > 0 and nums[i] == nums[i - 1]: continue # prevent duplicates in result
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                s = nums[i] + nums[l] + nums[r]
+                if s < 0:
+                    l += 1
+                elif s > 0:
+                    r -= 1
+                else:
+                    res.append((nums[i], nums[l], nums[r]))
+                    while l < r and nums[l] == nums[l + 1]: l += 1 # skip duplicates
+                    while l < r and nums[r] == nums[r - 1]: r -= 1
+                    l += 1
+                    r -= 1
+        return res
+
+
+# time:n^2 space: n
+# based on two sum using sett
+class Solution3:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res =set()
+        nums.sort()
+        for i,a in enumerate(nums[:-2]):
+            if i>0 and nums[i]==nums[i-1]:continue
+            sett=set()
+            for b in nums[i+1:]:
+                if b in sett:
+                    res.add((a,b,0-a-b))
+                else:
+                    sett.add(0-a-b)
+        return list(map(list,res))
+
+# n^2*log n
 class Solution:
     def threeSum(self, nums):
         nums.sort()
@@ -16,34 +60,24 @@ class Solution:
                 if idx!=n and nums[idx]==target:
                     res.append([nums[i],nums[j],target])
         return res
-
-class Solution2:
-    def threeSum(self, nums):
+## TLE
+class Solution4:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
         res = []
-        nums.sort()
-        for i in range(len(nums) - 2):
-            if nums[i] > 0:
-                break  # nums sorted, impossible for nums[i]+nums[l]+nums[r] == 0
-            if i > 0 and nums[i] == nums[i - 1]:
-                continue # prevent duplicates in result
-            l, r = i + 1, len(nums) - 1
-            while l < r:
-                s = nums[i] + nums[l] + nums[r]
-                if s < 0:
-                    l += 1
-                elif s > 0:
-                    r -= 1
+        def two_sum(temp_nums, target):
+            sett=set()
+            for num in temp_nums:
+                if num in sett:
+                    temp=sorted((num,target-num,0-target))
+                    if temp in res:continue
+                    res.append(temp)
                 else:
-                    res.append((nums[i], nums[l], nums[r]))
-                    while l < r and nums[l] == nums[l + 1]:
-                        l += 1
-                    while l < r and nums[r] == nums[r - 1]:
-                        r -= 1
-                    l += 1
-                    r -= 1
-        return res
+                    sett.add(target-num)
 
-
+        for i in range(len(nums)-1):
+            temp_nums=nums[:i]+nums[i+1:]
+            two_sum(temp_nums,0-nums[i])
+        return list(map(list,res))
 
 class MyTestCase(unittest.TestCase):
 
@@ -53,50 +87,7 @@ class MyTestCase(unittest.TestCase):
         expected = [[-1,-1,2],[-1,0,1]]
         self.assertEqual(expected, actual)
 
-    def test_2(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        actual = sol.threeSum(0)
-        expected = 0
-        self.assertEqual(expected, actual)
+    def test1(self):
+        self.assertEqual([[-1,0,1]],Solution().threeSum([-1,0,1,-1,0,1]))
+    def test2(self):
+        self.assertEqual([[0,0,0]],Solution().threeSum([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))

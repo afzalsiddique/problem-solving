@@ -22,9 +22,9 @@ class Solution3:
             def __init__(self, node):
                 self.node = node
             def __lt__(self, other):
-                return self.node.val < other.node.val
+                return self.node.data < other.Node.data
             def __repr__(self):
-                return str(self.node.val) + "->" + str(self.node.next)
+                return str(self.node.data) + "->" + str(self.node.next)
 
         dummy = ListNode(0)
         cur = dummy
@@ -33,7 +33,7 @@ class Solution3:
             if head:
                 heappush(pq, Wrapper(head))
         while pq:
-            node = heappop(pq).node
+            node = heappop(pq).Node
             cur.next = node
             cur=cur.next
             if node:
@@ -49,7 +49,7 @@ class Solution:
             def __init__(self, node):
                 self.node = node
             def __lt__(self, other):
-                return self.node.val < other.node.val
+                return self.node.data < other.Node.data
 
         dummy = cur = ListNode(0)
         q = PriorityQueue()
@@ -57,7 +57,7 @@ class Solution:
             if l:
                 q.put(Wrapper(l))
         while not q.empty():
-            node = q.get().node
+            node = q.get().Node
             cur.next = node
             cur = cur.next
             node = node.next

@@ -45,6 +45,16 @@ class Solution3:
         head.next = None # to avoid cycle
         return prev
 
+def make_linked_list2(nums):
+    """
+    given a list it creates a linked list and returns the head of the linked list
+    """
+    if not nums:return None
+    if len(nums)==1:return ListNode(nums[0])
+    cur = ListNode(nums[0])
+    nxt = make_linked_list2(nums[1:])
+    cur.next = nxt
+    return cur
 
 def make_linked_list(li:List) -> ListNode:
     """

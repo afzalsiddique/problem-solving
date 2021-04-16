@@ -36,7 +36,7 @@ class Solution:
 
         return True
 
-# recursive
+# recursive1
 class Solution2:
     def isSameTree(self, p, q):
         # p and q are both None
@@ -47,8 +47,8 @@ class Solution2:
             return False
         if p.value != q.value:
             return False
-        return self.isSameTree(p.right, q.right) and \
-               self.isSameTree(p.left, q.left)
+        return self.isSameTree(p.right, q.right) and self.isSameTree(p.left, q.left)
+
 
 # my code. pretty ugly:(
 class Solution3:

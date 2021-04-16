@@ -24,6 +24,37 @@ class Solution:
             result = word + " " + result
         result = result[:-1]
         return result
+
+class Solution2:
+    def reverseWords(self, s: str) -> str:
+        for i in range(len(s)):
+            if s[i]!=' ':
+                s=s[i:]
+                break
+        for i in reversed(range(len(s))):
+            if s[i]!=' ':
+                s=s[:i+1]
+                break
+        dummy_space = ' '
+        s=s[::-1] + dummy_space
+        n=len(s)
+        res=[]
+        left,right=0,0
+        while right<=n-1:
+            if s[right]==' ':
+                temp=[]
+                while left<right:
+                    temp.append(s[left])
+                    left+=1
+                res.append(temp[::-1])
+                while right<=n-1 and s[right]==' ':
+                    right+=1
+                left=right
+            right+=1
+        new_res = []
+        for x in res:
+            new_res.append(''.join(x))
+        return ' '.join(new_res)
 class Case(unittest.TestCase):
     def test_1(self):
         s = "  bob  loves  alice  "

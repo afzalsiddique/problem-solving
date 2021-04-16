@@ -1,4 +1,6 @@
 # Definition for a binary tree node.
+import unittest
+from collections import deque
 from typing import List
 
 
@@ -44,9 +46,35 @@ class Solution:
             cur, visited = stack.pop()  # the last element
             if cur:
                 if visited:
-                    res.append(cur.value)
+                    res.append(cur.val)
                 else:  # preorder: root -> left -> right
                     stack.append((cur.right, False))
                     stack.append((cur.left, False))
                     stack.append((cur, True))
         return res
+
+def deserialize(data):
+    sep,en = ',','null'
+    data = data.split(sep)
+    l = len(data)
+    if l<=1:return None
+    root = TreeNode(int(data[0]))
+    q = deque()
+    q.append(root)
+    i=1
+    while i<l and q:
+
+        curr = q.popleft()
+        if data[i]!=en:
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
+        i+=1
+        if i<l and data[i]!=en:
+            curr.right = TreeNode(int(data[i]))
+            q.append(curr.right)
+        i+=1
+
+    return root
+class tester(unittest.TestCase):
+    def test1(self):
+        self.assertEqual([1,2,3],Solution().preorderTraversal_(deserialize('1,null,2,3')))

@@ -5,18 +5,18 @@ import unittest
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        di,q={'(':')','{':'}','[':']'},[]
+        st = []
+        di = {'{':'}','[':']','(':')'}
         for c in s:
-            if c in di:
-                q.append(c)
-            else:
-                if not q:return False
-                top = q.pop()
-                if di[top]==c:continue
-                return False
-        if not q:
-            return True
-        return False
+            if c not in di: # if closing
+                if not st:return False # closing coming before opening
+                if di[st[-1]] != c:return False # closing coming with corresponding opening
+                st.pop()
+            else: # if opening
+                st.append(c)
+        if st:
+            return False
+        return True
 
 class MyTestClass(unittest.TestCase):
     def test_1(self):

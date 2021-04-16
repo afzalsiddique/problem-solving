@@ -16,7 +16,7 @@ class Solution:
             root = stack.pop()
             k -= 1
             if not k:
-                return root.val
+                return root.data
             root = root.right
 
 class Solution2:
@@ -28,7 +28,7 @@ class Solution2:
             helper(node.left)
             self.k -= 1
             if self.k == 0:
-                self.res = node.val
+                self.res = node.data
                 return
             helper(node.right)
 
@@ -58,7 +58,8 @@ class Solution3:
         find(root)
         return self.value
 
-
+# Follow up question
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63743/Java-divide-and-conquer-solution-considering-augmenting-tree-structure-for-the-follow-up
 
 n3 = TreeNode(3)
 n5 = TreeNode(5)

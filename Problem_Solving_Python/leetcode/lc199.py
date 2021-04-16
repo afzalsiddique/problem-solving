@@ -39,7 +39,7 @@ class Solution2:
                 node = q.popleft()
                 if node.left:q.append(node.left)
                 if node.right:q.append(node.right)
-            res.append(node.val)
+            res.append(node.data)
         return res
 
 
@@ -52,9 +52,9 @@ class Solution3:
         while q:
             node, level = q.popleft()
             if q and q[0][1]==level+1: # the last node in the level
-                res.append(node.val)
+                res.append(node.data)
             if not q: # only one node in the level
-                res.append(node.val)
+                res.append(node.data)
             if node.left:
                 q.append((node.left,level+1))
             if node.right:

@@ -34,6 +34,15 @@ class Solution:
         print(shoots)
         return cnt
 
+    def findMinArrowShots3(self, points: List[List[int]]) -> int:
+        points.sort(key=lambda x:x[1])
+        arrow ,shoot= 0,-1
+        for start, end in points:
+            if start<=shoot<=end: continue
+            shoot = end
+            arrow+=1
+        return arrow
+
 
 
 class MyTestCase(unittest.TestCase):

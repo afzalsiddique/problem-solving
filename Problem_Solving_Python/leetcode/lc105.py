@@ -12,23 +12,25 @@ class TreeNode:
 # https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/565412/Detailed-Python-Walkthrough-from-an-O(n2)-solution-to-O(n).-Faster-than-99.77
 class Solution:
     def __init__(self):
-        self.pre_idx=0
+        self.pre_i=0
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
-        di = {inorder[i]:i for i in range(len(inorder))} # di->(value, index)
+        idx ={}
+        for i,val in enumerate(inorder):
+            idx[val]=i
 
-        def create(in_lo, in_hi):
-            if self.pre_idx>=len(preorder) or in_lo>in_hi:
-                return None
+        def helper(left,right):
+            if left>right:return
 
-            node = TreeNode(preorder[self.pre_idx])
-            self.pre_idx+=1
-            pos = di[node.val]
-            node.left = create(in_lo, pos - 1)
-            node.right = create(pos + 1, in_hi)
+            in_i = idx[preorder[self.pre_i]]
+            node = TreeNode(preorder[self.pre_i])
+            self.pre_i+=1
+
+            node.left=helper(left,in_i-1)
+            node.right=helper(in_i+1,right)
             return node
 
+        return helper(0,len(preorder)-1)
 
-        return create(0,len(inorder)-1)
 
 ## time: n^^2
 class Solution2:

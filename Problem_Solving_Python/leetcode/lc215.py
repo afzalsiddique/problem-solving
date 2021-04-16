@@ -1,6 +1,7 @@
 # https://leetcode.com/problems/kth-largest-element-in-an-array/discuss/762174/4-python-solutions-with-step-by-step-optimization-plus-time-and-space-analysis
 import unittest
 from typing import List
+from random import uniform
 # quick select average O(n) time and O(1) space
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
@@ -42,7 +43,27 @@ class Solution4:
             return equal[0]
         else:
             return self.findKthLargest(left, k - len(right) - len(equal))
-
+class Solution6:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # transform into the k smallest
+        k = len(nums)-k
+        # solve kth smallest in O(n)
+        def quick_select(nums, k):
+            # get a random pivot
+            pivot = int(uniform(0, len(nums)))
+            # smaller than pivot -> left, bigger -> right
+            left, right = [], []
+            for i, e in enumerate(nums):
+                if e <= nums[pivot] and i != pivot: left.append(e)
+                if e > nums[pivot]: right.append(e)
+            # match with k, we are done
+            if k == len(left): return nums[pivot]
+            # keep exploring
+            if k < len(left):
+                return quick_select(left, k)
+            else:
+                return quick_select(right, k-len(left)-1)
+        return quick_select(nums, k)
 # quick select. but worst case is n^2
 class Solution3:
     def findKthLargest(self, nums, k):
@@ -57,7 +78,7 @@ class Solution3:
         def partition(left, right):
             pivot = nums[right] # pick the last one as pivot
             i = left
-            for j in range(left, right): # left to right -1
+            for j in range(left, right): # left to right -1. nums[right] is pivot so exclude that.
                 if nums[j] > pivot: # the larger elements are in left side
                     nums[j], nums[i] = nums[i], nums[j]
                     i += 1
@@ -105,3 +126,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(5, Solution().findKthLargest([3,2,1,5,6,4], k = 2))
     def test_2(self):
         self.assertEqual(4, Solution().findKthLargest([3,2,3,1,2,4,5,5,6], k = 4))
+    def test_3(self):
+        self.assertEqual(5, Solution().findKthLargest([3,2,1,5,6,4], k = 2))

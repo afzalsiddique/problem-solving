@@ -12,13 +12,13 @@ class TreeNode:
         return str(self.val)
 
 
-class Codec3:
+class Codec:
 
     def __init__(self):
         self.en = '#'
         self.sep = ','
 
-    def serialize(self, root): #   "1,2,3,#,#,4,5" (no # at the end)
+    def serialize(self, root):
         if not root: return ''
 
         q = deque()
@@ -35,7 +35,7 @@ class Codec3:
 
         return self.sep.join(res)
 
-    def serialize2(self, root): #   "1,2,3,#,#,4,5,#,#,#,#" (# at the end)
+    def serialize2(self, root):
         if not root:return ""
         q = deque()
         q.append(root)
@@ -47,8 +47,8 @@ class Codec3:
                 q.append(node.left)
                 q.append(node.right)
             else:
-                li.append("#")
-        return ",".join(li)
+                li.append(self.en)
+        return self.sep.join(li)
 
     def deserialize(self, data):
         data = data.split(self.sep)
@@ -73,12 +73,48 @@ class Codec3:
         return root
 
 
+# for testing in other problmes
+# def deserialize(data):
+#     sep,en = ',','null'
+#     data = data.split(sep)
+#     l = len(data)
+#     if l<=1:return None
+#     root = TreeNode(int(data[0]))
+#     q = deque()
+#     q.append(root)
+#     i=1
+#     while i<l and q:
+#
+#         curr = q.popleft()
+#         if data[i]!=en:
+#             curr.left = TreeNode(int(data[i]))
+#             q.append(curr.left)
+#         i+=1
+#         if i<l and data[i]!=en:
+#             curr.right = TreeNode(int(data[i]))
+#             q.append(curr.right)
+#         i+=1
+
+# return root
+
 class mytestcase(unittest.TestCase):
-    def test_1(self):
+    def test1_1(self):
+        root = Codec().deserialize("1,#,2,#,3,#,4,#,5")
+        self.assertEqual("1,#,2,#,3,#,4,#,5,#,#",Codec().serialize(root))
+    def test2_1(self):
+        root = Codec().deserialize("1,2,3")
+        self.assertEqual("1,2,3,#,#,#,#",Codec().serialize(root))
+    def test1_2(self):
+        root = Codec().deserialize("1,#,2,#,3,#,4,#,5")
+        self.assertEqual("1,#,2,#,3,#,4,#,5,#,#",Codec().serialize2(root))
+    def test2_2(self):
+        root = Codec().deserialize("1,2,3")
+        self.assertEqual("1,2,3,#,#,#,#",Codec().serialize2(root))
+    def test5(self):
         n5 = TreeNode(5)
         n4 = TreeNode(4)
         n3 = TreeNode(3, n4,n5)
         n2 = TreeNode(2)
         root = TreeNode(1,n2,n3)
-        a = Codec3().serialize(root)
+        a = Codec().serialize(root)
         self.assertEqual("1,2,3,#,#,4,5",a)

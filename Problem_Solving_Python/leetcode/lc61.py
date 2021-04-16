@@ -63,25 +63,22 @@ class Solution:
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        sol = Solution()
         li = [1,2,3,4,5]
         head = make_linked_list(li)
-        actual = sol.rotateRight(head, 2)
-        expected = make_linked_list([4,5,1,2,3])
+        actual = str(Solution().rotateRight(head, 2))
+        expected = str(make_linked_list([4,5,1,2,3]))
         self.assertEqual(expected, actual)
 
     def test_2(self):
-        sol = Solution()
         li = [0,1,2]
         head = make_linked_list(li)
-        actual = sol.rotateRight(head, 4)
-        expected = make_linked_list([2,0,1])
+        actual = str(Solution().rotateRight(head, 4))
+        expected = str(make_linked_list([2,0,1]))
         self.assertEqual(expected, actual)
 
     def test_3(self):
-        sol = Solution()
         li = [1,2]
         head = make_linked_list(li)
-        actual = sol.rotateRight(head, 4)
-        expected = make_linked_list([1,2])
+        actual = str(Solution().rotateRight(head, 4))
+        expected = str(make_linked_list([1,2]))
         self.assertEqual(expected, actual)

@@ -15,17 +15,18 @@ class Solution:
 
         ans, n = 0, len(p)
         seen = set()
-        vertices = [(0, (0, 0))] # dist, (dummy, nextnode)
+        vertices = [(0, 0, 0)] # (dist, dummy, nextnode)
 
         while len(seen) < n:
             # print(vertices, seen)
-            dist, (u, v) = heapq.heappop(vertices)
+            dist, u, v= heapq.heappop(vertices)
             if v in seen: continue
             ans += dist
             seen.add(v)
-            for j in range(n):
-                if j not in seen and j!=v:
-                    heapq.heappush(vertices, (manhattan(p[j], p[v]), (v, j)))
+            for neigh in range(n):
+                if neigh not in seen and neigh!=v:
+                    man_dist = manhattan(p[neigh], p[v])
+                    heapq.heappush(vertices, (man_dist, v, neigh))
         return ans
 
 #### Union find #######
@@ -113,28 +114,4 @@ class MyTestCase(unittest.TestCase):
         sol = Solution()
         expected = 0
         actual = sol.minCostConnectPoints([[0,0]])
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minCostConnectPoints(0)
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minCostConnectPoints(0)
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minCostConnectPoints(0)
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minCostConnectPoints(0)
         self.assertEqual(expected, actual)

@@ -35,6 +35,30 @@ class Solution:
                     dp[left][right] = max(dp[left][right-1], dp[left+1][right])
         return dp[0][n-1]
 
+    # to find actual palindrome (string)
+    def longestPalindromeSubseq__(self, s: str) -> int:
+        dp = {}
+        def helper(s:str):
+            n=len(s)
+            if n==0:return ""
+            if n==1:return s
+            if n==2:
+                if s[0]==s[1]:return s
+                else:return s[0]
+            if s in dp:return dp[s]
+            if s[0]==s[-1]:
+                return s[0] + helper(s[1:-1]) + s[-1]
+            else:
+                s1 = helper(s[:-1])
+                s2 = helper(s[1:])
+                if len(s1)>len(s2):
+                    dp[s] = s1
+                    return s1
+                dp[s] = s2
+                return s2
+
+        return len(helper(s))
+
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):

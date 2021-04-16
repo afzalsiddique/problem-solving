@@ -23,3 +23,16 @@ class Solution:
                 dq.append(curr.left)
                 dq.append(curr.right)
         return root
+class Solution2:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:return None
+        q = deque([root])
+        while q:
+            cur = q.popleft()
+            if cur.right and cur.left:
+                cur.left.next = cur.right
+                q.append(cur.left)
+                q.append(cur.right)
+            if cur.right and cur.next:
+                cur.right.next=cur.next.left if cur.next.left else cur.next.right
+        return root

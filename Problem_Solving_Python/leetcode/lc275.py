@@ -19,7 +19,14 @@ class Solution:
         return n-left # After iteration, it is guaranteed that left is the one we need to find (i.e. len-left papars have at least len-left citations)
 
 class MyTestCase(unittest.TestCase):
-
+    def test_explain1(self):
+        self.assertEqual(3,Solution().hIndex([0,1,2,3,7,8]))
+    def test_explain2(self):
+        self.assertEqual(4,Solution().hIndex([1,5,6,7,8]))
+    def test_explain3(self):
+        self.assertEqual(4,Solution().hIndex([1,4,6,7,8]))
+    def test_explain4(self):
+        self.assertEqual(3,Solution().hIndex([1,3,6,7,8]))
     def test_1(self):
         sol = Solution()
         expected = 3
@@ -51,12 +58,6 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_6(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.hIndex([])
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
         sol = Solution()
         expected = 0
         actual = sol.hIndex([])

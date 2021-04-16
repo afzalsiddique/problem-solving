@@ -4,30 +4,22 @@ import unittest
 
 class Solution:
     def myAtoi(self, s: str) -> int:
-        index,total,sign,n =0,0,1,len(s)
-        MAX_VALUE,MIN_VALUE = 2147483647, -2147483648
-
-        if n==0:return 0
-
-        while index<n and s[index]==' ':
-            index+=1
-
-        if index==n:return 0
-
-        if s[index]=='+' or s[index]=='-':
-            sign = 1 if s[index]=='+' else -1
-            index+=1
-
-        while index<n:
-            digit = ord(s[index]) - ord('0')
-            if digit < 0 or digit>9:break
-
-            total = total * 10 + digit
-            index+=1
-
-            if sign == 1 and total>=MAX_VALUE:return MAX_VALUE
-            if sign == -1 and total>=MAX_VALUE+1: return MIN_VALUE
-        return total * sign
+        if len(s)==0:return 0
+        ans,INT_MAX,INT_MIN = 0,2147483647,-2147483648
+        sign = 1
+        for i in range(len(s)):
+            if s[i]!=' ':break
+        if s[i]=='+' or s[i]=='-':
+            sign = -1 if s[i]=='-' else 1
+            i+=1
+        i_copy = i
+        for i in range(i_copy,len(s)):
+            if s[i]<'0' or s[i]>'9':break
+            digit = int(s[i])
+            if ans > (INT_MAX-digit)//10:
+                return INT_MAX if sign == 1 else INT_MIN
+            ans = ans*10+digit
+        return sign * ans
 
 
 class Case(unittest.TestCase):

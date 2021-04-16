@@ -12,9 +12,34 @@ class ListNode:
         self.next = next
     def __repr__(self):
         return str(self.val)
-
+# https://www.youtube.com/watch?v=u4FWXfgS8jw&t=6m47s
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        if not headA or not headB: return
+        a,b=headA,headB
+        n1,n2=0,0
+        while a:
+            n1+=1
+            a=a.next
+        while b:
+            n2+=1
+            b=b.next
+        if n1>n2:
+            diff=n1-n2
+            a=headA
+            b=headB
+        else:
+            diff=n2-n1
+            a=headB
+            b=headA
+        while diff:
+            a=a.next
+            diff-=1
+        while a!=b:
+            a=a.next
+            b=b.next
+        return a
+    def getIntersectionNode2(self, headA: ListNode, headB: ListNode) -> ListNode:
         if not headA or not headB:return None
         a,b=headA, headB
         while a!=b:
@@ -33,6 +58,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #        b
+
 #             a
 # A:     a1 → a2 → a3
 #                    ↘
@@ -40,6 +66,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #             b
+
 #                  a
 # A:     a1 → a2 → a3
 #                    ↘
@@ -47,6 +74,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #                  b
+
 # A:     a1 → a2 → a3
 #                    ↘ a
 #                      c1 → c2 → c3 → null
@@ -64,6 +92,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #        b
+
 #                  a
 # A:          a1 → a2
 #                    ↘
@@ -71,33 +100,39 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #             b
+
 # A:          a1 → a2
 #                    ↘ a
 #                      c1 → c2 → c3 → null
 #                    ↗
 # B:     b1 → b2 → b3
 #                  b
+
 # A:          a1 → a2
 #                    ↘      a
 #                      c1 → c2 → c3 → null
 #                    ↗ b
 # B:     b1 → b2 → b3
+
 # A:          a1 → a2
 #                    ↘           a
 #                      c1 → c2 → c3 → null
 #                    ↗      b
 # B:     b1 → b2 → b3
+
 # A:          a1 → a2
 #                    ↘                a = null, then a = b1
 #                      c1 → c2 → c3 → null
 #                    ↗           b
 # B:     b1 → b2 → b3
+
 # A:          a1 → a2
 #                    ↘
 #                      c1 → c2 → c3 → null
 #                    ↗                b = null, then b = a1
 # B:     b1 → b2 → b3
 #        a
+
 #             b
 # A:          a1 → a2
 #                    ↘
@@ -105,6 +140,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #             a
+
 #                  b
 # A:          a1 → a2
 #                    ↘
@@ -112,6 +148,7 @@ class Solution:
 #                    ↗
 # B:     b1 → b2 → b3
 #                  a
+
 # A:          a1 → a2
 #                    ↘ b
 #                      c1 → c2 → c3 → null
@@ -126,14 +163,17 @@ class Solution:
 # A:     a1 → a2 → a3 → null
 # B:     b1 → b2 → b3 → null
 #        b
+
 #             a
 # A:     a1 → a2 → a3 → null
 # B:     b1 → b2 → b3 → null
 #             b
+
 #                  a
 # A:     a1 → a2 → a3 → null
 # B:     b1 → b2 → b3 → null
 #                  b
+
 #                       a = null
 # A:     a1 → a2 → a3 → null
 # B:     b1 → b2 → b3 → null
@@ -147,33 +187,41 @@ class Solution:
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #        b
+
 #             a
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #             b
+
 #                  a
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #                  b
+
 #                       a
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #                       b = null, then b = a1
+
 #        b                   a = null, then a = b1
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
+
 #             b
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #        a
+
 #                  b
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #             a
+
 #                       b
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #                  a
+
 #                            b = null
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null

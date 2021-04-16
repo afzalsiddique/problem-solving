@@ -3,6 +3,20 @@ from typing import List
 
 # Boyer Moore
 # https://www.youtube.com/watch?v=gY-I8uQrCkk
+class Solution0:
+    def majorityElement(self, nums: List[int]) -> int:
+        maj=nums[0]
+        cnt = 0
+        for num in nums:
+            if maj==num:
+                cnt+=1
+            else:
+                if cnt==0:
+                    maj=num
+                    cnt=1
+                else:
+                    cnt-=1
+        return maj
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         candidate, count = nums[0], 0

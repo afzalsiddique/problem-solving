@@ -37,6 +37,12 @@ class Solution:
             first.next=second.next
             first=second
             second=second.next
+        # this also works
+        # while second.next:
+        #     first.next=second.next
+        #     first=first.next
+        #     second.next=first.next
+        #     second=second.next
         return new_head
     # using dict
     def copyRandomList2(self, head: 'Node'):

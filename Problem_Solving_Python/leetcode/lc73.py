@@ -16,6 +16,7 @@ class Solution:
         for j in range(n):
             if matrix[0][j]==0:
                 first_row_zero=True
+                break
         for i in range(1,m):
             for j in range(1,n):
                 if matrix[i][j]==0:
@@ -23,9 +24,15 @@ class Solution:
                     matrix[i][0]=0
 
         for i in range(1,m):
-            for j in range(1,n):
-                if matrix[i][0]==0 or matrix[0][j]==0:
+            if matrix[i][0]==0:
+                for j in range(n):
                     matrix[i][j]=0
+
+        for j in range(1,n):
+            if matrix[0][j]==0:
+                for i in range(m):
+                    matrix[i][j]=0
+
         if first_row_zero:
             for j in range(n):
                 matrix[0][j]=0

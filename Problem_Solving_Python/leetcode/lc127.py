@@ -1,6 +1,7 @@
 # https://leetcode.com/problems/word-ladder/
 # https://www.youtube.com/watch?v=ZVJ3asMoZ18
 # https://leetcode.com/problems/word-ladder/discuss/40729/Compact-Python-solution
+import unittest
 from collections import deque
 from typing import List
 
@@ -31,3 +32,8 @@ class Solution:
                             q.append(temp)
                             myset.remove(temp)
         return 0
+class mycase(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(5, Solution().ladderLength(beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]))
+    def test2(self):
+        self.assertEqual(0, Solution().ladderLength(beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]))
