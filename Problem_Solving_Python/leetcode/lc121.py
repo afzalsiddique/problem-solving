@@ -3,18 +3,33 @@ from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        n = len(prices)
-        if n==1:return 0
-        cur_buy_price=prices[0]
+        n=len(prices)
+        buy,sell=float('inf'),float('-inf')
         max_profit=0
-        profit = 0
-        for i in range(1,n):
-            if prices[i]<cur_buy_price: # buy when price is less
-                cur_buy_price=prices[i]
+        for i in range(n):
+            if prices[i]<buy: # buy when price is less
+                buy=prices[i]
             else: # sell when price is higher
-                profit=prices[i]-cur_buy_price
-            max_profit=max(max_profit, profit)
+                sell=prices[i]
+                max_profit=max(max_profit,sell-buy) # update profit
         return max_profit
+
+# using range
+class Solution2:
+    def maxProfit(self, prices: List[int]) -> int:
+        def helper(lo, hi) -> int:
+            if lo>hi: return 0
+            buy,sell=float('inf'),float('-inf')
+            max_profit=0
+            for lo in range(lo,hi+1): # hi is inclusive
+                if prices[lo]<buy:
+                    buy=prices[lo]
+                else:
+                    sell=prices[lo]
+                    max_profit=max(max_profit,sell-buy)
+            return max_profit
+
+        return helper(0,len(prices)-1)
 class Solution3:
     def maxProfit(self, prices: List[int]) -> int:
         cur_buy_price = prices[0]
@@ -24,7 +39,7 @@ class Solution3:
             cur_buy_price = min(cur_buy_price, prices[i])
         return profit
 
-class Solution2:
+class Solution4:
     def maxProfit(self, prices: List[int]) -> int:
         cur_max, max_so_far = 0, 0
         for i in range(1, len(prices)):

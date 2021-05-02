@@ -127,7 +127,7 @@ class Solution3:
 
 
 
-class MyTestCase(unittest.TestCase):
+class tester(unittest.TestCase):
 
     def test_1(self):
         sol = Solution()

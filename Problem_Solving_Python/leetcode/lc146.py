@@ -96,7 +96,64 @@ class LRUCache2:
         node.prev = p
         node.next = self
 
-class Case(unittest.TestCase):
+# same as the first solution
+class ListNode:
+    def __init__(self,key,val,prev=None,next=None):
+        self.key=key
+        self.val=val
+        self.prev = prev
+        self.next=next
+    def __repr__(self):
+        return str(self.key) + '->' + str(self.next)
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.remain = capacity
+        self.di = {}
+        self.initialize()
+    def __repr__(self):
+        return self.di['head']
+    def initialize(self):
+        head = ListNode('head',-1)
+        tail = ListNode('tail',-1)
+        head.next = tail
+        tail.prev = head
+        self.di['head'] = head
+        self.di['tail'] = tail
+    def delete(self,node:ListNode):
+        if node.key not in self.di: return
+        prev=node.prev
+        next = node.next
+        prev.next=next
+        next.prev=prev
+        self.di.pop(node.key)
+    def add_last(self,node:ListNode):
+        tail = self.di['tail']
+        prev = tail.prev
+        node.next=tail
+        node.prev=prev
+        prev.next=node
+        tail.prev=node
+        self.di[node.key]=node
+    def get(self, key: int) -> int:
+        if key not in self.di: return -1
+        node = self.di[key]
+        val=node.val
+        self.delete(node)
+        self.add_last(ListNode(key,val))
+        return val
+    def put(self, key: int, value: int) -> None:
+        if key in self.di:
+            node = self.di[key]
+            self.delete(node)
+            self.remain+=1
+        if self.remain==0:
+            self.delete(self.di['head'].next)
+        else:
+            self.remain-=1
+        node = ListNode(key,value)
+        self.add_last(node)
+
+class tester(unittest.TestCase):
     def test_1(self):
         cache = LRUCache(1)
         cache.put(2,1)

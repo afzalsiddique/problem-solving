@@ -1,11 +1,11 @@
 # https://www.youtube.com/watch?v=quAS1iydq7U
 import unittest
 from typing import List
-
+def get_sol_obj(): return Solution4()
 
 class Solution:
     # all are same
-    def nextPermutation__(self, nums: List[int]) -> None:
+    def nextPermutation(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
@@ -32,6 +32,7 @@ class Solution:
             nums[left],nums[right]=nums[right],nums[left]
             left+=1
             right-=1
+class Solution2:
     def nextPermutation(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
@@ -73,8 +74,8 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
-
-    def nextPermutation_(self, nums: List[int]) -> None:
+class Solution3:
+    def nextPermutation(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
@@ -111,73 +112,84 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
+class Solution4:
+    def nextPermutation(self, nums: List[int]) -> None:
+        n=len(nums)
+        i = n - 1
+        while i > 0 and nums[i - 1] >= nums[i]:
+            i -= 1
+        j = i
+        while j < n and nums[i - 1] < nums[j]:
+            j += 1
+        nums[i - 1], nums[j - 1] = nums[j - 1], nums[i - 1]
+        nums[i:] = sorted(nums[i:])
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1,3,5,4,2]
         solution.nextPermutation(nums)
         expected = [1,4,2,3,5]
         self.assertEqual(expected, nums)
 
     def test_2(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1,1,5]
         solution.nextPermutation(nums)
         expected = [1,5,1]
         self.assertEqual(expected, nums)
 
     def test_3(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [3,2,1]
         solution.nextPermutation(nums)
         expected = [1,2,3]
         self.assertEqual(expected, nums)
 
     def test_4(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1,2,3]
         solution.nextPermutation(nums)
         expected = [1,3,2]
         self.assertEqual(expected, nums)
 
     def test_5(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1]
         solution.nextPermutation(nums)
         expected = [1]
         self.assertEqual(expected, nums)
 
     def test_6(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1,3,2]
         solution.nextPermutation(nums)
         expected = [2,1,3]
         self.assertEqual(expected, nums)
 
     def test_7(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [1,5,1]
         solution.nextPermutation(nums)
         expected = [5,1,1]
         self.assertEqual(expected, nums)
 
     def test_8(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [6,2,1,5,4,3,0]
         solution.nextPermutation(nums)
         expected = [6,2,3,0,1,4,5]
         self.assertEqual(expected, nums)
 
     def test_9(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [6,2,1,5,4,3,3,0]
         solution.nextPermutation(nums)
         expected = [6,2,3,0,1,3,4,5]
         self.assertEqual(expected, nums)
 
     def test_10(self):
-        solution = Solution()
+        solution = get_sol_obj()
         nums = [6,2,1,5,5,4,3,0]
         solution.nextPermutation(nums)
         expected = [6,2,3,0,1,4,5,5]
