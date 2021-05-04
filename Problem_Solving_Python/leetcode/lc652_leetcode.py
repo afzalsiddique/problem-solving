@@ -10,24 +10,24 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
+    def __repr__(self):
+        return str(self.val)
 
+# leetcode original
 class Solution:
-    di = defaultdict(int)
-    serialized_to_node = {}
-    # return tuple
+    count = Counter()
+    ans = []
+    # return string
     def dfs(self,root):
-        if not root: return '#'
-        serialized =  root.val,self.dfs(root.left),self.dfs(root.right)
-        self.di[serialized]+=1
-        self.serialized_to_node[serialized] = root
-        return serialized
-    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        if not root: return "#"
+        serial = "{},{},{}".format(root.val, self.dfs(root.left), self.dfs(root.right))
+        self.count[serial] += 1
+        if self.count[serial] == 2:
+            self.ans.append(root)
+        return serial
+    def findDuplicateSubtrees(self, root):
         self.dfs(root)
-        res = []
-        for serialized in self.di:
-            if self.di[serialized]>1:
-                res.append(self.serialized_to_node[serialized])
-        return res
+        return self.ans
 def my_deserialize(data):
     sep,en = ',','#'
     data = data.split(sep)
@@ -53,7 +53,7 @@ def my_deserialize(data):
 class mytestcase(unittest.TestCase):
     def test1(self):
         root = my_deserialize("1,2,3,#,#,4,5")
-        self.assertEqual("####",Solution().findDuplicateSubtrees(root))
+        self.assertEqual("####",Solution().dfs(root))
     def test2(self):
         root = my_deserialize("1,2,3,4,#,2,4,#,#,4")
         self.assertEqual("####",Solution().dfs(root))

@@ -1,7 +1,6 @@
 import unittest
-from collections import deque
 from typing import List
-def get_sol_obj(): return Solution()
+
 
 class Solution:
     def countSquares(self, matrix: List[List[int]]) -> int:
@@ -19,21 +18,41 @@ class Solution:
         total = sum(sum(row) for row in dp)
         return total
 
+class MyTestCase(unittest.TestCase):
+    def test_1(self):
+        solution = Solution()
+        matrix = [
+            [1,1,1,1],
+            [1,1,1,1],
+            [1,1,1,1],
+            [1,1,1,1],
+        ]
+        expected = 30
+        actual = solution.countSquares(matrix)
+        self.assertEqual(expected, actual)
 
-class tester(unittest.TestCase):
-    def test1(self):
+    def test_2(self):
+        solution = Solution()
+        matrix = [
+            [1, 0, 1],
+            [1, 1, 0],
+            [1, 1, 0]
+        ]
+        expected = 7
+        actual = solution.countSquares(matrix)
+        self.assertEqual(expected, actual)
+
+    def test_3(self):
+        solution = Solution()
         matrix = [
             [0,1,1,1],
             [1,1,1,1],
             [0,1,1,1]
         ]
-        Output= 15
-        self.assertEqual(Output,get_sol_obj().countSquares(matrix))
-    def test2(self):
-        matrix = [
-            [1,0,1],
-            [1,1,0],
-            [1,1,0]
-        ]
-        Output= 7
-        self.assertEqual(Output,get_sol_obj().countSquares(matrix))
+        expected = 15
+        actual = solution.countSquares(matrix)
+        self.assertEqual(expected, actual)
+
+
+if __name__ == '__main__':
+    unittest.main()

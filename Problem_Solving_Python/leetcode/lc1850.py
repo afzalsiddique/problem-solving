@@ -1,9 +1,3 @@
-import unittest
-from collections import deque, defaultdict
-from heapq import *
-from typing import List
-def get_sol_obj(): return Solution()
-
 class Solution:
     # https://leetcode.com/problems/minimum-adjacent-swaps-to-reach-the-kth-smallest-number/discuss/1186823/Python-3-brute-force
     def getMinSwaps(self, num: str, k: int) -> int:
@@ -32,4 +26,3 @@ class Solution:
             ans += j - i
             num[i:j+1] = [num[j]] + num[i:j]
         return ans
-

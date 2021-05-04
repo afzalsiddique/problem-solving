@@ -1,18 +1,18 @@
-import unittest
-from collections import deque, defaultdict
+import math
+import random
+from bisect import bisect_left
+from collections import deque, defaultdict, Counter
 from heapq import *
+import unittest
 from typing import List
-def get_sol_obj(): return Codec()
 
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
-
-
+# no # at the end
 class Codec:
-    # no # at the end when serializing
     def serialize(self, root)->str:
         res = []
 
@@ -41,38 +41,7 @@ class Codec:
             root.right = helper(q)
             return root
 
-        if not data: return
-        data = data.split(",")
-        q = deque(data)
-        return helper(q)
-
-class Codec2:
-    # there will be # at the end
-    def serialize(self, root)->str:
-        res = []
-
-        def dfs(root):
-            if not root:
-                res.append("#")
-                return
-            res.append(str(root.val))
-            dfs(root.left)
-            dfs(root.right)
-
-        dfs(root)
-        return ",".join(res)
-
-
-    def deserialize(self, data)->TreeNode:
-        def helper(q):
-            if q[0] == "#": # it does not get out of index error because we have many # at the end
-                q.popleft()
-                return
-            root = TreeNode(q.popleft())
-            root.left = helper(q)
-            root.right = helper(q)
-            return root
-
+        if not data: return None
         data = data.split(",")
         q = deque(data)
         return helper(q)
@@ -99,17 +68,8 @@ def my_deserialize(data):
         i+=1
 
     return root
+
 class mytestcase(unittest.TestCase):
-    def test01(self):
+    def test1_1(self):
         root = my_deserialize("1,2,3,#,#,4,5")
         self.assertEqual("1,2,#,#,3,4,#,#,5,#,#",Codec().serialize(root))
-    def test02(self):
-        data = "1,2,#,#,3,4,#,#,5,#,#"
-        actual_root = get_sol_obj().deserialize(data)
-        actual_data = get_sol_obj().serialize(actual_root)
-        self.assertEqual("1,2,#,#,3,4,#,#,5",actual_data)
-    def test03(self):
-        data = "1"
-        actual_root = get_sol_obj().deserialize(data)
-        actual_data = get_sol_obj().serialize(actual_root)
-        self.assertEqual("1",actual_data)
