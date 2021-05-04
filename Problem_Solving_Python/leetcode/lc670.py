@@ -5,6 +5,7 @@ from collections import deque, defaultdict, Counter
 from heapq import *
 import unittest
 from typing import List
+def get_sol_obj(): return Solution()
 
 class Solution:
     # https://www.youtube.com/watch?v=pDyh9VOMWgI&t=548s
@@ -36,9 +37,20 @@ class Solution2:
         li = int(li)
         return li
 
+# wrong, heap
+class Solution3:
+    def maximumSwap(self, num: int) -> int:
+        temp = str(num)
+        li=[int(temp[i]) for i in range(len(temp))]
+        pq = [(-li[i],i) for i in range(len(li))]
+        heapify(pq)
+        for i in range(len(li)):
+            _,idx = heappop(pq)
+            if idx==i or li[idx]==li[i]: continue
+            li[i],li[idx] = li[idx],li[i]
+            return int(''.join(list(map(str,li))))
+        return num
 
-def get_sol_obj():
-    return Solution()
 class tester(unittest.TestCase):
     def test1(self):
         Input = 0

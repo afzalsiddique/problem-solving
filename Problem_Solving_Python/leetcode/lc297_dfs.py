@@ -1,10 +1,8 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
 import unittest
+from collections import deque, defaultdict
+from heapq import *
 from typing import List
+def get_sol_obj(): return Codec()
 
 class TreeNode:
     def __init__(self, x):
@@ -12,35 +10,72 @@ class TreeNode:
         self.left = None
         self.right = None
 
+
 class Codec:
-    def serialize(self, root):
-        def dfs(root, res):
-            if root == None:
-                res.append('#')
-                return
-            res.append(root.val)
-            dfs(root.left, res)
-            dfs(root.right, res)
-
+    # no # at the end when serializing
+    def serialize(self, root)->str:
         res = []
-        dfs(root, res)
-        res = ','.join(map(str,res)) # return string
-        return res
 
-    def deserialize(self, data):
-        def dfs():
-            if data[p[0]] == '#':
-                p[0] += 1
-                return None
-            root = TreeNode(data[p[0]])
-            p[0] += 1
-            root.left = dfs()
-            root.right = dfs()
+        def dfs(root):
+            if not root:
+                res.append("#")
+                return
+            res.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        while res and res[-1]=='#':
+            res.pop()
+        return ",".join(res)
+
+
+    def deserialize(self, data)->TreeNode:
+        def helper(q):
+            if not q: return
+            if q[0] == "#":
+                q.popleft()
+                return
+            root = TreeNode(q.popleft())
+            root.left = helper(q)
+            root.right = helper(q)
             return root
 
-        data = data.split(',')
-        p = [0]
-        return dfs()
+        if not data: return
+        data = data.split(",")
+        q = deque(data)
+        return helper(q)
+
+class Codec2:
+    # there will be # at the end
+    def serialize(self, root)->str:
+        res = []
+
+        def dfs(root):
+            if not root:
+                res.append("#")
+                return
+            res.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return ",".join(res)
+
+
+    def deserialize(self, data)->TreeNode:
+        def helper(q):
+            if q[0] == "#": # it does not get out of index error because we have many # at the end
+                q.popleft()
+                return
+            root = TreeNode(q.popleft())
+            root.left = helper(q)
+            root.right = helper(q)
+            return root
+
+        data = data.split(",")
+        q = deque(data)
+        return helper(q)
 
 def my_deserialize(data):
     sep,en = ',','#'
@@ -64,8 +99,17 @@ def my_deserialize(data):
         i+=1
 
     return root
-
 class mytestcase(unittest.TestCase):
-    def test1_1(self):
+    def test01(self):
         root = my_deserialize("1,2,3,#,#,4,5")
         self.assertEqual("1,2,#,#,3,4,#,#,5,#,#",Codec().serialize(root))
+    def test02(self):
+        data = "1,2,#,#,3,4,#,#,5,#,#"
+        actual_root = get_sol_obj().deserialize(data)
+        actual_data = get_sol_obj().serialize(actual_root)
+        self.assertEqual("1,2,#,#,3,4,#,#,5",actual_data)
+    def test03(self):
+        data = "1"
+        actual_root = get_sol_obj().deserialize(data)
+        actual_data = get_sol_obj().serialize(actual_root)
+        self.assertEqual("1",actual_data)
