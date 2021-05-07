@@ -11,8 +11,8 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
-# no # at the end
 class Codec:
+    # no # at the end
     def serialize(self, root)->str:
         res = []
 
@@ -72,4 +72,4 @@ def my_deserialize(data):
 class mytestcase(unittest.TestCase):
     def test1_1(self):
         root = my_deserialize("1,2,3,#,#,4,5")
-        self.assertEqual("1,2,#,#,3,4,#,#,5,#,#",Codec().serialize(root))
+        self.assertEqual("1,2,#,#,3,4,#,#,5",Codec().serialize(root))

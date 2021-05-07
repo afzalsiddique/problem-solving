@@ -10,10 +10,13 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
+    def __repr__(self): return str(self.val)
 
 
 class Codec:
+    # no # at the end
     def serialize(self, root)->str:
+        res = []
         def dfs(root):
             if not root:
                 res.append("#,")
@@ -22,27 +25,60 @@ class Codec:
             dfs(root.left)
             dfs(root.right)
 
+        dfs(root)
+        res=''.join(res)
+        res=res.split(',')
+        if res and res[-1]=='': res.pop()
+        while res and res[-1]=='#':
+            res.pop()
+        return ",".join(res)
+
+
+    def deserialize(self, data)->TreeNode:
+        def helper(q):
+            if not q: return
+            if q[0] == "#":
+                q.popleft()
+                return
+            root = TreeNode(q.popleft())
+            root.left = helper(q)
+            root.right = helper(q)
+            return root
+        if not data: return
+        data = data.split(",")
+        q = deque(data)
+        return helper(q)
+
+class Codec2:
+    # there are # at the end
+    def serialize(self, root)->str:
         res = []
+        def dfs(root):
+            if not root:
+                res.append("#,")
+                return
+            res.append(str(root.val)+",")
+            dfs(root.left)
+            dfs(root.right)
+
         dfs(root)
         return "".join(res)
 
 
     def deserialize(self, data)->TreeNode:
         def helper(q):
+            if not q: return
             if q[0] == "#":
                 q.popleft()
                 return
             root = TreeNode(q.popleft())
-            l = helper(q)
-            r = helper(q)
-            root.left = l
-            root.right = r
+            root.left = helper(q)
+            root.right = helper(q)
             return root
-
+        if not data: return
         data = data.split(",")
         q = deque(data)
         return helper(q)
-
 
 def my_deserialize(data):
     sep,en = ',','#'
@@ -71,7 +107,7 @@ class mytestcase(unittest.TestCase):
         root = my_deserialize("1,2,3,#,#,4,5")
         self.assertEqual("1,2,#,#,3,4,#,#,5,#,#,",Codec().serialize(root))
     def test1_2(self):
-        data = "1,2,#,#,3,4,#,#,5,#,#,"
+        data = "1,2,#,#,3,4,#,#,5,#,#"
         actual_root = Codec().deserialize(data)
         actual_data = Codec().serialize(actual_root)
         self.assertEqual("1,2,#,#,3,4,#,#,5,#,#,",actual_data)

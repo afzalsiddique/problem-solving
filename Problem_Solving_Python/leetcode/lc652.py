@@ -28,6 +28,64 @@ class Solution:
     def findDuplicateSubtrees(self, root):
         self.dfs(root)
         return self.ans
+
+# very slow
+class Solution2:
+    def serialize(self,root:TreeNode):
+        res=[]
+        def dfs(root:TreeNode):
+            if not root:
+                res.append('#')
+                return
+            res.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return ','.join(res)
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        di=defaultdict(int)
+        res=[]
+        def dfs(root:TreeNode):
+            if not root:return
+            encoded=self.serialize(root)
+            if encoded in di and di[encoded]==1:
+                res.append(root)
+            di[encoded]+=1
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return res
+
+# very slow
+class Solution3:
+    def serialize(self, root)->str:
+        def dfs(root):
+            if not root:
+                res.append("#,")
+                return
+            res.append(str(root.val)+",")
+            dfs(root.left)
+            dfs(root.right)
+
+        res = []
+        dfs(root)
+        return "".join(res)
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        di=defaultdict(int)
+        res=[]
+        def dfs(root:TreeNode):
+            if not root:return
+            encoded=self.serialize(root)
+            if encoded in di and di[encoded]==1:
+                res.append(root)
+            di[encoded]+=1
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return res
 def my_deserialize(data):
     sep,en = ',','#'
     data = data.split(sep)
