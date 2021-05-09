@@ -1,24 +1,23 @@
-import itertools
-from operator import mul, add
+from bisect import *
 
 
-sett = set()
-dp={}
-def helper(src,tar):
-    if src == tar: return 0
-    if src in sett: return float('inf')
-    sett.add(src)
-    if src in dp: return dp[src]
-    source=list(src)
-    res = float('inf')
-    for i in range(len(src)-1):
-        source[i],source[i+1]=source[i+1],source[i]
-        temp = helper(''.join(source),tar)
-        res = min(res,1+temp)
-        source[i],source[i+1]=source[i+1],source[i]
-    dp[src]=res
-    return res
+class Solution:
+    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:
+        def mybisect_right(A, x):
+            # A is a non-increasing
+            left, right = 0, len(A)-1
+            while left < right:
+                mid = (left+right+1)//2 # right mid
+                if x <= A[mid]:
+                    left = mid
+                else:
+                    right = mid - 1
 
-print(helper('11112','21111'))
-src,tar="5489355142","5489355421"
-print(helper(src[::-1],tar[::-1]))
+            return left
+
+        ans = 0
+        for i, x in enumerate(nums1):
+            j = mybisect_right(nums2,x)
+            ans = max(ans, j-i)
+
+        return ans

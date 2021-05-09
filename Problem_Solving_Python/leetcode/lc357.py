@@ -8,8 +8,28 @@ from typing import List
 def get_sol(): return Solution()
 
 
-
 class Solution:
+    # back tracking
+    def countNumbersWithUniqueDigits(self, n: int) -> int:
+        self.count=0
+        vis=[False]*10
+        def helper(num):
+            if num>=self.maxx:
+                return
+            self.count+=1
+            for i in range(10):
+                if i==0 and num==0: continue # skip leading zeros
+                if vis[i]==False:
+                    vis[i]=True
+                    helper(num*10+i)
+                    vis[i]=False
+
+        if n>10: n=10 # Cannot exceeds 10 digits without duplicate digits
+        self.maxx=pow(10,n)
+        helper(0)
+        return self.count
+
+class Solution2:
     # dp
     # https://leetcode.com/problems/count-numbers-with-unique-digits/discuss/83052/Clear-c%2B%2B-explanation-of-combinatorics-using-DP-method
     def countNumbersWithUniqueDigits(self, n: int) -> int:
@@ -28,7 +48,6 @@ class Solution:
                 temp-=1
             dp[i]=dp[i-1]+ans
         return dp[-1]
-
 
 class tester(unittest.TestCase):
     def test01(self):
