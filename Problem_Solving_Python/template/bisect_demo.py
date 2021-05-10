@@ -83,27 +83,27 @@ last_occurrence(arr,4)
 last_occurrence(arr,0)
 last_occurrence(arr,12)
 
-print('SMALLEST NUMBER GREATER THAN X')
-def smallest_no_greater_than_x(arr, x):
+print('LARGEST NUMBER LESS THAN X')
+def largest_no_less_than_x(arr, x):
     idx = bisect_left(arr,x)
     if idx!=0:
         print('idx: ',idx-1,' val: ',arr[idx-1])
     else:
         print('does not exist')
 arr = [1,4,4,4,4,9,9,10,11]
-smallest_no_greater_than_x(arr, 4)
-smallest_no_greater_than_x(arr, 0)
-smallest_no_greater_than_x(arr, 11)
+largest_no_less_than_x(arr, 4)
+largest_no_less_than_x(arr, 0)
+largest_no_less_than_x(arr, 11)
 
-print('LARGEST NUMBER LESS THAN X')
-def largest_no_less_than_x(arr, x):
+print('SMALLEST NUMBER GREATER THAN X')
+def smallest_no_greater_than_x(arr, x):
     idx = bisect_right(arr,x)
     if idx!=len(arr):
         print('idx: ',idx,' val: ',arr[idx])
     else:
         print('does not exist')
 arr = [1,4,4,4,4,9,9,10,11]
-largest_no_less_than_x(arr, 4)
-largest_no_less_than_x(arr, 0)
-largest_no_less_than_x(arr, 11)
+smallest_no_greater_than_x(arr, 4)
+smallest_no_greater_than_x(arr, 0)
+smallest_no_greater_than_x(arr, 11)
 

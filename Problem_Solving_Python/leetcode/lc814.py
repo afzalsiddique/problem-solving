@@ -13,6 +13,16 @@ class TreeNode:
     def __repr__(self):
         return str(self.val)
 class Solution:
+    def pruneTree(self, root: TreeNode) -> TreeNode:
+        def helper(root:TreeNode):
+            if not root: return None
+            root.left=helper(root.left)
+            root.right=helper(root.right)
+            if not root.left and not root.right and root.val==0: return None
+            return root
+
+        return helper(root)
+class Solution2:
     def pruneTree(self, root):
         def containsOne(node):
             if not node: return False
@@ -24,7 +34,7 @@ class Solution:
 
         return root if containsOne(root) else None
 
-class Solution2:
+class Solution3:
     def pruneTree(self, root: TreeNode) -> TreeNode:
         def helper(root:TreeNode):
             if not root: return False
@@ -47,7 +57,7 @@ class Solution2:
             return root
         return None
 # wrong
-class Solution3:
+class Solution4:
     def pruneTree(self, root):
         def containsOne(node):
             if not node: return None

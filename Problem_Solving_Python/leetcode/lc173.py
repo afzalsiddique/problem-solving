@@ -34,24 +34,46 @@ class BSTIterator:
         return False
 
 
-class MyTestCase(unittest.TestCase):
 
+def deserialize(data):
+    sep,en = ',','null'
+    data = data.split(sep)
+    l = len(data)
+    if l<1:return None
+    root = TreeNode(int(data[0]))
+    q = deque()
+    q.append(root)
+    i=1
+    while i<l and q:
+
+        curr = q.popleft()
+        if data[i]!=en:
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
+        i+=1
+        if i<l and data[i]!=en:
+            curr.right = TreeNode(int(data[i]))
+            q.append(curr.right)
+        i+=1
+
+    return root
+
+class tester(unittest.TestCase):
+    def do_test(self,commands, inputs):
+        outputs = []
+        obj = ""
+        for i,cmd,input in zip(range(len(inputs)),commands,inputs):
+            if cmd=='BSTIterator':
+                obj = BSTIterator(deserialize(input[0]))
+                outputs.append(None)
+            elif cmd=='next':
+                outputs.append(obj.next())
+            elif cmd=='hasNext':
+                outputs.append(obj.hasNext())
+        return outputs
     def test_1(self):
-        n9=TreeNode(9)
-        n20=TreeNode(20)
-        n15=TreeNode(15,n9,n20)
-        n3=TreeNode(3)
-        root = TreeNode(7,n3,n15)
-        i = BSTIterator(root)
-        a = i.next()
-        self.assertEqual(3,a)
-        a = i.next()
-        self.assertEqual(7,a)
-        # a = i.hasNext()
-        # self.assertEqual(True, a)
-        a = i.next()
-        self.assertEqual(9,a)
-        a = i.next()
-        self.assertEqual(15,a)
-        a = i.next()
-        self.assertEqual(20,a)
+        commands = ["BSTIterator", "next", "next", "hasNext", "next", "hasNext", "next", "hasNext", "next", "hasNext"]
+        inputs=[['7,3,15,null,null,9,20'], [], [], [], [], [], [], [], [], []]
+        out_exptected = [None, 3, 7, True, 9, True, 15, True, 20, False]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(out_exptected,outputs)

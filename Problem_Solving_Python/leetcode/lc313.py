@@ -4,14 +4,14 @@ from typing import List
 
 
 class Solution:
+    # heap
     def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
         heap = [1]
         s = set()
         cnt = 0
         while cnt!=n:
             temp = heappop(heap)
-            if temp in s:
-                continue
+            if temp in s: continue
             s.add(temp)
             for prime in primes:
                 heappush(heap, temp*prime)
