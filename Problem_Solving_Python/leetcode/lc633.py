@@ -13,6 +13,7 @@ def get_sol(): return Solution()
 
 class Solution:
     # leetcode original solution 4
+    # bianry search
     def judgeSquareSum(self, c: int) -> bool:
         def binary_search(lo, hi, key):
             while lo<=hi:

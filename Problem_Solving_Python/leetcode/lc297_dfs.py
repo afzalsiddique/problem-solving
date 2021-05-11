@@ -31,6 +31,24 @@ class Codec:
 
 
     def deserialize(self, data)->TreeNode:
+        self.i=0
+        def helper():
+            if self.i==len(data): return
+            if q[self.i] == "#":
+                self.i+=1
+                return
+            root = TreeNode(int(data[self.i]))
+            self.i+=1
+            root.left = helper()
+            root.right = helper()
+            return root
+
+        if not data: return None
+        data = data.split(",")
+        q = deque(data)
+        return helper()
+
+    def deserialize2(self, data)->TreeNode:
         def helper(q):
             if not q: return
             if q[0] == "#":

@@ -3,9 +3,9 @@ import unittest
 from bisect import bisect_left
 from typing import List
 
-# two pointer
-# time:n^2 space:1
 class Solution2:
+    # two pointer
+    # time:n^2 space:1
     def threeSum(self, nums):
         res = []
         nums.sort()
@@ -30,10 +30,10 @@ class Solution2:
         return res
 
 
-# time:n^2 space: n
-# based on two sum using sett
 class Solution3:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # time:n^2 space: n
+        # based on two sum using sett
         res =set()
         nums.sort()
         for i,a in enumerate(nums[:-2]):
@@ -46,8 +46,8 @@ class Solution3:
                     sett.add(0-a-b)
         return list(map(list,res))
 
-# n^2*log n
 class Solution:
+    # n^2*log n
     def threeSum(self, nums):
         nums.sort()
         res,n=[],len(nums)
