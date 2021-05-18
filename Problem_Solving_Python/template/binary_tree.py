@@ -59,6 +59,8 @@ class TreeNode:
         zipped_lines = zip(left, right)
         lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
         return lines, n + m + u, max(p, q) + 2, n + u // 2
+
+
 def deserialize(data):
     sep,en = ',','null'
     data = data.split(sep)
@@ -83,8 +85,7 @@ def deserialize(data):
     return root
 
 def serialize(root):
-    en = '#'
-    sep = ','
+    sep,en = ',','null'
     if not root: return ''
 
     q = deque()
