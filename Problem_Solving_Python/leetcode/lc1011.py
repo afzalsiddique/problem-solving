@@ -1,10 +1,31 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
+
 class Solution:
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        def valid(max_capacity):
+            cnt=0
+            temp=0
+            for i in range(len(weights)):
+                if weights[i]>max_capacity: return False
+                if temp+weights[i]<=max_capacity:
+                    temp+=weights[i]
+                else:
+                    cnt+=1 # send this ship
+                    temp=0 # empty the ship
+                    temp+=weights[i] # load the current weight in the ship
+            if temp !=0: cnt+=1
+            return cnt<=days
+
+        lo,hi=0,sum(weights)
+        while lo<=hi:
+            mid=(lo+hi)//2
+            if valid(mid):
+                hi=mid-1
+            else:
+                lo=mid+1
+        return lo
+class Solution2:
     def shipWithinDays(self, weights: List[int], max_day: int) -> int:
         def valid(max_capacity):
             temp_capacity = max_capacity
@@ -25,7 +46,7 @@ class Solution:
             else:
                 lo=mid+1
         return lo
-class Solution2:
+class Solution3:
     def shipWithinDays(self, weights: List[int], max_day: int) -> int:
         def valid(max_capacity):
             temp_capacity = max_capacity

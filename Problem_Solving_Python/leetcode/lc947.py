@@ -3,6 +3,7 @@ from typing import List
 
 
 class Solution:
+    # union find
     def removeStones(self, stones: List[List[int]]) -> int:
         n = len(stones)
         root = {}
