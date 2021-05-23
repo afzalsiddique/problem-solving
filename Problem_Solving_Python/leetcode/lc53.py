@@ -29,6 +29,16 @@ class Solution2:
                 cur_sum = cur_sum+nums[i]
 
         return maxx
+class Solution3:
+    def maxSubArray(self, nums: List[int]) -> int:
+        maxx=float('-inf')
+        cur_sum=0
+        for i in range(len(nums)):
+            cur_sum+=nums[i]
+            if cur_sum>maxx:
+                maxx=cur_sum
+            if cur_sum<0: cur_sum=0
+        return maxx
 class Solution4:
     def maxSubArray(self, nums: List[int]) -> int:
         return self.helper(nums, 0, len(nums))
@@ -101,7 +111,3 @@ class MyTestCase(unittest.TestCase):
         actual = solution.maxSubArray(nums)
         expected = -1
         self.assertEqual(expected, actual)
-
-
-if __name__ == '__main__':
-    unittest.main()

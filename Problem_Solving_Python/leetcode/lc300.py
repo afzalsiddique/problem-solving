@@ -1,31 +1,21 @@
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 # https://www.youtube.com/watch?v=1RpMc3fv0y4
 # https://www.youtube.com/watch?v=22s1xxRvy28
 # https://www.youtube.com/watch?v=TocJOW6vx_I
-import unittest
-from typing import List
 
 
 class Solution:
     ## n log n
     def lengthOfLIS(self, nums):
-
-        def binarySearch(val):
-            lo, hi = 0, len(sub) - 1
-            while lo <= hi:
-                mid = lo + (hi - lo) // 2
-                if sub[mid] < val:
-                    lo = mid + 1
-                elif val < sub[mid]:
-                    hi = mid - 1
-                else:
-                    return mid
-            return lo
-
         sub = []
         for val in nums:
-            pos = binarySearch(val)
+            pos = bisect_left(sub,val)
             if pos == len(sub):
                 sub.append(val)
+
+            # elif pos==len(sub)-1: # gives wrong ans
+            #     sub[pos] = val
             else:
                 sub[pos] = val
         return len(sub)
@@ -41,17 +31,12 @@ class Solution2:
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
-        self.assertEqual(4, solution.lengthOfLIS([10,9,2,5,3,7,101,18]))
-
+        self.assertEqual(4, get_sol().lengthOfLIS([10,9,2,5,3,7,101,18]))
     def test_2(self):
-        solution = Solution()
-        self.assertEqual(4, solution.lengthOfLIS([0,1,0,3,2,3]))
-
+        self.assertEqual(4, get_sol().lengthOfLIS([0,1,0,3,2,3]))
     def test_3(self):
-        solution = Solution()
-        self.assertEqual(1, solution.lengthOfLIS([7,7,7,7,7,7,7]))
-
+        self.assertEqual(1, get_sol().lengthOfLIS([7,7,7,7,7,7,7]))
     def test_4(self):
-        solution = Solution()
-        self.assertEqual(6, solution.lengthOfLIS([1,3,6,7,9,4,10,5,6]))
+        self.assertEqual(6, get_sol().lengthOfLIS([1,3,6,7,9,4,10,5,6]))
+    def test_5(self):
+        self.assertEqual(6, get_sol().lengthOfLIS([3,5,6,2,5,4,19,5,6,7,12]))

@@ -1,8 +1,10 @@
 import unittest
+from functools import lru_cache
 from typing import List
 
 
 class Solution:
+    # tabulation dp
     def change(self, amount: int, coins: List[int]) -> int:
         n=len(coins)
         coins = [0] + coins
@@ -18,6 +20,54 @@ class Solution:
                 else:
                     dp[i][j]=dp[i-1][j]+dp[i][j-coins[i]]
         return dp[-1][-1]
+class Solution2:
+    # knapsack
+    # beats 62% in runtime
+    def change(self, amount: int, coins: List[int]) -> int:
+        coins.sort(reverse=True)
+        n=len(coins)
+        dp ={}
+        def f(i, target):
+            if target == 0 : return 1
+            if target < 0: return 0
+            if i>=n: return 0
+            if (i,target) in dp: return dp[(i,target)]
+            ans = f(i, target - coins[i]) + f(i + 1, target)
+            dp[(i,target)]=ans
+            return ans
+
+        return f(0,amount)
+class Solution3:
+    # knapsack
+    # beats 62% in runtime
+    def change(self, amount: int, coins: List[int]) -> int:
+        n=len(coins)
+        coins.sort(reverse=True)
+        @lru_cache(maxsize=None)
+        def f(i, target):
+            if target == 0 : return 1
+            if target < 0: return 0
+            if i>=n: return 0
+            return f(i, target - coins[i]) + f(i + 1, target)
+
+        return f(0,amount)
+class Solution4:
+    # recursive dp
+    # beats 20% in runtime
+    def change(self, amount: int, coins: List[int]) -> int:
+        n=len(coins)
+        coins.sort(reverse=True)
+        dp={}
+        def helper(idx,target):
+            if target<0: return 0
+            if target==0: return 1
+            if (idx,target) in dp: return dp[(idx,target)]
+            cnt=0
+            for i in range(idx,n):
+                cnt+=helper(i,target-coins[i])
+            dp[(idx,target)]=cnt
+            return cnt
+        return helper(0,amount)
 class MyTestCase(unittest.TestCase):
     def test_1(self):
         solution = Solution()
