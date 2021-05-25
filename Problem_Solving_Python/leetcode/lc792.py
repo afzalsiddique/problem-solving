@@ -62,7 +62,7 @@ class tester(unittest.TestCase):
         Output= 2
         self.assertEqual(Output,Solution().numMatchingSubseq(s,words))
     def test3(self):
-        s = "abcde"
-        words = ["a","bb","acd","ace"]
-        Output= 3
+        s = "aacbacbde"
+        words = ["abcb"]
+        Output= 1
         self.assertEqual(Output,Solution().numMatchingSubseq(s,words))

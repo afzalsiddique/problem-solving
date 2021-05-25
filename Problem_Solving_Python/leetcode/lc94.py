@@ -19,6 +19,7 @@ class Solution:
             if root.right:
                 traverse(root.right)
             return
+
         traverse(root)
         return results
 

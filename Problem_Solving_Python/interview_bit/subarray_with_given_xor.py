@@ -1,6 +1,7 @@
 import unittest
 from collections import defaultdict
 
+# check out leetcode 560
 class Solution:
     def solve(self, nums, k):
         n = len(nums)
@@ -21,4 +22,3 @@ class Solution:
     # 6  +  8 = 14    14  -  8 = 6     14  -  6 = 8
     # 6 xor 8 = 13    13 xor 6 = 8     13 xor 8 = 6
 
-# check out leetcode 560
