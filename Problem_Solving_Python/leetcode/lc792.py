@@ -1,12 +1,5 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
-# def numMatchingSubseq(self, S, words):
-#     def isMatch(word, w_i, d_i):
-#         if w_i == len(word): return True
-#         li = di[word[w_i]]
-#         if len(li) == 0 or d_i > li[-1]: return False
-#         idx = li[bisect_left(li, d_i)]
-#         return isMatch(word, w_i + 1, idx + 1)
 class Solution:
     # binary search
     # time O(len(S)+O(numbers of letters in all words)*log(occurrence of the letter occurring the most))

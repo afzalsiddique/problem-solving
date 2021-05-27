@@ -1,68 +1,45 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
-# def numMatchingSubseq(self, S, words):
-#     def isMatch(word, w_i, d_i):
-#         if w_i == len(word): return True
-#         li = di[word[w_i]]
-#         if len(li) == 0 or d_i > li[-1]: return False
-#         idx = li[bisect_left(li, d_i)]
-#         return isMatch(word, w_i + 1, idx + 1)
 class Solution:
-    # binary search
-    # time O(len(S)+O(numbers of letters in all words)*log(occurrence of the letter occurring the most))
-    # https://leetcode.com/problems/number-of-matching-subsequences/discuss/117578/Simple-Python-solution
-    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
-        def is_subsequence(word):
-            di_i = 0
-            for c in word:
-                li=di[c]
-                if len(li)==0 or di_i>li[-1]: return False
-                tmp = bisect_left(li,di_i)
-                idx = li[tmp]
-                if idx<di_i: return False
-                di_i=idx+1
-            return True
-
-        di = defaultdict(list)
-        for i,c in enumerate(s):
-            di[c].append(i)
-
-        cnt=0
-        for word in words:
-            if is_subsequence(word): cnt+=1
-        return cnt
-
-class Solution2:
-    # tle
-    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
-        def is_subsequence(word):
-            if len(word)>len(s): return False
-            i,j=0,0
-            while i<len(s) and j<len(word):
-                if s[i]==word[j]:
-                    j+=1
-                i+=1
-            if j==len(word): return True
-            return False
-
-        cnt=0
-        for word in words:
-            if is_subsequence(word):
-                cnt+=1
-        return cnt
+    def maxScore(self, cardPoints: List[int], k: int) -> int:
+        n=len(cardPoints)
+        cum_sum_left=[]
+        cum_sum_right=[]
+        tmp=0
+        for i in range(min(n,k)):
+            tmp+=cardPoints[i]
+            cum_sum_left.append(tmp)
+        tmp=0
+        for i in reversed(range(min(n,k))):
+            tmp+=cardPoints[i]
+            cum_sum_right.append(tmp)
+        maxx=float('inf')
+        for i in range(k):
+            maxx=max(maxx,cum_sum_left[i]+cum_sum_right[k-i-1])
+        return maxx
 class tester(unittest.TestCase):
     def test1(self):
-        s = "abcde"
-        words = ["a","bb","acd","ace"]
-        Output= 3
-        self.assertEqual(Output,Solution().numMatchingSubseq(s,words))
+        cardPoints = [1,2,3,4,5,6,1]
+        k = 3
+        Output= 12
+        self.assertEqual(Output,get_sol().maxScore(cardPoints,k))
     def test2(self):
-        s = "dsahjpjauf"
-        words = ["ahjpjau","ja","ahbwzgqnuk","tnmlanowax"]
-        Output= 2
-        self.assertEqual(Output,Solution().numMatchingSubseq(s,words))
+        cardPoints = [2,2,2]
+        k = 2
+        Output= 4
+        self.assertEqual(Output,get_sol().maxScore(cardPoints,k))
     def test3(self):
-        s = "abcde"
-        words = ["a","bb","acd","ace"]
-        Output= 3
-        self.assertEqual(Output,Solution().numMatchingSubseq(s,words))
+        cardPoints = [9,7,7,9,7,7,9]
+        k = 7
+        Output= 55
+        self.assertEqual(Output,get_sol().maxScore(cardPoints,k))
+    def test4(self):
+        cardPoints = [1,1000,1]
+        k = 1
+        Output= 1
+        self.assertEqual(Output,get_sol().maxScore(cardPoints,k))
+    def test5(self):
+        cardPoints = [1,79,80,1,1,1,200,1]
+        k = 3
+        Output= 202
+        self.assertEqual(Output,get_sol().maxScore(cardPoints,k))
