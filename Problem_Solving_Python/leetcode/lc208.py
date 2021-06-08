@@ -1,8 +1,5 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Trie3()
 # https://leetcode.com/problems/implement-trie-prefix-tree/discuss/58834/AC-Python-Solution
 # https://leetcode.com/problems/implement-trie-prefix-tree/discuss/58989/My-python-solution
 # https://leetcode.com/problems/implement-trie-prefix-tree/discuss/493673/python3-array-and-hashTable-Sol
@@ -114,3 +111,25 @@ class Trie3:
                 return False
             cur=cur.children[c]
         return True
+
+class tester(unittest.TestCase):
+    def do_test(self,commands, inputs):
+        outputs = []
+        obj = ""
+        for i,cmd,input in zip(range(len(inputs)),commands,inputs):
+            if cmd=='Trie':
+                obj = get_sol()
+                outputs.append(None)
+            elif cmd=='insert':
+                outputs.append(obj.insert(input[0]))
+            elif cmd=='search':
+                outputs.append(obj.search(input[0]))
+            elif cmd=='startsWith':
+                outputs.append(obj.startsWith(input[0]))
+        return outputs
+    def test01(self):
+        commands = ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+        inputs=[[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+        out_exptected = [None, None, True, False, True, None, True]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(out_exptected,outputs)

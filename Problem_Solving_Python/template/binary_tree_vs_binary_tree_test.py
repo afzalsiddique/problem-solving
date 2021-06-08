@@ -41,19 +41,7 @@ class Solution2:
         if ans:
             return root
         return None
-# wrong
-class Solution3:
-    def pruneTree(self, root):
-        def containsOne(node):
-            if not node: return None
-            node.left=containsOne(node.left)
-            node.right=containsOne(node.right)
-            if node.val==1: return node
-            if node.left and node.left.val==1: return node
-            if node.right and node.right.val==1: return node
-            return None
 
-        return root if containsOne(root) else None
 
 
 
@@ -100,49 +88,49 @@ def serialize(root):
 
 
 class tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         Input = '1,1,1,0'
         Output= '1,1,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test2(self):
+    def test02(self):
         Input= '1,null,0,0,1'
         Output= '1,null,0,null,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test3(self):
+    def test03(self):
         Input= '1,0,1,0,0,0,1'
         Output= '1,null,1,null,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test4(self):
+    def test04(self):
         Input= '1,1,0,1,1,0,1,0'
         Output= '1,1,0,1,1,null,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test5(self):
+    def test05(self):
         Input= '0,0,1'
         Output= '0,null,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test6(self):
+    def test06(self):
         Input= '0,null,0,1,1,null,1,null,1,null,null,null,null'
         Output= '0,null,0,1,1,null,1,null,1'
         Input = deserialize(Input)
         actual_root = get_sol().pruneTree(Input)
         actual = serialize(actual_root)
         self.assertEqual(Output,actual)
-    def test7(self):
+    def test07(self):
         Input= '0,null,0,1'
         Output= '0,null,0,1'
         Input = deserialize(Input)
