@@ -1,33 +1,42 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-# https://leetcode.com/problems/split-array-largest-sum/discuss/89846/Python-solution-with-detailed-explanation
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 class Solution:
-    def is_valid(self, nums, m, mid):
-        # assume mid is < max(nums)
-        cuts, curr_sum  = 0, 0
-        for x in nums:
-            curr_sum += x
-            if curr_sum > mid:
-                cuts, curr_sum = cuts+1, x
-        subs = cuts + 1
-        return (subs <= m)
+    # https://www.youtube.com/watch?v=eEvLI9i02Zw
+    def splitArray(self, nums: List[int], m: int) -> int:
+        def feasible(mid, m):
+            cnt=1
+            total=0
+            for n in nums:
+                total+=n
+                if total>mid:
+                    cnt+=1
+                    total=n
+            if cnt>m: return False
+            return True
 
-    def splitArray(self, nums, m):
-        low, high, ans = max(nums), sum(nums), -1
-        while low <= high:
-            mid = (low+high)//2
-            if self.is_valid(nums, m, mid): # can you make at-most m sub-arrays with maximum sum atmost mid
-                ans, high = mid, mid-1
+        left=max(nums)
+        right=sum(nums)
+        while left<=right:
+            mid = (left+right)//2
+            if feasible(mid,m):
+                right=mid-1
             else:
-                low = mid + 1
-        return ans
+                left=mid+1
+        return left
+
 class tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         nums = [7,2,5,10,8]
         m = 2
         Output= 18
-        self.assertEqual(Output,Solution().splitArray(nums,m))
+        self.assertEqual(Output,get_sol().splitArray(nums,m))
+    def test02(self):
+        nums = [1,2,3,4,5]
+        m = 2
+        Output= 9
+        self.assertEqual(Output,get_sol().splitArray(nums,m))
+    def test03(self):
+        nums = [1,4,4]
+        m = 3
+        Output= 4
+        self.assertEqual(Output,get_sol().splitArray(nums,m))

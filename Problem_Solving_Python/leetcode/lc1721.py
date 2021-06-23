@@ -6,32 +6,63 @@ class ListNode:
         self.val = val
         self.next = next
     def __repr__(self): return str(self.val) + "->" + str(self.next)
-    def __eq__(self, other): return str(self)==str(other)
 class Solution:
+    # https://leetcode.com/problems/swapping-nodes-in-a-linked-list/discuss/1054370/Python-3-or-Swapping-NODES-or-Swapping-Values-or-One-Pass-or-Fully-explained
+    # swap by reference instead of values
     def swapNodes(self, head: ListNode, k: int) -> ListNode:
-        # walker is the right_prev node
-        # first is the left_prev node
-        # runner is null checker
-        walker = runner = first = dummy = ListNode(next=head)
-        for i in range(k):
-            first = runner
-            runner = runner.next
-        while runner.next:
-            walker = walker.next
-            runner = runner.next
-        left, right = first.next, walker.next
-        if right.next is left:
-            left, right = right, left
-            first, walker = walker, first
-        left_next, right_next = left.next, right.next
-        if left_next is right:
-            first.next = right
-            right.next = left
-            left.next = right_next
-        else:
-            first.next, walker.next = right, left
-            right.next, left.next = left_next, right_next
+        dummy = pre_right = pre_left = ListNode(next=head)
+        right = left = head
+        for i in range(k-1):
+            pre_left = left
+            left = left.next
+
+        null_checker = left
+
+        while null_checker.next:
+            pre_right = right
+            right = right.next
+            null_checker = null_checker.next
+
+        if left == right:
+            return head
+
+        pre_left.next, pre_right.next = right, left
+        left.next, right.next = right.next, left.next
         return dummy.next
+
+class Solution2:
+    # https://leetcode.com/problems/swapping-nodes-in-a-linked-list/discuss/1013859/Python3Visualization-Two-Pointers-Solution-with-Explanation
+    def swapNodes(self, head: ListNode, k: int) -> ListNode:
+        dummy=ListNode(0,head)
+        slow, fast = dummy, dummy
+        for _ in range(k):
+            fast = fast.next
+        first = fast
+        while fast:
+            slow, fast = slow.next, fast.next
+        first.val, slow.val = slow.val, first.val
+        return dummy.next
+class Solution3:
+    def swapNodes(self, head: ListNode, k: int) -> ListNode:
+        n=0
+        dummy = ListNode(0,head)
+        node = dummy
+        while node:
+            node=node.next
+            n+=1
+        n1,n2=dummy,dummy
+        i=0
+        while i!=k:
+            i+=1
+            n1=n1.next
+        i=0
+        while i!=n-k:
+            i+=1
+            n2=n2.next
+        n1.val,n2.val=n2.val,n1.val
+
+        return dummy.next
+
 
 
 def make_linked_list(li,i=0):
