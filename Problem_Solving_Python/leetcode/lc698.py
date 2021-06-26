@@ -1,5 +1,6 @@
 import unittest
 from typing import List
+def get_sol(): return Solution()
 
 from typing import List
 
@@ -11,42 +12,47 @@ class Solution0:
         buckets = [0]*k
         target = sum(nums) // k
         # starting with bigger ones makes it faster
-        nums.sort(reverse=True)
+        nums.sort(reverse=True) # optimization
 
         # put ith item into some bucket to meet target
         def put(ith):
             if ith==n: return True
-            for i in range(len(buckets)):
-                if buckets[i]+nums[ith]>target: continue # try next bucket
-                buckets[i]+=nums[ith] # put it in
+            for buck_idx in range(len(buckets)):
+                if buckets[buck_idx]+nums[ith]>target: continue # try next bucket
+                buckets[buck_idx]+=nums[ith] # put it in
                 if put(ith + 1): return True # move on to next item
-                buckets[i]-=nums[ith] # take it out
-                if buckets[i]==0: return False # no need to try other empty bucket
+                buckets[buck_idx]-=nums[ith] # take it out
+                if buckets[buck_idx]==0: return False # optimization. no need to try other empty bucket
             return False
 
         return put(0)
 
-# time O(k*2^n)
-# tle
 class Solution:
+    # tle
+    # time O(k*2^n)
     def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
-        def helper(k,cur_sum,next_idx):
-            if k==0: return True
-            if cur_sum==self.target_sum: return helper(k-1,0,0)
-            if cur_sum>self.target_sum: return False
-            for i in range(next_idx,len(nums)):
-                if not visited[i]:
-                    visited[i]=True
-                    if helper(k,cur_sum+nums[i],i+1):
-                        return True
-                    visited[i]=False
+        n=len(nums)
+        vis=set()
+        def divide_k_equal_subset(k, cur_sum):
+            if k==1: return True
+            if cur_sum==target:
+                return divide_k_equal_subset(k - 1, 0)
+            if cur_sum>target:
+                return False
+            for i in range(n):
+                if i in vis: continue
+                vis.add(i)
+                if divide_k_equal_subset(k,cur_sum+nums[i]):
+                    return True
+                vis.remove(i)
             return False
 
-        total,max_num = sum(nums),max(nums)
-        if total%k or max_num>total//k: return False
-        visited = [False for _ in range(len(nums))]
-        self.target_sum = total//k
-        return helper(k,0,0)
+        summ = sum(nums)
+        target=summ//k
+        if summ%k!=0: return False
+        for num in nums:
+            if num>target: return False
+        return divide_k_equal_subset(k,0)
 
 # tle
 class Solution2:
@@ -203,102 +209,106 @@ class Solution7:
 
 
 
-def get_sol_obj():
-    return Solution4()
 class tester(unittest.TestCase):
     def test00(self):
         nums = [5,3,2,5]
         k = 3
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test01(self):
         nums = [730,580,401,659,5524,405,1601,3,383,4391,4485,1024,1175,1100,2299,3908]
         k = 4
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test02(self):
         nums = [4,5,1,1,1,1,1,1]
         k = 3
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test03(self):
         nums = [5, 7, 3]
         k = 3
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = False
         self.assertEqual(expected, actual)
     def test041(self):
         nums =[3,4,5]
         k = 2
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = False
         self.assertEqual(expected, actual)
     def test04(self):
         nums =[2,2,2,2,3,4,5]
         k = 4
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = False
         self.assertEqual(expected, actual)
     def test05(self):
         nums = [5,4,2,2,4,3]
         k = 2
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test06(self):
         nums = [4,4,4,4]
         k = 4
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test07(self):
         nums = [6,3,1,3,3,2,1,11,3,2,1,2,6,4]
         k = 4
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test08(self):
         nums = [4, 3, 2, 3, 5, 2, 1]
         k = 4
-        actual = get_sol_obj().canPartitionKSubsets(nums, k)
+        actual = get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test09(self):
         nums = [4,4,4,4]
         k = 2
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test10(self):
         nums = [1,5,11,5]
         k = 2
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test11(self):
         nums = [1,2,3,4]
         k = 3
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = False
         self.assertEqual(expected, actual)
     def test12(self):
         nums = [10,10,10,7,7,7,7,7,7,6,6,6]
         k = 3
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)
     def test13(self):
         nums = [2,2,2,2,2,2,2,2,2,2,2,2,2,3,3]
         k = 8
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = False
         self.assertEqual(expected, actual)
     def test14(self):
         nums = [5,2,5,5,5,5,5,5,5,5,5,5,5,5,5,3]
         k = 15
-        actual= get_sol_obj().canPartitionKSubsets(nums, k)
+        actual= get_sol().canPartitionKSubsets(nums, k)
+        expected = True
+        self.assertEqual(expected, actual)
+    def test15(self):
+        nums = [4,4,4,6,1,2,2,9,4,6]
+        k = 3
+        actual= get_sol().canPartitionKSubsets(nums, k)
         expected = True
         self.assertEqual(expected, actual)

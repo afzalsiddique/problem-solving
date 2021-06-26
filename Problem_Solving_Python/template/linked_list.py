@@ -7,14 +7,12 @@ class ListNode:
         self.val = val
         self.next = next
 
-    def __repr__(self):
-        return str(self.val) + "->" + str(self.next)
-
-    def __eq__(self, other):
-        return str(self)==str(other)
+    def __repr__(self): return str(self.val) + "->" + str(self.next)
+    def __eq__(self, other): return str(self)==str(other)
 
 
 def make_linked_list(li,i=0):
+    if not li: return None
     if i==len(li)-1:return ListNode(li[i])
     cur = ListNode(li[i])
     cur.next = make_linked_list(li,i+1)

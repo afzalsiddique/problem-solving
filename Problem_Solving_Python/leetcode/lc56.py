@@ -1,5 +1,5 @@
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
@@ -17,7 +17,23 @@ class Solution:
             last_end = max(last_end, cur_end)
         result.append([last_start, last_end])
         return result
-    def merge2(self, intervals: List[List[int]]) -> List[List[int]]:
+class Solution2:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        n=len(intervals)
+        res = []
+        intervals.sort()
+        res.append([intervals[0][0],intervals[0][1]])
+        for i in range(1,n):
+            new_start,new_end=intervals[i][0],intervals[i][1]
+            last_start,last_end=res[-1][0],res[-1][1]
+            if last_start<=new_start<=last_end or last_start<=new_end<=last_end:
+                res[-1][0]=min(new_start,last_start)
+                res[-1][1]=max(new_end,last_end)
+            else:
+                res.append([new_start,new_end])
+        return res
+class Solution3:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         n,results= len(intervals),[]
         intervals.sort(key=lambda x:x[0])
         start,end = intervals[0][0],intervals[0][1]
@@ -32,8 +48,9 @@ class Solution:
         results.append([start,end])
         return results
 
+class Solution4:
     # the idea is that for the result distinct interval, the latter one's start must > previous one's end.
-    def merge3(self, intervals: List[List[int]]) -> List[List[int]]:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         n = len(intervals)
         starts = sorted([x[0] for x in intervals])
         ends = sorted([x[1] for x in intervals])
@@ -48,14 +65,14 @@ class Solution:
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        self.assertEqual([[1,6],[8,10],[15,18]],Solution().merge([[1,3],[2,6],[8,10],[15,18]]))
+        self.assertEqual([[1,6],[8,10],[15,18]],get_sol().merge([[1,3],[2,6],[8,10],[15,18]]))
     def test_2(self):
-        self.assertEqual([[1,7],[8,10],[15,18]],Solution().merge([[1,3],[2,6],[5,7],[8,10],[15,18]]))
+        self.assertEqual([[1,7],[8,10],[15,18]],get_sol().merge([[1,3],[2,6],[5,7],[8,10],[15,18]]))
     def test_3(self):
-        self.assertEqual([[1,5]],Solution().merge([[1,4],[4,5]]))
+        self.assertEqual([[1,5]],get_sol().merge([[1,4],[4,5]]))
     def test_4(self):
-        self.assertEqual([[0,4]],Solution().merge([[1,4],[0,4]]))
+        self.assertEqual([[0,4]],get_sol().merge([[1,4],[0,4]]))
     def test_5(self):
-        self.assertEqual([[1,4]],Solution().merge([[1,4],[2,3]]))
+        self.assertEqual([[1,4]],get_sol().merge([[1,4],[2,3]]))
     def test_6(self):
-        self.assertEqual([[1,10]],Solution().merge([[2,3],[4,5],[6,7],[8,9],[1,10]]))
+        self.assertEqual([[1,10]],get_sol().merge([[2,3],[4,5],[6,7],[8,9],[1,10]]))

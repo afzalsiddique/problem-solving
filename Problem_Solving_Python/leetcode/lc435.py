@@ -7,10 +7,11 @@ from typing import List
 
 
 class Solution:
+    # https://www.youtube.com/watch?v=3oDvuHCTFmY
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         n=len(intervals)
-        if n==1: return 1
-        intervals.sort(key=lambda x:(x[1],-x[0]))
+        if n==1: return 0
+        intervals.sort(key=lambda x:x[1])
         last_start,last_end=intervals[0][0],intervals[0][1]
         res=[]
         for i in range(1,n):
@@ -39,4 +40,20 @@ class tester(unittest.TestCase):
     def test4(self):
         intervals = [[2,3],[4,5],[1,6]]
         Output= 1
+        self.assertEqual(Output,Solution().eraseOverlapIntervals(intervals))
+    def test5(self):
+        intervals = [[1,4],[3,6],[1,8]]
+        Output= 2
+        self.assertEqual(Output,Solution().eraseOverlapIntervals(intervals))
+    def test6(self):
+        intervals = [[0,10],[5,12]]
+        Output= 1
+        self.assertEqual(Output,Solution().eraseOverlapIntervals(intervals))
+    def test7(self):
+        intervals = [[1,2]]
+        Output= 0
+        self.assertEqual(Output,Solution().eraseOverlapIntervals(intervals))
+    def test8(self):
+        intervals = [[1,100],[11,22],[1,11],[2,12]]
+        Output= 2
         self.assertEqual(Output,Solution().eraseOverlapIntervals(intervals))
