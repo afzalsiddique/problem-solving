@@ -23,6 +23,7 @@ class Solution:
         return res
 
 
+class Solution2:
     # heap
     # https://www.youtube.com/watch?v=LiSdD3ljCIE
     def maxSlidingWindow2(self, nums: List[int], k: int) -> List[int]:
@@ -38,39 +39,51 @@ class Solution:
                 heappop(pq)
         return res
 
+class Solution3:
+    # deque
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        q = deque()
+        for i in range(k-1):
+            while q and q[-1][1]<nums[i]:
+                q.pop()
+            q.append((i,nums[i])) # idx, value
+
+        res=[]
+        for i in range(k-1,len(nums)):
+            while q and q[0][0]<=i-k:
+                q.popleft()
+            while q and q[-1][1]<nums[i]:
+                q.pop()
+            q.append((i,nums[i])) # idx, value
+            res.append(q[0][1])
+        return res
 
 class MyTestCase(unittest.TestCase):
-
     def test_1(self):
         sol = Solution()
         actual = sol.maxSlidingWindow(nums = [1,3,-1,-3,5,3,6,7], k = 3)
         expected = [3,3,5,5,6,7]
         self.assertEqual(expected, actual)
-
     def test_2(self):
         sol = Solution()
         actual = sol.maxSlidingWindow(nums = [1], k = 1)
         expected = [1]
         self.assertEqual(expected, actual)
-
     def test_3(self):
         sol = Solution()
         actual = sol.maxSlidingWindow(nums = [1,-1], k = 1)
         expected = [1,-1]
         self.assertEqual(expected, actual)
-
     def test_4(self):
         sol = Solution()
         actual = sol.maxSlidingWindow(nums = [9,11], k = 2)
         expected = [11]
         self.assertEqual(expected, actual)
-
     def test_5(self):
         sol = Solution()
         actual = sol.maxSlidingWindow(nums = [4,-2], k = 2)
         expected = [4]
         self.assertEqual(expected, actual)
-
     def test_6(self):
         sol = Solution()
         actual = sol.maxSlidingWindow([9,10,9,-7,-4,-8,2,-6],5)
