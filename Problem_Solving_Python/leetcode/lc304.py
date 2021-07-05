@@ -1,15 +1,19 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
+def get_sol(m): return NumMatrix(m)
 class NumMatrix:
+    def __init__(self, matrix: List[List[int]]):
+        n = len(matrix)
+        m = len(matrix[0])
+        dp = defaultdict(int)
 
+        for i in range(n):
+            for j in range(m):
+                dp[i,j] = dp[i-1,j] + dp[i,j-1] - dp[i-1,j-1] + matrix[i][j]
+        self.dp=dp
+    def sumRegion(self, r1: int, c1: int, r2: int, c2: int) -> int:
+        dp=self.dp
+        return dp[r2, c2] + dp[r1-1, c1-1] - dp[r1-1, c2] - dp[r2, c1-1]
+class NumMatrix2:
     def __init__(self, matrix: List[List[int]]):
         self.matrix=matrix
         self.row,self.col=len(matrix),len(matrix[0])
@@ -47,7 +51,6 @@ class NumMatrix:
         for r in ranges:
             summ+=self.__get_sum(r[0],r[1],r[2])
         return summ
-
 class tester(unittest.TestCase):
     def do_test(self,commands, inputs):
         outputs = []
@@ -69,5 +72,11 @@ class tester(unittest.TestCase):
         commands = ["NumMatrix", "sumRegion", "sumRegion", "sumRegion"]
         inputs= [[[[1],[-7]]],[0,0,0,0],[1,0,1,0],[0,0,1,0]]
         out_exptected = [None, 1, -7, -6]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(out_exptected,outputs)
+    def test_3(self):
+        commands = ["NumMatrix", "sumRegion"]
+        inputs= [    [ [[5,2],[3,6]]  ],[1,1,1,1]]
+        out_exptected = [None, 6]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(out_exptected,outputs)

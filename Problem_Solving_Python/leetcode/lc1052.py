@@ -1,6 +1,23 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], window: int) -> int:
+        n=len(customers)
+        maxx=float('-inf')
+        tmp=0
+        for i in range(window-1):
+            if grumpy[i]: tmp+=customers[i]
+        for i in range(window-1, n):
+            if grumpy[i]: tmp+=customers[i]
+            maxx=max(maxx,tmp)
+            window_beginning=i-window+1
+            if grumpy[window_beginning]: tmp-=customers[window_beginning]
+
+        summ=0
+        for i in range(n):
+            if not grumpy[i]: summ+=customers[i]
+        return summ+maxx
+class Solution2:
     # tle
     def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
         n=len(customers)
