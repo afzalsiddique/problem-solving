@@ -6,7 +6,7 @@ class Solution:
         ends = [0] * (T + 1)
         for s, e in clips:
             if s <= T:
-                ends[s] = max(ends[s], min(e, T))
+                ends[s] = max(ends[s], min(e, T)) # max reachable end
         i = count = furthest = currEnd = 0
         while currEnd < T:
             while i <= currEnd:
@@ -17,6 +17,21 @@ class Solution:
             currEnd = furthest
             count += 1
         return count
+
+class Solution2:
+    # similar to jump game 2
+    def videoStitching(self, clips: List[List[int]], T: int) -> int:
+        max_jumps = [0]*101
+        for l,r in clips:
+            max_jumps[l] = max(max_jumps[l], r)
+
+        # it is then a jump game
+        res = lo = hi = 0
+        while hi < T:
+            lo, hi = hi, max(max_jumps[lo:hi+1])
+            if hi <= lo: return -1
+            res += 1
+        return res
 
 class tester(unittest.TestCase):
     def test_1(self):
