@@ -1,19 +1,14 @@
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
 
 class Solution:
-    # https://www.youtube.com/watch?v=hqGa65Rp5LQ
     # https://www.youtube.com/watch?v=MqYLmIzl8sQ
+    # https://www.youtube.com/watch?v=hqGa65Rp5LQ&t=312s
+    # https://www.youtube.com/watch?v=QihB4bI6BJw
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         summ = sum(nums)
         if summ < S or (summ + S) % 2 == 1:
             return 0
-        target = (sum(nums)+S) // 2
+        target = (summ + S) // 2
         return self.sumSubset(nums, target)
     def sumSubset(self, nums, target):
         n = len(nums)
@@ -22,18 +17,21 @@ class Solution:
         for i in range(n+1):
             dp[i][0] = 1
         for i in range(1,n+1):
-            for j in range(1,target+1):
-                if j<nums[i] or nums[i] == 0: # if nums[i]==0:skip it
+            for j in range(1,target+1): # j is the capacity of the bag
+                if j<nums[i]: # if the capacity of the bag is less than nums[i]
+                    dp[i][j]=dp[i-1][j] # only exclude
+                elif nums[i] == 0: # if we encounter 0 skip it
                     dp[i][j]=dp[i-1][j]
                 else:
-                    dp[i][j]=dp[i-1][j]+dp[i-1][j-nums[i]]
+                    exclude = dp[i-1][j]
+                    include = dp[i-1][j-nums[i]]
+                    dp[i][j]=include+exclude
         zeros = 0
         for num in nums:
             if num==0:zeros+=1
         return int(2**zeros) * dp[-1][-1] # see below for explanation
 
 # For those who has problem with test case  [0,0,0,0,0,0,0,0,1], target = 1.
-# According to Mazhar Imam Khan,
 # The solution doesn't consider presence of "0"s in the array. Why the output is different ?
 # Because, if we have "0", then, it can have +0 and -0 and still will not effect the sum of a set. For example: Target value is = 2
 # 1) {0,2} = {+0,2}, {-0,2}.  Ans: 2
@@ -53,8 +51,8 @@ class Solution:
 # if (S > sum || (sum + S) % 2 != 0){ //S is target
 #             return 0;
 
-# i don't know why this code below works :(
 class Solution2:
+    # i don't know why this code below works :(
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         summ = sum(nums)
         if summ < S or (summ + S) % 2 == 1:
