@@ -12,30 +12,17 @@ class Solution:
             if (start,k) in dp: return dp[start,k]
             if k==1: return get_avg(start, n - 1)
             ans = 0
-            for i in range(start, n - k + 1):
+            max_group_size = n-k # divide into exactly k partitions. because it gives the maximum average. otherwise tle
+            for i in range(start, max_group_size + 1): # for (int i = s; i + k <= n ; i++)
                 left= get_avg(start,i)
                 right = h(i+1, k-1)
                 ans=max(ans,left+right)
+                # l=A[start:i+1]
+                # r=A[i+1:]
+                # print("{}->{}, {}->{}".format(l,left,r,right))
             dp[start,k]=ans
             return ans
         return h(0,k)
-class Solution2:
-    # only for visualization
-    def largestSumOfAverages(self, A: List[int], k: int) -> float:
-        def h(nums,k):
-            cumsum=list(itertools.accumulate(nums))
-            hi=len(nums)-1
-            lo=0
-            if k==1: return (cumsum[hi]-cumsum[lo]+nums[lo])/(hi-lo+1)
-            ans = float('-inf')
-            for i in range(len(nums)-k+1):
-                left=(cumsum[i] - cumsum[lo] + nums[lo]) / (i - lo + 1)
-                right = h(nums[i+1:],k-1)
-                ans =max(ans,left+right)
-            print("{}->{}".format(nums,ans))
-            return ans
-
-        return h(A,k)
 
 class tester(unittest.TestCase):
     def test_1(self):
@@ -53,6 +40,10 @@ class tester(unittest.TestCase):
         k = 4
         Output= 20.5
         self.assertEqual(Output,get_sol().largestSumOfAverages(nums,k))
-    # def test_4(self):
+    def test_4(self):
+        nums = [4663,3020,7789,1627,9668,1356,4207,1133,8765,4649,205,6455,8864,3554,3916,5925,3995,4540,3487,5444,8259,8802,6777,7306,989,4958,2921,8155,4922,2469,6923,776,9777,1796,708,786,3158,7369,8715,2136,2510,3739,6411,7996,6211,8282,4805,236,1489,7698]
+        k = 27
+        Output= 167436.0833333333
+        self.assertEqual(Output,get_sol().largestSumOfAverages(nums,k))
     # def test_5(self):
     # def test_6(self):
