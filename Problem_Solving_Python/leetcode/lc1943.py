@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/describe-the-painting/discuss/1359720/Line-Sweep
     # line sweep
     def splitPainting(self, segments: List[List[int]]) -> List[List[int]]:
         BIG = 100005
