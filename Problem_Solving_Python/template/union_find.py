@@ -1,5 +1,15 @@
 # union find 1
 root = {}
+def find(x):
+    p=root.get(x,x)
+    if p==x: return p
+    root[x] = find(p)
+    return root[x]
+def union(x,y):
+    root[find(x)]=find(y)
+
+# union find 2
+root = {}
 def add(x):
     if x not in root:
         root[x] = x
@@ -14,15 +24,14 @@ def find(x):
     return root[x]
 def union(x,y):
     add(x),add(y)
-    px,py = find(x), find(y)
-    root[px]=root[py]
+    root[find(x)]=find(y)
 
-# union find 2
-root2 = {}
-def find2(x):
-    root2.setdefault(x, x)
-    if x != root2[x]:
-        root2[x] = find2(root2[x])
-    return root2[x]
-def union2(x, y):
-    root2[find2(x)] = find2(y)
+# union find 3
+root = {}
+def find(x):
+    root.setdefault(x, x)
+    if x != root[x]:
+        root[x] = find(root[x])
+    return root[x]
+def union(x, y):
+    root[find(x)] = find(y)

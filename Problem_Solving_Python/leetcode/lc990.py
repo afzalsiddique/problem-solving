@@ -3,6 +3,14 @@ def get_sol(): return Solution()
 class Solution:
     # union find
     def equationsPossible(self, equations: List[str]) -> bool:
+        # root = {} # also works
+        # def find(x):
+        #     p=root.get(x,x)
+        #     if p==x: return p
+        #     root[x] = find(p)
+        #     return root[x]
+        # def union(x,y):
+        #     root[find(x)]=find(y)
         root = {}
         def add(x):
             if x not in root:

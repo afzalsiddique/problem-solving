@@ -43,9 +43,7 @@ class Solution2:
         return None
 
 
-
-
-def deserialize(data):
+def deserialize(data): # for unit testing
     sep,en = ',','null'
     data = data.split(sep)
     l = len(data)
@@ -67,7 +65,7 @@ def deserialize(data):
 
     return root
 
-def serialize(root):
+def serialize(root): # for unit testing
     en = 'null'
     sep = ','
     if not root: return ''

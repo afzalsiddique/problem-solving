@@ -61,7 +61,7 @@ class TreeNode:
         return lines, n + m + u, max(p, q) + 2, n + u // 2
 
 
-def deserialize(data):
+def deserialize(data): # for unit testing
     sep,en = ',','null'
     data = data.split(sep)
     l = len(data)
@@ -84,7 +84,7 @@ def deserialize(data):
 
     return root
 
-def serialize(root):
+def serialize(root): # for unit testing
     sep,en = ',','null'
     if not root: return ''
 

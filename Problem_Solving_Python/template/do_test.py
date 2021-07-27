@@ -5,6 +5,7 @@ from heapq import *
 import unittest
 from typing import List
 import heapq
+def get_sol(): return MyQueue()
 
 
 class MyQueue:
@@ -34,7 +35,7 @@ class tester(unittest.TestCase):
         obj = ""
         for i,cmd,input in zip(range(len(inputs)),commands,inputs):
             if cmd=='MyQueue':
-                obj = MyQueue()
+                obj = get_sol()
                 outputs.append(None)
             elif cmd=='push':
                 outputs.append(obj.push(input[0]))
@@ -48,9 +49,9 @@ class tester(unittest.TestCase):
     def test_01(self):
         commands = ["MyQueue","push","push","push","push","pop","push","pop","pop","pop","pop"]
         inputs=[      [],       [1],   [2],  [3],    [4],  [],   [5],    [],   [],  [],   []]
-        exptected = [None,None,None,None,None,1,None,2,3,4,5]
+        expected = [None,None,None,None,None,1,None,2,3,4,5]
         outputs = self.do_test(commands, inputs)
-        self.assertEqual(exptected,outputs)
+        self.assertEqual(expected,outputs)
     def test_02(self):
         commands = ["MyQueue", "push", "push", "peek", "pop", "empty"]
         inputs =  [[], [1], [2], [], [], []]

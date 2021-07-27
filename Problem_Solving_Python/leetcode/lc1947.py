@@ -7,12 +7,12 @@ class Solution:
         def calculate_score(s_id, m_id):
             return sum(students[s_id][i]==mentors[m_id][i] for i in range(n))
 
-        score_dp=[[0]*m for _ in range(m)]
+        score_cache=[[0]*m for _ in range(m)]
         for s_id in range(m):
             for m_id in range(m):
-                score_dp[s_id][m_id]=calculate_score(s_id,m_id)
+                score_cache[s_id][m_id]=calculate_score(s_id,m_id)
 
-        def get_score(s_id,m_id): return score_dp[s_id][m_id]
+        def get_score(s_id,m_id): return score_cache[s_id][m_id]
 
         def select_next_stu(s_id, score):
             if s_id==m: return score
