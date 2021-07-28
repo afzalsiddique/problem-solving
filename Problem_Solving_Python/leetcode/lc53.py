@@ -1,8 +1,24 @@
-import unittest
-from typing import List
-
-
+import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n=len(nums)
+        max_ending_here=[None]*n # this array could be removed
+        max_ending_here[0]=nums[0]
+        for i in range(1,n):
+            max_ending_here[i]=max(nums[i],max_ending_here[i-1]+nums[i])
+        return max(max_ending_here)
+
+class Solution2:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n=len(nums)
+        max_ending_here=nums[0]
+        maxx=nums[0]
+        for i in range(1,n):
+            max_ending_here=max(nums[i],max_ending_here+nums[i])
+            maxx=max(maxx,max_ending_here)
+        return maxx
+class Solution3:
     def maxSubArray(self, nums: List[int]) -> int:
         n = len(nums)
         cur_sum = 0
@@ -15,8 +31,7 @@ class Solution:
             maxx = max(maxx, cur_sum)
         return maxx
 
-
-class Solution2:
+class Solution4:
     def maxSubArray(self, nums: List[int]) -> int:
         n = len(nums)
         cur_sum = 0
@@ -29,7 +44,7 @@ class Solution2:
                 cur_sum = cur_sum+nums[i]
 
         return maxx
-class Solution3:
+class Solution5:
     def maxSubArray(self, nums: List[int]) -> int:
         maxx=float('-inf')
         cur_sum=0
@@ -39,7 +54,7 @@ class Solution3:
                 maxx=cur_sum
             if cur_sum<0: cur_sum=0
         return maxx
-class Solution4:
+class Solution6:
     def maxSubArray(self, nums: List[int]) -> int:
         return self.helper(nums, 0, len(nums))
 
@@ -71,30 +86,26 @@ class Solution4:
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
         nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-        actual = solution.maxSubArray(nums)
+        actual = get_sol().maxSubArray(nums)
         expected = 6
         self.assertEqual(expected, actual)
 
     def test_2(self):
-        solution = Solution()
         nums = [-2, -1]
-        actual = solution.maxSubArray(nums)
+        actual = get_sol().maxSubArray(nums)
         expected = -1
         self.assertEqual(expected, actual)
 
     def test_3(self):
-        solution = Solution()
         nums = [-1]
-        actual = solution.maxSubArray(nums)
+        actual = get_sol().maxSubArray(nums)
         expected = -1
         self.assertEqual(expected, actual)
 
     def test_4(self):
-        solution = Solution()
         nums = [1]
-        actual = solution.maxSubArray(nums)
+        actual = get_sol().maxSubArray(nums)
         expected = 1
         self.assertEqual(expected, actual)
 
