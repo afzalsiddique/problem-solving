@@ -1,7 +1,7 @@
 # https://www.youtube.com/watch?v=quAS1iydq7U
 import unittest
 from typing import List
-def get_sol_obj(): return Solution4()
+def get_sol_obj(): return Solution()
 
 class Solution:
     # all are same
@@ -13,25 +13,22 @@ class Solution:
         # 2. Find the largest index l > k such that  nums[l]>nums[k]
         # 3. Swap nums[k] and nums[l].
         # 4. Reverse the sub-array nums[k + 1:].
-        n = len(nums)
-        found=None
-        for k in reversed(range(n)):
-            if k==n-1:continue
-            if nums[k]<nums[k+1]:
-                found=True
+        n=len(nums)
+        k='nothing'
+        for i in reversed(range(n)):
+            if i>0 and nums[i]>nums[i-1]: # change '>' to '<' to find prevPermutation
+                k=i-1
                 break
-        if not found:
+        if k=='nothing':
             nums.reverse()
             return
+
         for l in reversed(range(n)):
-            if nums[l]>nums[k]:
-                nums[l],nums[k]=nums[k],nums[l]
+            if nums[l]>nums[k]: # change '>' to '<' to find prevPermutation
                 break
-        left,right=k+1,n-1
-        while left<right:
-            nums[left],nums[right]=nums[right],nums[left]
-            left+=1
-            right-=1
+
+        nums[l],nums[k]=nums[k],nums[l]
+        nums[k+1:]=reversed(nums[k+1:])
 class Solution2:
     def nextPermutation(self, nums: List[int]) -> None:
         """

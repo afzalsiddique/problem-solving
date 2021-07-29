@@ -1,7 +1,8 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List
 def get_sol(): return Solution()
+# https://leetcode.com/problems/network-delay-time/
 class Solution:
-    # abdul bari video
+    # abdul bari video. edge relaxation and heap based implementation
     # https://www.youtube.com/watch?v=XB4MIexjvY0
     def networkDelayTime(self, times, n, src):
         g=defaultdict(list)
@@ -16,16 +17,16 @@ class Solution:
         for v,w in g[src]: pq.append((w,v))
         heapify(pq)
         while pq:
-            cur_best_dist,u=heappop(pq)
+            src_to_u,u=heappop(pq)
             for v,dist_between_uv in g[u]:
-                new_dist=cur_best_dist+dist_between_uv
+                new_dist=src_to_u+dist_between_uv
                 if new_dist<final_dist[v]:
                     final_dist[v]=new_dist
                     heappush(pq,(new_dist,v))
         res = max(final_dist)
         return res if res!=float('inf') else -1
 class Solution2:
-    # dijkstra heap implementaion
+    # dijkstra heap implementation
     # https://www.youtube.com/watch?v=pSqmAO-m7Lk&t=230s
     # leetcode original solution
     def networkDelayTime(self, times, n, src):
