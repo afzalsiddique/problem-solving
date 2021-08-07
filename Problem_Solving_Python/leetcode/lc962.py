@@ -2,6 +2,7 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/maximum-width-ramp/discuss/208348/JavaC%2B%2BPython-O(N)-Using-Stack
+    # https://leetcode.com/problems/maximum-width-ramp/discuss/208348/JavaC++Python-O(N)-Using-Stack/211767
     # time O(n) space O(n)
     def maxWidthRamp(self, A):
         n=len(A)
