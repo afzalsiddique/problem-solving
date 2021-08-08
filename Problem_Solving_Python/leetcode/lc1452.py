@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # bitmask
     def peopleIndexes(self, favoriteCompanies: List[List[str]]) -> List[int]:
         def turn_on(jobs,job_id):
             return jobs|1<<job_id
@@ -31,8 +32,23 @@ class Solution:
                     break
             if flag: res.append(i)
         return res
+class Solution2:
+    def peopleIndexes(self, favoriteCompanies: List[List[str]]) -> List[int]:
+        def is_subset(i):
+            for j in range(n):
+                flag=True
+                if j==i: continue
+                for comp in li[i]:
+                    if comp not in li[j]:
+                        flag=False
+                        break
+                if flag: return True
+            return False
 
-
+        n=len(favoriteCompanies)
+        li=[set(comp) for comp in favoriteCompanies]
+        res=[i for i in range(n) if not is_subset(i)]
+        return res
 
 class Tester(unittest.TestCase):
     def test_1(self):
