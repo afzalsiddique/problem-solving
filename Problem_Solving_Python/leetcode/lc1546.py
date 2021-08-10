@@ -1,8 +1,9 @@
-# https://www.youtube.com/watch?v=0LWRSbYH5oM
-from typing import List
+import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 
-
+# OVERLAPPING LEETCODE 560
 class Solution:
+    # https://www.youtube.com/watch?v=0LWRSbYH5oM
     def maxNonOverlapping(self, nums: List[int], target: int) -> int:
         prefix_sum = 0
         res = 0
@@ -16,3 +17,24 @@ class Solution:
                 res+=1
             di[prefix_sum] = i
         return res
+
+class MyTestCase(unittest.TestCase):
+    def test_1(self):
+        nums = [-1, 3, 5, 1, 4, 2, -9]
+        target = 6
+        Output=2
+        self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
+
+    def test_2(self):
+        nums = [1,1,1,1,1]
+        target = 2
+        Output = 2
+        self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
+    def test_3(self):
+        nums,target = [-2,6,6,3,5,4,1,2,8], 10
+        Output= 3
+        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
+    def test_4(self):
+        nums,target = [0,0,0], 0
+        Output= 3
+        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))

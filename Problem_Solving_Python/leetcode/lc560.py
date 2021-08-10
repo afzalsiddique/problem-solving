@@ -1,8 +1,7 @@
 import unittest
 from collections import deque, defaultdict
 
-
-
+# NON-OVERLAPPING LEETCODE 1546
 class Solution:
     def subarraySum(self, nums ,k):
         ## best example for thinking process ##
