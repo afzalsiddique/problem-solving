@@ -1,33 +1,31 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
-    def getMaxLen(self, nums: List[int]) -> int:
+    # similar to 239
+    def maxResult(self, nums: List[int], k: int) -> int:
         n=len(nums)
-        prev_idx=-1
-        neg=0
-        maxx=0
-        i=0
-        while i<n:
-            if nums[i]==0:
-                prev_idx=i
-                while nums[i]==0:
-                    i+=1
-                continue
-            elif nums[i]<0:
-                neg+=1
-            if not neg&1:
-                maxx=max(maxx,i-prev_idx)
-            i+=1
-        # neg=0
-        # prev_idx=n
-        # for i in reversed(range(n)):
-        #     if nums[i]==0:
-        #         prev_idx=i
-        #     elif nums[i]<0:
-        #         neg+=1
-        #     if not neg&1:
-        #         maxx=max(maxx,prev_idx-i)
-        return maxx
+        if n==1: return nums[0]
+        q=deque()
+        q.append((nums[0],0)) # score,idx
+        for i in range(1,n):
+            while q and q[0][1]<i-k:
+                q.popleft()
+            score,idx=q[0]
+            new_score=score+nums[i]
+            while q and q[-1][0]<=new_score:
+                q.pop()
+            q.append((new_score,i))
+        return new_score
+class Solution2:
+    # TLE
+    def maxResult(self, nums: List[int], k: int) -> int:
+        n=len(nums)
+        score=[float('-inf')]*n
+        score[0]=nums[0]
+        for i in range(n):
+            for j in range(i+1,min(i+1+k,n)):
+                score[j]=max(score[j],score[i]+nums[j])
+        return score[-1]
 
 
 class MyTestCase(unittest.TestCase):
