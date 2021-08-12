@@ -8,13 +8,16 @@ int cost[17][17];
 int dp[1<<17 -1][17];
 
 
-int turnOn(int jobs,int job)
-{
+//def turn_off(jobs,job_id): return jobs & ~(1<<job_id)
+//def turn_on(jobs,job_id): return jobs | (1<<job_id)
+//def is_on(jobs,job_id): return jobs & (1<<job_id)
+int turnOn(int jobs,int job) {
     return jobs | (1<<job);
 }
-
-bool isOn(int jobs,int job)
-{
+bool turnOff(int jobs, int job){
+    return jobs & ~(1<<job)
+}
+bool isOn(int jobs,int job) {
     return (bool)(jobs & (1<<job));
 }
 

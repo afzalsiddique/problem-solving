@@ -1,6 +1,23 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution2()
+def get_sol(): return Solution()
 class Solution:
+    def maximumUniqueSubarray(self, A: List[int]) -> int:
+        n=len(A)
+        vis=set()
+        l=0;r=0;summ=0;res=0
+        while r<n:
+            while r<n and A[r] not in vis:
+                vis.add(A[r])
+                summ += A[r]
+                r+=1
+            res = max(res, summ)
+            if r==n: break
+            while A[r] in vis:
+                vis.remove(A[l])
+                summ -= A[l]
+                l+=1
+        return res
+class Solution3:
     def maximumUniqueSubarray(self, A: List[int]) -> int:
         n=len(A)
         l,r=0,0
@@ -18,7 +35,7 @@ class Solution:
                 cur-=A[l]
                 l+=1
         return maxx
-class Solution2:
+class Solution4:
     # tle
     def maximumUniqueSubarray(self, nums: List[int]) -> int:
         n = len(nums)
