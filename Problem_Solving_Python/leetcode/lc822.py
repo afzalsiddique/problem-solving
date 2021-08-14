@@ -3,21 +3,17 @@ def get_sol(): return Solution()
 class Solution:
     def flipgame(self, fronts: List[int], backs: List[int]) -> int:
         n=len(fronts)
-        def h(fronts: List[int], backs: List[int]):
-            sett=set()
-            minn=float('inf')
-            for i in range(n):
-                if fronts[i]==backs[i]:
-                    sett.add(fronts[i])
-                else:
-                    if fronts[i] not in sett:
-                        minn=min(minn,fronts[i])
-            return minn
-
-        f1,b1=zip(*sorted(zip(fronts,backs),key=lambda x:(x[0])))
-        f2,b2=zip(*sorted(zip(fronts,backs),key=lambda x:(x[1])))
-        return min(h(f1,b1),h(f2,b2))
-
+        sett=set()
+        minn=float('inf')
+        for i in range(n):
+            if fronts[i]==backs[i]:
+                sett.add(fronts[i])
+        for i in range(n):
+            if fronts[i] not in sett:
+                minn=min(minn,fronts[i])
+            if backs[i] not in sett:
+                minn=min(minn,backs[i])
+        return minn if minn!=float('inf') else 0
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):

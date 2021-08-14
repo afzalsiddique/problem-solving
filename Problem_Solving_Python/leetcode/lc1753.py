@@ -1,8 +1,4 @@
-# contest 227
-import unittest
-from typing import List
-
-
+import unittest; from typing import List
 class Solution:
     def maximumScore(self, a: int, b: int, c: int) -> int:
         li = [a,b,c]

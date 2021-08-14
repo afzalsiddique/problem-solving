@@ -1,10 +1,5 @@
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 class Solution:
     ## TLE
     def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:
@@ -24,8 +19,22 @@ class Solution:
                 nums1[i],nums1[j]=nums1[j],nums1[i]
         return minn
 
-class tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(20,Solution().minAbsoluteSumDiff(nums1 = [1,10,4,4,2,7], nums2 = [9,3,5,1,7,4]))
-#     def test2(self):
-#         self.assertEqual([1,1,0,0],Solution().findingUsersActiveMinutes(logs = [[1,1],[2,2],[2,3]], k = 4))
+class MyTestCase(unittest.TestCase):
+    def test_1(self):
+        nums1,nums2 = [1,7,5],[2,3,5]
+        Output= 3
+        self.assertEqual(Output, get_sol().minAbsoluteSumDiff(nums1,nums2))
+    def test_2(self):
+        nums1,nums2 = [2,4,6,8,10],[2,4,6,8,10]
+        Output= 0
+        self.assertEqual(Output, get_sol().minAbsoluteSumDiff(nums1,nums2))
+    def test_3(self):
+        nums1,nums2 = [1,10,4,4,2,7],[9,3,5,1,7,4]
+        Output= 20
+        self.assertEqual(Output, get_sol().minAbsoluteSumDiff(nums1,nums2))
+    # def test_4(self):
+    # def test_5(self):
+    # def test_6(self):
+    # def test_7(self):
+    # def test_8(self):
+    # def test_9(self):
