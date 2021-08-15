@@ -1,6 +1,36 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:
+        n=len(nums1)
+        MOD=10**9+7
+        arr=sorted(nums1)
+        summ=sum([abs(a-b) for a,b in zip(nums1,nums2)])
+        res=summ
+        for i in range(n):
+            summ-=abs(nums1[i]-nums2[i])
+
+            idx=bisect_left(arr,nums2[i])
+            if idx!=n and arr[idx]==nums2[i]:
+                diff=0
+            else:
+                if idx!=0:
+                    diff=abs(arr[idx-1]-nums2[i])
+                else:
+                    diff=float('inf')
+            res=min(res,summ+diff)
+
+            idx=bisect_right(arr,nums2[i])
+            if idx!=n:
+                diff=abs(arr[idx]-nums2[i])
+            else:
+                diff=float('inf')
+            res=min(res,summ+diff)
+
+            summ+=abs(nums1[i]-nums2[i])
+
+        return res % MOD
+class Solution2:
     ## TLE
     def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:
         abs_values = []
