@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # tle
     def grayCode(self, n: int) -> List[int]:
         MAX=2**n
         powers={2**i for i in range(30)}

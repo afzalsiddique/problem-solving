@@ -1,74 +1,21 @@
-import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
-class Solution:
-    def maxProductPath(self, grid: List[List[int]]) -> int:
-        def h(i,j):
-            if not 0<=i<m or not 0<=j<n: return 0,0
-            if (i,j) in dp_pos: return dp_pos[i,j], dp_neg[i,j]
-            if (i,j)==(m-1,n-1):
-                if grid[i][j]>0:
-                    dp_pos[i,j]=grid[i][j]
-                    dp_neg[i,j]=0
-                elif grid[i][j]<0:
-                    dp_neg[i,j]=grid[i][j]
-                    dp_pos[i,j]=0
-                else:
-                    dp_pos[i,j]=0
-                    dp_neg[i,j]=0
-                return dp_pos[i,j],dp_neg[i,j]
-            for di,dj in [(1,0),(0,1)]:
-                ans_pos,ans_neg=h(i+di,j+dj)
-                if grid[i][j]>0:
-                    if ans_pos!=0:
-                        dp_pos[i,j]=max(dp_pos[i,j],ans_pos*grid[i][j])
-                    else:
-                        dp_pos[i,j]=max(dp_pos[i,j],grid[i][j])
-                    if ans_neg!=0:
-                        dp_neg[i,j]=min(dp_neg[i,j],ans_neg*grid[i][j])
-                    else:
-                        dp_neg[i,j]=min(dp_neg[i,j],grid[i][j])
-                elif grid[i][j]<0:
-                    if ans_neg!=0:
-                        dp_pos[i,j]=max(dp_pos[i,j],ans_neg*grid[i][j])
-                    else:
-                        dp_pos[i,j]=max(dp_pos[i,j],0)
-                    if ans_pos!=0:
-                        dp_neg[i,j]=min(dp_neg[i,j],ans_pos*grid[i][j])
-                    else:
-                        dp_neg[i,j]=min(dp_neg[i,j],0)
-                else:
-                    dp_pos[i,j]=max(dp_pos[i,j],0)
-                    dp_neg[i,j]=min(dp_neg[i,j],0)
-            return dp_pos[i,j],dp_neg[i,j]
+import math
+# arr = [12,18,21]
+# print(sum(arr)/3)
+# arr=[11,12,12,14,15,16,17,18,19,20]
+import random
 
-        m,n=len(grid),len(grid[0])
-        dp_pos=defaultdict(lambda:float('-inf'))
-        dp_neg=defaultdict(lambda:float('inf'))
-        h(0,0)
-        print(dp_pos)
-        print(dp_neg)
-        ans=dp_pos[0,0]
-        return ans if ans>0 else -1
-
-class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        grid = [[-1,-2,-3], [-2,-3,-3], [-3,-3,-2]]
-        Output= -1
-        self.assertEqual(Output, get_sol().maxProductPath(grid))
-    def test_2(self):
-        grid = [[1,-2,1], [1,-2,1], [3,-4,1]]
-        Output= 8
-        self.assertEqual(Output, get_sol().maxProductPath(grid))
-    def test_3(self):
-        grid = [[1, 3], [0,-4]]
-        Output= 0
-        self.assertEqual(Output, get_sol().maxProductPath(grid))
-    def test_4(self):
-        grid = [[ 1, 4,4,0], [-2, 0,0,1], [ 1,-1,1,1]]
-        Output= 2
-        self.assertEqual(Output, get_sol().maxProductPath(grid))
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
-    # def test_9(self):
+arr=[ 51.73541667, 36.03222222, 24.60333333, 21.2575, 24.36136364, 35.685, 27.75666667, 24.45458333, 30.70391304, 44.04875, 36.41833333, 23.48291667, 34.08708333, 27.58291667, 40.6575, 37.85375, 28.5075, 31.82652174, 30.42318182, 41.87833333, 63.28521739, 34.23083333, 39.90291667, 48.22833333, 31.58541667, 39.69416667, 36.0185, 53.47958333, 49.86916667, 53.56166667, 33.68304348]
+arr = [random.randint(0,1000) for _ in range(10**6)]
+def pm_freq(arr):
+    maxx=max(arr)
+    minn=min(arr)
+    arr=[(a-minn)/(maxx-minn) for a in arr]
+    no_of_classes=10
+    arr=[math.floor(a*(no_of_classes-1)) for a in arr]
+    buckets=[0]*no_of_classes
+    for a in arr:
+        buckets[a]+=1
+    return buckets
+ans=pm_freq(arr)
+print(ans)
+print(sum(ans))
