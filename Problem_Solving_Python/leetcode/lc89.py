@@ -1,7 +1,21 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
-    # tle
+    # When n=3, we can get the result based on n=2.
+    #   00, 01, 11, 10 ->
+    # (000,001,011,010 ), (110,111,101,100).
+    # The two parts differ at their highest bit and the rest numbers of part two are exactly
+    # symmetric of part one.
+    def grayCode(self, n:int)->List[int]:
+        res=[0]
+        for i in range(n):
+            for j in range(len(res)-1,-1,-1):
+            # for j in reversed(range(2**i)): # also works
+                tmp=res[j]|1<<i
+                res.append(tmp)
+        return res
+class Solution2:
+    # tle. backtracking
     def grayCode(self, n: int) -> List[int]:
         MAX=2**n
         powers={2**i for i in range(30)}
