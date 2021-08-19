@@ -1,5 +1,19 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, lru_cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
+class Solution4:
+    def minFlipsMonoIncr(self, s: str) -> int:
+        n=len(s)
+        res=0
+        one_count=0
+        for i in range(n):
+            if s[i]=='0':
+                # either remove this '0': res + 1
+                # or keep this '0': one_count (must remove all previous '1's)
+                res=min(res+1,one_count)
+            else:
+                # Fine for '1' in the tail
+                one_count+=1
+        return res
 class Solution:
     def minFlipsMonoIncr(self, s):
         n = len(s)

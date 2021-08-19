@@ -8,6 +8,7 @@ class Solution:
         while n:
             res.append(n%2)
             n = -(n//2)
+            # n= n//(-2) # does not work
         return ''.join(list(map(str,res[::-1])))
 class Solution2:
     def baseNeg2(self, n: int) -> str:
