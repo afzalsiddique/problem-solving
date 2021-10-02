@@ -1,5 +1,5 @@
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution2()
 
 # z algo
 class Solution:
@@ -37,22 +37,41 @@ class Solution:
 class Solution2:
     # creating lps
     def computeLPSArray(self, pat): # geeksforgeeks
-        length = 0 # length of the previous longest prefix suffix
+        j = 0 # length of the previous longest prefix suffix
         i = 1
         n = len(pat)
         lps=[0]*n
         while i < n:
-            if pat[i]== pat[length]:
-                length += 1
-                lps[i] = length
+            if pat[i]== pat[j]:
+                lps[i] = j+1
                 i += 1
+                j += 1
             else:
-                if length != 0:
-                    length = lps[length-1] # go back to previous longest prefix suffix
+                if j != 0:
+                    j = lps[j-1] # go back to previous longest prefix suffix
                 else:
                     lps[i] = 0
                     i += 1
         return lps
+    # finding pattern
+    def strStr(self, haystack: str, needle: str) -> int:
+        lps = self.computeLPSArray(needle)
+        m,n=len(haystack),len(needle)
+        if n==0: return 0
+        j=0
+        i=0
+        while i<m:
+            if haystack[i]==needle[j]:
+                i+=1
+                j+=1
+                if j==len(needle):
+                    return i-j
+            else:
+                if j!=0:
+                    j=lps[j-1]
+                else:
+                    i+=1
+        return -1
     def computeLPSArray2(self,pat:str): # abdul bari version
         pat = '#' + pat
         n = len(pat)
@@ -72,7 +91,7 @@ class Solution2:
         return lps[1:]
 
     # finding pattern
-    def strStr(self, haystack: str, needle: str) -> int:
+    def strStr2(self, haystack: str, needle: str) -> int:
         m,n= len(haystack), len(needle)
         if n==0:return 0
         if m==0:return -1
@@ -91,23 +110,6 @@ class Solution2:
                     i+=1
         return -1
 
-    def strStr2(self, haystack: str, needle: str) -> int:
-        lps = self.computeLPSArray(needle)
-        n=len(haystack)
-        j=0
-        i=0
-        while i<n:
-            if haystack[i]==needle[j]:
-                i+=1
-                j+=1
-                if j==len(needle):
-                    return i-j
-            else:
-                if j!=0:
-                    j=lps[j-1]
-                else:
-                    i+=1
-        return -1
 class Solution3:
     # brute force
     def strStr(self, haystack: str, needle: str) -> int:
@@ -130,40 +132,30 @@ class Solution3:
 class tester(unittest.TestCase):
 
     def test_1(self):
-        sol = Solution()
-        actual = sol.strStr(haystack = "hello", needle = "ll")
+        actual = get_sol().strStr(haystack = "hello", needle = "ll")
         expected = 2
         self.assertEqual(expected, actual)
-
     def test_2(self):
-        sol = Solution()
-        actual = sol.strStr(haystack = "aaaaa", needle = "bba")
+        actual = get_sol().strStr(haystack = "aaaaa", needle = "bba")
         expected = -1
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        sol = Solution()
-        actual = sol.strStr(haystack = "", needle = "")
+        actual = get_sol().strStr(haystack = "", needle = "")
         expected = 0
         self.assertEqual(expected, actual)
-
     def test_4(self):
-        sol = Solution()
-        actual = sol.strStr("a","a")
+        actual = get_sol().strStr("a","a")
         expected = 0
         self.assertEqual(expected, actual)
     def test_5(self):
-        sol = Solution()
-        actual = sol.strStr("mississippi","mississippi")
+        actual = get_sol().strStr("mississippi","mississippi")
         expected = 0
         self.assertEqual(expected, actual)
     def test_6(self):
-        sol = Solution()
-        actual = sol.strStr( "mississippi" ,"issipi")
+        actual = get_sol().strStr( "mississippi" ,"issipi")
         expected = -1
         self.assertEqual(expected, actual)
     def test_7(self):
-        sol = Solution()
-        actual = sol.strStr( "mississippi" ,"issip")
+        actual = get_sol().strStr( "mississippi" ,"issip")
         expected = 4
         self.assertEqual(expected, actual)

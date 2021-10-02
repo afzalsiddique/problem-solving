@@ -21,19 +21,19 @@ def computeLPSArray( pat):
 print(computeLPSArray("aaaabaabd"))
 
 
-def kmp(text: str, pattern: str) -> int:
-    m,n= len(text), len(pattern)
-    if n==0:return 0
-    if m==0:return -1
-    i,j=0,0
-    lps = computeLPSArray(pattern)
+def kmp(haystack: str, needle: str) -> int:
+    lps = computeLPSArray(needle)
+    m,n=len(haystack),len(needle)
+    if n==0: return 0
+    j=0
+    i=0
     while i<m:
-        if text[i]==pattern[j]:
+        if haystack[i]==needle[j]:
             i+=1
             j+=1
-        if j==n:
-            return i-j
-        if i<m and pattern[j]!=text[i]:
+            if j==len(needle):
+                return i-j
+        else:
             if j!=0:
                 j=lps[j-1]
             else:

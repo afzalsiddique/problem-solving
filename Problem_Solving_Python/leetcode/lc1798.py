@@ -1,13 +1,20 @@
-##### TLE ######
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 class Solution:
+    def getMaximumConsecutive(self, coins: List[int]) -> int:
+        coins.sort()
+        cur_sum = 0
+        target=1
+        for i in range(len(coins)):
+            if coins[i]<=target<=coins[i]+cur_sum:
+                cur_sum+=coins[i]
+                target=cur_sum+1
+            else:
+                break
+        return target
+
+class Solution2:
+    # tle
     def getMaximumConsecutive(self, coins: List[int]) -> int:
         res = self.subsetsWithDup(coins)
         sett = set()

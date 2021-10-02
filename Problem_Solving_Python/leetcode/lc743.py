@@ -4,24 +4,29 @@ class Solution:
     # abdul bari video
     # https://www.youtube.com/watch?v=XB4MIexjvY0
     def networkDelayTime(self, times, n, src):
+        def dijkstra(g):
+            final_dist = [float('inf') for _ in range(n)]
+            final_dist[src]=0
+            pq=[(0,src)]
+
+            # according to abdul bari video but not necessary
+            # for v,w in g[src]: final_dist[v]=w
+            # for v,w in g[src]: pq.append((w,v))
+            # heapify(pq)
+
+            while pq:
+                cur,u=heappop(pq)
+                for v,cost in g[u]:
+                    if cur+cost<final_dist[v]:
+                        final_dist[v]=cur+cost
+                        heappush(pq,(cur+cost,v))
+            return final_dist
+
+        src-=1 # convert to 0 based indexing
         g=defaultdict(list)
-        for u,v,w in times: g[u].append((v,w))
+        for u,v,w in times: g[u-1].append((v-1,w)) # convert to 0 based indexing
 
-        final_dist = [float('inf') for _ in range(n+1)] # 1 based indexing
-        final_dist[0]=float('-inf') # invalid index i.e index starts from 1
-        final_dist[src]=0
-        for v,w in g[src]: final_dist[v]=w
-
-        pq=[(0,src)]
-        for v,w in g[src]: pq.append((w,v))
-        heapify(pq)
-        while pq:
-            cur_best_dist,u=heappop(pq)
-            for v,dist_between_uv in g[u]:
-                new_dist=cur_best_dist+dist_between_uv
-                if new_dist<final_dist[v]:
-                    final_dist[v]=new_dist
-                    heappush(pq,(new_dist,v))
+        final_dist = dijkstra(g)
         res = max(final_dist)
         return res if res!=float('inf') else -1
 class Solution2:
@@ -75,32 +80,21 @@ class Solution4:
 
         return max(dist) if max(dist) < float("inf") else -1
 
+
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        times = [[2, 1, 1], [2, 3, 1], [3, 4, 1]]
-        N = 4
-        K = 2
-        actual = get_sol().networkDelayTime(times, N, K)
+        times = [[2, 1, 1], [2, 3, 1], [3, 4, 1]]; N = 4; K = 2
         expected = 2
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().networkDelayTime(times, N, K))
     def test2(self):
-        times = [[1,2,1]]
-        N = 2
-        K = 2
-        actual = get_sol().networkDelayTime(times, N, K)
+        times = [[1,2,1]]; N = 2; K = 2
         expected = -1
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().networkDelayTime(times, N, K))
     def test3(self):
-        times = [[1,2,1]]
-        N = 2
-        K = 1
-        actual = get_sol().networkDelayTime(times, N, K)
+        times = [[1,2,1]]; N = 2; K = 1
         expected = 1
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().networkDelayTime(times, N, K))
     def test4(self):
-        times =[[3,5,78],[2,1,1],[1,3,0],[4,3,59],[5,3,85],[5,2,22],[2,4,23],[1,4,43],[4,5,75],[5,1,15],[1,5,91],[4,1,16],[3,2,98],[3,4,22],[5,4,31],[1,2,0],[2,5,4],[4,2,51],[3,1,36],[2,3,59]]
-        N = 5
-        K = 5
-        actual = get_sol().networkDelayTime(times, N, K)
+        times =[[3,5,78],[2,1,1],[1,3,0],[4,3,59],[5,3,85],[5,2,22],[2,4,23],[1,4,43],[4,5,75],[5,1,15],[1,5,91],[4,1,16],[3,2,98],[3,4,22],[5,4,31],[1,2,0],[2,5,4],[4,2,51],[3,1,36],[2,3,59]]; N = 5; K = 5
         expected = 31
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().networkDelayTime(times, N, K))
