@@ -11,6 +11,7 @@ int dp[1<<17 -1][17];
 //def turn_off(jobs,job_id): return jobs & ~(1<<job_id)
 //def turn_on(jobs,job_id): return jobs | (1<<job_id)
 //def is_on(jobs,job_id): return jobs & (1<<job_id)
+//def allSelected(tasks): return tasks == ((1<<n)-1)
 int turnOn(int jobs,int job) {
     return jobs | (1<<job);
 }

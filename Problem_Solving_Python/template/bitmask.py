@@ -1,0 +1,5 @@
+def turn_off(jobs,job_id): return jobs & ~(1<<job_id)
+def turn_on(jobs,job_id): return jobs | (1<<job_id)
+def is_on(jobs,job_id): return jobs & (1<<job_id)
+def flip(jobs, job_id): return jobs ^ (1<<job_id)
+def allSelected(jobs, n): return jobs == ((1 << n) - 1)

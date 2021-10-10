@@ -1,7 +1,24 @@
-import heapq
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    def reductionOperations(self, nums: List[int]) -> int:
+        nums.sort()
+        smallest = nums[0]
+        dp = {}
+        def f(num):
+            if num==smallest:
+                return 0
+            if num in dp: return dp[num]
+            idx = bisect_left(nums, num)
+            dp[num] = 1 + f(nums[idx-1])
+            return dp[num]
+
+        res=0
+        for num in nums:
+            res+= f(num)
+        return res
+
+class Solution2:
     # tle
     def reductionOperations(self, nums: List[int]) -> int:
         di = Counter(nums)

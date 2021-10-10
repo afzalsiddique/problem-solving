@@ -1,6 +1,5 @@
-import unittest
-from typing import List
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
+def get_sol(): return Solution()
 # ***************** nums[i] != nums[i + 1] for all valid i ***************
 class Solution:
     # https://www.youtube.com/watch?v=a7D77DdhlFc
@@ -27,10 +26,34 @@ class Solution2:
             else:
                 hi=mid1
         return lo
+class Solution3:
+    # bad solution
+    # this one should work even without the restriction " nums[i] != nums[i + 1] for all valid i "
+    # time O(n)
+    # it is easier to do a normal linear solution than this solution
+    def findPeakElement(self, nums: List[int]) -> int:
+        def my_binary_search(lo,hi):
+            if lo>hi: return float('-inf')
+            mid = (lo+hi)//2
+            if nums[mid]>nums[mid-1] and nums[mid]>nums[mid+1]:
+                return mid
+            ans1 = my_binary_search(lo,mid-1)
+            ans2 = my_binary_search(mid+1,hi)
+            return max(ans1,ans2) # the reason it is max(ans1,ans2) is because we are returning float('-inf') when lo>hi
+
+        nums = [float('-inf')] + nums + [float('-inf')]
+        n=len(nums)
+        lo,hi=1, n-2
+        ans = my_binary_search(lo,hi)
+        ans-=1 # convert to original array
+        return ans
 
 class MyTestCase(unittest.TestCase):
-
     def test1(self):
-        self.assertEqual(2, Solution().findPeakElement([1,2,3,1]))
+        self.assertEqual(2, get_sol().findPeakElement([1,2,3,1]))
     def test2(self):
-        self.assertEqual(3, Solution().findPeakElement([10,80,10,30,10,20,10]))
+        self.assertEqual(3, get_sol().findPeakElement([10,80,10,30,10,20,10]))
+    def test3(self):
+        nums = [1,2,1,3,5,6,4]
+        Output= 5
+        self.assertEqual(Output, get_sol().findPeakElement(nums))

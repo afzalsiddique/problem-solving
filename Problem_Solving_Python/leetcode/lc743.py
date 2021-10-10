@@ -16,6 +16,7 @@ class Solution:
 
             while pq:
                 cur,u=heappop(pq)
+                if cur>final_dist[u]: continue # optimization
                 for v,cost in g[u]:
                     if cur+cost<final_dist[v]:
                         final_dist[v]=cur+cost

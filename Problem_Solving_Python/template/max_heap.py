@@ -1,19 +1,18 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List
 
-# implementation 1
-class MaxHeap(list):
+# implementation 1.3
+class MaxHeap3(list):
     def __init__(self):
         super().__init__()
-        self.data = []
-    def top(self): return -self.data[0]
-    def push(self, val): heappush(self.data, -val)
-    def heappop(self): return -heappop(self.data)
-    def __repr__(self): return str(self.data)
-    def __len__(self): return len(self.data)
-    def __bool__(self): return True if len(self.data) else False
+    def topPrice(self): return -self[0][0]
+    def topAmount(self): return -self[0][1]
+    def setTopPrice(self,val): self[0][0]=val*(-1)
+    def setTopAmount(self,val): self[0][1]=val*(-1)
+    def push(self, price, amount): heappush(self, [-price, -amount])
+    def heappop(self): return heappop(self)
 
 # implementation 1.2  with two elements
-class MaxHeap2(list):
+class MaxHeap2(list): # I think we don't need to inherit list class
     def __init__(self):
         super().__init__()
         self.data = []
@@ -24,6 +23,18 @@ class MaxHeap2(list):
     def setTopAmount(self,val): self.data[0][1]=val*(-1)
     def push(self, price, amount): heappush(self.data, [-price, -amount])
     def heappop(self): return heappop(self.data)
+    def __repr__(self): return str(self.data)
+    def __len__(self): return len(self.data)
+    def __bool__(self): return True if len(self.data) else False
+
+# implementation 1.1
+class MaxHeap(list): # I think we don't need to inherit list class
+    def __init__(self):
+        super().__init__()
+        self.data = []
+    def top(self): return -self.data[0]
+    def push(self, val): heappush(self.data, -val)
+    def heappop(self): return -heappop(self.data)
     def __repr__(self): return str(self.data)
     def __len__(self): return len(self.data)
     def __bool__(self): return True if len(self.data) else False
