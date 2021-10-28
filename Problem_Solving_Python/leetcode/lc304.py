@@ -13,6 +13,7 @@ class NumMatrix:
     def sumRegion(self, r1: int, c1: int, r2: int, c2: int) -> int:
         dp=self.dp
         return dp[r2, c2] + dp[r1-1, c1-1] - dp[r1-1, c2] - dp[r2, c1-1]
+
 class NumMatrix2:
     def __init__(self, matrix: List[List[int]]):
         self.matrix=matrix
