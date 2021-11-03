@@ -5,19 +5,9 @@ class ListNode:
         self.val = val
         self.next = next
 class Solution:
-    def __init__(self, head:ListNode ):
-        self.li = []
-        while head:
-            self.li.append(head.val)
-            head=head.next
-
-    def getRandom(self) -> int:
-        n=len(self.li)
-        idx = random.randint(0,n-1)
-        return self.li[idx]
-
-class Solution2:
-    # reservoire sampling
+    # reservoir sampling.
+    # this will also work even if the length of the linked list is unknown
+    # time complexity is not good. but space complexity O(1)
     def __init__(self, head:ListNode ):
         self.head=head
     def getRandom(self) -> int:
@@ -32,3 +22,17 @@ class Solution2:
             cur=cur.next
         return res
 
+
+class Solution2:
+    # space O(n)
+    # this will not work when the length of the linked list is unknown
+    def __init__(self, head:ListNode ):
+        self.li = []
+        while head:
+            self.li.append(head.val)
+            head=head.next
+
+    def getRandom(self) -> int:
+        n=len(self.li)
+        idx = random.randint(0,n-1)
+        return self.li[idx]

@@ -1,8 +1,44 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(characters,combinationLength): return CombinationIterator(characters,combinationLength)
+def get_sol(x,y): return CombinationIterator(x,y)
 class CombinationIterator:
-    # bad solution
-    # pre calculated
+    def __init__(self, characters: str, combinationLength: int):
+        self.characters = characters
+        self.combinationLength = combinationLength
+        self.indices = [i for i in range(combinationLength)]
+        self.indices[-1]-=1
+    def next(self) -> str:
+        indices = self.indices
+        m=self.combinationLength
+        n=len(self.characters)
+        if indices[m-1]+1<n:
+            indices[m-1]+=1
+            return self.get_combination()
+        for i in range(m-2,-1,-1):
+            if indices[i]+(m-i)<n:
+                break
+        indices[i]+=1
+        j=i+1
+        for i in range(j,m):
+            indices[i]=indices[i-1]+1
+        return self.get_combination()
+
+    def hasNext(self) -> bool:
+        indices = self.indices
+        if len(indices)==1 and indices[-1]==-1: return True
+        comb = self.get_combination()
+        characters = self.characters
+        m=self.combinationLength
+        if comb==characters[-m:]:
+            return False
+        return True
+
+    def get_combination(self):
+        indices = self.indices
+        chars = self.characters
+        res = [chars[indices[i]] for i in range(len(indices))]
+        return ''.join(res)
+class CombinationIterator2:
+    # bad solution. pre calculated
     def helper(self,start, char_left, path,characters,res):
         if char_left==0:
             res.append(''.join(path))
@@ -36,7 +72,14 @@ class tester(unittest.TestCase):
         return outputs
     def test_01(self):
         commands = ["CombinationIterator", "next", "hasNext", "next", "hasNext", "next", "hasNext"]
-        inputs=[         ["abc", 2],        [],       [],       [],      [],        [],     []]
-        out_exptected = [None,              "ab",    True,     "ac",    True,      "bc", False]
+        inputs=[["abc", 2], [], [], [], [], [], []]
+        expected = [None, "ab", True, "ac", True, "bc", False]
         outputs = self.do_test(commands, inputs)
-        self.assertEqual(out_exptected,outputs)
+        self.assertEqual(expected,outputs)
+    def test_02(self):
+        commands = ["CombinationIterator","hasNext","next","hasNext","hasNext","next","next","hasNext","hasNext","hasNext","hasNext"]
+        inputs=[["chp",1],[],[],[],[],[],[],[],[],[],[]]
+        expected = [None,True,"c",True,True,"h","p",False,False,False,False]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+
