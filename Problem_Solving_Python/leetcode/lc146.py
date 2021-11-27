@@ -1,18 +1,20 @@
 # https://www.youtube.com/watch?v=S6IfqDXWa10
 # https://leetcode.com/problems/lru-cache/discuss/45926/Python-Dict-+-Double-LinkedList/553841
 import unittest
+def get_sol(x): return LRUCache3(x)
 #### Solution 1 ####
 class DLinkedNode:
-    def __init__(self, key: int, value: int):
+    def __init__(self, key: int, val: int):
         self.key = key
-        self.value = value
+        self.val = val
         self.prev = None
         self.next = None
-
+    def __repr__(self):
+        return str(self.key) + '->' + str(self.next)
 class LRUCache:
     def __init__(self, capcacity: int):
         self.remain = capcacity
-        self.dict = {}
+        self.di = {}
         self.head, self.tail = DLinkedNode(0, 0), DLinkedNode(0, 0)
         self.head.next, self.tail.prev = self.tail, self.head
 
@@ -20,44 +22,37 @@ class LRUCache:
         p = self.tail.prev
         node.prev, node.next = p, self.tail
         p.next, self.tail.prev = node, node
-
+        self.di[node.key]=node
     def remove(self, node: DLinkedNode) -> None:
         p, q = node.prev, node.next
         p.next, q.prev = q, p
+        if node.key in self.di:
+            self.di.pop(node.key)
     def get(self, key: int) -> int:
-        if key not in self.dict: return -1
+        if key not in self.di: return -1
 
-        node = self.dict[key]
+        node = self.di[key]
         self.remove(node)
         self.put_last(node)
 
-        return node.value
+        return node.val
 
     def put(self, key: int, value: int) -> None:
-        if key in self.dict:
-            self.remove(self.dict[key])
+        if key in self.di:
+            self.remove(self.di[key])
         else:
             if self.remain:
                 self.remain -= 1
             else:
-                p = self.head.next
-                self.dict.pop(p.val)
-                self.remove(p)
+                self.remove(self.head.next)
 
         node = DLinkedNode(key, value)
-        self.dict[key] = node
+        self.di[key] = node
         self.put_last(node)
 
 
 
 #### Without using head and tail node ####
-class Node:
-    def __init__(self, k, v):
-        self.key = k
-        self.val = v
-        self.prev = None
-        self.next = None
-
 class LRUCache2:
     def __init__(self, capacity):
         self.capacity = capacity
@@ -69,13 +64,13 @@ class LRUCache2:
             n = self.dic[key]
             self._remove(n)
             self._add(n)
-            return n.data
+            return n.val
         return -1
 
     def put(self, key, value):
         if key in self.dic:
             self._remove(self.dic[key])
-        n = Node(key, value)
+        n = DLinkedNode(key, value)
         self._add(n)
         self.dic[key] = n
         if len(self.dic) > self.capacity:
@@ -97,15 +92,7 @@ class LRUCache2:
         node.next = self
 
 # same as the first solution
-class ListNode:
-    def __init__(self,key,val,prev=None,next=None):
-        self.key=key
-        self.val=val
-        self.prev = prev
-        self.next=next
-    def __repr__(self):
-        return str(self.key) + '->' + str(self.next)
-class LRUCache:
+class LRUCache3:
     def __init__(self, capacity: int):
         self.remain = capacity
         self.di = {}
@@ -113,20 +100,20 @@ class LRUCache:
     def __repr__(self):
         return self.di['head']
     def initialize(self):
-        head = ListNode('head',-1)
-        tail = ListNode('tail',-1)
+        head = DLinkedNode('head', -1)
+        tail = DLinkedNode('tail', -1)
         head.next = tail
         tail.prev = head
         self.di['head'] = head
         self.di['tail'] = tail
-    def delete(self,node:ListNode):
+    def delete(self, node:DLinkedNode):
         if node.key not in self.di: return
         prev=node.prev
         next = node.next
         prev.next=next
         next.prev=prev
         self.di.pop(node.key)
-    def add_last(self,node:ListNode):
+    def add_last(self, node:DLinkedNode):
         tail = self.di['tail']
         prev = tail.prev
         node.next=tail
@@ -139,7 +126,7 @@ class LRUCache:
         node = self.di[key]
         val=node.val
         self.delete(node)
-        self.add_last(ListNode(key,val))
+        self.add_last(DLinkedNode(key, val))
         return val
     def put(self, key: int, value: int) -> None:
         if key in self.di:
@@ -150,12 +137,12 @@ class LRUCache:
             self.delete(self.di['head'].next)
         else:
             self.remain-=1
-        node = ListNode(key,value)
+        node = DLinkedNode(key, value)
         self.add_last(node)
 
 class tester(unittest.TestCase):
     def test_1(self):
-        cache = LRUCache(1)
+        cache = get_sol(1)
         cache.put(2,1)
         a = cache.get(2)
         self.assertEqual(1,a)
@@ -166,7 +153,7 @@ class tester(unittest.TestCase):
         outputs = []
         for c,i in zip(commands, inputs):
             if c == 'LRUCache':
-                obj = LRUCache(i[0])
+                obj = get_sol(i[0])
                 outputs.append(None)
             elif c =='put':
                 outputs.append(obj.put(i[0],i[1]))
@@ -180,7 +167,7 @@ class tester(unittest.TestCase):
         outputs = []
         for c,i in zip(commands, inputs):
             if c == 'LRUCache':
-                obj = LRUCache(i[0])
+                obj = get_sol(i[0])
                 outputs.append(None)
             elif c =='put':
                 outputs.append(obj.put(i[0],i[1]))
@@ -194,7 +181,7 @@ class tester(unittest.TestCase):
         outputs = []
         for c,i in zip(commands, inputs):
             if c == 'LRUCache':
-                obj = LRUCache(i[0])
+                obj = get_sol(i[0])
                 outputs.append(None)
             elif c =='put':
                 outputs.append(obj.put(i[0],i[1]))

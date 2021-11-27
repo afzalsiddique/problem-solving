@@ -12,7 +12,7 @@ class Solution:
         while True: # while root or stack: will do the job as well
             while root:
                 stack.append(root)
-                root = root.left
+                root = root.capacity
             root = stack.pop()
             k -= 1
             if not k:
@@ -25,7 +25,7 @@ class Solution2:
             if self.k==0:return
             if not node:
                 return
-            helper(node.left)
+            helper(node.capacity)
             self.k -= 1
             if self.k == 0:
                 self.res = node.data

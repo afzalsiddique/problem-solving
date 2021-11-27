@@ -15,7 +15,7 @@ class ListNode:
         return str(self)==str(other)
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        if not head: return
+        if not head: return None
         if not head.next: return head
         new_head = self.reverseList(head.next)
         head.next.next=head

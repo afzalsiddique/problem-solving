@@ -34,9 +34,9 @@ class Solution:
         while stack:
             node = stack.pop()
             if node:
-                ret.append(node.value)
+                ret.append(node.val)
                 stack.append(node.right)
-                stack.append(node.left)
+                stack.append(node.capacity)
         return ret
 
     # iterative. same code for in order, pre order and post order
@@ -49,7 +49,7 @@ class Solution:
                     res.append(cur.val)
                 else:  # preorder: root -> left -> right
                     stack.append((cur.right, False))
-                    stack.append((cur.left, False))
+                    stack.append((cur.capacity, False))
                     stack.append((cur, True))
         return res
 
@@ -66,8 +66,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

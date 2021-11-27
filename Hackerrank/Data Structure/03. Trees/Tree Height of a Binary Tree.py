@@ -46,13 +46,13 @@ class Node:
        // this is a node of the tree , which contains info as data, left , right
 '''
 def height(root):
-    if root.left==None and root.right==None:
+    if root.capacity==None and root.right==None:
         return 0
-    if root.left and root.right==None:
-        return 1+height(root.left)
-    if root.right and root.left==None:
+    if root.capacity and root.right==None:
+        return 1+height(root.capacity)
+    if root.right and root.capacity==None:
         return 1+height(root.right)
-    return 1+max(height(root.left), height(root.right))
+    return 1+max(height(root.capacity), height(root.right))
     
 
 

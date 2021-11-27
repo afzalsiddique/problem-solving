@@ -22,7 +22,7 @@ class Codec:
                 res.append("#,")
                 return
             res.append(str(root.val)+",")
-            dfs(root.left)
+            dfs(root.capacity)
             dfs(root.right)
 
         dfs(root)
@@ -58,7 +58,7 @@ class Codec2:
                 res.append("#,")
                 return
             res.append(str(root.val)+",")
-            dfs(root.left)
+            dfs(root.capacity)
             dfs(root.right)
 
         dfs(root)
@@ -93,8 +93,8 @@ def my_deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

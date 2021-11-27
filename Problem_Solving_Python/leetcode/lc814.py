@@ -26,9 +26,9 @@ class Solution2:
     def pruneTree(self, root):
         def containsOne(node):
             if not node: return False
-            left = containsOne(node.left)
+            left = containsOne(node.capacity)
             right = containsOne(node.right)
-            if not left: node.left = None
+            if not left: node.capacity = None
             if not right: node.right = None
             return node.val == 1 or left or right
 
@@ -61,10 +61,10 @@ class Solution4:
     def pruneTree(self, root):
         def containsOne(node):
             if not node: return None
-            node.left=containsOne(node.left)
+            node.capacity=containsOne(node.capacity)
             node.right=containsOne(node.right)
             if node.val==1: return node
-            if node.left and node.left.val==1: return node
+            if node.capacity and node.capacity.val==1: return node
             if node.right and node.right.val==1: return node
             return None
 
@@ -84,8 +84,8 @@ def deserialize(data):
     while i<l and q:
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -104,7 +104,7 @@ def serialize(root):
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.left, cur.right]:
+        for child in [cur.capacity, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

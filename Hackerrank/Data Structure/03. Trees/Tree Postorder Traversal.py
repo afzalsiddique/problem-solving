@@ -42,8 +42,8 @@ self.info (the value of the node)
 """
 def postOrder(root):
     #Write your code here
-    if root.left:
-        postOrder(root.left)
+    if root.capacity:
+        postOrder(root.capacity)
     if root.right:
         postOrder(root.right)
     print(root.info, end=" ")

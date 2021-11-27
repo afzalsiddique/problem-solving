@@ -10,12 +10,12 @@ class Solution:
     def smallestFromLeaf(self, root: TreeNode) -> str:
         li=[]
         def helper(root,path):
-            if not root.left and not root.right:
+            if not root.capacity and not root.right:
                 path.append(root.val)
                 path=[chr(ord('a')+x) for x in path]
                 li.append(''.join(path[::-1]))
                 return
-            if root.left: helper(root.left,path+[root.val])
+            if root.capacity: helper(root.capacity, path + [root.val])
             if root.right: helper(root.right,path+[root.val])
 
         helper(root,[])
@@ -36,8 +36,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -50,7 +50,7 @@ class Solution:
         return dummy.next
 
     def mergeTwoLists2(self, a, b):
-        if (not a) or (b and a.value > b.value): #First make sure that a is the "better" one (meaning b is None or has larger/equal value). Then merge the remainders behind a.
+        if (not a) or (b and a.val > b.val): #First make sure that a is the "better" one (meaning b is None or has larger/equal value). Then merge the remainders behind a.
             a, b = b, a
         if a:
             a.next = self.mergeTwoLists2(a.next, b)

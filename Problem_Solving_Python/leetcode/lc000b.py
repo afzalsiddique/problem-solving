@@ -1,43 +1,60 @@
-import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
 class Solution:
-    def minStoneSum(self, piles: List[int], k: int) -> int:
-        pq=[-x for x in piles]
-        total=sum(piles)
-        heapify(pq)
-        while k and pq:
-            tmp=heappop(pq)
-            tmp*= (-1)
-            total-=tmp//2
-            tmp-=tmp//2
-            if tmp!=1:
-                heappush(pq,-tmp)
-            k-=1
-        return total
+    def minimumBuckets(self, street: str) -> int:
+        n=len(street)
+        no_houses=sum(x=='H' for x in street)
+        if no_houses==n: return -1
+        if no_houses==0: return 0
+
+        res=0
+        collecting = [True]*n
+        for i in range(n):
+            if street[i]=='H':
+                collecting[i]=False
+        for i in range(1,n-1):
+            if street[i]=='.' and street[i-1]=='H' and street[i+1]=='H' and not collecting[i-1] and not collecting[i+1]:
+                res+=1
+                collecting[i-1]=True
+                collecting[i+1]=True
+        for i in range(n):
+            if collecting[i]: continue
+            if i==0 and i+1<n and street[i+1]=='H': return -1
+            if i==n-1 and i-1>=0 and street[i-1]=='H': return -1
+            if i-1>=0 and street[i-1]=='H' and street[i+1]=='H': return -1
+            if street[i-1]=='.':
+                collecting[i-1]=True
+            else:
+                collecting[i+1]=True
+            res+=1
+        return res
 
 
-class Tester(unittest.TestCase):
-    def test_1(self):
-        piles = [5,4,9]
-        k = 2
-        Output= 12
-        self.assertEqual(Output,get_sol().minStoneSum(piles,k))
-    def test_2(self):
-        piles = [4,3,6,7]
-        k = 3
-        Output= 12
-        self.assertEqual(Output,get_sol().minStoneSum(piles,k))
-    def test_3(self):
-        piles = [1]
-        k = 100000
+class MyTestCase(unittest.TestCase):
+    def test1(self):
+        street = "H..H"
+        Output= 2
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test2(self):
+        street = ".H.H."
         Output= 1
-        self.assertEqual(Output,get_sol().minStoneSum(piles,k))
-    def test_4(self):
-        piles = [10000]
-        k = 10000
-        Output= 1
-        self.assertEqual(Output,get_sol().minStoneSum(piles,k))
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test3(self):
+        street = ".HHH."
+        Output= -1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test4(self):
+        street = "H"
+        Output= -1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test5(self):
+        street = "."
+        Output= 0
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test6(self):
+        street = ".HH.H.H.H.."
+        Output= 3
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+
+    # def test7(self):
+    # def test8(self):

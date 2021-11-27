@@ -20,15 +20,15 @@ class Solution:
             if not root1 and not root2: return True
             if not root1 or not root2: return False
             if root1.val != root2.val: return False
-            left1=root1.left.val if root1.left else None
+            left1=root1.capacity.val if root1.capacity else None
             right1=root1.right.val if root1.right else None
-            left2=root2.left.val if root2.left else None
+            left2=root2.capacity.val if root2.capacity else None
             right2= root2.right.val if root2.right else None
             if left1==left2 and right1==right2:
-                return helper(root1.left,root2.left) and helper(root1.right,root2.right)
+                return helper(root1.capacity, root2.capacity) and helper(root1.right, root2.right)
             if left1==left2 or left1==right2:
-                root1.left,root1.right=root1.right,root1.left
-                return helper(root1.left,root2.left) and helper(root1.right,root2.right)
+                root1.capacity, root1.right= root1.right, root1.capacity
+                return helper(root1.capacity, root2.capacity) and helper(root1.right, root2.right)
             return False
 
         return helper(root1,root2)
@@ -58,8 +58,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -23,7 +23,7 @@ class Solution:
             minn=min(minn,root.val)
             maxx=max(maxx,root.val)
             self.res = max(self.res, abs(minn-root.val),abs(maxx-root.val))
-            pre_order(root.left,minn,maxx)
+            pre_order(root.capacity, minn, maxx)
             pre_order(root.right,minn,maxx)
 
         if not root: return 0
@@ -36,12 +36,12 @@ class Solution2:
         def compare_all_descendants(root,val):
             if not root: return
             self.res=max(self.res, abs(root.val - val))
-            compare_all_descendants(root.left,val)
+            compare_all_descendants(root.capacity, val)
             compare_all_descendants(root.right,val)
         def pre_order(root):
             if not root: return
             compare_all_descendants(root,root.val)
-            pre_order(root.left)
+            pre_order(root.capacity)
             pre_order(root.right)
 
         pre_order(root)
@@ -61,8 +61,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

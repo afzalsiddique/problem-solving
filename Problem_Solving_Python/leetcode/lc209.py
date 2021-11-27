@@ -16,6 +16,22 @@ class Solution:
                 left+=1
         return 0 if minn == float('inf') else minn
 class Solution2:
+    # binary search
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        pre=[(0,-1)] # (cur_sum, index)
+        cur=0
+        res=float('inf')
+        for i,x in enumerate(nums):
+            cur+=x
+            idx = bisect_right(pre,(cur-target,float('inf')))
+            idx-=1
+            if idx>=0:
+                left_sum,left=pre[idx]
+                res=min(res,i-left)
+            insort_left(pre,(cur,i))
+        return 0 if res==float('inf') else res
+class Solution3:
+    # two pointer
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         n=len(nums)
         left=right=0

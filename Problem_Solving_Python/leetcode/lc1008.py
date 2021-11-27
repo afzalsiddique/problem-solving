@@ -57,7 +57,7 @@ class Solution:
         def insert(root,x):
             if not root: return TreeNode(x)
             if x<root.val:
-                root.left=insert(root.left,x)
+                root.capacity=insert(root.capacity, x)
             else:
                 root.right=insert(root.right,x)
             return root

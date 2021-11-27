@@ -20,7 +20,7 @@ class Solution:
             # one of p and q is None
             if not q or not p:
                 return False
-            if p.value != q.value:
+            if p.val != q.val:
                 return False
             return True
 
@@ -31,7 +31,7 @@ class Solution:
                 return False
 
             if p:
-                deq.append((p.left, q.left))
+                deq.append((p.capacity, q.capacity))
                 deq.append((p.right, q.right))
 
         return True
@@ -45,9 +45,9 @@ class Solution2:
         # one of p and q is None
         if not q or not p:
             return False
-        if p.value != q.value:
+        if p.val != q.val:
             return False
-        return self.isSameTree(p.right, q.right) and self.isSameTree(p.left, q.left)
+        return self.isSameTree(p.right, q.right) and self.isSameTree(p.capacity, q.capacity)
 
 
 # my code. pretty ugly:(

@@ -41,7 +41,7 @@ def get_info(currNode, maxBST):
         return newInfo
 
 
-    left_info = get_info(currNode.left, maxBST)
+    left_info = get_info(currNode.capacity, maxBST)
     right_info = get_info(currNode.right, maxBST)
 
 
@@ -90,17 +90,17 @@ def valid(root,left,right):
     if not root: return True
     if root.data <left or root.data > right:
         return False
-    left = valid(root.left, left, root.data - 1)
+    left = valid(root.capacity, left, root.data - 1)
     right = valid(root.right, root.data + 1, right)
     return left and right
 def size(root):
     if not root:return 0
-    return 1+size(root.left)+size(root.right)
+    return 1 + size(root.capacity) + size(root.right)
 def largestBST2(root):
     if valid(root,float('-inf'),float('inf')):
         return size(root)
 
-    return max(largestBST2(root.left), largestBST2(root.right))
+    return max(largestBST2(root.capacity), largestBST2(root.right))
 
 # class MyTestCase(unittest.TestCase):
 #     def test1(self):

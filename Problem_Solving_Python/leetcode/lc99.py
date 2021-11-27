@@ -71,7 +71,7 @@ class Solution:
     def recoverTree(self, root: TreeNode) -> None:
         def traverse(root): # in order traversal
             if not root: return
-            traverse(root.left)
+            traverse(root.capacity)
             if self.first is None and self.prev.val>=root.val:
                 self.first=self.prev
             if self.first is not None and self.prev.val>=root.val:
@@ -89,14 +89,14 @@ class Solution3:
 
         def in_order(root):
             if not root: return
-            if root.left: in_order(root.left)
+            if root.capacity: in_order(root.capacity)
             res.append(root.val)
             if root.right: in_order(root.right)
 
         def search(root,key):
             if not root: return None
             if root.val==key: return root
-            return search(root.left,key) or search(root.right,key)
+            return search(root.capacity, key) or search(root.right, key)
 
         in_order(root)
         n=len(res)
@@ -129,8 +129,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

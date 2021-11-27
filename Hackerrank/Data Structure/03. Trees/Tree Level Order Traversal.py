@@ -46,8 +46,8 @@ def levelOrder(root):
     while queue:
         temp=queue.pop(0)
         print(temp.info, end=" ")
-        if temp.left:
-            queue.append(temp.left)
+        if temp.capacity:
+            queue.append(temp.capacity)
         if temp.right:
             queue.append(temp.right)
         

@@ -32,10 +32,10 @@ class BinarySearchTree:
          
             while True:
                 if val < current.info:
-                    if current.left:
-                        current = current.left
+                    if current.capacity:
+                        current = current.capacity
                     else:
-                        current.left = Node(val)
+                        current.capacity = Node(val)
                         break
                 elif val > current.info:
                     if current.right:

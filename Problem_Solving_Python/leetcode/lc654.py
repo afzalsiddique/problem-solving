@@ -73,7 +73,7 @@ def serialize(root):
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.left, cur.right]:
+        for child in [cur.capacity, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

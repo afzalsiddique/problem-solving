@@ -16,7 +16,7 @@ class Solution:
         maxx=[float('-inf')]
         def max_sum_at_any_depth(root):
             if not root: return 0
-            left=max_sum_at_any_depth(root.left)
+            left=max_sum_at_any_depth(root.capacity)
             right=max_sum_at_any_depth(root.right)
             maxx[0]=max(maxx[0],left+right+root.val, left+root.val, right+root.val, root.val)
             return max(left+root.val,right+root.val, root.val)
@@ -66,8 +66,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

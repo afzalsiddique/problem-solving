@@ -1,37 +1,63 @@
-import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
 class Solution:
-    def max_sub_sum(self,A):
-        n=len(A)
-        max_ending_here=[float('-inf')]*n
-        max_ending_here[0]=max(0,A[0])
-        for i in range(1,n):
-            max_ending_here[i]=max(max_ending_here[i-1]+A[i],A[i])
-        return max(max_ending_here)
-    def min_sub_sum(self,A):
-        n=len(A)
-        min_ending_here=[float('inf')]*n
-        min_ending_here[0]=min(0,A[0])
-        for i in range(1,n):
-            min_ending_here[i]=min(min_ending_here[i-1]+A[i],A[i])
-        return min(min_ending_here)
-    def maxAbsoluteSum(self, A: List[int]) -> int:
-        maxx=self.max_sub_sum(A)
-        minn=self.min_sub_sum(A)
-        return max(maxx,abs(minn))
+    def minimumBuckets(self, street: str) -> int:
+        n=len(street)
+        if n==1:
+            if street[0]=='H': return -1
+            return 0
+
+        res=0
+        collecting = [True]*n
+        for i in range(n):
+            if street[i]=='H':
+                collecting[i]=False
+        for i in range(1,n-1):
+            if street[i]=='.' and street[i-1]=='H' and street[i+1]=='H' and not collecting[i-1] and not collecting[i+1]:
+                res+=1
+                collecting[i-1]=True
+                collecting[i+1]=True
+        for i in range(n):
+            if collecting[i]: continue
+            # if i==0 and street[i+1]=='H': return -1
+            # if i==n-1 and street[i-1]=='H': return -1
+            # if street[i-1]=='H' and street[i+1]=='H': return -1
+            if street[i-1]=='.':
+                collecting[i-1]=True
+                res+=1
+            else:
+                collecting[i+1]=True
+                res+=1
+        return res
+
+
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        nums = [1,-3,2,3,-4]
-        Output= 5
-        self.assertEqual(Output, get_sol().maxAbsoluteSum(nums))
-    def test_2(self):
-        nums = [2,-5,1,-4,3,-2]
-        Output= 8
-        self.assertEqual(Output, get_sol().maxAbsoluteSum(nums))
-    # def test_3(self):
-    # def test_4(self):
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
-    # def test_9(self):
+    def test1(self):
+        street = "H..H"
+        Output= 2
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test2(self):
+        street = ".H.H."
+        Output= 1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test3(self):
+        street = ".HHH."
+        Output= -1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test4(self):
+        street = "H"
+        Output= -1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test5(self):
+        street = "."
+        Output= 0
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test6(self):
+        street = ".HH.H.H.H.."
+        Output= 3
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    def test7(self):
+        street = "HH........"
+        Output= -1
+        self.assertEqual(Output, get_sol().minimumBuckets(street))
+    # def test8(self):

@@ -23,7 +23,7 @@ class Solution:
         values = []
         def collect(root):
             if root:
-                collect(root.left)
+                collect(root.capacity)
                 values.append(root.val)
                 collect(root.right)
         collect(root1)

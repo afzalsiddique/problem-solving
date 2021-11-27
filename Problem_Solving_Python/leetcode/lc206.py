@@ -1,27 +1,21 @@
-import unittest
-from typing import List
-
-
-# Definition for singly-linked list.
+import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
+def get_sol(): return Solution2()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-
     def __repr__(self):
         return str(self.val) + "->" + str(self.next)
 # iterative
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        if not head:return None
-        if not head.next:return head
         prev=None
         while head:
-            curr = head
-            head = head.next
-            curr.next=prev
-            prev=curr
-        return curr
+            nxt=head.next
+            head.next=prev
+            prev=head
+            head=nxt
+        return prev
 # recursive
 class Solution2:
     def reverseList(self, head: ListNode) -> ListNode:
@@ -72,38 +66,30 @@ def make_linked_list(li:List) -> ListNode:
 
 
 class MyTestCase(unittest.TestCase):
-
     def test_1(self):
-        sol = Solution()
         head = make_linked_list([1,2,3,4,5])
-        actual = sol.reverseList(head)
+        actual = get_sol().reverseList(head)
         expected = make_linked_list([5,4,3,2,1])
         print(expected)
         print(actual)
         self.assertEqual(str(expected), str(actual))
-
     def test_2(self):
-        sol = Solution()
         head = make_linked_list([1,2])
-        actual = sol.reverseList(head)
+        actual = get_sol().reverseList(head)
         expected = make_linked_list([2,1])
         print(expected)
         print(actual)
         self.assertEqual(str(expected), str(actual))
-
     def test_3(self):
-        sol = Solution()
         head = make_linked_list([])
-        actual = sol.reverseList(head)
+        actual = get_sol().reverseList(head)
         expected = make_linked_list([])
         print(expected)
         print(actual)
         self.assertEqual(str(expected), str(actual))
-
     def test_4(self):
-        sol = Solution()
         head = make_linked_list([1])
-        actual = sol.reverseList(head)
+        actual = get_sol().reverseList(head)
         expected = make_linked_list([1])
         print(expected)
         print(actual)

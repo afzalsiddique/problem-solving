@@ -14,8 +14,8 @@ class TreeNode:
 class Solution:
     def findmin(self, root):
         current = root
-        while current.left:
-            current = current.left
+        while current.capacity:
+            current = current.capacity
         return current
 
     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
@@ -51,7 +51,7 @@ class Solution:
 
                 new_root = self.findmin(root.right)
                 root.right = self.deleteNode(root.right, new_root.val)
-                new_root.left,new_root.right=root.left,root.right
+                new_root.capacity, new_root.right= root.left, root.right
                 return new_root
 
 def deserialize(data):
@@ -67,8 +67,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -87,7 +87,7 @@ def serialize(root):
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.left, cur.right]:
+        for child in [cur.capacity, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

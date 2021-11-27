@@ -15,10 +15,10 @@ class Solution:
             if not node: return True
             if node.val!=voyage[self.i]: return False
             self.i+=1
-            if node.left and node.left.val!=voyage[self.i]:
+            if node.capacity and node.capacity.val!=voyage[self.i]:
                 res.append(node.val)
-                return dfs(node.right) and dfs(node.left)
-            return dfs(node.left) and dfs(node.right)
+                return dfs(node.right) and dfs(node.capacity)
+            return dfs(node.capacity) and dfs(node.right)
 
         if dfs(root): return res
         return [-1]
@@ -35,8 +35,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

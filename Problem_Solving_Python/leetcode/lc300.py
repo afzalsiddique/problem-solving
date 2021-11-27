@@ -8,17 +8,16 @@ def get_sol(): return Solution()
 class Solution:
     ## n log n
     def lengthOfLIS(self, nums):
-        sub = []
+        res = []
         for val in nums:
-            pos = bisect_left(sub,val)
-            if pos == len(sub):
-                sub.append(val)
-
-            # elif pos==len(sub)-1: # gives wrong ans
-            #     sub[pos] = val
+            idx = bisect_left(res,val)
+            if idx == len(res):
+                res.append(val)
+            # elif idx==len(res)-1: # gives wrong ans
+            #     res[idx] = val
             else:
-                sub[pos] = val
-        return len(sub)
+                res[idx] = val
+        return len(res)
 class Solution2:
     def lengthOfLIS(self, nums: List[int]) -> int:
         n = len(nums)
@@ -40,3 +39,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(6, get_sol().lengthOfLIS([1,3,6,7,9,4,10,5,6]))
     def test_5(self):
         self.assertEqual(6, get_sol().lengthOfLIS([3,5,6,2,5,4,19,5,6,7,12]))
+    def test_6(self):
+        self.assertEqual(3, get_sol().lengthOfLIS([1,2,-10,-8,-7]))

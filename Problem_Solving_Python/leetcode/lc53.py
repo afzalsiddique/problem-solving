@@ -87,38 +87,25 @@ class Solution6:
 class MyTestCase(unittest.TestCase):
     def test_1(self):
         nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-        actual = get_sol().maxSubArray(nums)
         expected = 6
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(expected, get_sol().maxSubArray(nums))
     def test_2(self):
         nums = [-2, -1]
-        actual = get_sol().maxSubArray(nums)
         expected = -1
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(expected, get_sol().maxSubArray(nums))
     def test_3(self):
         nums = [-1]
-        actual = get_sol().maxSubArray(nums)
         expected = -1
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(expected, get_sol().maxSubArray(nums))
     def test_4(self):
         nums = [1]
-        actual = get_sol().maxSubArray(nums)
         expected = 1
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(expected, get_sol().maxSubArray(nums))
     def test_5(self):
-        solution = Solution()
         nums = [0]
-        actual = solution.maxSubArray(nums)
         expected = 0
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(expected, get_sol().maxSubArray(nums))
     def test_6(self):
-        solution = Solution()
         nums = [-2, -3, -1]
-        actual = solution.maxSubArray(nums)
         expected = -1
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().maxSubArray(nums))

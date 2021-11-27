@@ -20,20 +20,20 @@ class Solution:
             if i==n: return True
             if not root: return False
             if root.val==li[i]:
-                if dfs(root.left,i+1):
+                if dfs(root.capacity, i + 1):
                     dp[root,i]=True
                     return True
                 if dfs(root.right,i+1):
                     dp[root,i]=True
                     return True
             if root.val!=li[i] and i==0:
-                if dfs(root.left,i):
+                if dfs(root.capacity, i):
                     dp[root,i]=True
                     return True
                 if dfs(root.right,i):
                     dp[root,i]=True
                     return True
-            if dfs(root.left,0):
+            if dfs(root.capacity, 0):
                 dp[root,i]=True
                 return True
             if dfs(root.right,0):
@@ -57,12 +57,12 @@ class Solution2:
             if i==n: return True
             if not root: return False
             if root.val==li[i]:
-                if dfs(root.left,i+1): return True
+                if dfs(root.capacity, i + 1): return True
                 if dfs(root.right,i+1): return True
             if root.val!=li[i] and i==0:
-                if dfs(root.left,i): return True
+                if dfs(root.capacity, i): return True
                 if dfs(root.right,i): return True
-            if dfs(root.left,0): return True # for this case-> head = [1,10] root = "1,null,1,10,1,9"
+            if dfs(root.capacity, 0): return True # for this case-> head = [1,10] root = "1,null,1,10,1,9"
             if dfs(root.right,0): return True
             return False
 
@@ -87,8 +87,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

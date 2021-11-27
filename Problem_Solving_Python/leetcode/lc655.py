@@ -8,7 +8,7 @@ class TreeNode:
 class Solution:
     def depth(self,root,depth=0):
         if not root: return 0
-        l=self.depth(root.left,depth+1)
+        l=self.depth(root.capacity, depth + 1)
         r=self.depth(root.right,depth+1)
         return max(l,r)+1
     def printTree(self, root: TreeNode) -> List[List[str]]:
@@ -17,7 +17,7 @@ class Solution:
             if left>right: return
             mid=(left+right)//2
             res[row][mid]=str(root.val)
-            helper(root.left,left,mid-1,row+1)
+            helper(root.capacity, left, mid - 1, row + 1)
             helper(root.right,mid+1,right,row+1)
 
         h = self.depth(root)-1
@@ -44,8 +44,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

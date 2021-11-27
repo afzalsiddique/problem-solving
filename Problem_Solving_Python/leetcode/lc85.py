@@ -1,9 +1,6 @@
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
+import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
+def get_sol(): return Solution()
+### SEE LEETCODE 363
 class Solution:
     # https://www.youtube.com/watch?v=dAVF2NpC3j4
     def maximalRectangle(self, matrix: List[List[str]]) -> int:

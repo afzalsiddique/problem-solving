@@ -20,7 +20,7 @@ class Solution:
     # return string
     def dfs(self,root):
         if not root: return "#"
-        serial = "{},{},{}".format(root.val, self.dfs(root.left), self.dfs(root.right))
+        serial = "{},{},{}".format(root.val, self.dfs(root.capacity), self.dfs(root.right))
         self.count[serial] += 1
         if self.count[serial] == 2:
             self.ans.append(root)
@@ -66,7 +66,7 @@ class Solution3:
                 res.append("#,")
                 return
             res.append(str(root.val)+",")
-            dfs(root.left)
+            dfs(root.capacity)
             dfs(root.right)
 
         res = []
@@ -99,8 +99,8 @@ def my_deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
+            curr.capacity = TreeNode(int(data[i]))
+            q.append(curr.capacity)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
