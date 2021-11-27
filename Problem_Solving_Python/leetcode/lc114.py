@@ -18,8 +18,8 @@ def flatten(self, root):
     if not root:
         return None
     self.flatten(root.right)
-    self.flatten(root.capacity)
+    self.flatten(root.left)
 
     root.right = self.prev
-    root.capacity = None
+    root.left = None
     self.prev = root

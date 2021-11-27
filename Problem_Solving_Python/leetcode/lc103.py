@@ -21,17 +21,17 @@ class Solution:
                 if side=='r':
                     if node.right:
                         st2.append((node.right,'l'))
-                        sub_ans.append(node.right.val)
-                    if node.capacity:
-                        st2.append((node.capacity, 'l'))
-                        sub_ans.append(node.capacity.val)
+                        sub_ans.append(node.right.value)
+                    if node.left:
+                        st2.append((node.left,'l'))
+                        sub_ans.append(node.left.value)
                 else: # side=='l':
-                    if node.capacity:
-                        st2.append((node.capacity, 'r'))
-                        sub_ans.append(node.capacity.val)
+                    if node.left:
+                        st2.append((node.left,'r'))
+                        sub_ans.append(node.left.value)
                     if node.right:
                         st2.append((node.right,'r'))
-                        sub_ans.append(node.right.val)
+                        sub_ans.append(node.right.value)
             if sub_ans:
                 ans.append(sub_ans)
             sub_ans = []
@@ -40,17 +40,17 @@ class Solution:
                 if side=='r':
                     if node.right:
                         st1.append((node.right,'l'))
-                        sub_ans.append(node.right.val)
-                    if node.capacity:
-                        st1.append((node.capacity, 'l'))
-                        sub_ans.append(node.capacity.val)
+                        sub_ans.append(node.right.value)
+                    if node.left:
+                        st1.append((node.left,'l'))
+                        sub_ans.append(node.left.value)
                 else: # side=='l':
-                    if node.capacity:
-                        st1.append((node.capacity, 'r'))
-                        sub_ans.append(node.capacity.val)
+                    if node.left:
+                        st1.append((node.left,'r'))
+                        sub_ans.append(node.left.value)
                     if node.right:
                         st1.append((node.right,'r'))
-                        sub_ans.append(node.right.val)
+                        sub_ans.append(node.right.value)
             if sub_ans:
                 ans.append(sub_ans)
         return ans

@@ -11,13 +11,13 @@ class Solution:
     def sufficientSubset(self, root: TreeNode, limit: int) -> TreeNode:
         def dfs(root,limit):
             if not root: return None
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 if limit>root.val:
                     return None
                 return root
-            root.capacity=dfs(root.capacity, limit - root.val)
+            root.left=dfs(root.left,limit-root.val)
             root.right=dfs(root.right,limit-root.val)
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 return None
             return root
 
@@ -36,8 +36,8 @@ def deserialize(data): # for unit testing
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -55,7 +55,7 @@ def serialize(root): # for unit testing
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.capacity, cur.right]:
+        for child in [cur.left, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

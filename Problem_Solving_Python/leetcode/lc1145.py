@@ -21,7 +21,7 @@ class Solution:
 
         # if player2 chooses player1's parent node and payer1 node's count is smaller than n/2, playr2 will win
         if self.left+self.right+1<=n//2: # n is odd
-        # if self.left+self.right+1<(n+1)//2: # also works
+            # if self.left+self.right+1<(n+1)//2: # also works
             return True
         # if player2 chooses player1's left or right node and its count is bigger than n/2, playr2 will win
         if self.left>n//2 or self.right>n//2: # n is odd
@@ -41,8 +41,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
