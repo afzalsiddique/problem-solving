@@ -27,16 +27,16 @@ class Solution:
         return results
 
 
-# https://www.youtube.com/watch?v=elQcrJrfObg&t=83s
+    # https://www.youtube.com/watch?v=elQcrJrfObg&t=83s
     def preorderTraversal__(self, root):
         ret = []
         stack = [root]
         while stack:
             node = stack.pop()
             if node:
-                ret.append(node.val)
+                ret.append(node.value)
                 stack.append(node.right)
-                stack.append(node.capacity)
+                stack.append(node.left)
         return ret
 
     # iterative. same code for in order, pre order and post order
@@ -49,7 +49,7 @@ class Solution:
                     res.append(cur.val)
                 else:  # preorder: root -> left -> right
                     stack.append((cur.right, False))
-                    stack.append((cur.capacity, False))
+                    stack.append((cur.left, False))
                     stack.append((cur, True))
         return res
 
@@ -66,8 +66,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -23,10 +23,10 @@ class Solution:
             # compare with adding element to the path
             toggle(root.val)
 
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 self.cnt+=1 if len(sett)<=1 else 0
                 # print(path)
-            helper(root.capacity)
+            helper(root.left)
             helper(root.right)
 
             # compare with removing element from the path
@@ -60,10 +60,10 @@ class Solution2:
             path.append(root.val)
             counter.insert(root.val)
 
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 # print(path)
                 if counter.if_pseudo_palindrome(): self.cnt+=1
-            helper(root.capacity)
+            helper(root.left)
             helper(root.right)
 
             counter.remove(root.val)
@@ -85,8 +85,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -14,7 +14,7 @@ class Solution:
             if root.val>=cur_max:
                 ans+=1
                 cur_max=root.val
-            ans+= helper(root.capacity, cur_max) + helper(root.right, cur_max)
+            ans+=helper(root.left,cur_max) + helper(root.right,cur_max)
             return ans
 
         return helper(root,float('-inf'))
@@ -31,8 +31,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

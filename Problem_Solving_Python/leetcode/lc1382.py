@@ -21,7 +21,7 @@ class Solution:
         arr = []
         def in_order(root):
             if not root: return
-            in_order(root.capacity)
+            in_order(root.left)
             arr.append(root.val)
             in_order(root.right)
 
@@ -33,7 +33,7 @@ class Solution:
 
     def depth(self,root,depth=0): # only used for printing
         if not root: return 0
-        l=self.depth(root.capacity, depth + 1)
+        l=self.depth(root.left,depth+1)
         r=self.depth(root.right,depth+1)
         return max(l,r)+1
     def printTree(self, root: TreeNode) -> List[List[str]]: # only used for printing
@@ -42,7 +42,7 @@ class Solution:
             if left>right: return
             mid=(left+right)//2
             res[row][mid]=str(root.val)
-            helper(root.capacity, left, mid - 1, row + 1)
+            helper(root.left,left,mid-1,row+1)
             helper(root.right,mid+1,right,row+1)
 
         h = self.depth(root)-1
@@ -67,8 +67,8 @@ def deserialize(data): # for testing
     while i<l and q:
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -87,7 +87,7 @@ def serialize(root): # for testing
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.capacity, cur.right]:
+        for child in [cur.left, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

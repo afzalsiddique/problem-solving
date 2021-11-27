@@ -13,7 +13,7 @@ class TreeNode:
     def __repr__(self):
         return str(self.val)
 # Wrong
-class Solution2:
+class Solution:
     def sumNumbers(self, root: TreeNode) -> int:
         multiplier={}
         def get_multiplier(cnt:int)->int:
@@ -59,8 +59,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

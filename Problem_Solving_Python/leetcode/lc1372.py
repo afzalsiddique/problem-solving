@@ -10,7 +10,7 @@ class Solution:
         self.maxx=float('-inf')
         def dfs(root):
             if not root: return [-1, -1]
-            left_left,left_right = dfs(root.capacity)
+            left_left,left_right = dfs(root.left)
             right_left,right_right=dfs(root.right)
             self.maxx=max(self.maxx,left_right + 1, right_left + 1)
             return [left_right + 1, right_left + 1]
@@ -31,8 +31,8 @@ def deserialize(data): # for unit testing
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

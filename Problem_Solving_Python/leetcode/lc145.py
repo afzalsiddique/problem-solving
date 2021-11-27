@@ -35,7 +35,7 @@ class Solution:
             curr = stack1.pop()
             stack2.append(curr.val)
             if curr.left:
-                stack1.append(curr.capacity)
+                stack1.append(curr.left)
             if curr.right:
                 stack1.append(curr.right)
 

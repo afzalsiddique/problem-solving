@@ -9,9 +9,9 @@ class Solution:
     def removeLeafNodes(self, root: TreeNode, target: int) -> TreeNode:
         def helper(root):
             if not root: return None
-            root.capacity=helper(root.capacity)
+            root.left=helper(root.left)
             root.right=helper(root.right)
-            if not root.capacity and not root.right and root.val==target:
+            if not root.left and not root.right and root.val==target:
                 return None
             return root
 
@@ -29,8 +29,8 @@ def deserialize(data):
     while i<l and q:
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -49,7 +49,7 @@ def serialize(root):
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.capacity, cur.right]:
+        for child in [cur.left, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

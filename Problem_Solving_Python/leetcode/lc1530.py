@@ -17,10 +17,10 @@ class Solution:
             left=[0]*ENOUGH
             right=[0]*ENOUGH
             if not root: return left,right
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 left[0]=1
                 return left,right
-            received_left=dfs(root.capacity)
+            received_left=dfs(root.left)
             received_right=dfs(root.right)
             for i in range(ENOUGH-1):
                 left[i+1]=received_left[0][i]+received_left[1][i]
@@ -49,10 +49,10 @@ class Solution2:
         def dfs(root):
             li=[0]*ENOUGH
             if not root: return li
-            if not root.capacity and not root.right:
+            if not root.left and not root.right:
                 li[1]=1
                 return li
-            left=dfs(root.capacity)
+            left=dfs(root.left)
             right=dfs(root.right)
             # update
             for i in range(ENOUGH):
@@ -80,8 +80,8 @@ def deserialize(data): # for unit testing
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

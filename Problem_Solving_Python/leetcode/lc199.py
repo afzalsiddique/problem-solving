@@ -37,7 +37,7 @@ class Solution2:
         while q:
             for _ in range(len(q)):
                 node = q.popleft()
-                if node.capacity:q.append(node.capacity)
+                if node.left:q.append(node.left)
                 if node.right:q.append(node.right)
             res.append(node.data)
         return res
@@ -55,8 +55,8 @@ class Solution3:
                 res.append(node.data)
             if not q: # only one node in the level
                 res.append(node.data)
-            if node.capacity:
-                q.append((node.capacity, level + 1))
+            if node.left:
+                q.append((node.left,level+1))
             if node.right:
                 q.append((node.right, level+1))
         return res

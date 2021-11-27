@@ -28,7 +28,7 @@ class Solution:
             h=0
             while root:
                 h+=1
-                root=root.capacity
+                root=root.left
             return h
         l=left_height(root.left)
         r=left_height(root.right)

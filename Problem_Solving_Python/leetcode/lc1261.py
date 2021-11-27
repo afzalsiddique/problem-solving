@@ -11,7 +11,7 @@ class FindElements:
         def h(root,val):
             if not root: return
             sett.add(val)
-            h(root.capacity, val * 2 + 1)
+            h(root.left,val*2+1)
             h(root.right,val*2+2)
         h(root,0)
         self.sett=sett
@@ -34,8 +34,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
