@@ -50,7 +50,7 @@ class Solution2:
                 res.append("#")
                 return
             res.append(str(root.val))
-            dfs(root.capacity)
+            dfs(root.left)
             dfs(root.right)
 
         dfs(root)

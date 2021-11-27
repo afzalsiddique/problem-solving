@@ -14,7 +14,7 @@ class TreeNode:
 class Codec:
     def serialize(self, root):
         if not root: return '#'
-        return root.val, self.serialize(root.capacity), self.serialize(root.right)
+        return root.val, self.serialize(root.left), self.serialize(root.right)
 
     def deserialize(self, data):
         if data[0] == '#': return None
@@ -37,8 +37,8 @@ def my_deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

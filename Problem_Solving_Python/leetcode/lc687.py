@@ -18,7 +18,7 @@ class Solution:
     def longestUnivaluePath(self, root: TreeNode) -> int:
         def diameter(root,parent_val):
             if not root: return 0
-            left=diameter(root.capacity, root.val)
+            left=diameter(root.left,root.val)
             right=diameter(root.right,root.val)
             self.maxx=max(self.maxx,left+right)
             return 1+max(left,right) if root.val==parent_val else 0
@@ -42,8 +42,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -12,7 +12,7 @@ class Solution:
     def distributeCoins(self, root):
         def dfs(root):
             if not root: return 0
-            left = dfs(root.capacity)
+            left = dfs(root.left)
             right = dfs(root.right)
             self.res += abs(left) + abs(right)
             return root.val + left+right - 1
@@ -32,8 +32,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -10,7 +10,7 @@ class CBTInserter:
     def __init__(self, root: TreeNode):
         def get_size(root):
             if not root: return 0
-            return 1 + get_size(root.capacity) + get_size(root.right)
+            return 1+get_size(root.left)+get_size(root.right)
         self.root= root
         self.size=get_size(root)
     def insert(self, v: int) -> int:
@@ -58,8 +58,8 @@ def deserialize(data): # for unit testing
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -77,7 +77,7 @@ def serialize(root): # for unit testing
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.capacity, cur.right]:
+        for child in [cur.left, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

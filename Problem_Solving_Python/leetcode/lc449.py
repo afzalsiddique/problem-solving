@@ -17,7 +17,7 @@ class Codec:
         def preorder(root):
             if not root: return
             res.append(root.val)
-            preorder(root.capacity)
+            preorder(root.left)
             preorder(root.right)
         preorder(root)
         res=list(map(str,res))

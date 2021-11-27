@@ -19,7 +19,7 @@ class Solution:
             # return [rob this node, not rob this node]
             if not node:
                 return (0, 0)
-            left = helper(node.capacity)
+            left = helper(node.left)
             right = helper(node.right)
             # if we rob this node, we cannot rob its children
             rob = node.val + left[1] + right[1]
@@ -44,14 +44,14 @@ class Solution2:
             if parent_robbed:
                 if node in rob_saved:
                     return rob_saved[node]
-                result = helper(node.capacity, False) + helper(node.right, False)
+                result = helper(node.left, False) + helper(node.right, False)
                 rob_saved[node] = result
                 return result
             else:
                 if node in not_rob_saved:
                     return not_rob_saved[node]
-                rob = node.val + helper(node.capacity, True) + helper(node.right, True)
-                not_rob = helper(node.capacity, False) + helper(node.right, False)
+                rob = node.val + helper(node.left, True) + helper(node.right, True)
+                not_rob = helper(node.left, False) + helper(node.right, False)
                 result = max(rob, not_rob)
                 not_rob_saved[node] = result
                 return result
@@ -72,8 +72,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))

@@ -26,7 +26,7 @@ class Codec:
             node = q.popleft()
             if node:
                 li.append(str(node.val))
-                q.append(node.capacity)
+                q.append(node.left)
                 q.append(node.right)
             else:
                 li.append(self.en)
@@ -39,7 +39,7 @@ class Codec:
         q.append(root)
         while q:
             cur = q.popleft()
-            for child in [cur.capacity, cur.right]:
+            for child in [cur.left, cur.right]:
                 if child:
                     q.append(child)
                     res.append(str(child.val))

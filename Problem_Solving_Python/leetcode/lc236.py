@@ -11,7 +11,7 @@ class Solution:
         def helper(root):
             if not root:return None
             if root == p or root == q:return root
-            left = helper(root.capacity)
+            left = helper(root.left)
             right = helper(root.right)
             if left and right:return root
             return left or right
@@ -24,8 +24,8 @@ class Solution:
 
         left = right = None
         # else look in left and right child
-        if root.capacity:
-            left = self.lowestCommonAncestor(root.capacity, p, q)
+        if root.left:
+            left = self.lowestCommonAncestor(root.left, p, q)
 
         # optimization. not required -> https://www.youtube.com/watch?v=13m9ZCB8gjw&t=5m39s
         if left and left != p and left != q:

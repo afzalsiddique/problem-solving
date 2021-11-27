@@ -42,8 +42,8 @@ def deserialize(data):
     while i<l and q:
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
@@ -62,7 +62,7 @@ def serialize(root):
     q.append(root)
     while q:
         cur = q.popleft()
-        for child in [cur.capacity, cur.right]:
+        for child in [cur.left, cur.right]:
             if child:
                 q.append(child)
                 res.append(str(child.val))

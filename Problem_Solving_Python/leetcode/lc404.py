@@ -14,7 +14,7 @@ class Solution:
     total = 0
     def sumOfLeftLeaves(self, root: TreeNode) -> int:
         def helper(root:TreeNode):
-            if root.left and not root.left.capacity and not root.left.right:
+            if root.left and not root.left.left and not root.left.right:
                 self.total += root.left.val
             if root.left:
                 helper(root.left)
@@ -38,8 +38,8 @@ def deserialize(data):
 
         curr = q.popleft()
         if data[i]!=en:
-            curr.capacity = TreeNode(int(data[i]))
-            q.append(curr.capacity)
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
         i+=1
         if i<l and data[i]!=en:
             curr.right = TreeNode(int(data[i]))
