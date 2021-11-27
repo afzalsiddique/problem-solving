@@ -27,7 +27,7 @@ class Solution2:
         def helper(root,row):
             if not root: return
             di[row].append(root.val)
-            helper(root.capacity, row + 1)
+            helper(root.left, row + 1)
             helper(root.right,row+1)
 
         helper(root,0)

@@ -58,7 +58,7 @@ def topView(root):
     while queue:
         temp=queue.pop(0)
         if temp.left:
-            queue.append(temp.capacity)
+            queue.append(temp.left)
             hd_nodes[temp.left]=hd_nodes[temp]-1
             horiDist=hd_nodes[temp.left]
             if m.get(horiDist) is None:
