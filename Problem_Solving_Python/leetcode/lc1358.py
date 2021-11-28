@@ -2,6 +2,7 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/523136/JavaC%2B%2BPython-Sliding-Window
+    # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/523136/JavaC++Python-Sliding-Window/556706
     def numberOfSubstrings(self, s):
         return self.at_most(s,3) - self.at_most(s,2)
     def at_most(self,A:str,k:int)->int: # at_most k unique chars
