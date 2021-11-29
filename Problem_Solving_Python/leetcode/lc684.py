@@ -29,8 +29,6 @@ class Solution:
             graph[src].append(target)
             graph[target].append(src)
 
-
-
 class tester(unittest.TestCase):
     def test1(self):
         input = [[1,2], [1,3], [2,3]]
