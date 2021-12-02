@@ -69,10 +69,10 @@ class LFUCache:
     def updateCache(self, key, value):
         node = self.cache[key]
         node.val = value
-        prevFreq = node.freq
-        self.freqTable[node.freq].removeNode(node)
-        node.freq += 1
-        self.freqTable[node.freq].insertHead(node)
+        prevFreq = node.freq_count
+        self.freqTable[node.freq_count].removeNode(node)
+        node.freq_count += 1
+        self.freqTable[node.freq_count].insertHead(node)
         if prevFreq == self.minFreq and self.freqTable[prevFreq].size == 0:
             self.minFreq += 1
         return node.val

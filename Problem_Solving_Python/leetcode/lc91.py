@@ -1,11 +1,33 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+def get_sol(): return Solution()
 class Solution:
+    def numDecodings(self, s: str) -> int:
+        def dfs(s:str):
+            if s in dp: return dp[s]
+            if not s: return 1
+            if s[0]=='0': return 0
+            if len(s)==1: return 1
+            ans=0
+            ans+=dfs(s[1:])
+            two_digits=s[:2]
+            if int(two_digits)<=26:
+                ans+=dfs(s[2:])
+            dp[s]=ans
+            return ans
+
+        dp={}
+        return dfs(s)
+class Solution3:
+    def numDecodings(self, s: str) -> int:
+        @functools.lru_cache(None)
+        def dfs(s:str):
+            if not s: return 1
+            if s[0]=='0': return 0
+            if len(s)==1: return 1
+            return dfs(s[1:]) + (dfs(s[2:]) if int(s[:2])<=26 else 0)
+
+        return dfs(s)
+class Solution2:
     def numDecodings(self, s: str) -> int:
         di = {}
         def decode(s:str):
@@ -30,7 +52,7 @@ class Solution:
         return decode(s)
 
 
-class mytestcase(unittest.TestCase):
+class MyTestCase(unittest.TestCase):
     def test1(self):
         self.assertEqual(2, Solution().numDecodings('12'))
     def test2(self):
@@ -42,106 +64,32 @@ class mytestcase(unittest.TestCase):
     def test5(self):
         self.assertEqual(433494437, Solution().numDecodings('111111111111111111111111111111111111111111'))
     def test_1(self):
-        solution = Solution()
-        s = '11'
-        actual = solution.numDecodings(s)
-        expected = 2
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(2, get_sol().numDecodings(s = '11'))
     def test_2(self):
-        solution = Solution()
-        s = '10'
-        actual = solution.numDecodings(s)
-        expected = 1
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(1, get_sol().numDecodings(s = '10'))
     def test_3(self):
-        solution = Solution()
-        s = '01'
-        actual = solution.numDecodings(s)
-        expected = 0
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(0, get_sol().numDecodings(s = '01'))
     def test_4(self):
-        solution = Solution()
-        s = '0002'
-        actual = solution.numDecodings(s)
-        expected = 0
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(0, get_sol().numDecodings(s = '0002'))
     def test_5(self):
-        solution = Solution()
-        s = '27'
-        actual = solution.numDecodings(s)
-        expected = 1
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(1, get_sol().numDecodings(s = '27'))
     def test_6(self):
-        solution = Solution()
-        s = '72'
-        actual = solution.numDecodings(s)
-        expected = 1
-        self.assertEqual(expected, actual)
-
-
+        self.assertEqual(1, get_sol().numDecodings(s = '72'))
     def test_7(self):
-        solution = Solution()
-        s = '121'
-        actual = solution.numDecodings(s)
-        expected = 3
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(3, get_sol().numDecodings(s = '121'))
     def test_8(self):
-        solution = Solution()
-        s = '811'
-        actual = solution.numDecodings(s)
-        expected = 2
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(2, get_sol().numDecodings(s = '811'))
     def test_9(self):
-        solution = Solution()
-        s = '181'
-        actual = solution.numDecodings(s)
-        expected = 2
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(2, get_sol().numDecodings(s = '181'))
     def test_10(self):
-        solution = Solution()
-        s = '118'
-        actual = solution.numDecodings(s)
-        expected = 3
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(3, get_sol().numDecodings(s = '118'))
     def test_11(self):
-        solution = Solution()
-        s = '2262'
-        actual = solution.numDecodings(s)
-        expected = 3
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(3, get_sol().numDecodings(s = '2262'))
     def test_12(self):
-        solution = Solution()
-        s = '226'
-        actual = solution.numDecodings(s)
-        expected = 3
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(3, get_sol().numDecodings(s = '226'))
     def test_13(self):
-        solution = Solution()
-        s = '0'
-        actual = solution.numDecodings(s)
-        expected = 0
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(0, get_sol().numDecodings(s = '0'))
     def test_14(self):
-        solution = Solution()
-        s = '230'
-        actual = solution.numDecodings(s)
-        expected = 0
-        self.assertEqual(expected, actual)
+        self.assertEqual(0, get_sol().numDecodings(s = '230'))
     def test_15(self):
-        solution = Solution()
-        s = '227257'
-        actual = solution.numDecodings(s)
-        expected = 4
-        self.assertEqual(expected, actual)
+        self.assertEqual(4, get_sol().numDecodings(s = '227257'))
