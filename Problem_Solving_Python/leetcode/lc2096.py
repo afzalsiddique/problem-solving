@@ -8,6 +8,30 @@ class TreeNode:
         self.right = right
     def __repr__(self): return str(self.val)
 class Solution:
+    def getDirections(self, root: TreeNode, startValue: int, destValue: int) -> str:
+        def dfs(node,dest):
+            if not node: return None
+            if node.val==dest:
+                return ['end']
+            if dfs(node.left,dest):
+                li = ['L']
+                li.extend(dfs(node.left,dest))
+                return li
+            if dfs(node.right,dest):
+                li = ['R']
+                li.extend(dfs(node.right,dest))
+                return li
+            return None
+
+        path1 = dfs(root,startValue)
+        path1.pop()
+        path2 = dfs(root,destValue)
+        path2.pop()
+        for i,(x,y) in enumerate(zip(path1,path2)):
+            if x!=y: break
+        path1=['U']*len(path1)
+        return ''.join(path1+path2)
+class Solution2:
     # tle
     def getDirections(self, root: TreeNode, startValue: int, destValue: int) -> str:
         g=defaultdict(dict)
@@ -47,4 +71,7 @@ class tester(unittest.TestCase):
     def test4(self):
         Output= "UUUUURRRLLLRLLRRR"
         self.assertEqual(Output,get_sol().getDirections(deserialize("5,3,327,246,245,194,54,112,51,66,31,345,299,237,268,154,1,11,44,136,78,110,7,null,279,73,219,284,114,227,203,261,33,null,256,334,63,null,189,97,null,166,72,300,168,264,263,238,296,null,null,213,229,250,4,175,176,294,108,177,332,305,null,null,null,null,null,36,180,291,143,95,35,23,215,233,349,14,275,351,null,null,335,99,346,98,141,328,45,null,235,338,255,null,null,null,null,220,null,null,null,10,318,159,178,47,319,147,134,null,313,null,null,186,231,130,199,null,null,163,116,86,253,null,null,257,58,102,56,9,70,24,222,113,135,145,null,100,null,null,77,221,null,348,21,329,210,285,null,null,129,322,null,null,306,183,null,149,null,106,null,null,null,null,null,137,336,53,244,326,null,311,302,null,239,null,90,151,null,2,61,304,127,94,43,null,null,266,null,165,105,104,null,null,320,200,57,16,138,null,null,null,316,34,null,169,85,310,269,68,323,350,202,null,126,119,62,211,223,42,140,null,null,206,null,120,160,null,null,null,124,150,324,null,null,null,null,74,null,174,null,null,null,182,null,265,null,null,null,207,277,96,196,25,28,null,null,340,171,null,null,null,null,null,347,267,null,null,32,191,192,179,null,295,null,195,null,181,null,null,null,null,null,115,null,null,309,49,325,258,190,null,null,224,null,null,337,225,184,null,48,null,null,null,null,20,280,209,161,null,null,null,null,38,281,339,null,230,71,null,null,303,101,null,null,null,null,null,317,91,null,193,null,null,13,null,null,344,132,89,93,null,null,null,314,null,null,null,null,330,19,123,331,null,null,null,null,null,null,22,null,null,271,null,null,55,null,292,290,248,null,null,null,null,null,251,67,null,null,273,null,260,null,307,null,69,131,81,167,214,343,null,243,null,283,null,null,null,null,null,216,111,null,null,18,204,148,null,null,null,12,315,87,146,null,185,188,null,null,null,321,null,null,null,15,217,301,null,null,null,null,null,218,null,null,null,142,287,46,null,null,341,64,29,null,259,27,298,null,75,null,156,null,null,null,null,null,null,null,null,null,null,288,125,null,242,139,82,270,null,null,null,152,null,null,null,null,40,null,null,null,226,null,null,198,null,null,null,null,103,122,null,278,null,null,null,null,164,274,null,null,null,76,37,8,286,null,232,null,null,155,null,null,null,30,null,null,null,null,null,null,null,null,276,197,null,50,342,null,6,null,65,null,null,null,null,null,247,null,null,null,null,null,null,null,null,null,null,201,39,null,null,null,null,109,null,null,null,null,null,121,84,79,null,null,null,null,282,null,null,293,null,null,333,297,234,null,null,null,null,null,null,null,null,52,133,null,null,null,172,null,252,null,17,170,59,158,236,null,null,null,162,262,null,null,null,107,null,null,308,null,null,null,null,249,352,null,null,null,null,157,null,null,60,null,null,null,null,null,null,254,212,83,null,null,240,173,153,null,208,128,272,null,null,187,205,null,null,null,null,null,null,null,null,null,null,null,null,144,null,312,null,null,88,41,null,null,null,null,null,null,289,null,null,null,null,null,null,null,null,null,null,null,null,92,null,228,117,null,80,118,null,null,null,241,26"), 223, 92))
-    # def test5(self):
+    def test5(self):
+        Output= "UUUUURRRLLLRLLRRR"
+        self.assertEqual(Output,get_sol().getDirections(deserialize("1,null,10,12,13,4,6,null,15,null,null,5,11,null,2,14,7,null,8,null,null,null,9,3"), 6, 15))
+
