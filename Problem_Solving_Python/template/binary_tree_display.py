@@ -1,6 +1,6 @@
 # deserialize binary tree
 from collections import deque
-from binary_tree import deserialize,serialize
+# from binary_tree import deserialize,serialize
 
 ### using Turtle ###
 # https://leetcode.com/problems/recover-binary-search-tree/discuss/32539/Tree-Deserializer-and-Visualizer-for-Python
@@ -61,5 +61,46 @@ class TreeNode:
         lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
         return lines, n + m + u, max(p, q) + 2, n + u // 2
 
-root=deserialize('1,null,2,null,3')
+def deserialize(data): # for unit testing
+    sep,en = ',','null'
+    data = data.split(sep)
+    l = len(data)
+    if l<1:return None
+    root = TreeNode(int(data[0]))
+    q = deque()
+    q.append(root)
+    i=1
+    while i<l and q:
+
+        curr = q.popleft()
+        if data[i]!=en:
+            curr.left = TreeNode(int(data[i]))
+            q.append(curr.left)
+        i+=1
+        if i<l and data[i]!=en:
+            curr.right = TreeNode(int(data[i]))
+            q.append(curr.right)
+        i+=1
+
+    return root
+
+def serialize(root): # for unit testing
+    sep,en = ',','null'
+    if not root: return ''
+
+    q = deque()
+    res = [str(root.val)]
+    q.append(root)
+    while q:
+        cur = q.popleft()
+        for child in [cur.left, cur.right]:
+            if child:
+                q.append(child)
+                res.append(str(child.val))
+            else:
+                res.append(en)
+    while res and res[-1]==en: res.pop()
+    return sep.join(res)
+root=deserialize("5,8,3,1,null,4,7,6,null,null,null,null,null,null,2")
 print(root)
+root._display_aux()
