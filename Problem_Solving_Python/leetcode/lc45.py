@@ -1,56 +1,40 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-# greedy
-class Solution4:
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
+class Solution:
+    # greedy
     # https://leetcode.com/problems/jump-game-ii/discuss/18028/O(n)-BFS-solution/237098
     # start position from the end
     # Find the leftmost position that can reach the current position.
     def jump(self, nums: List[int]) -> int:
-        position = len(nums)-1
+        pos = len(nums)-1
         steps=0
-        while position:
-            for i in range(position):
-                if nums[i]+i>=position:
-                    position=i
+        while pos:
+            new_pos=pos
+            for i in range(pos):
+                if nums[i]+i>=pos:
+                    new_pos=i
                     steps+=1
                     break
+            if pos==new_pos: return -1 # not required
+            pos=new_pos
         return steps
-class Solution:
-    def jump(self, nums: List[int]) -> int:
-        n = len(nums)
-        dp = [-1]*n
-        def helper(position):
-            if position>=n-1:return 0
-            if dp[position]!=-1:return dp[position]
-            farthest = nums[position]+position
-            minn = float('inf')
-            for i in range(position+1, farthest+1):
-                minn = min(minn, helper(i))
-            dp[position]=1+minn
-            return dp[position]
-
-        return helper(0)
-
 class Solution2:
     def jump(self, nums: List[int]) -> int:
-        n = len(nums)
-        def helper(position):
-            if position>=n-1:return 0
-            farthest = nums[position]+position
-            minn = float('inf')
-            for i in range(position+1, farthest+1):
-                minn = min(minn, helper(i))
-            return 1+minn
+        @functools.lru_cache(None)
+        def dfs(i):
+            if i>=len(nums)-1: return 0
+            res=float('inf')
+            for jump in range(1,nums[i]+1):
+                res=min(res,dfs(i+jump))
+            return res+1
 
-        return helper(0)
+        return dfs(0)
 
-class MyTestCase(unittest.TestCase):
 
+class Tester(unittest.TestCase):
     def test_1(self):
         self.assertEqual(2, Solution().jump([2,3,1,1,4]))
     def test_2(self):
         self.assertEqual(2, Solution().jump([2,3,0,1,4]))
+    def test_3(self):
+        self.assertEqual(1, Solution().jump([2,1]))
