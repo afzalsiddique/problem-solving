@@ -18,28 +18,6 @@ class Solution:
             count += 1
         return count
 
-class Solution2:
-    def videoStitching(self, clips: List[List[int]], t: int) -> int:
-        max_right=[0]*(t+1) # "(t+1)" because [0,t] both are inclusive
-        for l,r in clips:
-            if l<t:
-                max_right[l]=max(max_right[l],min(r,t))
-        return self.jump(max_right)
-
-    def jump(self, nums: List[int]) -> int:
-        # leetcode 45
-        pos = len(nums)-1
-        steps=0
-        while pos:
-            new_pos=pos
-            for i in range(pos):
-                if nums[i]>=pos:
-                    new_pos=i
-                    steps+=1
-                    break
-            if pos==new_pos: return -1
-            pos=new_pos
-        return steps
 class Solution4:
     def videoStitching(self, clips: List[List[int]], t: int) -> int:
         max_right=[0]*(t+1)
@@ -56,6 +34,28 @@ class Solution4:
             new_pos=pos
             for i in range(pos):
                 if nums[i]+i>=pos:
+                    new_pos=i
+                    steps+=1
+                    break
+            if pos==new_pos: return -1
+            pos=new_pos
+        return steps
+class Solution2:
+    def videoStitching(self, clips: List[List[int]], t: int) -> int:
+        max_right=[0]*(t+1) # "(t+1)" because [0,t] both are inclusive
+        for l,r in clips:
+            if l<t:
+                max_right[l]=max(max_right[l],min(r,t))
+        return self.jump(max_right)
+
+    def jump(self, nums: List[int]) -> int:
+        # leetcode 45
+        pos = len(nums)-1
+        steps=0
+        while pos:
+            new_pos=pos
+            for i in range(pos):
+                if nums[i]>=pos:
                     new_pos=i
                     steps+=1
                     break

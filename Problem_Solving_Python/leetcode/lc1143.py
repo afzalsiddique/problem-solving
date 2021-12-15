@@ -1,6 +1,6 @@
-import unittest
-
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 class Solution:
     def longestCommonSubsequence(self, a: str, b: str) -> int:
         # https://www.youtube.com/watch?v=sSno9rV8Rhg&t=305s
@@ -47,29 +47,11 @@ class Solution:
                     dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j])
         return dp[-1][-1]
 
-class MyTestCase(unittest.TestCase):
 
+class Tester(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
-        text1 = 'abcdefg'
-        text2 = 'chfg'
-        actual = solution.longestCommonSubsequence(text1, text2)
-        expected = 3
-        self.assertEqual(expected, actual)
-
-
+        self.assertEqual(3, get_sol().longestCommonSubsequence('abcdefg',  'chfg'))
     def test_2(self):
-        solution = Solution()
-        text1 = 'abcde'
-        text2 = 'ace'
-        actual = solution.longestCommonSubsequence(text1, text2)
-        expected = 3
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(3, get_sol().longestCommonSubsequence('abcde',  'ace'))
     def test_3(self):
-        solution = Solution()
-        text1 = "oxcpqrsvwf"
-        text2 = "shmtulqrypy"
-        actual = solution.longestCommonSubsequence(text1, text2)
-        expected = 2
-        self.assertEqual(expected, actual)
+        self.assertEqual(2, get_sol().longestCommonSubsequence("oxcpqrsvwf",  "shmtulqrypy"))

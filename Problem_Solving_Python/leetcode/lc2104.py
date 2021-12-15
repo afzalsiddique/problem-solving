@@ -49,7 +49,7 @@ class Solution2:
 
 
 
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(4, get_sol().subArrayRanges([1,2,3]))
     def test2(self):

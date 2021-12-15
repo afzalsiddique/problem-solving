@@ -1,6 +1,18 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
-
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution4()
 class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        @functools.lru_cache(None)
+        def func(i,cur):
+            if i==len(nums):
+                if cur==target:
+                    return 1
+                return 0
+            return func(i+1,cur+nums[i])+func(i+1,cur-nums[i])
+
+        return func(0,0)
+class Solution4:
     # https://www.youtube.com/watch?v=MqYLmIzl8sQ
     # https://www.youtube.com/watch?v=hqGa65Rp5LQ&t=312s
     # https://www.youtube.com/watch?v=QihB4bI6BJw
@@ -12,23 +24,23 @@ class Solution:
         return self.sumSubset(nums, target)
     def sumSubset(self, nums, target):
         n = len(nums)
-        nums = ['#'] + nums
+        nums = [0] + nums
         dp = [[0]*(target+1) for _ in range(n+1)]
         for i in range(n+1):
             dp[i][0] = 1
         for i in range(1,n+1):
             for j in range(1,target+1): # j is the capacity of the bag
+                include,exclude=0,0
                 if j<nums[i]: # if the capacity of the bag is less than nums[i]
-                    dp[i][j]=dp[i-1][j] # only exclude
+                    exclude=dp[i-1][j] # only exclude
                 elif nums[i] == 0: # if we encounter 0 skip it
-                    dp[i][j]=dp[i-1][j]
+                    exclude=dp[i-1][j]
                 else:
                     exclude = dp[i-1][j]
                     include = dp[i-1][j-nums[i]]
-                    dp[i][j]=include+exclude
-        zeros = 0
-        for num in nums:
-            if num==0:zeros+=1
+                dp[i][j]=include+exclude
+        zeros = sum(x==0 for x in nums) # count no of zeros
+        zeros-=1 # because we added one extra zero at the beginning
         return int(2**zeros) * dp[-1][-1] # see below for explanation
 
 # For those who has problem with test case  [0,0,0,0,0,0,0,0,1], target = 1.
@@ -78,27 +90,23 @@ class Solution2:
         # return int(2**zeros) * dp[-1][-1] ## changes here
         return dp[-1][-1] ## changes here
 
-class Solution3:
-    # TLE. time complexity 2^n
-    def findTargetSumWays(self, nums: List[int], S: int) -> int:
-        n = len(nums)
-        def dfs(i,target):
-            if i==n:
-                if target==0: return 1
-                return 0
-            else:
-                return  dfs(i+1, target-nums[i]) + dfs(i+1,target+nums[i])
 
-        return dfs(0,S)
-
-class mycase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(2,Solution().sumSubset([1,2,1],3))
+        self.assertEqual(2,get_sol().sumSubset([1,2,1],3))
     def test2(self):
-        self.assertEqual(0,Solution().findTargetSumWays([1],2))
+        self.assertEqual(0,get_sol().findTargetSumWays([1],2))
     def test3(self):
-        self.assertEqual(256,Solution().findTargetSumWays([0,0,0,0,0,0,0,0,1],1))
+        self.assertEqual(256,get_sol().findTargetSumWays([0,0,0,0,0,0,0,0,1],1))
     def test4(self):
-        self.assertEqual(2,Solution().findTargetSumWays([1,0],1))
+        self.assertEqual(2,get_sol().findTargetSumWays([1,0],1))
     def test5(self):
-        self.assertEqual(792,Solution().findTargetSumWays([1,1,1,1,1,1,1,1,1,1,1,1],2))
+        self.assertEqual(792,get_sol().findTargetSumWays([1,1,1,1,1,1,1,1,1,1,1,1],2))
+    def test6(self):
+        self.assertEqual(5,get_sol().findTargetSumWays([1,1,1,1,1], 3))
+    def test7(self):
+        self.assertEqual(0,get_sol().findTargetSumWays([1,1,1,1], 3))
+    def test8(self):
+        self.assertEqual(1,get_sol().findTargetSumWays([1,1,1], 3))
+    def test9(self):
+        self.assertEqual(5564,get_sol().findTargetSumWays([50,37,6,20,35,41,45,3,20,36,49,1,20,10,43,4,44,15,44,34], 25))

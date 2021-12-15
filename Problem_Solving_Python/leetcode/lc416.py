@@ -1,9 +1,8 @@
+import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C%2B%2B-4-line-solution-using-a-bitset
 # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C++-4-line-solution-using-a-bitset/94973
-import unittest
-from typing import List
-
-
 class Solution:
     # iterative
     def canPartition(self, nums: List[int]) -> bool:
@@ -111,32 +110,21 @@ class Solution:
                     next_dp[j] = True
             dp = next_dp
         return dp[target]
-class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        solution = Solution()
-        nums = [5,4,2,2,4,3]
-        actual = solution.canPartition(nums)
-        expected = True
-        self.assertEqual(expected, actual)
 
-    def test_2(self):
-        solution = Solution()
-        nums = [1, 5, 11, 5]
-        actual = solution.canPartition(nums)
-        expected = True
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
-        nums = [1, 2, 3, 5]
-        actual = solution.canPartition(nums)
-        expected = False
-        self.assertEqual(expected, actual)
+class Tester(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(True, get_sol().canPartition([5,4,2,2,4,3]))
+    def test2(self):
+        self.assertEqual(True, get_sol().canPartition([1, 5, 11, 5]))
+    def test3(self):
+        self.assertEqual(False, get_sol().canPartition([1, 2, 3, 5]))
     def test4(self):
         self.assertEqual(True, Solution().canPartition([6,4,7,5]))
     def test5(self):
-        solution = Solution()
-        nums = [1, 1]
-        actual = solution.canPartition(nums)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartition([1, 1]))
+    def test6(self):
+        self.assertEqual(False, get_sol().canPartition([1,2,5]))
+    def test7(self):
+        self.assertEqual(False, get_sol().canPartition([2,2,3,5]))
+    def test8(self):
+        self.assertEqual(False, get_sol().canPartition([100]))
