@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
 from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+# The idea is each time we find a project with max profit and within current capital capability.
 class Heap:
     def __init__(self):
         self.pq = []
