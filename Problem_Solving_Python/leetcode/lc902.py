@@ -3,25 +3,25 @@ from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/numbers-at-most-n-given-digit-set/discuss/168439/C%2B%2B-O(logN)-Clear-code-with-explanation
-    def atMostNGivenDigitSet(self, digits: List[str], target: int) -> int:
+    def atMostNGivenDigitSet(self, nums: List[str], target: int) -> int:
         target=[int(c) for c in str(target)]
-        digits = [int(c) for c in digits]
-        n = len(target)
-        total=0
-        numDigits = len(digits)
-        for i in range(1,n): # for numbers composed of lesser digits than target.
-            total+=numDigits**i
+        nums = [int(c) for c in nums]
+        n_target = len(target)
+        n_nums = len(nums)
+        res=0
+        for i in range(1,n_target): # for numbers composed of lesser digits than target.
+            res+=n_nums**i
 
-        for i in range(n):
-            hasSameNum = False
-            for d in digits:
+        for i in range(n_target):
+            has_same_number = False
+            for d in nums:
                 if d<target[i]:
-                    total+=numDigits**(n-i-1)
+                    res+=n_nums**(n_target-i-1)
                 elif d==target[i]:
-                    hasSameNum=True
-            if not hasSameNum:
-                return total
-        return total+1
+                    has_same_number=True
+            if not has_same_number:
+                return res
+        return res+1
 
 class Tester(unittest.TestCase):
     def test1(self):
