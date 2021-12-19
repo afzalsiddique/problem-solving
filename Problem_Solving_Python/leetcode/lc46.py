@@ -1,5 +1,7 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+# https://leetcode.com/problems/permutations/discuss/18462/Share-my-three-different-solutions
 class Solution:
     # backtracking 1
     def permute(self, nums):
@@ -28,20 +30,25 @@ class Solution2:
         dfs(nums)
         return res
 
-# https://leetcode.com/problems/permutations/discuss/18462/Share-my-three-different-solutions
+class Solution3:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(path:List[int]):
+            if len(path)==n:
+                res.append(path)
+                return
+            for x in nums:
+                if x not in path:
+                    backtrack(path[:]+[x])
 
-class MyTestCase(unittest.TestCase):
+        n=len(nums)
+        res=[]
+        backtrack([])
+        return res
 
+class Tester(unittest.TestCase):
     def test_1(self):
-        solution = get_sol()
-        expected = [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-        self.assertEqual(expected, solution.permute([1,2,3]))
-
+        self.assertEqual([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]], get_sol().permute([1,2,3]))
     def test_2(self):
-        solution = Solution()
-        expected = [[0,1],[1,0]]
-        self.assertEqual(expected, solution.permute([0,1]))
-
+        self.assertEqual([[0,1],[1,0]], get_sol().permute([0,1]))
     def test_3(self):
-        solution = Solution()
-        self.assertEqual([[1]], solution.permute([1]))
+        self.assertEqual([[1]], get_sol().permute([1]))

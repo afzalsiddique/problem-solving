@@ -6,10 +6,16 @@ class UnionFind:
     def __init__(self,n):
         self.n=n
         self.par=[i for i in range(n)]
+        self.size=[1 for _ in range(n)]
     def __repr__(self): return str(self.par)
     def union(self,a,b):
-        self.par[self.find(b)]=self.par[self.find(a)]
-        return
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
     def find(self,a):
         if a!=self.par[a]:
             self.par[a]=self.find(self.par[a])

@@ -1,8 +1,8 @@
-from typing import List
-
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 class Solution:
-    def permuteUnique2(self, nums: List[int]) -> List[List[int]]:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         def backtrack(nums,path):
             n=len(nums)
             if n==1:
@@ -17,6 +17,7 @@ class Solution:
         nums.sort()
         backtrack(nums,[])
         return res
+class Solution2:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         dp = {}
 
@@ -35,3 +36,24 @@ class Solution:
             return result
 
         return helper(nums)
+class Solution3:
+    # bad solution because it uses set
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(path:List[int]):
+            if len(path)==n:
+                res.add(tuple([nums[i] for i in path]))
+                return
+            for i in range(n):
+                if i not in path:
+                    backtrack(path[:]+[i])
+
+        n=len(nums)
+        res=set()
+        backtrack([])
+        return [list(x) for x in res]
+class Tester(unittest.TestCase):
+    def test1(self):
+        self.assertEqual([[1,1,2], [1,2,1], [2,1,1]], get_sol().permuteUnique([1,1,2]))
+    def test2(self):
+        self.assertEqual([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]], get_sol().permuteUnique([1,2,3]))
+    # def test3(self):
