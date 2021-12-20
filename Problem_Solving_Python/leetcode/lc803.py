@@ -1,72 +1,61 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
 from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class DSU:
-    def __init__(self, size: int):
-        self.size = [1]*size
-        self.parents = [idx for idx in range(size)]
-    def __repr__(self): return str(self.parents)
-    def find(self, cell) -> None:
-        if self.parents[cell] != cell:
-            self.parents[cell] = self.find(self.parents[cell])
-        return self.parents[cell]
-
-    def union(self, cell1, cell2) -> None:
-        parent1, parent2 = self.find(cell1), self.find(cell2)
-
-        if parent1 != parent2:
-            if self.size[parent1]>self.size[parent2]:
-                parent1,parent2=parent2,parent1
-            self.parents[parent1] = parent2
-            self.size[parent2] += self.size[parent1]
+class UnionFind:
+    def __init__(self,n):
+        self.par=[i for i in range(n)]
+        self.size=[1]*n
+    def __repr__(self): return str(self.par)
+    def find(self,a:int):
+        if self.par[a]!=a:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def union(self,a:int,b:int):
+        a,b = self.find(a),self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def noOfBricksConnectedToTop(self): # there is a dummy brick positioned at 0
+        return self.size[self.find(0)]-1 # subtract the dummy brick
 
 class Solution:
     def hitBricks(self, grid: List[List[int]], hits: List[List[int]]) -> List[int]:
-        self.grid = grid
+        def oneDim(i,j): # 2d array index to 1d array index
+            return i*n+j+1 # 1 indexed. because there is a dummy root brick at 0
+        def unionAround(i, j, uf:UnionFind):
+            for di, dj in [[-1,0],[1,0],[0,1],[0,-1]]:
+                newI, newJ = i + di, j + dj
+                if not 0 <= newI < m or not 0 <= newJ < n: continue
+                if grid[newI][newJ] != 1: continue
+                uf.union(oneDim(i, j), oneDim(newI, newJ))
 
-        self.rows, self.cols = len(grid), len(grid[0])
-        ds = DSU(self.rows*self.cols+1)
+            if i == 0: uf.union(0, oneDim(i, j))
 
-        # mark hits
-        for row, col in hits:
-            if grid[row][col] == 1:
-                grid[row][col] = 2
+        m,n=len(grid),len(grid[0])
+        uf=UnionFind(m * n + 1) # '+1' because dummy root brick at position 0
+        for x,y in hits:
+            if grid[x][y]==1:
+                grid[x][y]=2
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==1:
+                    unionAround(i,j,uf)
 
-                # unionize bricks
-        for row in range(self.rows):
-            for col in range(self.cols):
-                if grid[row][col] == 1:
-                    self.union_around(ds, row, col)
-
-        num_bricks_left = ds.size[ds.find(0)]
-        num_bricks_dropped = [0]*len(hits)
-
-        for idx in range(len(hits)-1,-1,-1):
-            row, col = hits[idx]
-
-            if grid[row][col] == 2:
-                grid[row][col] = 1
-                self.union_around(ds, row, col)
-                new_num_bricks_left = ds.size[ds.find(0)]
-                num_bricks_dropped[idx] = max(0, new_num_bricks_left-num_bricks_left-1)
-                num_bricks_left = new_num_bricks_left
-
-        return num_bricks_dropped
-
-    def get_pos(self, row, col):
-        return (row*self.cols) + col + 1
-
-    def union_around(self, ds, row, col):
-        curr_pos = self.get_pos(row, col)
-        directions = [[-1,0],[1,0],[0,1],[0,-1]]
-
-        for delta_row, delta_col in directions:
-            new_row, new_col = row+delta_row, col+delta_col
-
-            if 0 <= new_row < self.rows and 0 <= new_col < self.cols and self.grid[new_row][new_col] == 1:
-                ds.union(curr_pos, self.get_pos(new_row, new_col))
-
-        if row == 0: ds.union(0, curr_pos)
+        res=[-1]*len(hits)
+        cnt=uf.noOfBricksConnectedToTop()
+        for i in range(len(hits)-1,-1,-1):
+            x,y=hits[i]
+            if grid[x][y]==0:
+                res[i]=0
+            else:
+                grid[x][y]=1 # back to given array
+                unionAround(x,y,uf)
+                newCnt=uf.noOfBricksConnectedToTop()
+                res[i]=max(0,newCnt-cnt-1) # '-1' because the brick which was hit is not counted
+                cnt=newCnt
+        return res
 class Solution2:
     # tle
     def hitBricks(self, grid: List[List[int]], hits: List[List[int]]) -> List[int]:
@@ -105,4 +94,11 @@ class Tester(unittest.TestCase):
         self.assertEqual([2], get_sol().hitBricks(grid = [[1,0,0,0],[1,1,1,0]], hits = [[1,0]]))
     def test2(self):
         self.assertEqual([0,0], get_sol().hitBricks(grid = [[1,0,0,0],[1,1,0,0]], hits = [[1,1],[1,0]]))
-    # def test3(self):
+    def test3(self):
+        self.assertEqual([1,0,1,0,0], get_sol().hitBricks([[1],[1],[1],[1],[1]], [[3,0],[4,0],[1,0],[2,0],[0,0]]))
+    def test4(self):
+        self.assertEqual([0,3,0], get_sol().hitBricks([[1,0,1],[1,1,1]], [[0,0],[0,2],[1,1]]))
+    def test5(self):
+        self.assertEqual([0,0], get_sol().hitBricks([[1,0,1],[0,0,1]], [[1,0],[0,0]]))
+    def test6(self):
+        self.assertEqual([0,0,1,0], get_sol().hitBricks([[1,1,1],[0,1,0],[0,0,0]], [[0,2],[2,0],[0,1],[1,2]]))
