@@ -1,6 +1,6 @@
-import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Iterator, Tuple; import functools
+# from ..template.binary_tree import deserialize,serialize
 # def get_sol(): return Solution()
+li = [(i,j) for i in range(5) for j in range(6,10)]
+print(li)
 
-s1={1,2,3,4}
-s2 ={3,4,5}
-print(s1.union(s2))
