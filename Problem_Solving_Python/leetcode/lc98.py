@@ -8,6 +8,25 @@ class TreeNode:
         self.right = right
     def __repr__(self): return str(self.val)
 class Solution:
+    # post order
+    def isValidBST(self, root: TreeNode) -> bool:
+        def helper(node:TreeNode):
+            if not node:
+                return [float('inf'),float('-inf')]
+            l=helper(node.left)
+            r=helper(node.right)
+            if not l or not r:
+                return None
+            minL,maxL=l
+            minR,maxR=r
+            if maxL>=node.val or minR<=node.val:
+                return None
+            return [min(minL,node.val),max(maxR,node.val)]
+
+        ans=helper(root)
+        if ans: return True
+        return False
+class Solution2:
     def isValidBST(self, root: TreeNode) -> bool:
         def valid(node: TreeNode,lo:int,hi:int):
             if not node: return True

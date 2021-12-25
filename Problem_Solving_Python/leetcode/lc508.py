@@ -26,8 +26,7 @@ class Solution:
 
         # concise
         maxx = max(di.values())
-        res = [x for x in di if di[x]==maxx]
-        return res
+        return [x for x in di if di[x]==maxx]
 
 class Tester(unittest.TestCase):
     def test1(self):
