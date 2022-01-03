@@ -1,6 +1,6 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution2()
-
 # z algo
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
@@ -47,11 +47,11 @@ class Solution2:
                 i += 1
                 j += 1
             else:
-                if j != 0:
-                    j = lps[j-1] # go back to previous longest prefix suffix
-                else:
+                if j == 0:
                     lps[i] = 0
                     i += 1
+                else:
+                    j = lps[j-1] # go back to previous longest prefix suffix
         return lps
     # finding pattern
     def strStr(self, haystack: str, needle: str) -> int:
@@ -67,10 +67,10 @@ class Solution2:
                 if j==len(needle):
                     return i-j
             else:
-                if j!=0:
-                    j=lps[j-1]
-                else:
+                if j==0:
                     i+=1
+                else:
+                    j=lps[j-1]
         return -1
     def computeLPSArray2(self,pat:str): # abdul bari version
         pat = '#' + pat
@@ -84,10 +84,10 @@ class Solution2:
                 i+=1
                 j+=1
             else:
-                if j!=0:
-                    j=lps[j]
-                else:
+                if j==0:
                     i+=1
+                else:
+                    j=lps[j]
         return lps[1:]
 
     # finding pattern
@@ -129,33 +129,18 @@ class Solution3:
 
 
 
-class tester(unittest.TestCase):
-
+class Tester(unittest.TestCase):
     def test_1(self):
-        actual = get_sol().strStr(haystack = "hello", needle = "ll")
-        expected = 2
-        self.assertEqual(expected, actual)
+        self.assertEqual(2, get_sol().strStr(haystack = "hello", needle = "ll"))
     def test_2(self):
-        actual = get_sol().strStr(haystack = "aaaaa", needle = "bba")
-        expected = -1
-        self.assertEqual(expected, actual)
+        self.assertEqual(-1, get_sol().strStr(haystack = "aaaaa", needle = "bba"))
     def test_3(self):
-        actual = get_sol().strStr(haystack = "", needle = "")
-        expected = 0
-        self.assertEqual(expected, actual)
+        self.assertEqual(0, get_sol().strStr(haystack = "", needle = ""))
     def test_4(self):
-        actual = get_sol().strStr("a","a")
-        expected = 0
-        self.assertEqual(expected, actual)
+        self.assertEqual(0, get_sol().strStr("a","a"))
     def test_5(self):
-        actual = get_sol().strStr("mississippi","mississippi")
-        expected = 0
-        self.assertEqual(expected, actual)
+        self.assertEqual(0, get_sol().strStr("mississippi","mississippi"))
     def test_6(self):
-        actual = get_sol().strStr( "mississippi" ,"issipi")
-        expected = -1
-        self.assertEqual(expected, actual)
+        self.assertEqual(-1, get_sol().strStr( "mississippi" ,"issipi"))
     def test_7(self):
-        actual = get_sol().strStr( "mississippi" ,"issip")
-        expected = 4
-        self.assertEqual(expected, actual)
+        self.assertEqual(4, get_sol().strStr( "mississippi" ,"issip"))

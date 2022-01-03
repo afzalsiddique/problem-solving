@@ -17,8 +17,7 @@ class UnionFind:
     def find(self,a):
         if a!=self.par[a]:
             self.par[a]=self.find(self.par[a])
-            return self.par[a]
-        return a
+        return self.par[a]
     def size_of_groups(self):
         for a in range(self.n):
             self.find(a)
