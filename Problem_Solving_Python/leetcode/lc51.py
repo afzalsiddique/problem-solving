@@ -1,8 +1,8 @@
 # https://leetcode.com/problems/n-queens/
 # https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
-import unittest
-from typing import List
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+# from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
         res = []
@@ -98,17 +98,64 @@ class Solution2:
         dfs(0)
         return make_all_boards(res)
 
+class Solution3:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        def colCheck():
+            return len(set(queens))==len(queens)
+        def diag1Check():
+            diag1=defaultdict(int)
+            for i,j in enumerate(queens):
+                if diag1[j-i]==1:
+                    return False
+                diag1[j-i]+=1
+            return True
+        def diag2Check():
+            diag2=defaultdict(int)
+            for i,j in enumerate(queens):
+                if diag2[i+j]==1:
+                    return False
+                diag2[i+j]+=1
+            return True
+
+        def backtrack(i: int):
+            if i==n:
+                res.append(queens[:])
+                return
+            for j in range(n):
+                queens.append(j)
+                if colCheck() and diag1Check() and diag2Check():
+                    backtrack(i + 1)
+                queens.pop()
+        def make_board(queens):
+            n = len(queens)
+            board = []
+            board_temp = [['.'] * n for _ in range(n)]
+            for row, col in enumerate(queens):
+                board_temp[row][col] = 'Q'
+            for row in board_temp:
+                board.append("".join(row))
+            return board
+
+        def make_all_boards(res):
+            actual_boards = []
+            for queens in res:
+                actual_boards.append(make_board(queens))
+            return actual_boards
+
+        res=[]
+        queens=[]
+        backtrack(0)
+        res=make_all_boards(res)
+        return res
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        solution = Solution()
-        actual = sorted(solution.solveNQueens(4))
+        actual = sorted(get_sol().solveNQueens(4))
         expected = sorted([[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]])
         self.assertEqual(expected, actual)
 
     def test_2(self):
-        solution = Solution()
-        actual = sorted(solution.solveNQueens(5))
+        actual = sorted(get_sol().solveNQueens(5))
         expected = sorted([['....Q', '..Q..', 'Q....', '...Q.', '.Q...'],
                          ['....Q', '.Q...', '...Q.', 'Q....', '..Q..'],
                          ['...Q.', '.Q...', '....Q', '..Q..', 'Q....'],
@@ -120,22 +167,16 @@ class MyTestCase(unittest.TestCase):
                          ['Q....', '...Q.', '.Q...', '....Q', '..Q..'],
                          ['Q....', '..Q..', '....Q', '.Q...', '...Q.']] )
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        solution = Solution()
-        actual = sorted(solution.solveNQueens(3))
+        actual = sorted(get_sol().solveNQueens(3))
         expected = sorted([])
         self.assertEqual(expected, actual)
-
     def test_4(self):
-        solution = Solution()
-        actual = sorted(solution.solveNQueens(2))
+        actual = sorted(get_sol().solveNQueens(2))
         expected = sorted([])
         self.assertEqual(expected, actual)
-
     def test_5(self):
-        solution = Solution()
-        actual = sorted(solution.solveNQueens(1))
+        actual = sorted(get_sol().solveNQueens(1))
         expected = sorted([['Q']])
         self.assertEqual(expected, actual)
 
