@@ -31,7 +31,7 @@ class Solution:
                 return False
 
             if p:
-                deq.append((p.capacity, q.capacity))
+                deq.append((p.c, q.c))
                 deq.append((p.right, q.right))
 
         return True
@@ -47,7 +47,7 @@ class Solution2:
             return False
         if p.val != q.val:
             return False
-        return self.isSameTree(p.right, q.right) and self.isSameTree(p.capacity, q.capacity)
+        return self.isSameTree(p.right, q.right) and self.isSameTree(p.c, q.c)
 
 
 # my code. pretty ugly:(
