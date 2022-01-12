@@ -5,9 +5,6 @@ class Solution:
     # https://www.youtube.com/watch?v=kXy0ABd1vwo
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         NOT_VISITED=0; VISITED=1; PROCESSING=-1
-        visited = [NOT_VISITED for _ in range(numCourses)]
-        g=defaultdict(list)
-        for x,y in prerequisites: g[x].append(y)
         def dfs(u):
             if visited[u]==PROCESSING: return False # loop found
             if visited[u]==VISITED: return True
@@ -17,6 +14,9 @@ class Solution:
             visited[u]=VISITED
             return True
 
+        visited = [NOT_VISITED for _ in range(numCourses)]
+        g=defaultdict(list)
+        for x,y in prerequisites: g[y].append(x)
         for u in range(numCourses):
             if not dfs(u): return False
         return True

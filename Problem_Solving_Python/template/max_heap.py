@@ -22,7 +22,9 @@ class MaxHeap2(list): # I think we don't need to inherit list class
     def setTopPrice(self,val): self.data[0][0]=val*(-1)
     def setTopAmount(self,val): self.data[0][1]=val*(-1)
     def push(self, price, amount): heappush(self.data, [-price, -amount])
-    def heappop(self): return heappop(self.data)
+    def heappop(self):
+        val1,val2=heappop(self.data)
+        return [-val1,-val2]
     def __repr__(self): return str(self.data)
     def __len__(self): return len(self.data)
     def __bool__(self): return True if len(self.data) else False
