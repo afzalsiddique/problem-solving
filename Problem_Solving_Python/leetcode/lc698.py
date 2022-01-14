@@ -1,33 +1,32 @@
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+# from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-
-from typing import List
-
-class Solution0:
-    # https://leetcode.com/problems/partition-to-k-equal-sum-subsets/discuss/146579/Easy-python-28-ms-beats-99.5
-    # https://leetcode.com/problems/partition-to-k-equal-sum-subsets/discuss/140541/Clear-explanation-easy-to-understand-C++-:-4ms-beat-100
-    def canPartitionKSubsets(self, nums, k):
-        n = len(nums)
-        buckets = [0]*k
-        target = sum(nums) // k
-        # starting with bigger ones makes it faster
-        nums.sort(reverse=True) # optimization
-
-        # put ith item into some bucket to meet target
-        def put(ith):
-            if ith==n: return True
-            for buck_idx in range(len(buckets)):
-                if buckets[buck_idx]+nums[ith]>target: continue # try next bucket
-                buckets[buck_idx]+=nums[ith] # put it in
-                if put(ith + 1): return True # move on to next item
-                buckets[buck_idx]-=nums[ith] # take it out
-                if buckets[buck_idx]==0: return False # optimization. no need to try other empty bucket
+# https://leetcode.com/problems/partition-to-k-equal-sum-subsets/discuss/146579/Easy-python-28-ms-beats-99.5
+# https://leetcode.com/problems/partition-to-k-equal-sum-subsets/discuss/140541/Clear-explanation-easy-to-understand-C++-:-4ms-beat-100
+class Solution:
+    def canPartitionKSubsets(self, A: List[int], k: int) -> bool:
+        def put(index): # dfs
+            if index==len(A): return True
+            seen=set()
+            for i in range(k):
+                if buckets[i]+A[index]>target: continue
+                if buckets[i] in seen: continue # optimization
+                seen.add(buckets[i])
+                buckets[i]+=A[index]
+                if put(index+1):
+                    return True
+                buckets[i]-=A[index]
             return False
 
+        A.sort(reverse=True) # optimization
+        summ=sum(A)
+        target=summ//k
+        if len(A) < k or sum(A) % k != 0 or max(A) > target:
+            return False
+        buckets=[0]*k
         return put(0)
 
-class Solution:
+class Solution9:
     # tle
     # time O(k*2^n)
     def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
@@ -55,7 +54,7 @@ class Solution:
         return divide_k_equal_subset(k,0)
 
 # tle
-class Solution2:
+class Solution8:
     def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
         def helper(k,cur_sum,next_idx):
             if k==self.k: return True
@@ -211,104 +210,36 @@ class Solution7:
 
 class tester(unittest.TestCase):
     def test00(self):
-        nums = [5,3,2,5]
-        k = 3
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([5,3,2,5], 3))
     def test01(self):
-        nums = [730,580,401,659,5524,405,1601,3,383,4391,4485,1024,1175,1100,2299,3908]
-        k = 4
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([730,580,401,659,5524,405,1601,3,383,4391,4485,1024,1175,1100,2299,3908], 4))
     def test02(self):
-        nums = [4,5,1,1,1,1,1,1]
-        k = 3
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([4,5,1,1,1,1,1,1], 3))
     def test03(self):
-        nums = [5, 7, 3]
-        k = 3
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = False
-        self.assertEqual(expected, actual)
+        self.assertEqual(False, get_sol().canPartitionKSubsets([5, 7, 3], 3))
     def test041(self):
-        nums =[3,4,5]
-        k = 2
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = False
-        self.assertEqual(expected, actual)
+        self.assertEqual(False, get_sol().canPartitionKSubsets([3,4,5], 2))
     def test04(self):
-        nums =[2,2,2,2,3,4,5]
-        k = 4
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = False
-        self.assertEqual(expected, actual)
+        self.assertEqual(False, get_sol().canPartitionKSubsets([2,2,2,2,3,4,5], 4))
     def test05(self):
-        nums = [5,4,2,2,4,3]
-        k = 2
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([5,4,2,2,4,3], 2))
     def test06(self):
-        nums = [4,4,4,4]
-        k = 4
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([4,4,4,4], 4))
     def test07(self):
-        nums = [6,3,1,3,3,2,1,11,3,2,1,2,6,4]
-        k = 4
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([6,3,1,3,3,2,1,11,3,2,1,2,6,4], 4))
     def test08(self):
-        nums = [4, 3, 2, 3, 5, 2, 1]
-        k = 4
-        actual = get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4))
     def test09(self):
-        nums = [4,4,4,4]
-        k = 2
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([4,4,4,4], 2))
     def test10(self):
-        nums = [1,5,11,5]
-        k = 2
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([1,5,11,5], 2))
     def test11(self):
-        nums = [1,2,3,4]
-        k = 3
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = False
-        self.assertEqual(expected, actual)
+        self.assertEqual(False, get_sol().canPartitionKSubsets([1,2,3,4], 3))
     def test12(self):
-        nums = [10,10,10,7,7,7,7,7,7,6,6,6]
-        k = 3
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([10,10,10,7,7,7,7,7,7,6,6,6], 3))
     def test13(self):
-        nums = [2,2,2,2,2,2,2,2,2,2,2,2,2,3,3]
-        k = 8
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = False
-        self.assertEqual(expected, actual)
+        self.assertEqual(False, get_sol().canPartitionKSubsets([2,2,2,2,2,2,2,2,2,2,2,2,2,3,3], 8))
     def test14(self):
-        nums = [5,2,5,5,5,5,5,5,5,5,5,5,5,5,5,3]
-        k = 15
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([5,2,5,5,5,5,5,5,5,5,5,5,5,5,5,3], 15))
     def test15(self):
-        nums = [4,4,4,6,1,2,2,9,4,6]
-        k = 3
-        actual= get_sol().canPartitionKSubsets(nums, k)
-        expected = True
-        self.assertEqual(expected, actual)
+        self.assertEqual(True, get_sol().canPartitionKSubsets([4,4,4,6,1,2,2,9,4,6], 3))

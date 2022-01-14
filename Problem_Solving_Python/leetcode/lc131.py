@@ -1,7 +1,6 @@
-import unittest
-from typing import List
-
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 class Solution:
 
     ######## THOUGH MEMOIZED VERSION BUT THIS IS NOT BETTER IN TIME COMPLEXITY ##############
@@ -85,47 +84,23 @@ class Solution:
 
 
 
+
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
-        actual = sol.partition('ab')
-        expected = [['a', 'b']]
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        actual = sol.partition(s="aab")
-        expected = [["a", "a", "b"], ["aa", "b"]]
-        self.assertEqual(sorted(expected),sorted( actual))
-
-
-    def test_3(self):
-        sol = Solution()
-        actual = sol.partition('bbaca')
-        expected = [['b', 'b', 'aca'], ['b', 'b', 'a', 'c', 'a'], ['bb', 'aca'], ['bb', 'a', 'c', 'a']]
-        self.assertEqual(sorted(expected),sorted( actual))
-
-    def test_4(self):
-        sol = Solution()
-        actual = sol.partition('a')
-        expected = [['a']]
-        self.assertEqual(sorted(expected),sorted( actual))
-
-    def test_5(self):
-        sol = Solution()
-        actual = sol.partition('aa')
-        expected = [['a', 'a'], ['aa']]
-        self.assertEqual(sorted(expected),sorted( actual))
-
-
-    def test_6(self):
-        sol = Solution()
-        actual = sol.partition('aabaa')
+    def test01(self):
+        self.assertEqual([['a', 'b']], get_sol().partition('ab'))
+    def test02(self):
+        self.assertEqual(sorted([["a", "a", "b"], ["aa", "b"]]),sorted( get_sol().partition(s="aab")))
+    def test03(self):
+        self.assertEqual(sorted([['b', 'b', 'aca'], ['b', 'b', 'a', 'c', 'a'], ['bb', 'aca'], ['bb', 'a', 'c', 'a']]),sorted( get_sol().partition('bbaca')))
+    def test04(self):
+        self.assertEqual(sorted([['a']]),sorted( get_sol().partition('a')))
+    def test05(self):
+        self.assertEqual(sorted([['a', 'a'], ['aa']]),sorted( get_sol().partition('aa')))
+    def test06(self):
         expected = [['a', 'a', 'b', 'a', 'a'],
- ['a', 'a', 'b', 'aa'],
- ['a', 'aba', 'a'],
- ['aa', 'b', 'a', 'a'],
- ['aa', 'b', 'aa'],
- ['aabaa']]
-        self.assertEqual(sorted(expected),sorted( actual))
+                    ['a', 'a', 'b', 'aa'],
+                    ['a', 'aba', 'a'],
+                    ['aa', 'b', 'a', 'a'],
+                    ['aa', 'b', 'aa'],
+                    ['aabaa']]
+        self.assertEqual(sorted(expected),sorted( get_sol().partition('aabaa')))

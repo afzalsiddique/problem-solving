@@ -15,10 +15,36 @@ class Solution:
         for i in range(n_target):
             has_same_number = False
             for d in nums:
+                if d>target[i]: # no hope to find same number
+                    break
+                if d==target[i]:
+                    has_same_number=True # still have hope that we can find same number
+                    break
+                res+=n_nums**(n_target-i-1)
+            if not has_same_number: # no hope to find same number
+                return res
+        return res+1 # found same number
+class Solution2:
+    # https://leetcode.com/problems/numbers-at-most-n-given-digit-set/discuss/168439/C%2B%2B-O(logN)-Clear-code-with-explanation
+    def atMostNGivenDigitSet(self, nums: List[str], target: int) -> int:
+        target=[int(c) for c in str(target)]
+        nums = [int(c) for c in nums]
+        n_target = len(target)
+        n_nums = len(nums)
+        res=0
+        for i in range(1,n_target): # for numbers composed of lesser digits than target.
+            res+=n_nums**i
+
+        for i in range(n_target):
+            has_same_number = False
+            for d in nums:
                 if d<target[i]:
                     res+=n_nums**(n_target-i-1)
                 elif d==target[i]:
                     has_same_number=True
+                    break
+                else:
+                    break
             if not has_same_number:
                 return res
         return res+1
