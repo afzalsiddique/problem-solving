@@ -1,50 +1,43 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
 from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def minimumRefill(self, plants: List[int], capacityA: int, capacityB: int) -> int:
-        n=len(plants)
-        a,b=capacityA,capacityB
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        def makeKey(count:Counter):
+            li=[]
+            for c in sorted(count.keys()):
+                if count[c]==0: continue
+                li.append(c+':'+str(count[c]))
+            return ' '.join(li)
+        def makeKeyOneLess(count:Counter, c:str):
+            count[c]-=1
+            res=makeKey(count)
+            count[c]+=1
+            return res
+        def valid(count:Counter):
+            for c in string.ascii_lowercase:
+                if makeKeyOneLess(count,c) in sett:
+                    return True
+            return False
+
+        sett=set()
+        for start in startWords:
+            sett.add(makeKey(Counter(start)))
+
         res=0
-        left,right=0,n-1
-        while left<=right:
-            if left==right:
-                if a>b:
-                    if a<plants[left]:
-                        res+=1
-                elif b<plants[right]:
-                    res+=1
-                break
-
-            while left<right and plants[left]<=a and plants[right]<=b:
-                a-=plants[left]
-                b-=plants[right]
-                left+=1
-                right-=1
-
-
-            if left<right and a<plants[left]:
+        for tar in targetWords:
+            if valid(Counter(tar)):
                 res+=1
-                a=capacityA
-            if left<right and b<plants[right]:
-                res+=1
-                b=capacityB
         return res
-
 
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        self.assertEqual(1, get_sol().minimumRefill(plants = [2,2,3,3], capacityA = 5, capacityB = 5))
+        self.assertEqual(2, get_sol().wordCount(["ant","act","tack"], ["tack","act","acti"]))
     def test2(self):
-        self.assertEqual(2, get_sol().minimumRefill(plants = [2,2,3,3], capacityA = 3, capacityB = 4))
-    def test3(self):
-        self.assertEqual(0, get_sol().minimumRefill(plants = [5], capacityA = 10, capacityB = 8))
-    def test4(self):
-        self.assertEqual(2, get_sol().minimumRefill(plants = [1,2,4,4,5], capacityA = 6, capacityB = 5))
-    def test5(self):
-        self.assertEqual(1, get_sol().minimumRefill(plants = [2,2,5,2,2], capacityA = 5, capacityB = 5))
-    def test6(self):
-        self.assertEqual(0, get_sol().minimumRefill([2,3,3], 5, 5))
-
+        self.assertEqual(1, get_sol().wordCount(startWords = ["ab","a"], targetWords = ["abc","abcd"]))
+    # def test3(self):
+    # def test4(self):
+    # def test5(self):
+    # def test6(self):
     # def test7(self):

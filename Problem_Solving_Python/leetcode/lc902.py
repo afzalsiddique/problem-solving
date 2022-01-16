@@ -13,15 +13,15 @@ class Solution:
             res+=n_nums**i
 
         for i in range(n_target):
-            has_same_number = False
+            hope_to_find_same_number = False
             for d in nums:
                 if d>target[i]: # no hope to find same number
                     break
                 if d==target[i]:
-                    has_same_number=True # still have hope that we can find same number
+                    hope_to_find_same_number=True # still have hope that we can find same number
                     break
                 res+=n_nums**(n_target-i-1)
-            if not has_same_number: # no hope to find same number
+            if not hope_to_find_same_number: # no hope to find same number
                 return res
         return res+1 # found same number
 class Solution2:
@@ -36,16 +36,16 @@ class Solution2:
             res+=n_nums**i
 
         for i in range(n_target):
-            has_same_number = False
+            hope_to_find_same_number = False
             for d in nums:
                 if d<target[i]:
                     res+=n_nums**(n_target-i-1)
                 elif d==target[i]:
-                    has_same_number=True
+                    hope_to_find_same_number=True
                     break
                 else:
                     break
-            if not has_same_number:
+            if not hope_to_find_same_number:
                 return res
         return res+1
 

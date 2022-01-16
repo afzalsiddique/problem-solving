@@ -1,14 +1,13 @@
-import re
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-# without stack
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 class Solution:
+    # without stack
     def calculate(self, s: str) -> int:
-        cur, prev, result, sign = 0, 0, 0, '+'
+        cur = 0
+        prev=0
+        result=0
+        sign='+'
         s += '+'
         for c in s:
             if c == ' ': continue
@@ -55,15 +54,64 @@ class Solution2:
                 prev_sign=c
         return sum(st)
 
+class Solution3:
+    def calculate(self, s: str) -> int:
+        def removeSpaces(s:str):
+            i=0
+            li=[]
+            while i<len(s):
+                if s[i]!=' ':
+                    li.append(s[i])
+                i+=1
+            return ''.join(li)
+        def makeList(s:str):
+            n=len(s)
+            i=0
+            li=[]
+            while i<n:
+                j=i
+                while j<n and '0'<=s[j]<='9':
+                    j+=1
+                li.append(s[i:j])
+                if j<n:
+                    li.append(s[j])
+                i=j+1
+            return li
 
-class mytestcase(unittest.TestCase):
+        s=removeSpaces(s)
+        li=makeList(s)
+        st=[]
+        sign='+'
+        for x in li:
+            if x in '+-/*':
+                sign=x
+                continue
+            if sign=='+':
+                st.append(int(x))
+            elif sign=='-':
+                st.append(int(x)*(-1))
+            elif sign=='*':
+                st.append(int(x)*st.pop())
+            elif sign=='/':
+                prev=st.pop()
+                lastNeg=-1 if prev<0 else 1
+                prev=abs(prev)
+                cur=prev//int(x)
+                cur*=lastNeg
+                st.append(cur)
+
+        return sum(st)
+
+class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(7,Solution().calculate('3+2*2'))
+        self.assertEqual(7,get_sol().calculate('3+2*2'))
     def test2(self):
-        self.assertEqual(13,Solution().calculate("14-3/2"))
+        self.assertEqual(13,get_sol().calculate("14-3/2"))
     def test3(self):
-        self.assertEqual(28,Solution().calculate("2+5+7*3"))
+        self.assertEqual(28,get_sol().calculate("2+5+7*3"))
     def test4(self):
-        self.assertEqual(17,Solution().calculate("2+5+10"))
+        self.assertEqual(17,get_sol().calculate("2+5+10"))
     def test5(self):
-        self.assertEqual(-14,Solution().calculate("2+5-7*3"))
+        self.assertEqual(-14,get_sol().calculate("2+5-7*3"))
+    def test6(self):
+        self.assertEqual(1,get_sol().calculate(" 3/2 "))

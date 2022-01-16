@@ -1,13 +1,9 @@
-import heapq
-from heapq import *
-import unittest
-from collections import defaultdict
-from typing import List
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 # ############similar to 1631####
-
-#### Prim's Algo ####
 class Solution:
+    #### Prim's Algo ####
     def minCostConnectPoints(self, p: List[List[int]]) -> int:
 
         def manhattan(x, y):
@@ -15,22 +11,22 @@ class Solution:
 
         ans, n = 0, len(p)
         seen = set()
-        vertices = [(0, 0, 0)] # (dist, dummy, nextnode)
+        vertices = [(0, 'dummy', 0)] # (dist, dummy, nextnode)
 
         while len(seen) < n:
             # print(vertices, seen)
-            dist, u, v= heapq.heappop(vertices)
+            dist, u, v= heappop(vertices)
             if v in seen: continue
             ans += dist
             seen.add(v)
             for neigh in range(n):
                 if neigh not in seen and neigh!=v:
                     man_dist = manhattan(p[neigh], p[v])
-                    heapq.heappush(vertices, (man_dist, v, neigh))
+                    heappush(vertices, (man_dist, v, neigh))
         return ans
 
-#### Union find #######
 class Solution2:
+    #### Union find #######
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
         n=len(points)
         roots = {}
@@ -85,33 +81,13 @@ class Solution2:
 
 
 class MyTestCase(unittest.TestCase):
-
     def test_1(self):
-        sol = Solution()
-        expected = 20
-        actual = sol.minCostConnectPoints([[0,0],[2,2],[3,10],[5,2],[7,0]])
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(20, get_sol().minCostConnectPoints([[0,0],[2,2],[3,10],[5,2],[7,0]]))
     def test_2(self):
-        sol = Solution()
-        expected = 18
-        actual = sol.minCostConnectPoints([[3,12],[-2,5],[-4,1]])
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(18, get_sol().minCostConnectPoints([[3,12],[-2,5],[-4,1]]))
     def test_3(self):
-        sol = Solution()
-        expected = 4
-        actual = sol.minCostConnectPoints([[0,0],[1,1],[1,0],[-1,1]])
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(4, get_sol().minCostConnectPoints([[0,0],[1,1],[1,0],[-1,1]]))
     def test_4(self):
-        sol = Solution()
-        expected = 4000000
-        actual = sol.minCostConnectPoints([[-1000000,-1000000],[1000000,1000000]])
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(4000000, get_sol().minCostConnectPoints([[-1000000,-1000000],[1000000,1000000]]))
     def test_5(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minCostConnectPoints([[0,0]])
-        self.assertEqual(expected, actual)
+        self.assertEqual(0, get_sol().minCostConnectPoints([[0,0]]))

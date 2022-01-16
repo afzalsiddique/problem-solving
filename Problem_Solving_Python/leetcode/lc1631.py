@@ -1,9 +1,6 @@
-import unittest
-from collections import defaultdict
-from heapq import *
-from typing import List
-
-
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+from ..template.binary_tree import deserialize,serialize
+def get_sol(): return Solution()
 # ############similar to 1584####
 class Solution:
     def minimumEffortPath(self, heights: List[List[int]]) -> int:
@@ -68,28 +65,11 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.minimumEffortPath([[1, 2, 2], [3, 8, 2], [5, 3, 5]])
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        expected = 1
-        actual = sol.minimumEffortPath([[1, 2, 3], [3, 8, 4], [5, 3, 5]])
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minimumEffortPath(
-            [[1, 2, 1, 1, 1], [1, 2, 1, 2, 1], [1, 2, 1, 2, 1], [1, 2, 1, 2, 1], [1, 1, 1, 2, 1]])
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.minimumEffortPath([[3]])
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(2, get_sol().minimumEffortPath([[1, 2, 2], [3, 8, 2], [5, 3, 5]]))
+    def test02(self):
+        self.assertEqual(1, get_sol().minimumEffortPath([[1, 2, 3], [3, 8, 4], [5, 3, 5]]))
+    def test03(self):
+        self.assertEqual(0, get_sol().minimumEffortPath( [[1, 2, 1, 1, 1], [1, 2, 1, 2, 1], [1, 2, 1, 2, 1], [1, 2, 1, 2, 1], [1, 1, 1, 2, 1]]))
+    def test04(self):
+        self.assertEqual(0, get_sol().minimumEffortPath([[3]]))
