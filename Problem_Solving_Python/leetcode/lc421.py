@@ -1,14 +1,6 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
+from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-
 class Solution:
     # https://www.youtube.com/watch?v=wSgrc98d2lI
     # THE MAXIMUM XOR WILL BE AS MANY ONES TO THE LEFT Let us try to
@@ -41,7 +33,7 @@ class Solution:
                 opp_bit = '1'
             else:
                 opp_bit = '0'
-            if opp_bit in node.children:
+            if opp_bit in node.children: # when we have 0 and 1 get highest value-> 0^1=1
                 max_xor+=opp_bit
                 node=node.children[opp_bit]
             else:
