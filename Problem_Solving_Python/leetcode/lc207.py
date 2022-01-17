@@ -1,7 +1,7 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
-    # DFS
+    # DFS topo sort
     # https://www.youtube.com/watch?v=kXy0ABd1vwo
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         NOT_VISITED=0; VISITED=1; PROCESSING=-1
@@ -22,51 +22,31 @@ class Solution:
         return True
 
 class Solution2:
-    # in degree
+    # in degree. bfs topo sort
     # https://www.youtube.com/watch?v=kXy0ABd1vwo
-    def canFinish2(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        graph = [[] for _ in range(numCourses)]
-        indegree = [0]*numCourses
-        for x,y in prerequisites:
-            graph[x].append(y)
-            indegree[y]+=1
-
-        cnt = 0
-        q = deque()
-        for i in range(numCourses):
-            if indegree[i]==0:
-                q.append(i)
-        while q:
-            curr = q.popleft()
-            if indegree[curr]==0:
-                cnt+=1
-            for u in graph[curr]:
-                indegree[u]-=1
-                if indegree[u]==0:
-                    q.append(u)
-        if cnt==numCourses:
-            return True
-        return False
+    def canFinish(self, n: int, prerequisites: List[List[int]]) -> bool:
+        g,incoming= defaultdict(list), [0] * n
+        for u,v in prerequisites: g[v].append(u)
+        for u,_ in prerequisites: incoming[u]+=1
+        st=[i for i in range(n) if incoming[i]==0]
+        courseTaken=0
+        while st: # level by level is not necessary. stack or queue both can do the job
+            u=st.pop()
+            courseTaken+=1
+            for v in g[u]:
+                incoming[v]-=1
+                if incoming[v]==0: st.append(v)
+        return courseTaken==n
 class Tester(unittest.TestCase):
     def test1(self):
-        numCourses,prerequisites = 2,[[1,0]]
-        Output= True
-        self.assertEqual(Output,get_sol().canFinish(numCourses,prerequisites))
+        self.assertEqual(True,get_sol().canFinish(2,[[1,0]]))
     def test2(self):
-        numCourses,prerequisites = 2,[[1,0],[0,1]]
-        Output= False
-        self.assertEqual(Output,get_sol().canFinish(numCourses,prerequisites))
+        self.assertEqual(False,get_sol().canFinish(2,[[1,0],[0,1]]))
     def test3(self):
-        numCourses,prerequisites = 1, []
-        Output= True
-        self.assertEqual(Output,get_sol().canFinish(numCourses,prerequisites))
+        self.assertEqual(True,get_sol().canFinish(1, []))
     def test4(self):
-        numCourses,prerequisites = 2, []
-        Output= True
-        self.assertEqual(Output,get_sol().canFinish(numCourses,prerequisites))
+        self.assertEqual(True,get_sol().canFinish(2, []))
     def test5(self):
-        numCourses,prerequisites = 5, [[1,4],[2,4],[3,1],[3,2]]
-        Output= True
-        self.assertEqual(Output,get_sol().canFinish(numCourses,prerequisites))
+        self.assertEqual(True,get_sol().canFinish(5, [[1,4],[2,4],[3,1],[3,2]]))
     # def test6(self):
     # def test7(self):

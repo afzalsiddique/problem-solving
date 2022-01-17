@@ -2,7 +2,7 @@ import itertools; import math; import operator; import random; import re; from b
 def get_sol(): return Solution()
 class Solution:
     # https://www.youtube.com/watch?v=ddTC4Zovtbc
-    # topological sort
+    # DFS topological sort
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         NOT_VISITED=0; VISITED=1; PROCESSING=-1
         visited = [NOT_VISITED for _ in range(numCourses)]
@@ -23,6 +23,23 @@ class Solution:
         for u in range(numCourses):
             if not dfs(u): return []
         return res[::-1]
+class Solution2:
+    # bfs topological sort
+    def findOrder(self, n: int, prerequisites: List[List[int]]) -> List[int]:
+        g,incoming= defaultdict(list), [0] * n
+        for u,v in prerequisites: g[v].append(u)
+        for u,_ in prerequisites: incoming[u]+=1
+        q=[i for i in range(n) if incoming[i]==0]
+        res=[]
+        courseTaken=0
+        while q:
+            u=q.pop()
+            res.append(u)
+            courseTaken+=1
+            for v in g[u]:
+                incoming[v]-=1
+                if incoming[v]==0: q.append(v)
+        return res if courseTaken==n else []
 
 
 class Tester(unittest.TestCase):
@@ -34,3 +51,5 @@ class Tester(unittest.TestCase):
         self.assertEqual([0],get_sol().findOrder(1,[]))
     def test_4(self):
         self.assertEqual([],get_sol().findOrder(2,[[0,1],[1,0]]))
+    def test_5(self):
+        self.assertEqual([],get_sol().findOrder(3, [[1,0],[1,2],[0,1]]))
