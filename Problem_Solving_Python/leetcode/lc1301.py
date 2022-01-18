@@ -4,7 +4,7 @@ def get_sol(): return Solution()
 class Solution:
     def pathsWithMaxScore(self, board: List[str]) -> List[int]:
         MOD=10**9+7
-        @functools.lru_cache(None)
+        @functools.cache
         def dfs(i,j):
             if not i>=0 or not j>=0:
                 return [float('-inf'),1]
