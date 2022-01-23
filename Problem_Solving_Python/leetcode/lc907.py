@@ -5,16 +5,16 @@ class Solution:
     def sumSubarrayMins(self, arr: List[int]) -> int:
         n=len(arr)
         st=[]
-        pre_smaller=[i for i in range(1,n+1)]
-        next_smaller=[i for i in reversed(range(1,n+1))]
+        next_smaller=[i for i in reversed(range(1,n+1))] # no of elements in the right before the next smaller num appears
+        pre_smaller=[i for i in range(1,n+1)] # no of elements in the left before the next smaller num appears
         for i in range(n):
-            while st and arr[st[-1]]>arr[i]:
+            while st and arr[st[-1]]>arr[i]: # '>' sign used here -> https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/JavaC++Python-Stack-Solution/221762
                 top=st.pop()
                 next_smaller[top]=i-top
             st.append(i)
         st=[]
         for i in reversed(range(n)):
-            while st and arr[st[-1]]>=arr[i]:
+            while st and arr[st[-1]]>=arr[i]: # '>=' sign used here.
                 top=st.pop()
                 pre_smaller[top]=top-i
             st.append(i)
@@ -28,6 +28,32 @@ class Solution:
             summ%=MOD
         return summ
 class Solution2:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        n=len(arr)
+        nxtSmaller=[n]*n
+        st=[]
+        for i in range(n):
+            while st and arr[i]<arr[st[-1]]:
+                top=st.pop()
+                nxtSmaller[top]=i
+            st.append(i)
+        nxtSmaller=[nxtSmaller[i]-i for i in range(n)]
+
+        prevSmaller=[-1]*n
+        st=[]
+        for i in range(n-1,-1,-1):
+            while st and arr[i]<=arr[st[-1]]:
+                top=st.pop()
+                prevSmaller[top]=i
+            st.append(i)
+        prevSmaller=[i-prevSmaller[i] for i in range(n)]
+
+        res=0
+        for i in range(n):
+            res+=arr[i]*prevSmaller[i]*nxtSmaller[i]
+            res%=(10**9+7)
+        return res
+class Solution3:
     # tle
     def minSlidingWindow(self, nums: List[int], k: int) -> List[int]: # this method is same as 239
         q = deque()
@@ -54,7 +80,7 @@ class Solution2:
             summ%=MOD
         return summ
 
-class Solution3:
+class Solution4:
     # tle
     def sumSubarrayMins(self, arr: List[int]) -> int:
         MOD = 10**9+7
@@ -95,7 +121,10 @@ class MyTestCase(unittest.TestCase):
         arr = [71,55,82,55]
         Output= 593
         self.assertEqual(Output,get_sol().sumSubarrayMins(arr))
-    # def test_3(self):
+    def test06(self):
+        arr = [2,1,3,1]
+        Output= 13
+        self.assertEqual(Output,get_sol().sumSubarrayMins(arr))
     # def test_4(self):
     # def test_5(self):
     # def test_6(self):

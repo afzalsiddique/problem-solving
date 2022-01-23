@@ -1,5 +1,22 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import cache; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList,SortedDict
+# from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+# use this compressed version
+# https://leetcode.com/problems/longest-common-subpath/discuss/1314316/Python-2-solutions%3A-Rolling-Hash-and-Suffix-Array-explained.
+def RabinKarp(arr, M, q): # M=window size
+    h, t, d = (1<<(17*M-17))%q, 0, 1<<17
+    all_hashes = set()
+
+    for i in range(M):
+        t = (d * t + arr[i])% q
+
+    all_hashes.add(t)
+
+    for i in range(len(arr) - M):
+        t = (d*(t-arr[i]*h) + arr[i + M])% q
+        all_hashes.add(t)
+
+    return all_hashes
 class Solution:
     def findRepeatedDnaSequences(self, s: str) -> List[str]:
         def myord(ch):
@@ -10,30 +27,28 @@ class Solution:
 
         m=len(s)
         if m<11: return []
+        b=4 # base
+        p=10**9+7 # prime
         h=1
-        prime=10**8+7
-        di={}
-        base=4
-        n=10
+        n=10 # len of DNA
+        freq=Counter()
+        indices={} # start index
         for i in range(n-1):
-            h=(h*base) % prime
-        t=0 # rolling hash of window
+            h=(h*b)%p
+        t=0
         for i in range(n):
-            t=(t*base+myord(s[i])) % prime
+            t=(t*b+myord(s[i]))%p
         for i in range(m-n+1):
-            if t not in di:
-                di[t]=[0,-1] # cnt, index
-            di[t]=[di[t][0]+1,i]
-            t=t-myord(s[i])*h
+            freq[t]+=1
+            indices[t]=i
+            t=(t-myord(s[i])*h)%p
             if i+n<m:
-                t=(t*base+myord(s[i+n])) % prime
-            if t<0:
-                t+=prime
+                t=(t*b+myord(s[i+n]))%p
 
         res=[]
-        for key in di:
-            if di[key][0]>1:
-                start=di[key][1]
+        for key in freq:
+            if freq[key]>1:
+                start=indices[key]
                 res.append(s[start:start+10])
         return res
 
@@ -54,5 +69,7 @@ class tester(unittest.TestCase):
         self.assertEqual(["AAAAAAAAAA"],get_sol().findRepeatedDnaSequences(s = "AAAAAAAAAAAAA"))
     def test3(self):
         self.assertEqual([],get_sol().findRepeatedDnaSequences(s = "A"))
+    def test4(self):
+        self.assertEqual(["TGAGGATTCT"],get_sol().findRepeatedDnaSequences(s = "GCCTCAAGCTATCCTAATTTGCCTGTTCTACTCTGAGTCTCACAAGCTCCCTGGGGGGCCGAACGGACTCGCAGCTTCACGATTAATGAATGTTTCGACAATGAACTTCCTGTGACGAATCTTTGCCGAGCACGGTCTAGCACTATGAGGATTCTCTTCCCGTGTACTCAACGCGGCACATGTTGGAGGTCACCTCGCCGAGCTACCTGTACCCGGGTCTGTAATTCGGATAATTCAGCTAGGGAGCAAATGTGCAGTCAGAGCTTAAGGTACTTCATGTCGCCTTCGCCTGAAGTCCCTTCTTGCACATTATATCCGTTTTGAGGATTCTACTGATAGATAGGGCGCAAACCTCGTTGACGCCCACGACCAAGGATGGTTACTTTTTACAATATGGAATGCACGAGACCGATTCCGGCCCAGAGGAAAGATTCAAGTCTAAGTAAGCACGGCATGAGGCGCTACGCACCCTTGCCCATGACCCCGCAACGGGAACTATGGCCCCGCGGCATGCGTTATACATTATTAACCCACCGCAGCACCCCCGGACTATTCACGCCAAGTGAGGGATTTATCGATTGGACCCTAGGGGGACTGGCGAGCCGTCTTCCTCGGGAGCGGGGTGGAGTGTTGAACTCGACTCACTATGATAACCGTGTCCACCATCAATGGAAGTGAACCCGCGAGCATCATGCTTTATCCAAATTCGACCACTATCGTTTGTATATGATGACCTTGTATCACTGGCTGGCAGTGGTAACGCTTTAAGCCGTTGTAATATAGAGTCCGCGATATTCACTGACCCTGTTTCCTCAAACCCTTCTCTCGTAAAATAGTGGTGCCCACTCCTTCGGAGTTGGAGAGGTTGATCGTGTCAGAATGACGTCACGGTCACGCAACACTTCTATCTTGGCGAGCACCGCATCTCATGTACCCTTCGTATAGTTAGAGGGTAAGATGTGTCAGCCTCCAAACGAAGTGAACTGTAAAGTGTTCGCCT"))
     # def test4(self):
     #     self.assertEqual(Output,get_sol().findRepeatedDnaSequences(s = "banana"))

@@ -51,7 +51,7 @@ class MagicDictionary3:
         if count < 0: return False # early terminate
         if not word:
             return True if count == 0 and node.is_end else False
-        for c, nxt in node.children.items():
+        for c, nxt in node.child.items():
             if word[0] == c:
                 if self.findWord(nxt, word[1:], count):
                     return True

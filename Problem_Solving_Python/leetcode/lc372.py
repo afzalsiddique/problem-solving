@@ -1,6 +1,28 @@
-import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import cache; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList
+# from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+
+# a^4567 % k = (a^4560 % k) * (a^7 % k) % k = (a^456 % k)^10 % k * (a^7 % k) % k
+# https://www.youtube.com/watch?v=bg0P_3UiG5I&t=987s
+
 class Solution:
+    # https://leetcode.com/problems/super-pow/discuss/84485/8ms-JAVA-solution-using-fast-power
+    # https://leetcode.com/problems/super-pow/discuss/84472/C%2B%2B-Clean-and-Short-Solution
+    def superPow(self, a: int, b: List[int]) -> int:
+        M=1337
+        def normalPow(x, n): # x to the nth power. same as leetcode 50
+            if n==0: return 1
+            p= normalPow(x, n // 2) % M
+            p= (p*p) % M
+            return (p*x) % M if n % 2 else p
+
+        a %= M
+        result=1
+        for i in range(len(b)-1,-1,-1):
+            result = (result * normalPow(a,b[i])) % M
+            a = normalPow(a, 10)
+        return result
+class Solution2:
     # https://leetcode.com/problems/super-pow/discuss/84472/C%2B%2B-Clean-and-Short-Solution
     def superPow(self, a: int, b: List[int]) -> int:
         def pow_mod(a,b): # (a**b)%k

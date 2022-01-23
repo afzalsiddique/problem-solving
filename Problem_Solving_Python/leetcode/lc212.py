@@ -29,7 +29,7 @@ class Solution:
                 node.isWord = False
             if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]): return
             tmp = board[i][j]
-            node = node.children.get(tmp)
+            node = node.child.get(tmp)
             if not node:
                 return
             board[i][j] = "#"

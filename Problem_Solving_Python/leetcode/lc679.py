@@ -15,8 +15,8 @@ class Solution:
                     nums.append(n)
                     if self.judgePoint24(nums): return True
                     nums.pop()
-                nums.insert(j,b) # j should be put back first
-                nums.insert(i,a)
+                nums.insert(j, b)  # j should be put back first
+                nums.insert(i, a)
         return False
 
 

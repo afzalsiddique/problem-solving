@@ -1,4 +1,4 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import cache; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList,SortedDict
 from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
@@ -21,7 +21,7 @@ class Solution:
 class Solution2:
     def numOfWays(self, n: int) -> int:
         MOD=10**9+7
-        @functools.lru_cache(None)
+        @cache
         def dp(n, prevCol0, prevCol1, prevCol2):
             if n==0: return 1
             res=0

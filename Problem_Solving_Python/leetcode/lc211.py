@@ -34,11 +34,11 @@ class WordDictionary:
             if i == len(word): return node.end_node
 
             if word[i] == ".":
-                for child in node.children:
-                    if dfs(node.children[child], i + 1): return True
+                for child in node.child:
+                    if dfs(node.child[child], i + 1): return True
 
-            if word[i] in node.children:
-                return dfs(node.children[word[i]], i + 1)
+            if word[i] in node.child:
+                return dfs(node.child[word[i]], i + 1)
 
             return False
 

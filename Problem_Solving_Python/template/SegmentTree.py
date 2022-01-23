@@ -1,1 +1,2 @@
 # see leetcode 307
+# lazy propagation segment tree -> https://leetcode.com/problems/my-calendar-ii/discuss/109528/nlogd-Java-solution-using-segment-tree-with-lazy-propagation-(for-the-general-case-of-K-booking)
