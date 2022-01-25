@@ -1,13 +1,27 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution()
 class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        M=10**9+7
+        @cache
+        def dfs(i,j):
+            if i==m:
+                return j==n
+            if j==n:
+                return 1
+            res=0
+            res+=dfs(i+1,j)
+            res%=M
+
+            if s[i]==t[j]:
+                res+=dfs(i+1,j+1)
+                res%=M
+            return res
+
+        m,n=len(s),len(t)
+        return dfs(0,0)
+class Solution2:
     def numDistinct(self, s: str, t: str) -> int:
         m,n=len(t),len(s)
         s='#'+s
@@ -26,13 +40,7 @@ class Solution:
         return dp[-1][-1]
 
 class tester(unittest.TestCase):
-    def test1(self):
-        s = "rabbbit"
-        t = "rabbit"
-        e = 3
-        self.assertEqual(e,Solution().numDistinct(s,t))
-    def test2(self):
-        s = "babgbag"
-        t = "bag"
-        e = 5
-        self.assertEqual(e,Solution().numDistinct(s,t))
+    def test01(self):
+        self.assertEqual(3,get_sol().numDistinct("rabbbit","rabbit"))
+    def test02(self):
+        self.assertEqual(5,get_sol().numDistinct("babgbag","bag"))

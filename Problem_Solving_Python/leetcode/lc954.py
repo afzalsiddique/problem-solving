@@ -1,6 +1,25 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+from itertools import accumulate; from math import floor,ceil,log2; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution3()
 class Solution:
+    def canReorderDoubled(self, arr: List[int]) -> bool:
+        count=Counter(arr)
+        if count[0]%2: return False
+        n=len(arr)
+        arr.sort()
+
+        res=[] # could be replaced by a variable
+        for x in arr:
+            if count[x] and count[2*x]:
+                count[x]-=1
+                count[2*x]-=1
+                res.append(x)
+                res.append(2*x)
+        # print(res)
+        # print(n,len(res))
+        # print(count)
+        return len(res)==n
+class Solution3:
     def canReorderDoubled(self, arr: List[int]) -> bool:
         n=len(arr)
         arr.sort() # why do need to sort?
@@ -23,27 +42,7 @@ class Solution:
         # print(res)
         # print(n,len(res))
         # print(count)
-        if len(res)==n: return True
-        return False
-class Solution3:
-    # wrong
-    def canReorderDoubled(self, arr: List[int]) -> bool:
-        n=len(arr)
-        arr.sort()
-        count=Counter(arr)
-
-        res=[]
-        for x in arr:
-            if count[x] and count[2*x]:
-                count[x]-=1
-                count[2*x]-=1
-                res.append(x)
-                res.append(2*x)
-        # print(res)
-        # print(n,len(res))
-        # print(count)
-        if len(res)==n: return True
-        return False
+        return len(res)==n
 class Solution2:
     def canReorderDoubled(self, arr: List[int]) -> bool:
         n=len(arr)

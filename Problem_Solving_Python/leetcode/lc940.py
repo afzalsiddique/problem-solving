@@ -2,6 +2,7 @@ import itertools; import math; import operator; import random; import string; fr
 from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # checkout the image 'lc940img.jpg' in the same folder or https://ibb.co/D9svNYM
     # no of subsequences ending with a specific char
     def distinctSubseqII(self, s: str) -> int:
         MOD=10**9+7
@@ -16,15 +17,16 @@ class Solution:
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(7, get_sol().distinctSubseqII("abc"))
-    def test2(self):
+    def test02(self):
         self.assertEqual(6, get_sol().distinctSubseqII("aba"))
-    def test3(self):
+    def test03(self):
         self.assertEqual(3, get_sol().distinctSubseqII("aaa"))
-    def test4(self):
+    def test04(self):
+        self.assertEqual(20, get_sol().distinctSubseqII("aaabba")) # checkout the image 'lc940img.jpg' in the same folder or https://ibb.co/D9svNYM
+    def test05(self):
         self.assertEqual(97915677, get_sol().distinctSubseqII("zchmliaqdgvwncfatcfivphddpzjkgyygueikthqzyeeiebczqbqhdytkoawkehkbizdmcnilcjjlpoeoqqoqpswtqdpvszfaksn"))
-    # def test5(self):
     # def test6(self):
     # def test7(self):
     # def test8(self):

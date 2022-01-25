@@ -6,11 +6,12 @@ class SegmentTree:
     def __init__(self,arr):
         self.n=len(arr)
         self.arr=arr
-        self.treeSize=self.nearestPowerOf2(len(arr))*2-1
-        self.segment= [0] * self.treeSize
+        treeSize=self.nearestPowerOf2(len(arr))*2-1
+        self.segment= [0] * treeSize
         self.construct(0, 0, self.n - 1)
     def construct(self, si, l, r):
         segment,arr= self.segment, self.arr
+
         if l==r:
             segment[si]=arr[l]
             return segment[si]
