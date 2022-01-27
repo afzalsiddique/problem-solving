@@ -1,10 +1,19 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *
+def get_sol(): return Solution()
 # https://www.youtube.com/watch?v=DOnK40BvazI&t=300s
 ################# SAME AS LONGEST COMMON SUBSEQUENCE ##########
 ################ SAME AS LONGEST PALINDROMIC SUBSEQUENCE ###########
-import unittest
-from typing import List
-
 class Solution:
+    def minInsertions(self, s: str) -> int:
+        @cache
+        def dp(i,j):
+            if i>=j: return 0
+            if s[i]==s[j]: return dp(i+1,j-1)
+            return 1+min(dp(i+1,j),dp(i,j-1))
+
+        return dp(0,len(s)-1)
+class Solution2:
     def minInsertions(self, s: str) -> int:
         di = {}
         def helper(s):
@@ -22,7 +31,7 @@ class Solution:
                 return di[s]
 
         return helper(s)
-
+class Solution3:
     # longest common subsequecne
     def minInsertions2(self, s: str) -> int:
         n = len(s)
@@ -43,20 +52,13 @@ class Solution:
 
 
 
-class MyTestCase(unittest.TestCase):
 
-    def test_1(self):
-        a =Solution().minInsertions('zzazz')
-        e = 0
-        self.assertEqual(e, a)
-
-
-    def test_2(self):
-        a =Solution().minInsertions( "mbadm" )
-        e = 2
-        self.assertEqual(e, a)
-
-    def test_3(self):
-        a =Solution().minInsertions( "leetcode" )
-        e = 5
-        self.assertEqual(e, a)
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(0, get_sol().minInsertions('zzazz'))
+    def test02(self):
+        self.assertEqual(2, get_sol().minInsertions( "mbadm" ))
+    def test03(self):
+        self.assertEqual(5, get_sol().minInsertions( "leetcode" ))
+    def test04(self):
+        self.assertEqual(5, get_sol().minInsertions( "zjveiiwvc" ))

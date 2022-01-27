@@ -1,116 +1,47 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
-def get_sol(): return Solution7()
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *
+def get_sol(): return Solution()
 # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C%2B%2B-4-line-solution-using-a-bitset
 # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C++-4-line-solution-using-a-bitset/94973
 class Solution:
-    # iterative
     def canPartition(self, nums: List[int]) -> bool:
-        n=len(nums)
-        nums=[0]+nums
-        summ = sum(nums)
-        if summ%2:return False
-        target=summ//2
-        dp=[[False]*(target+1) for _ in range(n+1)]
-        for i in range(n+1):
-            dp[i][0]=True
-        for i in range(1,n+1):
-            for j in range(1,target+1):
-                if j<nums[i]:
-                    dp[i][j]=dp[i-1][j]
-                else:
-                    dp[i][j]=dp[i-1][j] or dp[i-1][j-nums[i]]
-        return dp[-1][-1]
-class Solution2:
-    # recursive
-    def canPartition(self, nums: List[int]) -> bool:
-        n=len(nums)
-        di={}
-        def helper(start, target):
-            if target==0:return True
-            if target<0: return False
-            if start==n:return False
-            if (start, target) in di:return di[(start, target)]
-            pick,not_pick=False,False
-            for i in range(start,n):
-                pick = pick or helper(i+1,target-nums[i])
-                if pick:return True
-                not_pick = not_pick or helper(i+1,target)
-                if not_pick:return True
-                di[(start,target)]= pick or not_pick
-            return di[(start,target)]
+        @cache
+        def recur(i, cur):
+            if cur==target:
+                return True
+            if i==n:
+                return False
+            if cur>target:
+                return False
+            if recur(i+1,cur+nums[i]): # pick ith number
+                return True
+            return recur(i+1,cur) # do not pick ith number
 
-        summ = sum(nums)
-        if summ%2:return False
+        n=len(nums)
+        summ=sum(nums)
+        if summ%2: return False
         target=summ//2
-        return helper(0,target)
-class Solution3:
+        return recur(0,0)
+class Solution2:
     def canPartition(self, nums: List[int]) -> bool:
         if sum(nums) % 2:
             return False
         n = len(nums)
-        SUMM = sum(nums) // 2
-        numbers = [0]
-        for num in nums:
-            numbers.append(num) # converting to 1 based indexing
-        dp = [[False]*(SUMM+1) for _ in range(n+1)]
+        target = sum(nums) // 2
+        nums=[0]+nums # add dummy
+        dp = [[False]*(target+1) for _ in range(n+1)]
         for row in dp:
             row[0] = True
         for i in range(1, n+1):
-            for j in range(1, SUMM+1):
+            for j in range(1, target+1):
                 item_not_included = dp[i-1][j]
-                if j >= numbers[i] and dp[i-1][j-numbers[i]]:
+                if j >= nums[i] and dp[i-1][j-nums[i]]:
                     item_included = True
                 else:
                     item_included = False
                 if item_included or item_not_included:
                     dp[i][j] = True
-        return dp[n][SUMM]
-
-class Solution4:
-    # TLE
-    # recursive
-    # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90618/7-Lines-59ms-Recursive-Python-Solution/95063
-    def canPartition(self, nums):
-        dp = {}
-        def helper(start, target):
-            if (start, target) in dp:
-                return dp[(start, target)]
-            elif target == 0:
-                return True
-            for i in range(start, len(nums)):
-                if helper(i+1, target-nums[i]):
-                    return True
-            dp[(start, target)] = False
-            return False
-
-        if max(nums) > sum(nums) // 2:
-            return False
-        return False if sum(nums)%2 else helper(0, sum(nums)//2)
-
-
-class Solution5:
-    # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C%2B%2B-4-line-solution-using-a-bitset
-    # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C++-4-line-solution-using-a-bitset/94973
-    def canPartition(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
-        sum_val = sum(nums)
-        if sum_val % 2 == 1:
-            return False
-        target = sum_val // 2
-        dp = [False] * (sum_val + 1)
-        dp[0] = True
-        for i in range(len(nums)):
-            next_dp = [False] * (sum_val + 1)
-            for j in range(len(dp)):
-                if dp[j]:
-                    next_dp[j + nums[i]] = True
-                    next_dp[j] = True
-            dp = next_dp
-        return dp[target]
+        return dp[n][target]
 class Solution6:
     # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C%2B%2B-4-line-solution-using-a-bitset
     # https://leetcode.com/problems/partition-equal-subset-sum/discuss/90590/Simple-C++-4-line-solution-using-a-bitset/94973
@@ -126,7 +57,7 @@ class Solution6:
             bin_bits = bin(bits)
 
         return (not sum_val % 2 == 1) and (bits >> (sum_val // 2)) & 1 == 1
-class Solution7:
+class Solution8:
     # solution will work
     #     1. if nums.length <= 16
     #     2. sum(nums) is large

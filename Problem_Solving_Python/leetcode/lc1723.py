@@ -80,6 +80,7 @@ class Solution3:
         masks=[0]*k
         return backtrack(0,tuple(masks))
 
+
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(3, get_sol().minimumTimeRequired([3,2,3], 3))
@@ -91,4 +92,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(504, get_sol().minimumTimeRequired([256,250,255,250,254,255,260,260,250,252,257,253], 9))
     def test05(self):
         self.assertEqual(12, get_sol().minimumTimeRequired([5,5,4,4,4], 2))
-    # def test06(self):
+    def test06(self):
+        self.assertEqual(13, get_sol().minimumTimeRequired([2,3,13], 2))

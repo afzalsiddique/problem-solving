@@ -1,14 +1,28 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *
+def get_sol(): return Solution()
 # https://leetcode.com/problems/is-graph-bipartite/discuss/115543/Easy-Python-Solution
 # https://www.youtube.com/watch?v=-SpTh4AEZrk
-import unittest
-from random import random, randrange
-from typing import List
-
-from collections import deque
-
-
-
 class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        # colors are 0 and 1
+        NOCOLOR=-1
+        def dfs(u,color):
+            if colors[u]!=NOCOLOR:
+                return colors[u]==color
+            colors[u]=color
+            for v in graph[u]:
+                if not dfs(v,1-color):
+                    return False
+            return True
+
+        n=len(graph)
+        colors=[NOCOLOR]*n
+        for i in range(n):
+            if colors[i]==NOCOLOR and not dfs(i,0):
+                return False
+        return True
+class Solution2:
     def isBipartite(self, graph: List[List[int]]) -> bool:
         # colors are 0 and 1
         n = len(graph)
@@ -29,9 +43,9 @@ class Solution:
         return True
 
 
-class tester(unittest.TestCase):
 
-    def test_1(self):
+class Tester(unittest.TestCase):
+    def test01(self):
         self.assertEqual(False, Solution().isBipartite([[1,2,3],[0,2],[0,1,3],[0,2]]))
-    def test2(self):
+    def test02(self):
         self.assertEqual(True, Solution().isBipartite([[1,3],[0,2],[1,3],[0,2]]))

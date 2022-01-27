@@ -74,8 +74,6 @@ class Solution4:
             if num>target: return False
         return divide_k_equal_subset(k,0)
 
-
-
 class Tester(unittest.TestCase):
     def test01(self):
         matchsticks = [1,1,2,2,2]
@@ -104,4 +102,16 @@ class Tester(unittest.TestCase):
     def test07(self):
         matchsticks = [5,5,5,5,4,4,4,4,3,3,3,3]
         Output= True
+        self.assertEqual(Output,get_sol().makesquare(matchsticks))
+    def test08(self):
+        matchsticks = [12,12,12,12,12,12,12,12,12,12,12,12,12]
+        Output= False
+        self.assertEqual(Output,get_sol().makesquare(matchsticks))
+    def test09(self):
+        matchsticks = [10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8,10**8]
+        Output= False
+        self.assertEqual(Output,get_sol().makesquare(matchsticks))
+    def test10(self):
+        matchsticks = [5969561,8742425,2513572,3352059,9084275,2194427,1017540,2324577,6810719,8936380,7868365,2755770,9954463,9912280,4713511]
+        Output= False
         self.assertEqual(Output,get_sol().makesquare(matchsticks))
