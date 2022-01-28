@@ -1,5 +1,6 @@
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution4()
 
 # Find Minimum in Rotated Sorted Array I----no duplicate ----O(logN)
 # https://www.youtube.com/watch?v=OXkLNPalfRs
@@ -48,8 +49,7 @@ class Solution4:
         lo,hi=0,len(nums)-1
         while lo<=hi:
             mid=lo+(hi-lo)//2
-            if hi-lo+1==1: return nums[lo]
-            if hi-lo+1==2: return min(nums[lo],nums[hi])
+            if hi-lo+1<=2: return min(nums[lo],nums[hi])
 
             # not necessary
             # if hi-lo+1==3: return min(nums[lo],nums[mid],nums[hi])
@@ -61,77 +61,41 @@ class Solution4:
             else:
                 lo=mid+1
 
-class tester(unittest.TestCase):
+
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(1,get_sol().findMin([3,4,5,1,2]))
     def test1(self):
-        nums = [1]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
-
+        self.assertEqual(1,get_sol().findMin([1]))
     def test2_1(self):
-        nums = [1,2]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([1,2]))
     def test2_2(self):
-        nums = [2,1]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
-
+        self.assertEqual(1,get_sol().findMin([2,1]))
     def test3_1(self):
-        nums = [1,2,3]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([1,2,3]))
     def test3_2(self):
-        nums = [3,1,2]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([3,1,2]))
     def test3_3(self):
-        nums = [2,3,1]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
-
+        self.assertEqual(1,get_sol().findMin([2,3,1]))
     def test4_1(self):
-        nums = [1,2,3,4]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([1,2,3,4]))
     def test4_2(self):
-        nums = [4,1,2,3]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([4,1,2,3]))
     def test4_3(self):
-        nums = [3,4,1,2]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([3,4,1,2]))
     def test4_4(self):
-        nums = [2,3,4,1]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
-
+        self.assertEqual(1,get_sol().findMin([2,3,4,1]))
     def test5_1(self):
-        nums = [1,2,3,4,5]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([1,2,3,4,5]))
     def test5_2(self):
-        nums = [5,1,2,3,4]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([5,1,2,3,4]))
     def test5_3(self):
-        nums = [4,5,1,2,3]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([4,5,1,2,3]))
     def test5_4(self):
-        nums = [3,4,5,1,2]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(1,get_sol().findMin([3,4,5,1,2]))
     def test5_5(self):
-        nums = [2,3,4,5,1]
-        Output= 1
-        self.assertEqual(Output,Solution().findMin(nums))
-
+        self.assertEqual(1,get_sol().findMin([2,3,4,5,1]))
     def test2(self):
-        nums = [4,5,6,7,0,1,2]
-        Output= 0
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(0,get_sol().findMin([4,5,6,7,0,1,2]))
     def test3(self):
-        nums = [11,13,15,17]
-        Output= 11
-        self.assertEqual(Output,Solution().findMin(nums))
+        self.assertEqual(11,get_sol().findMin([11,13,15,17]))

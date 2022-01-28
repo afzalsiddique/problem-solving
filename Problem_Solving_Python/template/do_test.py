@@ -40,13 +40,13 @@ class Tester(unittest.TestCase):
             elif cmd=='peek': outputs.append(obj.peek())
             elif cmd=='empty': outputs.append(obj.empty())
         return outputs
-    def test_01(self):
+    def test01(self):
         commands = ["MyQueue","push","push","push","push","pop","push","pop","pop","pop","pop"]
         inputs=[      [],       [1],   [2],  [3],    [4],  [],   [5],    [],   [],  [],   []]
         expected = [None,None,None,None,None,1,None,2,3,4,5]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(expected,outputs)
-    def test_02(self):
+    def test02(self):
         commands = ["MyQueue", "push", "push", "peek", "pop", "empty"]
         inputs =  [[], [1], [2], [], [], []]
         expected = [None, None, None, 1, 1, False]

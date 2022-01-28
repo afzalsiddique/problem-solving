@@ -1,9 +1,6 @@
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def search(self, nums, target):
         l, r = 0, len(nums)-1
@@ -49,10 +46,10 @@ class Solution:
 
 class tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(True, Solution().search( [1,0,1,1,1], 0 ))
+        self.assertEqual(True, get_sol().search( [1,0,1,1,1], 0 ))
     def test2(self):
-        self.assertEqual(True, Solution().search(  [3,4,1,3,3,3,3],4 ))
+        self.assertEqual(True, get_sol().search(  [3,4,1,3,3,3,3],4 ))
     def test3(self):
-        self.assertEqual(True, Solution().search( [1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1], 2 ))
+        self.assertEqual(True, get_sol().search( [1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1], 2 ))
     def test4(self):
-        self.assertEqual(True, Solution().search( [2,2,2,0,0,1], 0 ))
+        self.assertEqual(True, get_sol().search( [2,2,2,0,0,1], 0 ))

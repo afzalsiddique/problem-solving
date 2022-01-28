@@ -1,4 +1,5 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 ###### UNIQUE BINARY TREE IS NOT POSSIBLE #####
 ###### ANY VALID BINARY TREE IS ACCEPTABLE #####
@@ -9,15 +10,62 @@ class TreeNode:
         self.right = right
     def __repr__(self): return str(self.val)
 class Solution:
+    # pre
+    def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
+        def helper(start, end):
+            nonlocal i
+            if start>end: return None
+
+            if start==end:
+                node= TreeNode(pre[i])
+                i+=1
+                return node
+
+            node=TreeNode(pre[i])
+            i+=1
+            mid=idx[pre[i]]
+            node.left= helper(start , mid)
+            node.right= helper(mid+1, end-1)
+            return node
+
+        n=len(pre)
+        idx={x:i for i,x in enumerate(post)}
+        i=0
+        return helper(0, n-1)
+class Solution6:
+    # https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/discuss/748216/Python3-Solution-with-a-Detailed-Explanation-Construct-Binary-Tree-from/986020
+    # post order
+    def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
+        def helper(start, end):
+            nonlocal i
+            if end<start: return None
+
+            if start==end:
+                node= TreeNode(post[i])
+                i-=1
+                return node
+
+            node=TreeNode(post[i])
+            i-=1
+            mid=idx[post[i]]
+            node.right= helper(mid, end)
+            node.left= helper(start + 1, mid-1)
+            return node
+
+        n=len(pre)
+        idx={x:i for i,x in enumerate(pre)}
+        i=n-1
+        return helper(0, n-1)
+class Solution4:
     # https://www.youtube.com/watch?v=LnHSOy7ctms
     def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
-        self.pre_idx=0
         def helper(post):
+            nonlocal i
             if not post: return None
-            root = TreeNode(pre[self.pre_idx])
-            self.pre_idx+=1
+            root = TreeNode(pre[i])
+            i+=1
             if len(post)==1: return root
-            idx = post.index(pre[self.pre_idx]) # using dictionary will reduce time complexity
+            idx = post.index(pre[i]) # using dictionary will reduce time complexity
 
             left = post[:idx+1]
             right = post[idx+1:-1]
@@ -26,6 +74,7 @@ class Solution:
             root.right = helper(right)
             return root
 
+        i=0
         return helper(post)
 
 class Solution2:
@@ -54,7 +103,7 @@ class Solution3:
 
         return helper(pre,post)
 
-class Solution4:
+class Solution5:
     # wrong
     def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
         def helper(pre,post):
@@ -74,53 +123,14 @@ class Solution4:
 
         return helper(pre,post)
 
-def serialize(root):
-    en = 'null'
-    sep = ','
-    if not root: return ''
-
-    q = deque()
-    res = [str(root.val)]
-    q.append(root)
-    while q:
-        cur = q.popleft()
-        for child in [cur.left, cur.right]:
-            if child:
-                q.append(child)
-                res.append(str(child.val))
-            else:
-                res.append(en)
-    while res and res[-1]=='null': res.pop()
-    return sep.join(res)
 
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
-        pre = [1,2,4,5,3,6,7]
-        post = [4,5,2,6,7,3,1]
-        Output= '1,2,3,4,5,6,7'
-        actual_root = get_sol().constructFromPrePost(pre,post)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
+        self.assertEqual('1,2,3,4,5,6,7',ser(get_sol().constructFromPrePost([1,2,4,5,3,6,7], [4,5,2,6,7,3,1])))
     def test02(self):
-        pre = [2,4,5]
-        post = [4,5,2]
-        Output= '2,4,5'
-        actual_root = get_sol().constructFromPrePost(pre,post)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
+        self.assertEqual('1',ser(get_sol().constructFromPrePost([1],[1])))
     def test03(self):
-        pre = [3,6,7]
-        post = [6,7,3]
-        Output= '3,6,7'
-        actual_root = get_sol().constructFromPrePost(pre,post)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test04(self):
-        pre = [2,1,3]
-        post = [3,1,2]
-        Output= 'many possible answers'
-        actual_root = get_sol().constructFromPrePost(pre,post)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-
+        self.assertIn(ser(get_sol().constructFromPrePost([2,1,3], [3,1,2])),['2,1,null,3','2,null,1,null,3'])
+    # def test04(self):
+    # def test05(self):

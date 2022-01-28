@@ -1,7 +1,9 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(x): return LRUCache(x)
 # https://www.youtube.com/watch?v=S6IfqDXWa10
 # https://leetcode.com/problems/lru-cache/discuss/45926/Python-Dict-+-Double-LinkedList/553841
-import unittest
-def get_sol(x): return LRUCache3(x)
+
 #### Solution 1 ####
 class DLinkedNode:
     def __init__(self, key: int, val: int):
@@ -38,7 +40,7 @@ class LRUCache:
         return node.val
 
     def put(self, key: int, value: int) -> None:
-        if key in self.di:
+        if key in self.di: # no of elements in the linked list will not change even if there are free spaces. Example: put(2,val) then put(2,val)
             self.remove(self.di[key])
         else:
             if self.remain:
@@ -140,51 +142,42 @@ class LRUCache3:
         node = DLinkedNode(key, value)
         self.add_last(node)
 
-class tester(unittest.TestCase):
-    def test_1(self):
+
+class Tester(unittest.TestCase):
+    def do_test(self,commands, inputs):
+        outputs = []
+        obj = ""
+        for i,cmd,input in zip(range(len(inputs)),commands,inputs):
+            if cmd=='LRUCache': obj = get_sol(input[0]); outputs.append(None)
+            elif cmd=='put': outputs.append(obj.put(input[0],input[1]))
+            elif cmd=='get': outputs.append(obj.get(input[0]))
+        return outputs
+    def test01(self):
+        commands = ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+        inputs=[     [2],    [1, 1], [2, 2], [1],  [3, 3], [2],  [4, 4], [1],   [3],  [4]]
+        expected = [None,     None,    None,   1,    None,  -1,   None,   -1,     3,    4]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+    def test02(self):
+        commands = ["LRUCache","put","put","put","put","get","get"]
+        inputs=[      [2],   [2,1],[1,1],[2,3],[4,1],  [1], [2]]
+        expected = [   None,    None,None, None, None,  -1,   3]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+    def test03(self):
+        commands = ["LRUCache","put","put","put","put","put","get","put","get","get","put","get","put","put","put","get","put","get","get","get","get","put","put","get","get","get","put","put","get","put","get","put","get","get","get","put","put","put","get","put","get","get","put","put","get","put","put","put","put","get","put","put","get","put","put","get","put","put","put","put","put","get","put","put","get","put","get","get","get","put","get","get","put","put","put","put","get","put","put","put","put","get","get","get","put","put","put","get","put","put","put","get","put","put","put","get","get","get","put","put","put","put","get","put","put","put","put","put","put","put"]
+        inputs=[[10],[10,13],[3,17],[6,11],[10,5],[9,10],[13],[2,19],[2],[3],[5,25],[8],[9,22],[5,5],[1,30],[11],[9,12],[7],[5],[8],[9],[4,30],[9,3],[9],[10],[10],[6,14],[3,1],[3],[10,11],[8],[2,14],[1],[5],[4],[11,4],[12,24],[5,18],[13],[7,23],[8],[12],[3,27],[2,12],[5],[2,9],[13,4],[8,18],[1,7],[6],[9,29],[8,21],[5],[6,30],[1,12],[10],[4,15],[7,22],[11,26],[8,17],[9,29],[5],[3,4],[11,30],[12],[4,29],[3],[9],[6],[3,4],[1],[10],[3,29],[10,28],[1,20],[11,13],[3],[3,12],[3,8],[10,9],[3,26],[8],[7],[5],[13,17],[2,27],[11,15],[12],[9,19],[2,15],[3,16],[1],[12,17],[9,1],[6,19],[4],[5],[5],[8,1],[11,7],[5,2],[9,28],[1],[2,2],[7,4],[4,22],[7,24],[9,26],[13,28],[11,26]]
+        expected = [None,None,None,None,None,None,-1,None,19,17,None,-1,None,None,None,-1,None,-1,5,-1,12,None,None,3,5,5,None,None,1,None,-1,None,30,5,30,None,None,None,-1,None,-1,24,None,None,18,None,None,None,None,-1,None,None,18,None,None,-1,None,None,None,None,None,18,None,None,-1,None,4,29,30,None,12,-1,None,None,None,None,29,None,None,None,None,17,22,18,None,None,None,-1,None,None,None,20,None,None,None,-1,18,18,None,None,None,None,20,None,None,None,None,None,None,None]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+    def test04(self):
+        commands = ["LRUCache","put","put","get","put","put","get"]
+        inputs=[[2],       [2,1],  [2,2], [2],  [1,1], [4,1],[2]]
+        expected = [None, None, None, 2, None, None, -1]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+    def test05(self):
         cache = get_sol(1)
         cache.put(2,1)
         a = cache.get(2)
         self.assertEqual(1,a)
-    def test2(self):
-        commands = ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
-        inputs = [     [2],    [1, 1], [2, 2], [1],  [3, 3], [2],  [4, 4], [1],   [3],  [4]]
-        exptected = [None,     None,    None,   1,    None,  -1,   None,   -1,     3,    4]
-        outputs = []
-        for c,i in zip(commands, inputs):
-            if c == 'LRUCache':
-                obj = get_sol(i[0])
-                outputs.append(None)
-            elif c =='put':
-                outputs.append(obj.put(i[0],i[1]))
-            elif c=='get':
-                outputs.append(obj.get(i[0]))
-        self.assertEqual(exptected,outputs)
-    def test3(self):
-        commands = ["LRUCache","put","put","put","put","get","get"]
-        inputs = [      [2],   [2,1],[1,1],[2,3],[4,1],  [1], [2]]
-        exptected = [   None,    None,None, None, None,  -1,   3]
-        outputs = []
-        for c,i in zip(commands, inputs):
-            if c == 'LRUCache':
-                obj = get_sol(i[0])
-                outputs.append(None)
-            elif c =='put':
-                outputs.append(obj.put(i[0],i[1]))
-            elif c=='get':
-                outputs.append(obj.get(i[0]))
-        self.assertEqual(exptected,outputs)
-    def test4(self):
-        commands = ["LRUCache","put","put","put","put","put","get","put","get","get","put","get","put","put","put","get","put","get","get","get","get","put","put","get","get","get","put","put","get","put","get","put","get","get","get","put","put","put","get","put","get","get","put","put","get","put","put","put","put","get","put","put","get","put","put","get","put","put","put","put","put","get","put","put","get","put","get","get","get","put","get","get","put","put","put","put","get","put","put","put","put","get","get","get","put","put","put","get","put","put","put","get","put","put","put","get","get","get","put","put","put","put","get","put","put","put","put","put","put","put"]
-        inputs = [[10],[10,13],[3,17],[6,11],[10,5],[9,10],[13],[2,19],[2],[3],[5,25],[8],[9,22],[5,5],[1,30],[11],[9,12],[7],[5],[8],[9],[4,30],[9,3],[9],[10],[10],[6,14],[3,1],[3],[10,11],[8],[2,14],[1],[5],[4],[11,4],[12,24],[5,18],[13],[7,23],[8],[12],[3,27],[2,12],[5],[2,9],[13,4],[8,18],[1,7],[6],[9,29],[8,21],[5],[6,30],[1,12],[10],[4,15],[7,22],[11,26],[8,17],[9,29],[5],[3,4],[11,30],[12],[4,29],[3],[9],[6],[3,4],[1],[10],[3,29],[10,28],[1,20],[11,13],[3],[3,12],[3,8],[10,9],[3,26],[8],[7],[5],[13,17],[2,27],[11,15],[12],[9,19],[2,15],[3,16],[1],[12,17],[9,1],[6,19],[4],[5],[5],[8,1],[11,7],[5,2],[9,28],[1],[2,2],[7,4],[4,22],[7,24],[9,26],[13,28],[11,26]]
-        exptected = [None,None,None,None,None,None,-1,None,19,17,None,-1,None,None,None,-1,None,-1,5,-1,12,None,None,3,5,5,None,None,1,None,-1,None,30,5,30,None,None,None,-1,None,-1,24,None,None,18,None,None,None,None,-1,None,None,18,None,None,-1,None,None,None,None,None,18,None,None,-1,None,4,29,30,None,12,-1,None,None,None,None,29,None,None,None,None,17,22,18,None,None,None,-1,None,None,None,20,None,None,None,-1,18,18,None,None,None,None,20,None,None,None,None,None,None,None]
-        outputs = []
-        for c,i in zip(commands, inputs):
-            if c == 'LRUCache':
-                obj = get_sol(i[0])
-                outputs.append(None)
-            elif c =='put':
-                outputs.append(obj.put(i[0],i[1]))
-            elif c=='get':
-                outputs.append(obj.get(i[0]))
-        self.assertEqual(exptected,outputs)

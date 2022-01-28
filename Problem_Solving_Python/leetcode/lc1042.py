@@ -3,10 +3,11 @@ def get_sol(): return Solution()
 class Solution:
     def gardenNoAdj(self, n: int, paths: List[List[int]]) -> List[int]:
         EMPTY= -1
-        colors = [EMPTY]*(n+1)
+        colors = [EMPTY]*n
         g=defaultdict(list)
         vis=set()
         for x,y in paths:
+            x-=1;y-=1
             g[x].append(y)
             g[y].append(x)
 
@@ -28,9 +29,9 @@ class Solution:
                     colors[u]=color
             return False
 
-        for i in range(1,n+1):
+        for i in range(n):
             put_color(i)
-        return colors[1:]
+        return colors
 
 
 
@@ -52,5 +53,6 @@ class tester(unittest.TestCase):
         paths = [[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]
         Output= [1,2,3,4]
         self.assertEqual(Output,get_sol().gardenNoAdj(n,paths))
-    # def test04(self):
+    def test04(self):
+        self.assertEqual([1,2,2],get_sol().gardenNoAdj(3,[[1,2],[1,3]]))
     # def test05(self):

@@ -1,18 +1,21 @@
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
-        res = []
         def fact(n):
             return n*fact(n-1) if n!=0 else 1
+
         k-=1
+        res = []
         nums=[x for x in range(1,n+1)]
-        while len(nums)!=0:
+        while len(nums)>0:
             f = fact(len(nums)-1)
             idx = k//f
             res.append(nums[idx])
             nums.pop(idx)
             k=k%f
+            # k=k-(k//f)*f # also works
         res = map(str,res)
         return ''.join(res)
 class Solution2:

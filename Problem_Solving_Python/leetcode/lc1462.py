@@ -1,6 +1,51 @@
-import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution5()
 class Solution:
+    def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        @cache
+        def dfs(u):
+            if not g[u]:
+                return {u}
+            res=set()
+            for v in g[u]:
+                res|=dfs(v)
+            return res|{u}
+        g=defaultdict(list) # graph
+        for a,b in prerequisites: g[a].append(b) # swapping x,y also works
+
+        di=defaultdict(set) # di[key]=course list that require 'key' course as a prerequisite directly or indirectly
+        for i in range(n):
+            di[i]|=dfs(i)
+        res=[]
+        for u,v in queries:
+            res.append(v in di[u]) # need to swap here as well
+        return res
+class Solution5:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        NOT_VISITED=0; VISITED=1
+        visited = [NOT_VISITED for _ in range(numCourses)]
+        def dfs(u):
+            if visited[u]==VISITED: return
+            visited[u]=VISITED
+            for v in g[u]:
+                di[u].add(v)
+                dfs(v)
+                for x in di[v]:
+                    di[u].add(x) # add all prereq courses after recursive calls
+
+        g=defaultdict(list)
+        di=defaultdict(set)
+        for x,y in prerequisites:
+            g[y].append(x) # putting in the reverse order. So we can traverse prereq course. UPDATE: swapping x,y also works
+
+        for u in range(numCourses):
+            dfs(u)
+        res=[]
+        for u,v in queries:
+            res.append(u in di[v]) # need to swap here as well
+        return res
+class Solution3:
     # topological sort
     # A -> B -> C
     # C is prerequisites of B
@@ -9,20 +54,21 @@ class Solution:
     def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
         NOT_VISITED=0; VISITED=1; PROCESSING=-1
         visited = [NOT_VISITED for _ in range(numCourses)]
-        g=defaultdict(list)
-        di=defaultdict(set)
-        for x,y in prerequisites: g[y].append(x) # putting in the reverse order
-        for x,y in prerequisites: di[y].add(x) # putting in the reverse order
         def dfs(u):
-            if visited[u]==PROCESSING: return False
+            # if visited[u]==PROCESSING: return False # not required since the prerequisite graph does not contain any cycle
             if visited[u]==VISITED: return True
-            visited[u]=PROCESSING
+            # visited[u]=PROCESSING
             for v in g[u]:
                 tmp=dfs(v)
                 for x in di[v]: di[u].add(x) # add after recursive calls
                 if not tmp: return False
             visited[u]=VISITED
             return True
+
+        g=defaultdict(list)
+        di=defaultdict(set)
+        for x,y in prerequisites: g[y].append(x) # putting in the reverse order
+        for x,y in prerequisites: di[y].add(x) # putting in the reverse order
 
         for u in range(numCourses):
             dfs(u)

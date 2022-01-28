@@ -2,6 +2,41 @@ import functools; import itertools; import math; import operator; import random;
 def get_sol(): return Solution()
 ### SEE LEETCODE 363
 class Solution:
+    def getJustBeforeNextSmaller(self, A, default, cnt=1):
+        n=len(A)
+        nextSmaller= [default] * n
+        st=[]
+        for i in range(n):
+            while st and A[st[-1]]> A[i]: # nextSmaller, so it is going to be increasing stack. A[st[-1]]>A[i] -> take out while the top element is greater
+                nextSmaller[st.pop()]=i-cnt
+            st.append(i)
+        return nextSmaller
+    def getJustAfterPrevSmaller(self, A): # get indices which is right before the next smaller element
+        n=len(A)
+        tmp= self.getJustBeforeNextSmaller(A[::-1], 0, -1)
+        nextSmaller=[(0 if x==0 else n-x+1) for x in tmp]
+        return nextSmaller[::-1]
+    def largestRectangleArea(self, A: List[int]) -> int: # leetcode 84
+        n=len(A)
+        nextSmaller= self.getJustBeforeNextSmaller(A, n - 1)
+        prevSmaller=self.getJustAfterPrevSmaller(A)
+        res=float('-inf')
+        for i in range(n):
+            width=nextSmaller[i]-prevSmaller[i]+1
+            res=max(res,width*A[i])
+        return res
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        m=len(matrix)
+        if not m: return 0
+        n=len(matrix[0])
+        res=float('-inf')
+        pre=[0]*n # prefix sum
+        for row in matrix:
+            row=list(map(int,row))
+            pre=[(pre[i]+1) if row[i]!=0 else 0 for i in range(n)]
+            res=max(res,self.largestRectangleArea(pre))
+        return res
+class Solution2:
     # https://www.youtube.com/watch?v=dAVF2NpC3j4
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
         m = len(matrix)

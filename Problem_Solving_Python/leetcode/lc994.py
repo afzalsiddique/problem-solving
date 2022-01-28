@@ -1,14 +1,43 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/rotting-oranges/discuss/563686/Python-Clean-and-Well-Explained-(faster-than-greater-90)
 # https://www.youtube.com/watch?v=CxrnOTUlNJE
-import math
-import unittest
-from collections import deque
-from typing import List
 
-# without destroying the input
+class Solution:
+    # bfs and without destroying the input
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        EMPTY,FRESH,ROTTEN,VISITED=0,1,2,3
+        m,n=len(grid),len(grid[0])
+        rottenOranges=[[i,j] for i in range(m) for j in range(n) if grid[i][j]==ROTTEN]
+        freshOranges=[[i,j] for i in range(m) for j in range(n) if grid[i][j]==FRESH]
+        if not rottenOranges:
+            if freshOranges:
+                return -1
+            return 0
+        q=deque(rottenOranges)
+        res=-1
+        while q:
+            for _ in range(len(q)):
+                x,y=q.popleft()
+                grid[x][y]=VISITED
+                for dx,dy in [(0,1),(1,0),(-1,0),(0,-1)]:
+                    newX,newY=x+dx,y+dy
+                    if not 0<=newX<m or not 0<=newY<n: continue
+                    if grid[newX][newY]==VISITED: continue
+                    if grid[newX][newY]==EMPTY: continue
+                    if grid[newX][newY]==ROTTEN: continue
+                    grid[newX][newY]=ROTTEN
+                    q.append([newX,newY])
+            res+=1
+        freshOrangesLeft=any(grid[i][j]==FRESH for i in range(m) for j in range(n))
+        for i,j in freshOranges: grid[i][j]=FRESH
+        for i,j in rottenOranges: grid[i][j]=ROTTEN
+        if freshOrangesLeft:
+            return -1
+        return res
 class Solution1:
     def get_grid_state(self, grid):
-
         fresh, rotten = set(), set()
         rows = len(grid)
         cols = len(grid[0])
@@ -50,7 +79,7 @@ class Solution1:
 
         return -1 if len(fresh) != 0 else mins_to_rotten
 
-class Solution:
+class Solution4:
     def orangesRotting(self, grid: List[List[int]]) -> int:
         m,n = len(grid), len(grid[0])
         FRESH,ROTTEN,INVISIBLE = 1,2,0 # Fresh apple gets rotten, rotten apple turns invisible
@@ -98,29 +127,35 @@ class Solution3:
         fresh = any(grid[i][j]==1 for i in range(m) for j in range(n))
         return cnt if not fresh else -1
 
+
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        grid = [[2,1,1],[1,1,0],[0,1,1]]
-        actual = Solution().orangesRotting(grid)
-        expected = 4
-        self.assertEqual(expected,actual)
-    def test_2(self):
-        grid = [[2,1,1],[0,1,1],[1,0,1]]
-        actual = Solution().orangesRotting(grid)
-        expected = -1
-        self.assertEqual(expected,actual)
-    def test_3(self):
-        grid = [[0,2]]
-        actual = Solution().orangesRotting(grid)
-        expected = 0
-        self.assertEqual(expected,actual)
-    def test_4(self):
-        grid = [[2,2],[1,1],[0,0],[2,0]]
-        actual = Solution().orangesRotting(grid)
-        expected = 1
-        self.assertEqual(expected,actual)
-    def test_5(self):
-        grid = [[0]]
-        actual = Solution().orangesRotting(grid)
-        expected = 0
-        self.assertEqual(expected,actual)
+    def test01(self):
+        grid=[[2,1,1],[1,1,0],[0,1,1]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(4,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
+    def test02(self):
+        grid=[[2,1,1],[0,1,1],[1,0,1]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(-1,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
+    def test03(self):
+        grid=[[0,2]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(0,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
+    def test04(self):
+        grid=[[2,2],[1,1],[0,0],[2,0]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(1,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
+    def test05(self):
+        grid=[[0]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(0,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
+    def test06(self):
+        grid=[[1]]
+        gridCopy=[[x for x in row] for row in grid]
+        self.assertEqual(-1,get_sol().orangesRotting(grid))
+        self.assertEqual(gridCopy,grid) # check if the input is unchanged after operation
