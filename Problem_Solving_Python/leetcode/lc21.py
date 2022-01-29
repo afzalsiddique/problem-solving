@@ -1,33 +1,13 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/merge-two-sorted-lists/discuss/9735/Python-solutions-(iteratively-recursively-iteratively-in-place).
-import unittest
-from typing import List
-
-
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+    def __repr__(self): return str(self.val) + "->" + str(self.next)
 
-    def __repr__(self):
-        return str(self.val) + "->" + str(self.next)
-
-    def __eq__(self, other):
-        return str(self)==str(other)
-
-
-def make_linked_list(li:List) -> ListNode:
-    """
-    given a list the function creates a linked list and returns the head of the linked list
-    """
-    n = len(li)
-    if n==0:
-        return None
-    if n==1:
-        return ListNode(li[0])
-    temp = ListNode(li[-1], None)
-    for i in range(n-2,-1,-1):
-        temp = ListNode(li[i],temp)
-    return temp
 
 class Solution:
     def mergeTwoLists(self, l1, l2):
@@ -57,26 +37,13 @@ class Solution:
         return a
 
 
-class MyTestCase(unittest.TestCase):
 
-    def test_1(self):
-        sol = Solution()
-        head1 = make_linked_list([1,3,5])
-        head2 = make_linked_list([2,4,6])
-        actual = sol.mergeTwoLists(head1, head2)
-        expected = make_linked_list([1,2,3,4,5,6])
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        sol = Solution()
-        head1 = make_linked_list([])
-        head2 = make_linked_list([])
-        actual = sol.mergeTwoLists(head1, head2)
-        expected = make_linked_list([])
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        sol = Solution()
-        head1 = make_linked_list([1])
-        head2 = make_linked_list([])
-        actual = sol.mergeTwoLists(head1, head2)
-        expected = make_linked_list([1])
-        self.assertEqual(expected, actual)
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(make_linked_list([1,2,3,4,5,6]), get_sol().mergeTwoLists(make_linked_list([1,3,5]), make_linked_list([2,4,6])))
+    def test02(self):
+        self.assertEqual(make_linked_list([]), get_sol().mergeTwoLists(make_linked_list([]), make_linked_list([])))
+    def test03(self):
+        self.assertEqual(make_linked_list([1]), get_sol().mergeTwoLists(make_linked_list([1]), make_linked_list([])))
+    def test04(self):
+        self.assertEqual(make_linked_list([1,1,2,3,4,4]), get_sol().mergeTwoLists(make_linked_list([1,2,4]), make_linked_list([1,3,4])))

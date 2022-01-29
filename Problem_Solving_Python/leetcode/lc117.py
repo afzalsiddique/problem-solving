@@ -17,10 +17,10 @@ class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root: return
         head=root
-        useless_dummy=Node(0)
+        emptyNode=Node(0)
         while head:
-            dummy=useless_dummy
-            dummy.next,dummy.left,dummy.right=None,None,None
+            dummy=emptyNode
+            dummy.next,dummy.left,dummy.right=None,None,None # reusing the node by making it empty
             child_head=dummy
             while head:
                 if head.left:

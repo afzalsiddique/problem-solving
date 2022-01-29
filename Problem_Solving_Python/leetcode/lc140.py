@@ -1,9 +1,29 @@
 # https://www.youtube.com/watch?v=WepWFGxiwRs
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # accepted
-import unittest
-from typing import List
-
 # don't understand why dp is slower? Ans: consider this case: ['aaaaaaaa'], ['a','aa','aaa','aaaa']
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        def recur(i,path):
+            if i==n:
+                res.append(path)
+                return path
+            ret=[]
+            for word in wordDict:
+                length=len(word)
+                if n-i<length: continue
+                if s[i:i+length]==word:
+                    ans = recur(i+length,path+[word])
+                    for sub in ans:
+                        ret.append(sub)
+            return ret
+
+        n=len(s)
+        res=[]
+        recur(0,[])
+        return list(map(' '.join,res))
 class Solution3: # AC. 32 ms
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         res = []
@@ -20,7 +40,7 @@ class Solution3: # AC. 32 ms
         helper(s,[])
         return res
 
-class Solution: # AC. 100 ms
+class Solution4: # AC. 100 ms
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         dp = {}
 
@@ -64,58 +84,25 @@ class Solution2:
 
         return word_break(s)
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        solution = Solution()
-        s = "catsanddog"
-        wordDict = ["cat", "cats", "and", "sand", "dog"]
-        actual = sorted(solution.wordBreak(s, wordDict))
-        expected = sorted([
-                      "cats and dog",
-                      "cat sand dog"
-                    ])
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
+    def test01(self):
+        self.assertEqual(sorted(["cats and dog","cat sand dog"]), sorted(get_sol().wordBreak("catsanddog", ["cat","cats","and","sand","dog"])))
+    def test02(self):
         s = "pineapplepenapple"
         wordDict = ["apple", "pen", "applepen", "pine", "pineapple"]
-        actual = sorted(solution.wordBreak(s, wordDict))
-        expected = sorted([
-                          "pine apple pen apple",
-                          "pineapple pen apple",
-                          "pine applepen apple"
-                        ])
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(sorted([ "pine apple pen apple", "pineapple pen apple", "pine applepen apple" ]), sorted(get_sol().wordBreak(s, wordDict)))
     def test_3(self):
-        solution = Solution()
         s = "applepineapple"
         wordDict = ["apple", "pine","pineapple"]
-        actual = sorted(solution.wordBreak(s, wordDict))
-        expected = sorted([
-                            "apple pine apple",
-                            "apple pineapple"
-                        ])
+        actual = sorted(get_sol().wordBreak(s, wordDict))
+        expected = sorted([ "apple pine apple", "apple pineapple" ])
         self.assertEqual(expected, actual)
-
     def test_4(self):
-        solution = Solution()
         s = "aaaaaaaaaa"
         wordDict = ["a", "aa", "aaa", "aaaa", "aaaaa","aaaaaa"]
-        actual = sorted(solution.wordBreak(s, wordDict))
-        expected = [""]
+        actual = sorted(get_sol().wordBreak(s, wordDict))
+        expected = ["jani na"]
         self.assertEqual(expected, actual)
-
-
-
     def test_5(self):
-        solution = Solution()
         s = "mycatsanddog"
         wordDict = ["cat", "cats", "and", "sand", "dog","my"]
-        actual = sorted(solution.wordBreak(s, wordDict))
-        expected = sorted([
-                      "cats and dog",
-                      "cat sand dog"
-                    ])
-        self.assertEqual(expected, actual)
+        self.assertEqual(sorted(['my cat sand dog', 'my cats and dog']), sorted(get_sol().wordBreak(s, wordDict)))

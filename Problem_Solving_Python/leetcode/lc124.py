@@ -1,9 +1,8 @@
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+
 # https://www.youtube.com/watch?v=6cA_NDtpyz8
-import unittest
-from collections import deque
-from heapq import *
-
-
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -12,16 +11,21 @@ class TreeNode:
     def __repr__(self):
         return str(self.val)
 class Solution:
-    def maxPathSum(self, root: TreeNode) -> int:
-        maxx=[float('-inf')]
-        def max_sum_at_any_depth(root):
-            if not root: return 0
-            left=max_sum_at_any_depth(root.left)
-            right=max_sum_at_any_depth(root.right)
-            maxx[0]=max(maxx[0],left+right+root.val, left+root.val, right+root.val, root.val)
-            return max(left+root.val,right+root.val, root.val)
-        max_sum_at_any_depth(root)
-        return maxx[0]
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        def helper(node):
+            nonlocal res
+            if not node: return 0
+            l=helper(node.left)
+            r=helper(node.right)
+            tmp=node.val+max(0,l,r,l+r) # take node or node+left or node+right or node+left+right
+            res=max(res,tmp)
+            # take node or node+left or node+right.
+            # if node+left+right is taken then path will be broken in the parent node
+            return node.val+max(0,l,r)
+
+        res=float('-inf')
+        helper(root)
+        return res
 class Solution3:
     def __init__(self):
         self.maxx = float('-inf')
@@ -53,37 +57,16 @@ class Solution2:
         postorder(root)
         return self.maxx
 
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<=1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
 
 
-
-class mytestcase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(48,Solution().maxPathSum(deserialize('5,4,8,11,null,13,4,7,2,null,null,null,1')))
-    def test2(self):
-        self.assertEqual(-1,Solution().maxPathSum(deserialize('-1,-2,-3')))
-    def test3(self):
-        self.assertEqual(6,Solution().maxPathSum(deserialize('1,2,3')))
-    def test4(self):
-        self.assertEqual(42,Solution().maxPathSum(deserialize('-10,9,20,null,null,15,7')))
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(6,get_sol().maxPathSum(des([1,2,3])))
+    def test02(self):
+        self.assertEqual(42,get_sol().maxPathSum(des([-10,9,20,None,None,15,7])))
+    def test03(self):
+        self.assertEqual(48,get_sol().maxPathSum(des([5,4,8,11,None,13,4,7,2,None,None,None,1])))
+    def test04(self):
+        self.assertEqual(28,get_sol().maxPathSum(des([5,4,8,11,4])))
+    def test05(self):
+        self.assertEqual(-1,get_sol().maxPathSum(des([-1,-2,-3])))

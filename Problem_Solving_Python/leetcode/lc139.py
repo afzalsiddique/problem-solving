@@ -1,7 +1,22 @@
-import unittest
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        @cache
+        def recur(i):
+            if i==n:
+                return True
+            for word in wordDict:
+                length=len(word)
+                if n-i<length: continue
+                if s[i:i+length]==word and recur(i+length):
+                    return True
+            return False
+
+        n=len(s)
+        return recur(0)
+class Solution4:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         di = {}
         def helper(s:str):
@@ -20,9 +35,10 @@ class Solution:
             return di[s]
         return helper(s)
 
+class Solution2:
     # Recursive -> easier to write and read
     # Recursive-> https://www.youtube.com/watch?v=hLQYQ4zj0qg
-    def wordBreak_recursive(self, s: str, wordDict: List[str]) -> bool:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         di = {}
         def helper(s):
             if not s:return True
@@ -39,9 +55,10 @@ class Solution:
 
         return helper(s)
 
+class Solution3:
     # Iterative
     # Iterative-> https://www.youtube.com/watch?v=WepWFGxiwRs
-    def wordBreak_iterative(self, s: str, wordDict: List[str]) -> bool:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         di = {}
         for word in wordDict:
             di[word] = 1
@@ -58,36 +75,14 @@ class Solution:
         return dp[0][-1]
 
 
+
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        solution = Solution()
-        s = "catsandog"
-        wordDict = ["cats", "dog", "sand", "and", "cat"]
-        actual = solution.wordBreak(s, wordDict)
-        expected = False
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        solution = Solution()
-        s = "ab"
-        wordDict = ['a','b']
-        actual = solution.wordBreak(s, wordDict)
-        expected = True
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
-        s = "catsanddog"
-        wordDict = ["cat", "cats", "and", "sand", "dog"]
-        actual = solution.wordBreak(s, wordDict)
-        expected = True
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        solution = Solution()
-        s = "cars"
-        wordDict = ['car','ca','rs']
-        actual = solution.wordBreak(s, wordDict)
-        expected = True
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(False, get_sol().wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+    def test02(self):
+        self.assertEqual(True, get_sol().wordBreak("ab", ['a','b']))
+    def test03(self):
+        self.assertEqual(True, get_sol().wordBreak("catsanddog", ["cat", "cats", "and", "sand", "dog"]))
+    def test04(self):
+        self.assertEqual(True, get_sol().wordBreak("cars", ['car','ca','rs']))
 

@@ -31,7 +31,9 @@ class Solution:
             if cur.random:
                 cur.next.random = cur.random.next
             cur = cur.next.next
-        new_head = head.next
+
+        res = head.next
+
         first, second=head,head.next
         while second.next:
             first.next=second.next
@@ -43,7 +45,12 @@ class Solution:
         #     first=first.next
         #     second.next=first.next
         #     second=second.next
-        return new_head
+
+        # for some reason the judge does not detect this.
+        # But I think the given linked list should completely detached from the new linked list
+        first.next=None
+
+        return res
     # using dict
     def copyRandomList2(self, head: 'Node'):
         if not head:return None
