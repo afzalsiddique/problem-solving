@@ -1,21 +1,21 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
-    def numRollsToTarget(self, d: int, f: int, target: int) -> int:
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
         dp = {}
-        def helper(d,target):
-            if d==0:
+        def helper(n, target):
+            if n==0:
                 if target==0: return 1
                 else: return 0
             if target<0: return 0
-            if (d,target) in dp: return dp[(d,target)]
+            if (n, target) in dp: return dp[(n, target)]
             total=0
-            for i in range(1,f+1):
-                total+=helper(d-1,target-i)
-            dp[(d,target)]=total % 1_000_000_007
-            return dp[(d,target)]
+            for i in range(1, k + 1):
+                total+=helper(n - 1, target - i)
+            dp[(n, target)]= total % 1_000_000_007
+            return dp[(n, target)]
 
-        return helper(d,target)
+        return helper(n, target)
 
 class tester(unittest.TestCase):
     def test_1(self):

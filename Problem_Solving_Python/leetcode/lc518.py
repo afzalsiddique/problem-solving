@@ -1,8 +1,6 @@
-import unittest
-from functools import lru_cache
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     # tabulation dp
     def change(self, amount: int, coins: List[int]) -> int:
@@ -38,12 +36,12 @@ class Solution2:
 
         return f(0,amount)
 class Solution3:
-    # knapsack
+    # recursive knapsack
     # beats 62% in runtime
     def change(self, amount: int, coins: List[int]) -> int:
         n=len(coins)
         coins.sort(reverse=True)
-        @lru_cache(maxsize=None)
+        @cache
         def f(i, target):
             if target == 0 : return 1
             if target < 0: return 0
@@ -69,28 +67,23 @@ class Solution4:
             return cnt
         return helper(0,amount)
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        solution = Solution()
+    def test01(self):
         amount = 5
         coins = [1,2,5]
-        actual = solution.change(amount, coins)
+        actual = get_sol().change(amount, coins)
         expected = 4
         self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
+    def test02(self):
         amount = 3
         coins = [2]
-        actual = solution.change(amount, coins)
+        actual = get_sol().change(amount, coins)
         expected = 0
         self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
+    def test03(self):
         amount = 10
         coins = [10]
-        actual = solution.change(amount, coins)
+        actual = get_sol().change(amount, coins)
         expected = 1
         self.assertEqual(expected, actual)
     def test4(self):
-        self.assertEqual(1,Solution().change(0,[]))
+        self.assertEqual(1,get_sol().change(0,[]))

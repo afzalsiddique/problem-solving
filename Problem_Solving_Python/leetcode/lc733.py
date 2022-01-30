@@ -20,19 +20,16 @@ class Solution:
         dfs(sr,sc)
         return image
 
-
-class mytestcase(unittest.TestCase):
-    def test_1(self):
+class Tester(unittest.TestCase):
+    def test01(self):
         image = [[1,1,1],[1,1,0],[1,0,1]]
         sr = 1
         sc = 1
         newColor = 2
-        e = Solution().floodFill(image, sr,sc,newColor)
-        self.assertEqual([[2,2,2],[2,2,0],[2,0,1]],e)
-    def test_2(self):
+        self.assertEqual([[2,2,2],[2,2,0],[2,0,1]],get_sol().floodFill(image, sr,sc,newColor))
+    def test02(self):
         image = [[1,1],[1,1]]
         sr = 0
         sc = 0
         newColor = 1
-        e = Solution().floodFill(image, sr,sc,newColor)
-        self.assertEqual([[1,1],[1,1]],e)
+        self.assertEqual([[1,1],[1,1]],get_sol().floodFill(image, sr,sc,newColor))

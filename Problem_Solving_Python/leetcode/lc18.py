@@ -1,9 +1,39 @@
-import unittest
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
-
+    def two_sum(self, l, r, target):
+        A=self.A
+        if l>r: return []
+        res=[]
+        while l<r:
+            if A[l]+A[r]==target:
+                res.append([A[l],A[r]])
+                while l<r and A[l]==A[l+1]: l+=1
+                while l<r and A[r]==A[r-1]: r-=1
+            if A[l]+A[r]<target:
+                l+=1
+            else:
+                r-=1
+        return res
+    def kSum(self,l,r,k,target):
+        A=self.A
+        if l>r: return []
+        if k==2:
+            return self.two_sum(l, r, target)
+        res=[]
+        for i in range(l,r):
+            if i>l and A[i]==A[i-1]: continue
+            ans=self.kSum(i+1,r,k-1,target-A[i])
+            for sub in ans:
+                tmp=[A[i]]+sub
+                res.append(tmp)
+        return res
+    def fourSum(self, A: List[int], target: int) -> List[List[int]]:
+        A.sort()
+        self.A=A
+        return self.kSum(0,len(A)-1,4,target)
+class Solution3:
     def k_sum(self, nums, target, k): # kSum requires nums to be sorted
         if k == 2: return self.two_sum(nums, target)
         ans = []
@@ -86,52 +116,37 @@ class Solution2:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_two_sum1(self):
-        sol = Solution()
-        actual = sol.two_sum([0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 3, 3, 5, 5, 6, 6, 6, 6, 8, 8, 8], 8)
-        expected = [[3, 5], [2, 6], [0, 8]]
-        self.assertEqual(sorted([sorted(x) for x in expected]), sorted([sorted(x) for x in actual])) # just sorted
-
-    def test_two_sum2(self):
-        sol = Solution()
-        actual = sol.two_sum([0, 0, 0, 0], 0)
-        expected = [[0, 0]]
-        self.assertEqual(expected, actual)
-
-    def test_two_sum3(self):
-        sol = Solution()
-        actual = sol.two_sum([2, 2], 4)
-        expected = [[2, 2]]
-        self.assertEqual(expected, actual)
-
+    # def test_two_sum1(self):
+    #     actual = get_sol().two_sum([0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 3, 3, 5, 5, 6, 6, 6, 6, 8, 8, 8], 8)
+    #     expected = [[3, 5], [2, 6], [0, 8]]
+    #     self.assertEqual(sorted([sorted(x) for x in expected]), sorted([sorted(x) for x in actual])) # just sorted
+    # def test_two_sum2(self):
+    #     actual = get_sol().two_sum([0, 0, 0, 0], 0)
+    #     expected = [[0, 0]]
+    #     self.assertEqual(expected, actual)
+    # def test_two_sum3(self):
+    #     actual = get_sol().two_sum([2, 2], 4)
+    #     expected = [[2, 2]]
+    #     self.assertEqual(expected, actual)
     def test_1(self):
-        sol = Solution()
-        actual = sol.fourSum(nums=[1, 0, -1, 0, -2, 2], target=0)
+        actual = get_sol().fourSum([1, 0, -1, 0, -2, 2],0)
         expected = [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
         self.assertEqual(sorted([sorted(x) for x in expected]), sorted([sorted(x) for x in actual])) # just sorted
-
     def test_2(self):
-        sol = Solution()
-        actual = sol.fourSum(nums=[], target=0)
+        actual = get_sol().fourSum([], 0)
         expected = []
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        sol = Solution()
-        actual = sol.fourSum([-2, -1, -1, 1, 1, 2, 2], 0)
+        actual = get_sol().fourSum([-2, -1, -1, 1, 1, 2, 2], 0)
         expected = [[-2, -1, 1, 2], [-1, -1, 1, 1]]
         self.assertEqual(sorted([sorted(x) for x in expected]), sorted([sorted(x) for x in actual])) # just sorted
-
     def test_4(self):
-        sol = Solution()
-        actual = sol.fourSum([0, 0, 0, 0], 0)
+        actual = get_sol().fourSum([0, 0, 0, 0], 0)
         expected = [[0, 0, 0, 0]]
         self.assertEqual(expected, actual)
-
-    def test_5(self):
-        nums = sorted([-1,0,1,2,-1,-4])
-        target = 0
-        actual = Solution().k_sum(nums, target,3)
-        expected = [[-1, 1, 0], [-1, 2, -1]]
-        self.assertEqual(expected, actual)
+    # def test_5(self):
+    #     nums = sorted([-1,0,1,2,-1,-4])
+    #     target = 0
+    #     actual = get_sol().k_sum(nums, target,3)
+    #     expected = [[-1, 1, 0], [-1, 2, -1]]
+    #     self.assertEqual(expected, actual)

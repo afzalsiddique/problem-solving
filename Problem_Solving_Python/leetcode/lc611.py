@@ -1,15 +1,6 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
-
-
 class Solution:
     # https://leetcode.com/problems/valid-triangle-number/discuss/128135/A-similar-O(n2)-solution-to-3-Sum
     # similar to 3 sum problem
@@ -50,28 +41,28 @@ class tester(unittest.TestCase):
     def test1(self):
         nums = [2,2,3,4]
         Output= 3
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test2(self):
         nums = [4,2,3,4]
         Output= 4
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test3(self):
         nums = [1,3,3,4,4,6,7,7,9]
         Output= 40
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test4(self):
         nums = [2,2,2,3,3,3,4,4,4]
         Output= 75
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test5(self):
         nums = [1,1,1,1]
         Output= 4
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test6(self):
         nums = [0,0,0]
         Output= 0
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))
     def test7(self):
         nums = [0,1,0]
         Output= 0
-        self.assertEqual(Output,Solution().triangleNumber(nums))
+        self.assertEqual(Output,get_sol().triangleNumber(nums))

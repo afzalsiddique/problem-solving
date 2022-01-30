@@ -1,6 +1,28 @@
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
+class Solution4:
+    def maxProduct(self, A: List[int]) -> int:
+        maxx = A[0]
+        minn = A[0]
+        res=maxx
+        for i in range(1, len(A)):
+            tmpMax,tmpMin=maxx,minn
+            maxx=max(A[i], A[i] * tmpMax, A[i] * tmpMin)
+            minn=min(A[i], A[i] * tmpMax, A[i] * tmpMin)
+            res=max(res,maxx)
+        return res
+class Solution1:
+    # https://leetcode.com/problems/maximum-product-subarray/discuss/847520/Thought-process-and-useful-strategy
+    # https://www.youtube.com/watch?v=hJ_Uy2DzE08
+    def maxProduct(self, A: List[int]) -> int:
+        maxx = [A[0]] # these arrays could be removed
+        minn = [A[0]]
+        for i in range(1, len(A)):
+            maxx.append(max(A[i], A[i] * maxx[i - 1], A[i] * minn[i - 1]))
+            minn.append(min(A[i], A[i] * maxx[i - 1], A[i] * minn[i - 1]))
+        return max(maxx)
 class Solution:
     # https://leetcode.com/problems/maximum-product-subarray/discuss/48302/2-Passes-scan-beats-99
     # https://leetcode.com/problems/maximum-product-subarray/discuss/48302/2-Passes-scan-beats-99/706665
@@ -16,18 +38,6 @@ class Solution:
             maxx = max(maxx, product)
             if num==0:product=1
         return maxx
-
-class Solution1:
-    # https://leetcode.com/problems/maximum-product-subarray/
-    # https://leetcode.com/problems/maximum-product-subarray/discuss/847520/Thought-process-and-useful-strategy
-    # https://www.youtube.com/watch?v=hJ_Uy2DzE08
-    def maxProduct(self, nums: List[int]) -> int:
-        maxx = [nums[0]]
-        minn = [nums[0]]
-        for i in range(1, len(nums)):
-            maxx.append(max(nums[i], nums[i]*maxx[i-1], nums[i]*minn[i-1]))
-            minn.append(min(nums[i], nums[i]*maxx[i-1], nums[i]*minn[i-1]))
-        return max(maxx)
 
 class Solution3:
     # https://leetcode.com/problems/maximum-product-subarray/discuss/48302/2-Passes-scan-beats-99/706665
@@ -66,48 +76,37 @@ class Solution3:
         return maxx
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        solution = Solution()
+    def test01(self):
         nums = [2,3,-2,4]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = 6
         self.assertEqual(expected, actual)
-
-    def test_11(self):
-        solution = Solution()
+    def test02(self):
         nums = [2,3,-2,4, 0, 2,3,-2,4,-5]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = 240
         self.assertEqual(expected, actual)
-
-
-    def test_2(self):
-        solution = Solution()
+    def test03(self):
         nums = [-2,0,-1]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = 0
         self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
+    def test04(self):
         nums = [-2]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = -2
         self.assertEqual(expected, actual)
-    def test_33(self):
-        solution = Solution()
+    def test05(self):
         nums = [-1,-2,-3]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = 6
         self.assertEqual(expected, actual)
-
-    def test_4(self):
-        solution = Solution()
+    def test06(self):
         nums = [2,-5,-2,-4,3]
-        actual = solution.maxProduct(nums)
+        actual = get_sol().maxProduct(nums)
         expected = 24
         self.assertEqual(expected, actual)
-    def test_5(self):
-        self.assertEqual(6, Solution().maxProduct([-1,-2,-3,0]))
-    def test_6(self):
-        self.assertEqual(2, Solution().maxProduct([-1,0,-2,2]))
+    def test07(self):
+        self.assertEqual(6, get_sol().maxProduct([-1,-2,-3,0]))
+    def test08(self):
+        self.assertEqual(2, get_sol().maxProduct([-1,0,-2,2]))

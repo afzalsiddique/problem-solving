@@ -1,8 +1,8 @@
-# https://www.youtube.com/watch?v=jzZsG8n2R9A
-import unittest
-from bisect import bisect_left
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution2()
 
+# https://www.youtube.com/watch?v=jzZsG8n2R9A
 class Solution2:
     # two pointer
     # time:n^2 space:1
@@ -17,15 +17,15 @@ class Solution2:
             l, r = i + 1, len(nums) - 1
             while l < r:
                 s = nums[i] + nums[l] + nums[r]
-                if s < 0:
-                    l += 1
-                elif s > 0:
-                    r -= 1
-                else:
-                    res.append((nums[i], nums[l], nums[r]))
+                if s==0:
+                    res.append([nums[i], nums[l], nums[r]])
                     while l < r and nums[l] == nums[l + 1]: l += 1 # skip duplicates
                     while l < r and nums[r] == nums[r - 1]: r -= 1
+                    l+=1
+                    r-=1
+                if s < 0:
                     l += 1
+                elif s>0:
                     r -= 1
         return res
 
@@ -79,15 +79,21 @@ class Solution4:
             two_sum(temp_nums,0-nums[i])
         return list(map(list,res))
 
+
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
-        actual = sol.threeSum(nums = [-1,0,1,2,-1,-4])
-        expected = [[-1,-1,2],[-1,0,1]]
-        self.assertEqual(expected, actual)
-
-    def test1(self):
-        self.assertEqual([[-1,0,1]],Solution().threeSum([-1,0,1,-1,0,1]))
-    def test2(self):
-        self.assertEqual([[0,0,0]],Solution().threeSum([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    def test01(self):
+        e=[[-1,0,1]]
+        a=get_sol().threeSum([-1,0,1,-1,0,1])
+        self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])
+    def test02(self):
+        a=get_sol().threeSum([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+        e=[[0,0,0]]
+        self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])
+    def test03(self):
+        a = get_sol().threeSum(nums = [-1,0,1,2,-1,-4])
+        e = [[-1,-1,2],[-1,0,1]]
+        self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])
+    def test04(self):
+        e=[[1,1,-2]]
+        a=get_sol().threeSum([1,1,-2])
+        self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])

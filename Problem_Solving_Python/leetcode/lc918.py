@@ -2,6 +2,21 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/maximum-sum-circular-subarray/discuss/178422/One-Pass
+    def subArraySum(self, A:List[int], maxOrMin):
+        curMax=A[0]
+        res=A[0]
+        for i in range(1,len(A)):
+            curMax= A[i] + maxOrMin(0, curMax)
+            res=maxOrMin(res, curMax)
+        return res
+    def maxSubarraySumCircular(self, A: List[int]) -> int:
+        maxx=self.subArraySum(A, max)
+        minn=self.subArraySum(A, min)
+        if all(x<0 for x in A): # if all are negatives at least one element should be selected
+            return max(A)
+        return max(maxx,sum(A)-minn)
+class Solution4:
+    # https://leetcode.com/problems/maximum-sum-circular-subarray/discuss/178422/One-Pass
     def minSubArray(self, nums: List[int]) -> int:
         minn=float('inf')
         cur_sum=0
@@ -57,28 +72,31 @@ class Solution2:
         for i in range(n):
             maxx=max(maxx,self.maxSubArray(nums,i))
         return maxx
+
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
+    def test01(self):
         nums = [1,-2,3,-2]
         Output= 3
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
-    def test_2(self):
+    def test02(self):
         nums = [5,-3,5]
         Output= 10
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
-    def test_3(self):
+    def test03(self):
         nums = [3,-1,2,-1]
         Output= 4
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
-    def test_4(self):
+    def test04(self):
         nums = [3,-2,2,-3]
         Output= 3
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
-    def test_5(self):
+    def test05(self):
         nums = [-2,-3,-1]
         Output= -1
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
-    def test_6(self):
+    def test06(self):
         nums = [2,3,1]
         Output= 6
         self.assertEqual(Output, get_sol().maxSubarraySumCircular(nums))
+    def test07(self):
+        self.assertEqual(15,get_sol().maxSubarraySumCircular([-2,4,-5,4,-5,9,4]))
