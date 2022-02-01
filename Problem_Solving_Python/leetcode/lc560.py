@@ -1,5 +1,6 @@
-import unittest
-from collections import deque, defaultdict
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 # NON-OVERLAPPING LEETCODE 1546
 class Solution:
@@ -38,6 +39,18 @@ class Solution2:
             mp[pre[i]]+=1
         return ans
 
+class Solution3:
+    def subarraySum(self, A: List[int], k: int) -> int:
+        res=0
+        di=defaultdict(int)
+        di[0]=1
+        curSum=0
+        for i,x in enumerate(A):
+            curSum+=x
+            if curSum-k in di:
+                res+=di[curSum-k]
+            di[curSum]+=1
+        return res
 class tester(unittest.TestCase):
     def test1(self):
         # There are two types

@@ -33,7 +33,8 @@ class Solution:
         slow.next = None
         return fake.next
 
-    def rotateRight2(self, head: ListNode, k: int) -> ListNode:
+class Solution2:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
         if not head:return None
         if not head.next:return head
         cnt = 1
@@ -41,7 +42,7 @@ class Solution:
         while cur.next:
             cur=cur.next
             cnt+=1
-        if k%cnt==0:return head
+        if k%cnt==0:return head # optimization
         k=k%cnt
         cur.next = head
         temp = cnt-k-1

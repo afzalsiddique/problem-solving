@@ -1,7 +1,6 @@
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def generate(self, numRows: int) -> List[List[int]]:
 
@@ -21,8 +20,8 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        self.assertEqual([[1]],Solution().generate(1))
-    def test_2(self):
+    def test01(self):
+        self.assertEqual([[1]],get_sol().generate(1))
+    def test02(self):
         e = [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
-        self.assertEqual(e, Solution().generate(5))
+        self.assertEqual(e, get_sol().generate(5))

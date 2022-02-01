@@ -19,7 +19,7 @@ class Solution:
         st=[]
         for j in reversed(range(n)):
             numsi=min_list[j]
-            while st and numsi>=st[-1]:
+            while st and st[-1]<=numsi:
                 st.pop()
             if st and numsi<st[-1]<nums[j]: return True
             st.append(nums[j])
@@ -37,7 +37,7 @@ class Solution2:
                 if numsi<nums[k]<nums[j]: return True
         return False
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
         nums = [1,2,3,4]
         Output= False
@@ -54,3 +54,5 @@ class tester(unittest.TestCase):
         nums = [1,0,1,-4,-3]
         Output= False
         self.assertEqual(Output,get_sol().find132pattern(nums))
+    def test05(self):
+        self.assertEqual(True,get_sol().find132pattern([3,5,0,3,4]))

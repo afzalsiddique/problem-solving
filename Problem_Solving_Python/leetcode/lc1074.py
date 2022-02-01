@@ -8,13 +8,13 @@ class Solution:
                 matrix[i][j]+=matrix[i][j-1]
 
         res=0
-        for i in range(n):
-            for j in range(i,n):
+        for colStart in range(n):
+            for colEnd in range(colStart,n):
                 cur=0
                 di=defaultdict(int)
                 di[0]=1
-                for k in range(m):
-                    cur+=matrix[k][j] - (matrix[k][i-1] if i!=0 else 0)
+                for i in range(m):
+                    cur+=matrix[i][colEnd] - (matrix[i][colStart-1] if colStart!=0 else 0)
                     res+=di[cur-target]
                     di[cur]+=1
         return res

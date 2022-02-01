@@ -1,5 +1,5 @@
-import unittest
-from collections import defaultdict
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+def get_sol(): return Solution()
 
 # check out leetcode 560
 class Solution:
@@ -22,3 +22,8 @@ class Solution:
     # 6  +  8 = 14    14  -  8 = 6     14  -  6 = 8
     # 6 xor 8 = 13    13 xor 6 = 8     13 xor 8 = 6
 
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(4, get_sol().solve([4, 2, 2, 6, 4], 6))
+    def test02(self):
+        self.assertEqual(2, get_sol().solve([5, 6, 7, 8, 9], 5))

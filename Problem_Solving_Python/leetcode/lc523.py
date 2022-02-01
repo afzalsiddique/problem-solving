@@ -1,15 +1,28 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+def get_sol(): return Solution2()
 class Solution:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:
-        di = defaultdict(lambda :float('inf'))
-        di[0]=-1
-        cur = 0
-        for i in range(len(nums)):
-            cur = (cur + nums[i])%k
-            prev_idx = di[cur]
-            if i-prev_idx>=2: return True
-            if cur not in di or di[cur]==float('inf'):
+        di=defaultdict(int)
+        di[0]=-1 # first occurence of 0 is at index -1
+        cur=0
+        for i,x in enumerate(nums):
+            cur+=x
+            y=cur%k
+            if y in di and i-di[y]>=2:
+                return True
+            if y not in di:
+                di[y]=i
+        return False
+class Solution2:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        di=defaultdict(int)
+        di[0]=-1 # first occurence of 0 is at index -1
+        cur=0
+        for i,x in enumerate(nums):
+            cur=(cur+x)%k
+            if cur in di and i-di[cur]>=2:
+                return True
+            if cur not in di:
                 di[cur]=i
         return False
 

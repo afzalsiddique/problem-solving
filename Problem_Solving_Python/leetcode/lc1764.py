@@ -46,21 +46,21 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
+    def test01(self):
         groups,nums = [[1,-1,-1],[3,-2,0]],  [1,-1,0,1,-1,-1,3,-2,0]
         Output= True
         self.assertEqual(Output, get_sol().canChoose(groups,nums))
-    def test_2(self):
+    def test02(self):
         groups,nums = [[10,-2],[1,2,3,4]],  [1,2,3,4,10,-2]
         Output= False
         self.assertEqual(Output, get_sol().canChoose(groups,nums))
-    def test_3(self):
+    def test03(self):
         groups,nums = [[1,2,3],[3,4]],  [7,7,1,2,3,4,7,7]
         Output= False
         self.assertEqual(Output, get_sol().canChoose(groups,nums))
-    # def test_4(self):
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
-    # def test_9(self):
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):

@@ -1,9 +1,44 @@
-# https://leetcode.com/problems/n-queens/
-# https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-# from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
+# https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
 class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        def diag1Key(row,col): return row-col
+        def diag2Key(row,col): return row+col
+        def possible(row,col):
+            if col in queens: return False
+            if diag1Key(row,col) in diag1: return False
+            if diag2Key(row,col) in diag2: return False
+            return True
+        def backtrack(row):
+            if row==n:
+                res.append(queens[:])
+                return
+            for col in range(n):
+                if possible(row,col):
+                    queens[row]=col
+                    diag1.add(diag1Key(row,col))
+                    diag2.add(diag2Key(row,col))
+                    backtrack(row+1)
+                    queens[row]=-1
+                    diag1.remove(diag1Key(row,col))
+                    diag2.remove(diag2Key(row,col))
+        def createBoard(queens):
+            board=[['.' for _ in range(n)] for _ in range(n)]
+            for row,col in enumerate(queens):
+                board[row][col]='Q'
+            return list(map(''.join,board))
+        def createAllBoards():
+            return [createBoard(queens) for queens in res]
+
+        queens=[-1]*n
+        diag1=set()
+        diag2=set()
+        res=[]
+        backtrack(0)
+        return createAllBoards()
+class Solution4:
     def solveNQueens(self, n: int) -> List[List[str]]:
         res = []
         queens = [-1] * n

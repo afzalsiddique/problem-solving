@@ -1,11 +1,6 @@
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
-# Definition for singly-linked list.
-# Definition for singly-linked list.
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from binary_tree_tester import ser,des
+def get_sol(): return Solution()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -14,24 +9,17 @@ class ListNode:
         return str(self.val)
 # https://www.youtube.com/watch?v=u4FWXfgS8jw&t=6m47s
 class Solution:
-    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
-        if not headA or not headB: return
+    def getLength(self,head):
+        n=0
+        while head:
+            head=head.next
+            n+=1
+        return n
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        n1,n2=self.getLength(headA),self.getLength(headB)
+        if n1<n2: return self.getIntersectionNode(headB,headA) # make a longer linked list
         a,b=headA,headB
-        n1,n2=0,0
-        while a:
-            n1+=1
-            a=a.next
-        while b:
-            n2+=1
-            b=b.next
-        if n1>n2:
-            diff=n1-n2
-            a=headA
-            b=headB
-        else:
-            diff=n2-n1
-            a=headB
-            b=headA
+        diff=n1-n2
         while diff:
             a=a.next
             diff-=1
@@ -39,7 +27,8 @@ class Solution:
             a=a.next
             b=b.next
         return a
-    def getIntersectionNode2(self, headA: ListNode, headB: ListNode) -> ListNode:
+class Solution2:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         if not headA or not headB:return None
         a,b=headA, headB
         while a!=b:
@@ -226,3 +215,44 @@ class Solution:
 # A:     a1 → a2 → a3 → a4 → null
 # B:     b1 → b2 → b3 → null
 #                       a = null
+def make_linked_list(li,i=0):
+    if not li: return None
+    if i==len(li)-1:return ListNode(li[i])
+    cur = ListNode(li[i])
+    cur.next = make_linked_list(li,i+1)
+    return cur
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        common=make_linked_list([8,4,5])
+        headA=make_linked_list([4,1])
+        headB=make_linked_list([5,6,1])
+        curA,curB=headA,headB
+        while curA.next: curA=curA.next
+        while curB.next: curB=curB.next
+        curA.next=common
+        curB.next=common
+        self.assertEqual(common, get_sol().getIntersectionNode(headA,headB))
+    def test02(self):
+        common=make_linked_list([2,4])
+        headA=make_linked_list([1,9,1])
+        headB=make_linked_list([3])
+        curA,curB=headA,headB
+        while curA.next: curA=curA.next
+        while curB.next: curB=curB.next
+        curA.next=common
+        curB.next=common
+        self.assertEqual(common, get_sol().getIntersectionNode(headA,headB))
+    def test03(self):
+        common=make_linked_list([])
+        headA=make_linked_list([2,6,4])
+        headB=make_linked_list([1,5])
+        curA,curB=headA,headB
+        while curA.next: curA=curA.next
+        while curB.next: curB=curB.next
+        curA.next=common
+        curB.next=common
+        self.assertEqual(common, get_sol().getIntersectionNode(headA,headB))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):

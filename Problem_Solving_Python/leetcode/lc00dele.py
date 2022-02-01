@@ -1,28 +1,26 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
 def get_sol(): return Solution()
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
 class Solution:
-    def findFrequentTreeSum(self, root: TreeNode) -> List[int]:
-        def helper(node:TreeNode):
-            if not node: return 0
-            summ= node.val+helper(node.left)+helper(node.right)
-            di[summ]+=1
-            return summ
+    def canSeePersonsCount(self, A):
+        n=len(A)
+        st = []
+        res = [0] * n
+        for i in range(n):
+            # for ii in st: print(A[ii],end=' ')
+            # print()
+            while st and A[st[-1]]<A[i]:
+                res[st.pop()]+=1
+            if st:
+                res[st[-1]]+=1
+            st.append(i)
+        return res
 
-        di=Counter()
-        helper(root)
-        maxx=max(di.values())
-        return [i for i in di if di[i]==maxx]
-
-
-
-class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual([2,-3,4],Solution().findFrequentTreeSum(deserialize('5,2,-3')))
-    def test2(self):
-        self.assertEqual([2],Solution().findFrequentTreeSum(deserialize('5,2,-5')))
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual([3,1,2,1,1,0], get_sol().canSeePersonsCount([10,12,14]))
+    def test02(self):
+        self.assertEqual([3,1,2,1,1,0], get_sol().canSeePersonsCount([9,6,8,5,9,9]))
+    def test03(self):
+        self.assertEqual([4,1,1,1,0], get_sol().canSeePersonsCount([5,1,2,3,10]))
+    # def test04(self):

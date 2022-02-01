@@ -35,6 +35,19 @@ class Solution3:
         return ans
         # return len(properties)-len(stack) # also works
 
+class Solution4:
+    def numberOfWeakCharacters(self, A: List[List[int]]) -> int:
+        A.sort(key=lambda x:(x[0], -x[1]))
+        res=0
+        st=[]
+        for i,(a,b) in enumerate(A):
+            while st and A[st[-1]][1]<b:
+                c,d=A[st.pop()]
+                if c<a and d<b:
+                    res+=1
+
+            st.append(i)
+        return res
 
 class MyTestCase(unittest.TestCase):
     def test1(self):

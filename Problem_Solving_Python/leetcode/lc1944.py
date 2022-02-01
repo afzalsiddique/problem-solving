@@ -1,5 +1,5 @@
 from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import *
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
     def canSeePersonsCount(self, A):
@@ -10,9 +10,9 @@ class Solution:
             # for ii in st: print(A[ii],end=' ')
             # print()
             while st and A[st[-1]]<A[i]:
-                res[st.pop()]+=1
+                res[st.pop()]+=1 # next taller
             if st:
-                res[st[-1]]+=1
+                res[st[-1]]+=1 # shorter before next taller
             st.append(i)
         return res
 
