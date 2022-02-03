@@ -1,6 +1,17 @@
-import unittest
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution()
+class Solution4:
+    def longestPalindromeSubseq(self, s: str) -> int:
+        @cache
+        def dp(i,j):
+            if i>j: return 0
+            if i==j: return 1
+            if s[i]==s[j]:
+                return 2+dp(i+1,j-1)
+            return max(dp(i+1,j),dp(i,j-1))
 
-
+        return dp(0,len(s)-1)
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
         def pali(s):
@@ -61,47 +72,17 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        solution = Solution()
-        s = 'bbbab'
-        expected = 4
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
-        s = 'cbbd'
-        expected = 2
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
-        s = 'abcdef'
-        expected = 1
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-    def test_4(self):
-        solution = Solution()
-        s = 'bbb'
-        expected = 3
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-    def test_5(self):
-        solution = Solution()
-        s = 'bbbb'
-        expected = 4
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-    def test_6(self):
-        solution = Solution()
-        s = 'qwertbbbbzxcv'
-        expected = 4
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
-    def test_7(self):
-        solution = Solution()
-        s = 'qAwAeAAtAyAu'
-        expected = 6
-        actual = solution.longestPalindromeSubseq(s)
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(4, get_sol().longestPalindromeSubseq('bbbab'))
+    def test02(self):
+        self.assertEqual(2, get_sol().longestPalindromeSubseq('cbbd'))
+    def test03(self):
+        self.assertEqual(1, get_sol().longestPalindromeSubseq('abcdef'))
+    def test04(self):
+        self.assertEqual(3, get_sol().longestPalindromeSubseq('bbb'))
+    def test05(self):
+        self.assertEqual(4, get_sol().longestPalindromeSubseq('bbbb'))
+    def test06(self):
+        self.assertEqual(4, get_sol().longestPalindromeSubseq('qwertbbbbzxcv'))
+    def test07(self):
+        self.assertEqual(6, get_sol().longestPalindromeSubseq('qAwAeAAtAyAu'))

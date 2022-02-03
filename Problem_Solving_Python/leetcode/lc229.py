@@ -1,9 +1,8 @@
-# https://www.youtube.com/watch?v=yDbkQd9t2ig
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution()
 
+# https://www.youtube.com/watch?v=yDbkQd9t2ig
 class Solution:
     def majorityElement(self, nums) -> List[int]:
         cand1,cand2=0,0
@@ -65,39 +64,35 @@ class Solution1:
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        self.assertEqual(['a','c'],Solution().majorityElement(['a','a','a','a','b','b','b','c','c','c','c']))
+        self.assertEqual(['a','c'],get_sol().majorityElement(['a','a','a','a','b','b','b','c','c','c','c']))
     def test2(self):
-        self.assertEqual([],Solution().majorityElement(['a','a','a','a','b','b','b','c','c','c','c','d','d','d','d','d']))
+        self.assertEqual([],get_sol().majorityElement(['a','a','a','a','b','b','b','c','c','c','c','d','d','d','d','d']))
     def test_1(self):
         solution = Solution()
         nums = [3,2,3]
         actual = solution.majorityElement(nums)
         expected = [3]
         self.assertEqual(expected, actual)
-
     def test_2(self):
-        solution = Solution()
         nums = [1]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = [1]
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        solution = Solution()
         nums = [1,2]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = [1,2]
         self.assertEqual(expected, actual)
-
     def test_4(self):
-        solution = Solution()
         nums = [2,2,1,3]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = [2]
         self.assertEqual(expected, actual)
     def test_5(self):
-        solution = Solution()
         nums = [1,1,2,2,7,7,8,8,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = [9,3]
         self.assertEqual(expected, actual)
+    def test_6(self):
+        a=[8,8,9,3,9,3,9,3,9,3,9,3,9,3,]
+        self.assertEqual(Solution2().majorityElement(a),get_sol().majorityElement(a))

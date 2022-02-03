@@ -1,11 +1,6 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution2()
 class Solution:
     # https://www.youtube.com/watch?v=Wv6DlL0Sawg
     def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
@@ -30,29 +25,31 @@ class Solution:
                 maxx-=1
         return res
 
-class tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual([1,3],Solution().largestDivisibleSubset([1,2,3]))
-    def test2(self):
-        self.assertEqual([1,2,4,8],Solution().largestDivisibleSubset([1,2,4,8]))
-    def test3(self):
-        self.assertEqual([4,8,240],Solution().largestDivisibleSubset([4,8,10,240]))
-    def test4(self):
-        self.assertEqual([2,4,8],Solution().largestDivisibleSubset([2,3,4,9,8]))
-    def test5(self):
-        self.assertEqual([1,2,4,8,16,32,64,128,456,512,1024,2048,4096,8192,16384],Solution().largestDivisibleSubset([1,2,4,8,16,32,64,128,456,512,1024,2048,4096,8192,16384]))
-    def test6(self):
-        self.assertEqual([1],Solution().largestDivisibleSubset([1]))
-    def test7(self):
-        self.assertEqual([2,4,8],Solution().largestDivisibleSubset([2,3,4,8]))
 
-
-
-
-
-
-# wrong
 class Solution2:
+    def largestDivisibleSubset(self, A: List[int]) -> List[int]:
+        n=len(A)
+        A.sort()
+        dp=[1]*n
+        last_indices=[-1]*n
+        for i in range(n):
+            for j in range(i):
+                if A[i]%A[j]==0:
+                    if dp[j]+1>dp[i]:
+                        dp[i]=dp[j]+1
+                        last_indices[i]=j
+
+        li=[]
+        maxLength=max(dp)
+        idx=n-1
+        while dp[idx]!=maxLength:
+            idx-=1
+        while len(li)!=maxLength:
+            li.append(A[idx])
+            idx=last_indices[idx]
+        return li
+# wrong
+class Solution3:
     def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
         dp={}
         nums.sort()
@@ -81,3 +78,20 @@ class Solution2:
         ans = helper(nums)
         print(dp)
         return ans
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertIn(sorted(get_sol().largestDivisibleSubset([1,2,3])),[[1,2],[1,3]])
+    def test02(self):
+        self.assertEqual([1,2,4,8], sorted(get_sol().largestDivisibleSubset([1,2,4,8])))
+    def test03(self):
+        self.assertIn(sorted(get_sol().largestDivisibleSubset([108,540,90])),[[108,540],[90,540]])
+    def test04(self):
+        self.assertEqual([1], sorted(get_sol().largestDivisibleSubset([1])))
+    def test05(self):
+        self.assertEqual([2,4,8], sorted(get_sol().largestDivisibleSubset([2,3,4,9,8])))
+    def test06(self):
+        self.assertEqual([4,8,240], sorted(get_sol().largestDivisibleSubset([4,8,10,240])))
+    def test07(self):
+        self.assertEqual([2,4,8], sorted(get_sol().largestDivisibleSubset([2,3,4,8])))
+    def test08(self):
+        self.assertEqual([9,18,90,180,360,720], sorted(get_sol().largestDivisibleSubset([5,9,18,54,108,540,90,180,360,720])))

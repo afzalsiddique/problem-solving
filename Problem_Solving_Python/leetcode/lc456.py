@@ -1,14 +1,6 @@
-import itertools
-import math
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
 def get_sol(): return Solution()
-
-
 class Solution:
     # time O(n) memory O(n)
     # https://leetcode.com/problems/132-pattern/discuss/94089/Java-solutions-from-O(n3)-to-O(n)-for-%22132%22-pattern-(updated-with-one-pass-slution)
@@ -19,9 +11,10 @@ class Solution:
         st=[]
         for j in reversed(range(n)):
             numsi=min_list[j]
-            while st and st[-1]<=numsi:
+            while st and st[-1]<=numsi: # stack contains elements which are strictly greater than numsi
                 st.pop()
-            if st and numsi<st[-1]<nums[j]: return True
+            # if st and numsi<st[-1]<nums[j]: return True
+            if st and st[-1]<nums[j]: return True # because stack contains elements which are strictly greater than numsi
             st.append(nums[j])
         return False
 

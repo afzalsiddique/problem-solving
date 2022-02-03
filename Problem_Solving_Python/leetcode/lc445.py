@@ -1,22 +1,39 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-    def __repr__(self):
-        return str(self.val)+','+str(self.next)
-    def __eq__(self, other):
-        return str(self)==str(other)
-# two stacks
+    def __repr__(self): return str(self.val)+'->'+str(self.next)
 class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        r1=self.reverseList(l1)
+        r2=self.reverseList(l2)
+        node=self.add(r1,r2,0)
+        return self.reverseList(node)
+    def add(self,node1,node2,carry): # leetcode 2
+        if not node1 and not node2:
+            if not carry:
+                return None
+            return ListNode(carry)
+        val1=node1.val if node1 else 0
+        val2=node2.val if node2 else 0
+        val=val1+val2+carry
+        carry=val//10
+        val=val%10
+        node=ListNode(val)
+        node.next=self.add(node1.next if node1 else None,node2.next if node2 else None,carry)
+        return node
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head: return None
+        if not head.next: return head
+        ret=self.reverseList(head.next)
+        head.next.next=head
+        head.next=None
+        return ret
+# two stacks
+class Solution3:
     def addTwoNumbers(self, l1, l2):
         st1, st2 = [], []
         while l1:
@@ -79,29 +96,12 @@ class Solution2:
         res=self.add_two(li1,li2)
         head=self.make_linked_list(res)
         return head
-def make_linked_list(li,i=0):
-    if i==len(li)-1:return ListNode(li[i])
-    cur = ListNode(li[i])
-    cur.next = make_linked_list(li,i+1)
-    return cur
-class tester(unittest.TestCase):
-    def test1(self):
-        l1=make_linked_list([9,9,9])
-        l2=make_linked_list([9,9,9])
-        res=make_linked_list([1,9,9,8])
-        self.assertEqual(res,Solution().addTwoNumbers(l1,l2))
-    def test2(self):
-        l1=make_linked_list([7,2,4,3])
-        l2=make_linked_list([5,6,4])
-        res=make_linked_list([7,8,0,7])
-        self.assertEqual(res,Solution().addTwoNumbers(l1,l2))
-    def test3(self):
-        l1=make_linked_list([2,4,3])
-        l2=make_linked_list([5,6,4])
-        res=make_linked_list([8,0,7])
-        self.assertEqual(res,Solution().addTwoNumbers(l1,l2))
-    def test4(self):
-        l1=make_linked_list([0])
-        l2=make_linked_list([0])
-        res=make_linked_list([0])
-        self.assertEqual(res,Solution().addTwoNumbers(l1,l2))
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(make_linked_list([7,8,0,7]),get_sol().addTwoNumbers(make_linked_list([7,2,4,3]),make_linked_list([5,6,4])))
+    def test02(self):
+        self.assertEqual(make_linked_list([8,0,7]),get_sol().addTwoNumbers(make_linked_list([2,4,3]),make_linked_list([5,6,4])))
+    def test03(self):
+        self.assertEqual(make_linked_list([0]),get_sol().addTwoNumbers(make_linked_list([0]),make_linked_list([0])))
+    # def test04(self):
+    # def test05(self):

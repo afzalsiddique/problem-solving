@@ -1,16 +1,29 @@
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
     def __repr__(self):
-        return str(self.val)+','+str(self.next)
+        return str(self.val)+'->'+str(self.next)
 class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        def recur(node1,node2,carry):
+            if not node1 and not node2:
+                if carry:
+                    return ListNode(carry)
+                return None
+            val1=node1.val if node1 else 0
+            val2=node2.val if node2 else 0
+            val=val1+val2+carry
+            node=ListNode(val%10)
+            carry=val//10
+            node.next=recur(node1.next if node1 else None,node2.next if node2 else None,carry)
+            return node
+
+        return recur(l1,l2,0)
+class Solution5:
     def get_num(self,head):
         if head is None: return 0
         return self.get_num(head.next) * 10 + head.val
@@ -74,8 +87,14 @@ class Solution2:
         return head
 
 
-class tester(unittest.TestCase):
-    def test1(self):
-        l1,l2=Solution().make_linked_list([2,4,3]),Solution().make_linked_list([5,6,4])
-        expected = Solution().make_linked_list([7,0,8])
-        self.assertEqual(str(expected),str(Solution().addTwoNumbers(l1,l2)))
+
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(make_linked_list([7,0,8]),get_sol().addTwoNumbers(make_linked_list([2,4,3]),make_linked_list([5,6,4])))
+    def test02(self):
+        self.assertEqual(make_linked_list([0]),get_sol().addTwoNumbers(make_linked_list([0]),make_linked_list([0])))
+    def test03(self):
+        self.assertEqual(make_linked_list([8,9,9,9,0,0,0,1]),get_sol().addTwoNumbers(make_linked_list([9,9,9,9,9,9,9]),make_linked_list([9,9,9,9])))
+    def test04(self):
+        self.assertEqual(make_linked_list([6,5,5,6,4,4,2,5,5,1]),get_sol().addTwoNumbers(make_linked_list([0,8,6,5,6,8,3,5,7]),make_linked_list([6,7,8,0,8,5,8,9,7])))
+    # def test05(self):

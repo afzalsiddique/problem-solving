@@ -1,5 +1,6 @@
-import unittest
-from typing import List
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *
+def get_sol(): return Solution()
 
 # Boyer Moore
 # https://www.youtube.com/watch?v=gY-I8uQrCkk
@@ -67,23 +68,18 @@ class Solution3:
 
 class MyTestCase(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
         nums = [3,2,3]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = 3
         self.assertEqual(expected, actual)
-
     def test_2(self):
-        solution = Solution()
         nums = [2,2,1,1,1,2,2]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = 2
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        solution = Solution()
         nums = [6,5,5]
-        actual = solution.majorityElement(nums)
+        actual = get_sol().majorityElement(nums)
         expected = 5
         self.assertEqual(expected, actual)
 
