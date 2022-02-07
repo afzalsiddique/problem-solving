@@ -1,5 +1,5 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 # https://www.youtube.com/watch?v=13m9ZCB8gjw
 class TreeNode:
@@ -72,14 +72,16 @@ class Solution3:
             # if not right:
             #     return left
             return left or right # short version of previous few lines
+
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(5, get_sol().lowestCommonAncestor(deserialize("3,5,1,6,2,0,8,null,null,7,4"), TreeNode(5), TreeNode(4)).val)
+        self.assertEqual(5, get_sol().lowestCommonAncestor(des([3,5,1,6,2,0,8,None,None,7,4]), TreeNode(5), TreeNode(4)).val)
     def test2(self):
-        self.assertEqual(1, get_sol().lowestCommonAncestor(deserialize("1,2"), TreeNode(1), TreeNode(2)).val)
+        self.assertEqual(1, get_sol().lowestCommonAncestor(des([1,2]), TreeNode(1), TreeNode(2)).val)
     def test3(self):
-        self.assertEqual(3, get_sol().lowestCommonAncestor(deserialize("3,5,1,6,2,0,8,null,null,7,4"), TreeNode(5), TreeNode(1)).val)
-    # def test4(self):
+        self.assertEqual(3, get_sol().lowestCommonAncestor(des([3,5,1,6,2,0,8,None,None,7,4]), TreeNode(5), TreeNode(1)).val)
+    def test4(self):
+        self.assertEqual(1, get_sol().lowestCommonAncestor(des([1,2]), TreeNode(2), TreeNode(1)).val)
     # def test5(self):
     # def test6(self):
     # def test7(self):

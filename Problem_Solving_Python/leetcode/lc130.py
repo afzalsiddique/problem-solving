@@ -1,6 +1,6 @@
-# https://leetcode.com/problems/surrounded-regions/
-from typing import List
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class Solution:
     def solve(self, board: List[List[str]]) -> None:
@@ -13,7 +13,7 @@ class Solution:
             for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
                 x,y=i+dx,j+dy
                 dfs(x,y)
-        # "Save" every O-region touching the border, changing its cells to 'S'.
+        # "Save" every O-region touching the border, changing its cells to 's'.
         for i in [0,m-1]: # first row and last row
             for j in range(n):
                 dfs(i,j)
@@ -21,7 +21,7 @@ class Solution:
         for i in range(m): # first col and last col
             for j in [0,n-1]:
                 dfs(i,j)
-        # Change every 'S' on the board to 'O' and everything else to 'X'.
+        # Change every 's' on the board to 'O' and everything else to 'X'.
         for i in range(m):
             for j in range(n):
                 if board[i][j]!='s':
@@ -29,7 +29,8 @@ class Solution:
                 else:
                     board[i][j]='O'
 
-    def solve2(self, board: List[List[str]]) -> None:
+class Solution2:
+    def solve(self, board: List[List[str]]) -> None:
         m = len(board)
         if m==0:
             return
@@ -67,3 +68,50 @@ class Solution:
                 if boolean[i][j]:
                     board[i][j] = 'X'
 
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        board = [["X", "X", "X", "X"],
+                 ["X", "O", "O", "X"],
+                 ["X", "X", "O", "X"],
+                 ["X", "O", "X", "X"],
+                 ]
+        expected = [["X", "X", "X", "X"],
+                    ["X", "X", "X", "X"],
+                    ["X", "X", "X", "X"],
+                    ["X", "O", "X", "X"],
+                    ]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)
+    def test02(self):
+        board = [["O","O"],["O","O"]]
+        expected = [["O","O"],["O","O"]]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)
+    def test03(self):
+        board = [["X", "X", "X", "X"],
+                 ["O", "O", "O", "O"],
+                 ["X", "X", "O", "X"],
+                 ["X", "X", "X", "X"],
+                 ]
+        expected = [["X", "X", "X", "X"],
+                    ["O", "O", "O", "O"],
+                    ["X", "X", "O", "X"],
+                    ["X", "X", "X", "X"],
+                    ]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)
+    def test04(self):
+        board = [["O"]]
+        expected = [["O"]]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)
+    def test05(self):
+        board = [["O","O"]]
+        expected = [["O","O"]]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)
+    def test06(self):
+        board = [["O","X"]]
+        expected = [["O","X"]]
+        get_sol().solve(board)
+        self.assertEqual(expected, board)

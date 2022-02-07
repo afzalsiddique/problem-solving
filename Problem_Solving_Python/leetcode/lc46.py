@@ -1,8 +1,24 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 # https://leetcode.com/problems/permutations/discuss/18462/Share-my-three-different-solutions
 class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def turnOn(mask,i): return mask|(1<<i)
+        def isOn(mask,i): return (mask>>i)&1
+        GOAL=2**(len(nums))-1
+        def backtrack(mask,path):
+            if mask==GOAL:
+                res.append(path)
+                return
+            for i in range(len(nums)):
+                if not isOn(mask,i):
+                    backtrack(turnOn(mask,i),path+[nums[i]])
+
+        res=[]
+        backtrack(0,[])
+        return res
+class Solution4:
     # backtracking 1
     def permute(self, nums):
         res = []
@@ -30,25 +46,11 @@ class Solution2:
         dfs(nums)
         return res
 
-class Solution3:
-    def permute(self, nums: List[int]) -> List[List[int]]:
-        def backtrack(path:List[int]):
-            if len(path)==n:
-                res.append(path)
-                return
-            for x in nums:
-                if x not in path:
-                    backtrack(path[:]+[x])
-
-        n=len(nums)
-        res=[]
-        backtrack([])
-        return res
 
 class Tester(unittest.TestCase):
-    def test_1(self):
+    def test01(self):
         self.assertEqual([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]], get_sol().permute([1,2,3]))
-    def test_2(self):
+    def test02(self):
         self.assertEqual([[0,1],[1,0]], get_sol().permute([0,1]))
-    def test_3(self):
+    def test03(self):
         self.assertEqual([[1]], get_sol().permute([1]))

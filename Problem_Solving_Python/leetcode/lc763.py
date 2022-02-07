@@ -1,11 +1,6 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def partitionLabels(self, S: str) -> List[int]:
         intervals,res = [],[]
@@ -41,6 +36,20 @@ class Solution:
         result.append([last_start, last_end])
         return result
 
-class mycase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual([9,7,8], Solution().partitionLabels("ababcbacadefegdehijhklij"))
+class MyTestCase(unittest.TestCase):
+    def test001(self):
+        self.assertEqual([9,7,8], get_sol().partitionLabels("ababcbacadefegdehijhklij"))
+    def test002(self):
+        self.assertEqual([10], get_sol().partitionLabels("eccbbbbdec"))
+    def test01(self):
+        self.assertEqual([[1,6],[8,10],[15,18]],get_sol().merge([[1,3],[2,6],[8,10],[15,18]]))
+    def test02(self):
+        self.assertEqual([[1,7],[8,10],[15,18]],get_sol().merge([[1,3],[2,6],[5,7],[8,10],[15,18]]))
+    def test03(self):
+        self.assertEqual([[1,5]],get_sol().merge([[1,4],[4,5]]))
+    def test04(self):
+        self.assertEqual([[0,4]],get_sol().merge([[1,4],[0,4]]))
+    def test05(self):
+        self.assertEqual([[1,4]],get_sol().merge([[1,4],[2,3]]))
+    def test06(self):
+        self.assertEqual([[1,10]],get_sol().merge([[2,3],[4,5],[6,7],[8,9],[1,10]]))

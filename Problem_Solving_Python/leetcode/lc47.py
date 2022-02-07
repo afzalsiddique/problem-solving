@@ -36,6 +36,28 @@ class Solution2:
             return result
 
         return helper(nums)
+class Solution4:
+    # bitmask+backtrack
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        def turnOn(mask,i): return mask|(1<<i)
+        def isOn(mask,i): return (mask>>i)&1
+        def dfs(mask:int, path):
+            if mask==GOAL:
+                res.append(path)
+                return
+            vis=[False]*21
+            for i in range(len(nums)):
+                if isOn(mask,i): continue
+                if vis[nums[i]+10]: continue # because -10<=nums[i]<=10
+                vis[nums[i]+10]=True
+                dfs(turnOn(mask,i), path + [nums[i]])
+                # vis[nums[i]+10]=False # wrong
+
+        GOAL=2**(len(nums))-1
+        res = []
+        nums.sort()
+        dfs(0, [])
+        return res
 class Solution3:
     # bad solution because it uses set
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:

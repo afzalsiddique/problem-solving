@@ -44,6 +44,26 @@ class Solution2:
             else:
                 count-=1
         return candidate
+class Solution4:
+    def majorityElement(self, nums: List[int]) -> int:
+        cand1,cand2=nums[0],nums[0]
+        cnt1,cnt2=0,0
+        for x in nums:
+            if x==cand1:
+                cnt1+=1
+            elif x==cand2:
+                cnt2+=1
+            else:
+                if cnt1==0:
+                    cand1=x
+                    cnt1=1
+                elif cnt2==0:
+                    cand2=x
+                    cnt2=1
+                else:
+                    cnt1-=1
+                    cnt2-=1
+        return cand1 if cnt1>cnt2 else cand2
 class Solution3:
     def majorityElement(self, nums: List[int]) -> int:
         return self.helper(nums, 0, len(nums))[0]
@@ -66,6 +86,7 @@ class Solution3:
             extra = extra_left - extra_right
         return maj, extra
 
+
 class MyTestCase(unittest.TestCase):
     def test_1(self):
         nums = [3,2,3]
@@ -82,5 +103,5 @@ class MyTestCase(unittest.TestCase):
         actual = get_sol().majorityElement(nums)
         expected = 5
         self.assertEqual(expected, actual)
-
-
+    def test04(self):
+        self.assertEqual(100,get_sol().majorityElement([-1,100,2,100,100,4,100]))

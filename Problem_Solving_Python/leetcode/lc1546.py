@@ -19,22 +19,25 @@ class Solution:
         return res
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
+    def test01(self):
         nums = [-1, 3, 5, 1, 4, 2, -9]
         target = 6
         Output=2
         self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
-
-    def test_2(self):
+    def test02(self):
         nums = [1,1,1,1,1]
         target = 2
         Output = 2
         self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
-    def test_3(self):
+    def test03(self):
         nums,target = [-2,6,6,3,5,4,1,2,8], 10
         Output= 3
         self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
-    def test_4(self):
+    def test04(self):
         nums,target = [0,0,0], 0
+        Output= 3
+        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
+    def test05(self):
+        nums,target = [1,1,1], 1
         Output= 3
         self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))

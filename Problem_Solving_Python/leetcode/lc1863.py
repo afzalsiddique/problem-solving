@@ -22,7 +22,8 @@ class Tester(unittest.TestCase):
         self.assertEqual(28,get_sol().subsetXORSum([5,1,6]))
     def test3(self):
         self.assertEqual(480,get_sol().subsetXORSum([3,4,5,6,7,8]))
-    # def test4(self):
+    def test4(self):
+        self.assertEqual(4,get_sol().subsetXORSum([1,1,1]))
     # def test5(self):
     # def test6(self):
     # def test7(self):

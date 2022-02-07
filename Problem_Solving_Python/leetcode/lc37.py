@@ -1,8 +1,8 @@
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+
 # https://leetcode.com/problems/sudoku-solver/discuss/15959/Accepted-Python-solution
-import unittest
-from typing import List
-
-
 class Solution:
     def solveSudoku(self, board: 'List[List[str]]') -> 'None':
         self.board = board
@@ -33,20 +33,21 @@ class Solution:
         squareSafe = all(self.board[r][c] != ch for r in self.getRange(row) for c in self.getRange(col))
         return rowSafe and colSafe and squareSafe
 
-    def getRange(self, x):
-        x -= x % 3
-        return range(x, x + 3)
+    # def getRange(self, x): # works
+    #     x -= x % 3
+    #     return range(x, x + 3)
+    def getRange(self,x):
+        square=x//3
+        return range(3*square,3*square+3)
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        sol = Solution()
+    def test01(self):
         board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-        sol.solveSudoku(board)
+        get_sol().solveSudoku(board)
         expected = [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
         self.assertEqual(expected, board)
-    def test_2(self):
-        sol = Solution()
+    def test02(self):
         board = [["5","3",".",".","7",".",".",".","."],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
-        sol.solveSudoku(board)
+        get_sol().solveSudoku(board)
         expected = [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
         self.assertEqual(expected, board)

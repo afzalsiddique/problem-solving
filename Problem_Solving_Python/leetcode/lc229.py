@@ -95,4 +95,4 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, actual)
     def test_6(self):
         a=[8,8,9,3,9,3,9,3,9,3,9,3,9,3,]
-        self.assertEqual(Solution2().majorityElement(a),get_sol().majorityElement(a))
+        self.assertEqual(get_sol().majorityElement(a),get_sol().majorityElement(a))

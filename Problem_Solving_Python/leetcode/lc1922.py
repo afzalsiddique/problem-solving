@@ -21,30 +21,27 @@ class Solution:
         return ((ans1%MOD)*(ans2%MOD))%MOD
 
 
+
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        n = 1
-        Output= 5
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    def test2(self):
-        n = 2
-        Output= 20
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    def test3(self):
-        n = 3
-        Output= 100
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    def test4(self):
-        n = 4
-        Output= 400
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    def test5(self):
-        n = 5
-        Output= 2000
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    def test6(self):
-        n = 806166225460393
-        Output= 643535977
-        self.assertEqual(Output, get_sol().countGoodNumbers(n))
-    # def test7(self):
-    # def test8(self):
+    def test01(self):
+        self.assertEqual(5, get_sol().countGoodNumbers(1))
+    def test02(self):
+        self.assertEqual(20, get_sol().countGoodNumbers(2))
+    def test03(self):
+        self.assertEqual(100, get_sol().countGoodNumbers(3))
+    def test04(self):
+        self.assertEqual(400, get_sol().countGoodNumbers(4))
+    def test05(self):
+        self.assertEqual(2000, get_sol().countGoodNumbers(5))
+    def test06(self):
+        self.assertEqual(564908303, get_sol().countGoodNumbers(50))
+    def test07(self):
+        self.assertEqual(643535977, get_sol().countGoodNumbers(806166225460393))
+    def test08(self):
+        self.assertEqual(8000, get_sol().countGoodNumbers(6))
+    def test09(self):
+        self.assertEqual(40000, get_sol().countGoodNumbers(7))
+    def test10(self):
+        self.assertEqual(160000, get_sol().countGoodNumbers(8))
+    def test11(self):
+        self.assertEqual(800000, get_sol().countGoodNumbers(9))

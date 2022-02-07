@@ -1,7 +1,6 @@
-import unittest
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
         di, n = {}, len(nums)
@@ -22,19 +21,15 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
 
-    def test_1(self):
-        solution = Solution()
+    def test01(self):
         nums = [1,2,3]
         target = 4
-        actual = solution.combinationSum4(nums, target)
+        actual = get_sol().combinationSum4(nums, target)
         expected = 7
         self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
+    def test02(self):
         nums = [4,2,1]
         target = 32
-        actual = solution.combinationSum4(nums, target)
+        actual = get_sol().combinationSum4(nums, target)
         expected = 39882198
         self.assertEqual(expected, actual)
-

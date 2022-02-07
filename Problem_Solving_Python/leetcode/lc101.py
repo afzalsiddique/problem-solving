@@ -1,6 +1,6 @@
-import unittest
-from collections import deque
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -30,12 +30,14 @@ class Solution2:
 
         return helper(p,q)
 
-l1 = TreeNode(3)
-r1 = TreeNode(4)
-left = TreeNode(2, l1,r1)
-l2 = TreeNode(4)
-r2 = TreeNode(3)
-right = TreeNode(2, l2,r2)
-root = TreeNode(1, left, right)
-a = Solution().isSymmetric(root)
-print(a)
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(True, get_sol().isSymmetric(des([1,2,2,3,4,4,3])))
+    def test02(self):
+        self.assertEqual(False, get_sol().isSymmetric(des([1,2,2,None,3,None,3])))
+    def test03(self):
+        self.assertEqual(False, get_sol().isSymmetric(des([1,2,3])))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):

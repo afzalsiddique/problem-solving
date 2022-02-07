@@ -1,4 +1,6 @@
-import unittest
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution3()
 class Solution:
     def countAndSay(self, n: int) -> str:
         def helper(s:str):
@@ -21,28 +23,29 @@ class Solution:
         return temp
 
 
-    def countAndSay__(self, n: int) -> str:
-        result = '1'
-        for _ in range(1,n):
-            result = self.string_build(result)
-        return result
-    def string_build(self, s):
-        ptr = 0
-        res = []
-        n = len(s)
-        while ptr<n:
-            ch = s[ptr]
-            cnt = 0
-            while ptr<n and ch==s[ptr]:
-                cnt += 1
-                ptr +=1
-            res.append(str(cnt))
-            res.append(ch)
-        return "".join(res)
+class Solution2:
+    def countAndSay(self, n: int) -> str:
+        def count(s:str):
+            res=[]
+            i,j=0,0
+            while j<len(s):
+                while j<len(s) and s[i]==s[j]:
+                    j+=1
+                res.append(str(j-i))
+                res.append(s[i])
+                i=j
+            return ''.join(res)
+
+        s='1'
+        if n==1: return s
+        for _ in range(n-1):
+            s=count(s)
+        return s
 
 
+class Solution3:
     # less readable
-    def countAndSay_(self, n: int) -> str:
+    def countAndSay(self, n: int) -> str:
         s = "1 "
         result = []
         for _ in range(n-1):
@@ -66,14 +69,14 @@ class Solution:
 class MyTestCase(unittest.TestCase):
 
     def test_1(self):
-        self.assertEqual('1',Solution().countAndSay(1))
+        self.assertEqual('1',get_sol().countAndSay(1))
     def test_2(self):
-        self.assertEqual('11',Solution().countAndSay(2))
+        self.assertEqual('11',get_sol().countAndSay(2))
     def test_3(self):
-        self.assertEqual('21',Solution().countAndSay(3))
+        self.assertEqual('21',get_sol().countAndSay(3))
     def test_4(self):
-        self.assertEqual('1211',Solution().countAndSay(4))
+        self.assertEqual('1211',get_sol().countAndSay(4))
     def test_5(self):
-        self.assertEqual('111221',Solution().countAndSay(5))
+        self.assertEqual('111221',get_sol().countAndSay(5))
     def test_6(self):
-        self.assertEqual('312211',Solution().countAndSay(6))
+        self.assertEqual('312211',get_sol().countAndSay(6))

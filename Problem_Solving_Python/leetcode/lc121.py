@@ -1,5 +1,7 @@
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock/discuss/39038/Kadane's-Algorithm-Since-no-one-has-mentioned-about-this-so-far-%3A)-(In-case-if-interviewer-twists-the-input)
-from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -13,6 +15,14 @@ class Solution:
                 sell=prices[i]
                 max_profit=max(max_profit,sell-buy) # update profit
         return max_profit
+class Solution5:
+    def maxProfit(self, prices: List[int]) -> int:
+        buying=float('inf')
+        res=float('-inf')
+        for selling in prices:
+            buying=min(buying,selling)
+            res=max(res,selling-buying)
+        return res
 
 # using range
 class Solution2:
@@ -47,3 +57,12 @@ class Solution4:
             cur_max = max(0, cur_max + prices[i]-prices[i-1])
             max_so_far = max(max_so_far, cur_max)
         return max_so_far
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(5, get_sol().maxProfit([7,1,5,3,6,4]))
+    def test02(self):
+        self.assertEqual(0, get_sol().maxProfit([7,6,4,3,1]))
+    # def test03(self):
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):

@@ -1,7 +1,7 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/subsets-ii/
-import unittest
-from typing import List
-
 
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
@@ -17,7 +17,9 @@ class Solution:
         nums.sort()
         dfs(0,[])
         return res
-        # similar but with one less parameter
+class Solution2:
+    # similar but with one less parameter
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         n, res, comb = len(nums), [], []
 
         def backtrack(start):
@@ -35,16 +37,7 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        solution = Solution()
-        actual = sorted(solution.subsetsWithDup([1, 2, 2]))
-        expected = sorted([
-            [2],
-            [1],
-            [1, 2, 2],
-            [2, 2],
-            [1, 2],
-            []
-        ])
+    def test01(self):
+        actual = sorted(get_sol().subsetsWithDup([1, 2, 2]))
+        expected = sorted([ [2], [1], [1, 2, 2], [2, 2], [1, 2], [] ])
         self.assertEqual(expected, actual)

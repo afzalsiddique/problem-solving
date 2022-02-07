@@ -27,67 +27,35 @@ class Solution2:
         return False
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        nums,k = [23,2,4,6,7],  6
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test2(self):
-        nums,k = [23,2,6,4,7],  6
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test3(self):
-        nums,k = [23,2,6,4,7],  13
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test4(self):
-        nums,k = [23,2,4,6,6], 7
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test5(self):
-        nums,k = [0], 1
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test6(self):
-        nums,k = [5,0,0,0], 3
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test7(self):
-        nums,k = [0,0], 1
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test8(self):
-        nums,k = [1,0], 2
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
-    def test9(self):
-        nums,k = [7,0], 7
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+    def test01(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([23,2,4,6,7],  6))
+    def test02(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([23,2,6,4,7],  6))
+    def test03(self):
+        self.assertEqual(False, get_sol().checkSubarraySum([23,2,6,4,7],  13))
+    def test04(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([23,2,4,6,6], 7))
+    def test05(self):
+        self.assertEqual(False, get_sol().checkSubarraySum([0], 1))
+    def test06(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([5,0,0,0], 3))
+    def test07(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([0,0], 1))
+    def test08(self):
+        self.assertEqual(False, get_sol().checkSubarraySum([1,0], 2))
+    def test09(self):
+        self.assertEqual(True, get_sol().checkSubarraySum([7,0], 7))
     def test10(self):
-        nums,k = [7], 7
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(False, get_sol().checkSubarraySum([7], 7))
     def test11(self):
-        nums,k = [1,2,0], 6
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(False, get_sol().checkSubarraySum([1,2,0], 6))
     def test12(self):
-        nums,k = [2,4,3], 6
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(True, get_sol().checkSubarraySum([2,4,3], 6))
     def test13(self):
-        nums,k = [1,1], 1
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(True, get_sol().checkSubarraySum([1,1], 1))
     def test14(self):
-        nums,k = [1,0,1,0,1], 4
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(False, get_sol().checkSubarraySum([1,0,1,0,1], 4))
     def test15(self):
-        nums,k = [5,2,0,2,5], 6
-        Output= False
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(False, get_sol().checkSubarraySum([5,2,0,2,5], 6))
     def test16(self):
-        nums,k = [1,2,3], 5
-        Output= True
-        self.assertEqual(Output, get_sol().checkSubarraySum(nums,k))
+        self.assertEqual(True, get_sol().checkSubarraySum([1,2,3], 5))

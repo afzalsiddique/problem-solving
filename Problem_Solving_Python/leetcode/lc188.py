@@ -1,15 +1,22 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://www.youtube.com/watch?v=oDhu5uGq_ic
 
-
 class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        BOUGHT,SOLD=0,1
+        @cache
+        def helper(i, cnt, state):
+            if i==n: return 0
+            if cnt==0: return 0
+            if state==BOUGHT:
+                return max(helper(i + 1,cnt-1,1-state) + prices[i], helper(i + 1, cnt, state))
+            return max(helper(i + 1,cnt,1-state) - prices[i], helper(i + 1, cnt, state))
+
+        n=len(prices)
+        return helper(0,k,SOLD)
+class Solution3:
     def maxProfit(self, k: int, prices: List[int]) -> int:
         # https://www.youtube.com/watch?v=mFwf1YbH-Jk
         if k==0: return 0
@@ -67,24 +74,24 @@ class tester(unittest.TestCase):
         k = 2
         prices = [2,4,1]
         Output= 2
-        self.assertEqual(Output,Solution().maxProfit(k,prices))
+        self.assertEqual(Output,get_sol().maxProfit(k,prices))
     def test2(self):
         k = 2
         prices = [3,2,6,5,0,3]
         Output =7
-        self.assertEqual(Output,Solution().maxProfit(k,prices))
+        self.assertEqual(Output,get_sol().maxProfit(k,prices))
     def test3(self):
         k = 3
         prices = [2,5,7,1,4,3,1,3]
         Output =10
-        self.assertEqual(Output,Solution().maxProfit(k,prices))
+        self.assertEqual(Output,get_sol().maxProfit(k,prices))
     def test4(self):
         k = 2
         prices = []
         Output =0
-        self.assertEqual(Output,Solution().maxProfit(k,prices))
+        self.assertEqual(Output,get_sol().maxProfit(k,prices))
     def test5(self):
         k = 0
         prices = [1,2]
         Output =0
-        self.assertEqual(Output,Solution().maxProfit(k,prices))
+        self.assertEqual(Output,get_sol().maxProfit(k,prices))

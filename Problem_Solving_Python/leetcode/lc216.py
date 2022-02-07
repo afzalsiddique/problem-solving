@@ -1,8 +1,10 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+
+
+
 # https://leetcode.com/problems/combination-sum/discuss/16502/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
-import unittest
-from typing import List
-
-
 class Solution:
     def combinationSum3(self, k: int, target: int) -> List[List[int]]:
         res  = []
@@ -20,6 +22,8 @@ class Solution:
         dfs(target, 1, [])
         return res
 
+class Solution2:
+    def combinationSum3(self, k: int, target: int) -> List[List[int]]:
         # similar
         res, comb = [], []
 
@@ -41,32 +45,13 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
 
-    def test_1(self):
-        solution = Solution()
-        actual = solution.combinationSum3(3, 7)
-        expected = [[1,2,4]]
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
-        actual = solution.combinationSum3(3, 9)
-        expected = [[1,2,6],[1,3,5],[2,3,4]]
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
-        actual = solution.combinationSum3(4, 1)
-        expected = []
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        solution = Solution()
-        actual = solution.combinationSum3(3, 2)
-        expected = []
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        solution = Solution()
-        actual = solution.combinationSum3(9, 45)
-        expected = [[1,2,3,4,5,6,7,8,9]]
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual([[1,2,4]], get_sol().combinationSum3(3, 7))
+    def test02(self):
+        self.assertEqual([[1,2,6],[1,3,5],[2,3,4]], get_sol().combinationSum3(3, 9))
+    def test03(self):
+        self.assertEqual([], get_sol().combinationSum3(4, 1))
+    def test04(self):
+        self.assertEqual([], get_sol().combinationSum3(3, 2))
+    def test05(self):
+        self.assertEqual([[1,2,3,4,5,6,7,8,9]], get_sol().combinationSum3(9, 45))

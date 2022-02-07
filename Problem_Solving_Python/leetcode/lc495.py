@@ -1,17 +1,29 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
     def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        last=-1
+        total=0
+        for t in timeSeries:
+            if t<last:
+                total-=last-t
+            total+=duration
+            last=t+duration
+        return total
+class Solution3:
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        last=-1
+        total=0
+        for t in timeSeries:
+            if t<=last:
+                total-=last-t+1
+            total+=duration
+            last=t+duration-1
+        return total
+class Solution4:
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
         if not timeSeries: return 0
-        timeSeries.sort()
         ans=0
         for i in range(len(timeSeries)-1):
             if timeSeries[i]+duration<timeSeries[i+1]:

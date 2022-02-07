@@ -1,24 +1,26 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/combination-sum/discuss/16502/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
-import unittest
-from typing import List
-
 
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res,n= [],len(candidates)
 
-        def dfs(target, start, path):
+        def dfs(start, target, path):
             if target==0:
                 res.append(path)
                 return
             if target<0:return
             for i in range(start, n):
-                dfs(target-candidates[i], i, path+[candidates[i]])
+                dfs(i, target - candidates[i], path + [candidates[i]])
 
         candidates.sort()
-        dfs(target,0,[])
+        dfs(0, target, [])
         return res
 
+class Solution2:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         # version 2
         li = []
         n = len(candidates)
@@ -43,27 +45,19 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
     def test_1(self):
-        solution = Solution()
-        actual = sorted(solution.combinationSum([2,3,6,7], 7))
+        actual = sorted(get_sol().combinationSum([2,3,6,7], 7))
         expected = sorted([[2,2,3],[7]])
         self.assertEqual(expected, actual)
-
     def test_2(self):
-        solution = Solution()
-        actual = sorted(solution.combinationSum([2,3,5], 8))
+        actual = sorted(get_sol().combinationSum([2,3,5], 8))
         expected = sorted([[2,2,2,2],[2,3,3],[3,5]])
         self.assertEqual(expected, actual)
-
     def test_3(self):
-        solution = Solution()
-        actual = sorted(solution.combinationSum([2], 1))
+        actual = sorted(get_sol().combinationSum([2], 1))
         expected = sorted([])
         self.assertEqual(expected, actual)
-
     def test_4  (self):
-        solution = Solution()
-        actual = sorted(solution.combinationSum([1], 1))
+        actual = sorted(get_sol().combinationSum([1], 1))
         expected = sorted([[1]])
         self.assertEqual(expected, actual)

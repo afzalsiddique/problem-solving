@@ -1,6 +1,6 @@
-import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
-
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(x): return BSTIterator(x)
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -35,45 +35,19 @@ class BSTIterator:
 
 
 
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
 
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
-
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def do_test(self,commands, inputs):
         outputs = []
         obj = ""
         for i,cmd,input in zip(range(len(inputs)),commands,inputs):
-            if cmd=='BSTIterator':
-                obj = BSTIterator(deserialize(input[0]))
-                outputs.append(None)
-            elif cmd=='next':
-                outputs.append(obj.next())
-            elif cmd=='hasNext':
-                outputs.append(obj.hasNext())
+            if cmd=='BSTIterator': obj = get_sol(des(input[0])); outputs.append(None)
+            elif cmd=='next': outputs.append(obj.next())
+            elif cmd=='hasNext': outputs.append(obj.hasNext())
         return outputs
-    def test_1(self):
-        commands = ["BSTIterator", "next", "next", "hasNext", "next", "hasNext", "next", "hasNext", "next", "hasNext"]
-        inputs=[['7,3,15,null,null,9,20'], [], [], [], [], [], [], [], [], []]
-        out_exptected = [None, 3, 7, True, 9, True, 15, True, 20, False]
+    def test01(self):
+        commands = ["BSTIterator","next","next","hasNext","next","hasNext","next","hasNext","next","hasNext"]
+        inputs=[[[7,3,15,None,None,9,20]],[],[],[],[],[],[],[],[],[]]
+        expected = [None, 3, 7, True, 9, True, 15, True, 20, False]
         outputs = self.do_test(commands, inputs)
-        self.assertEqual(out_exptected,outputs)
+        self.assertEqual(expected,outputs)

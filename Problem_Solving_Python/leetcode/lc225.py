@@ -1,6 +1,6 @@
 from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import *; from a_linked_list import make_linked_list
-def get_sol(): return MyStack()
+def get_sol(): return MyStack2()
 class MyStack:
     # using one queue
     def __init__(self):
@@ -21,26 +21,56 @@ class MyStack:
     def empty(self):
         return not len(self._queue)
 class MyStack2:
-    # using one queue
+    # using two queues
     def __init__(self):
-        self.q1 = []
-        self.q2 = []
+        self.q1 = deque() # points to non-empty stack except when both stacks are empty
+        self.q2 = deque() # points to empty stack
 
     def push(self, x: int) -> None:
         self.q2.append(x)
         while self.q1:
-            self.q2.append(self.q1.pop(0))
+            self.q2.append(self.q1.popleft())
         self.q1,self.q2=self.q2, self.q1
 
     def pop(self) -> int:
-        return self.q1.pop(0)
+        return self.q1.popleft()
 
     def top(self) -> int:
         return self.q1[0]
 
     def empty(self) -> bool:
-        if not self.q1:return True
-        return False
+        return len(self.q1)==0
+class MyStack3:
+    def __init__(self):
+        self.q1=deque()
+        self.q2=deque()
+        self.q=self.q1
+    def push(self, x: int) -> None:
+        if not self.q1 and not self.q2:
+            self.q.append(x)
+            return
+        if not self.q:
+            self.q=self.q1 if self.q1 else self.q2
+        self.q.append(x)
+    def pop(self) -> int:
+        emptyQ=self.q1 if not self.q1 else self.q2
+        self.q=self.q1 if self.q1 else self.q2
+        while self.q:
+            tmp=self.q.popleft()
+            if not self.q:
+                return tmp
+            emptyQ.append(tmp)
+    def top(self) -> int:
+        res=None
+        emptyQ=self.q1 if not self.q1 else self.q2
+        self.q=self.q1 if self.q1 else self.q2
+        while self.q:
+            res=self.q.popleft()
+            emptyQ.append(res)
+        return res
+    def empty(self) -> bool:
+        self.q=self.q1 if self.q1 else self.q2
+        return bool(len(self.q)==0)
 class Tester(unittest.TestCase):
     def do_test(self,commands, inputs):
         outputs = []

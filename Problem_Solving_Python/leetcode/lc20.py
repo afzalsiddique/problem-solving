@@ -1,7 +1,6 @@
-# class Solution:
-#     def isValid(self, s: str) -> bool:
-import unittest
-
+from itertools import accumulate; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import *; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class Solution:
     def isValid(self, s: str) -> bool:
@@ -20,27 +19,22 @@ class Solution:
 
 class MyTestClass(unittest.TestCase):
     def test_1(self):
-        solution = Solution()
-        actual = solution.isValid("()")
+        actual = get_sol().isValid("()")
         expected = True
         self.assertEqual(expected, actual)
     def test_2(self):
-        solution = Solution()
-        actual = solution.isValid("()[]{}")
+        actual = get_sol().isValid("()[]{}")
         expected = True
         self.assertEqual(expected, actual)
     def test_3(self):
-        solution = Solution()
-        actual = solution.isValid("(]")
+        actual = get_sol().isValid("(]")
         expected = False
         self.assertEqual(expected, actual)
     def test_4(self):
-        solution = Solution()
-        actual = solution.isValid("([)]")
+        actual = get_sol().isValid("([)]")
         expected = False
         self.assertEqual(expected, actual)
     def test_5(self):
-        solution = Solution()
-        actual = solution.isValid("]")
+        actual = get_sol().isValid("]")
         expected = False
         self.assertEqual(expected, actual)

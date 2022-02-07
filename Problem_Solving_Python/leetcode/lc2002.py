@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/discuss/1458544/Python-Clean-and-Simple-bitmask
     def maxProduct(self, s: str) -> int:
         def isSelected(mask, i): return mask & (1 << i)
         def cartesian_product(li1,li2):
@@ -10,13 +11,14 @@ class Solution:
         n = len(s)
         arr = [] # contains tuple(valid palindrome mask, len(palindrome)
 
-        for mask in range(1, 1<<n):
+        for mask in range(1, 1<<n): # palindrome of len 0 gives product 0
             subseq = []
             for i in range(n): # convert the bitmask to the actual subsequence
                 if isSelected(mask,i):
                     subseq.append(s[i])
             if subseq == subseq[::-1]: # if palindrome
                 arr.append((mask, len(subseq)))
+                # arr.append((mask, len(subseq),subseq))
 
         result = 1
         for (mask1, len1), (mask2, len2) in cartesian_product(arr, arr):
@@ -24,7 +26,7 @@ class Solution:
                 result = max(result, len1 * len2)
         return result
 class Solution2:
-    # tle. same as solution3 but with mask
+    # tle. same as Solution3() but with mask
     def maxProduct(self, s: str) -> int:
         def turnOn(mask, i): return mask | (1 << i)
         def get_text(mask): # given mask return the actual text
@@ -76,40 +78,25 @@ class Solution3:
 
         n=len(s)
         return backtrack(0,[],[])
+
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        s = "leetcodecom"
-        Output= 9
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test2(self):
-        s = "bb"
-        Output= 1
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test3(self):
-        s = "accbcaxxcxx"
-        Output= 25
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test4(self):
-        s = "nphnphmpm"
-        Output= 10
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test5(self):
-        s = "wgtniiotgw"
-        Output= 20
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test6(self):
-        s = "nggaagugnk"
-        Output= 20
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test7(self):
-        s = "rssuwyvvyw"
-        Output= 12
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test8(self):
-        s = "dyfctcfytd"
-        Output= 25
-        self.assertEqual(Output, get_sol().maxProduct(s))
-    def test9(self):
-        s = "fffffffffff"
-        Output= 30
-        self.assertEqual(Output, get_sol().maxProduct(s))
+    def test01(self):
+        self.assertEqual(9, get_sol().maxProduct("leetcodecom"))
+    def test02(self):
+        self.assertEqual(1, get_sol().maxProduct("bb"))
+    def test03(self):
+        self.assertEqual(25, get_sol().maxProduct("accbcaxxcxx"))
+    def test04(self):
+        self.assertEqual(10, get_sol().maxProduct("nphnphmpm"))
+    def test05(self):
+        self.assertEqual(20, get_sol().maxProduct("wgtniiotgw"))
+    def test06(self):
+        self.assertEqual(20, get_sol().maxProduct("nggaagugnk"))
+    def test07(self):
+        self.assertEqual(12, get_sol().maxProduct("rssuwyvvyw"))
+    def test08(self):
+        self.assertEqual(25, get_sol().maxProduct("dyfctcfytd"))
+    def test09(self):
+        self.assertEqual(30, get_sol().maxProduct("fffffffffff"))
+    def test10(self):
+        self.assertEqual(35,get_sol().maxProduct("aapdapapaapp"))
