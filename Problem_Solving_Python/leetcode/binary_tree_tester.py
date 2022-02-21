@@ -8,7 +8,8 @@ class TreeNode:
         self.left = left
         self.right = right
     def __repr__(self): return str(self.val)
-def des(data:List[int]): # deserialize for unit testing
+sep,en = ',','null'
+def des(data:List[int])->Optional[TreeNode]: # deserialize for unit testing
     l = len(data)
     if l<1:return None
     root = TreeNode(int(data[0]))
@@ -29,8 +30,7 @@ def des(data:List[int]): # deserialize for unit testing
 
     return root
 
-def ser(root): # serialize for unit testing
-    sep,en = ',','null'
+def ser(root:TreeNode)->str: # serialize for unit testing
     if not root: return ''
 
     q = deque()
@@ -46,7 +46,27 @@ def ser(root): # serialize for unit testing
                 res.append(en)
     while res and res[-1]==en: res.pop()
     return sep.join(res)
+def strToListInt(s:str)->List[int]:
+    data=s.split(sep)
+    data=[int(x) if x!=en else None for x in data]
+    return data
 
+class mytestcase(unittest.TestCase):
+    def test01(self):
+        root = des([1,None,2,None,3,None,4,None,5])
+        self.assertEqual("1,null,2,null,3,null,4,null,5",ser(root))
+    def test02(self):
+        root = des([1,2,3])
+        self.assertEqual("1,2,3",ser(root))
+    def test03(self):
+        root = des([])
+        self.assertEqual("",ser(root))
+    def test04(self):
+        root=des([1,2,3,None,None,4,5])
+        self.assertEqual("1,2,3,null,null,4,5",ser(root))
+    def test05(self):
+        root=des(strToListInt("1,2,3,null,null,4,5"))
+        self.assertEqual("1,2,3,null,null,4,5",ser(root))
 
 # class Solution:
 #     def btreeGameWinningMove(self, root: TreeNode, n: int, x: int) -> bool:

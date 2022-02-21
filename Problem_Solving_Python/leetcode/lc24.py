@@ -5,8 +5,7 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-    def __repr__(self):
-        return str(self.val)+','+str(self.next)
+    def __repr__(self): return str(self.val)+','+str(self.next)
 
 # recursive without changing node values
 class Solution:

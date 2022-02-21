@@ -2,8 +2,39 @@ from itertools import accumulate; import math; import operator; import random; i
 from binary_tree_tester import *
 def get_sol(): return Solution()
 
-# https://www.youtube.com/watch?v=yDbkQd9t2ig
+# a non-majority element can not cancel a majority element
 class Solution:
+    def majorityElement(self, A: List[int]) -> List[int]:
+        n=len(A)
+        if n==1: return [A[0]]
+        cand=[A[0],A[0]]
+        cnt=[0,0]
+        for x in A:
+            if x==cand[0]:
+                cnt[0]+=1
+            elif x==cand[1]:
+                cnt[1]+=1
+            elif cnt[0]==0:
+                cand[0]=x
+                cnt[0]=1
+            elif cnt[1]==0:
+                cand[1]=x
+                cnt[1]=1
+            else:
+                cnt[0]-=1
+                cnt[1]-=1
+
+        # print(n)
+        # print(Counter(A))
+        # print(cand)
+        # print(cnt)
+        cnt[0]=sum(x==cand[0] for x in A)
+        cnt[1]=sum(x==cand[1] for x in A)
+        if cand[0]==cand[1]:
+            cand.pop()
+        return [x for i,x in enumerate(cand) if cnt[i]>n//3]
+# https://www.youtube.com/watch?v=yDbkQd9t2ig
+class Solution2:
     def majorityElement(self, nums) -> List[int]:
         cand1,cand2=0,0
         ahead1=0 # ahead1 means how many votes ahead person1 is from 3rd most voted person
@@ -63,36 +94,21 @@ class Solution1:
         return res
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
+    def test11(self):
         self.assertEqual(['a','c'],get_sol().majorityElement(['a','a','a','a','b','b','b','c','c','c','c']))
-    def test2(self):
+    def test12(self):
         self.assertEqual([],get_sol().majorityElement(['a','a','a','a','b','b','b','c','c','c','c','d','d','d','d','d']))
-    def test_1(self):
-        solution = Solution()
-        nums = [3,2,3]
-        actual = solution.majorityElement(nums)
-        expected = [3]
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        nums = [1]
-        actual = get_sol().majorityElement(nums)
-        expected = [1]
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        nums = [1,2]
-        actual = get_sol().majorityElement(nums)
-        expected = [1,2]
-        self.assertEqual(expected, actual)
-    def test_4(self):
-        nums = [2,2,1,3]
-        actual = get_sol().majorityElement(nums)
-        expected = [2]
-        self.assertEqual(expected, actual)
-    def test_5(self):
-        nums = [1,1,2,2,7,7,8,8,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3]
-        actual = get_sol().majorityElement(nums)
-        expected = [9,3]
-        self.assertEqual(expected, actual)
-    def test_6(self):
-        a=[8,8,9,3,9,3,9,3,9,3,9,3,9,3,]
-        self.assertEqual(get_sol().majorityElement(a),get_sol().majorityElement(a))
+    def test01(self):
+        self.assertEqual([3], get_sol().majorityElement([3,2,3]))
+    def test02(self):
+        self.assertEqual([1], get_sol().majorityElement([1]))
+    def test03(self):
+        self.assertEqual([1,2], get_sol().majorityElement([1,2]))
+    def test04(self):
+        self.assertEqual([2], get_sol().majorityElement([2,2,1,3]))
+    def test05(self):
+        self.assertEqual([9,3], get_sol().majorityElement([1,1,2,2,7,7,8,8,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3,9,3]))
+    def test06(self):
+        self.assertEqual([3,9], get_sol().majorityElement([8,8,9,3,9,3,9,3,9,3,9,3,9,3,]))
+    def test07(self):
+        self.assertEqual([2],get_sol().majorityElement([2,2]))

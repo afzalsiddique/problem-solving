@@ -21,7 +21,20 @@ class Solution:
             dp[i] = max(dp[i],option1,option2) # maximum profit from items[0 ... i]
 
         return dp[-1]
+class Solution2:
+    def maxTaxiEarnings(self, n: int, rides: List[List[int]]) -> int:
+        length=len(rides)
+        rides.sort(key=lambda x:x[0])
+        start=[x[0] for x in rides]
+        end=[x[1] for x in rides]
+        profit=[x[1]-x[0]+x[2] for x in rides]
+        dp=[0]*(length+1)
+        for i in range(length-1,-1,-1):
+            s,e,p=start[i],end[i],profit[i]
+            j=bisect_left(start,e)
+            dp[i]=max(dp[i+1],profit[i]+dp[j])
 
+        return dp[0]
 class MyTestCase(unittest.TestCase):
     def test1(self):
         n,rides = 5,  [[2,5,4],[1,5,1]]

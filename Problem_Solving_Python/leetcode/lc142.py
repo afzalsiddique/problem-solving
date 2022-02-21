@@ -1,4 +1,5 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+# from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 
 class ListNode:
@@ -8,7 +9,7 @@ class ListNode:
     def __repr__(self): return str(self.val)
 
 class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head: return None
         slow=fast=head
         while fast and fast.next:
@@ -17,11 +18,18 @@ class Solution:
             if slow==fast:
                 break
         if not fast or not fast.next: return None
+
         fast=head
         while fast!=slow:
             fast=fast.next
             slow=slow.next
         return fast
+
+        # slow=head # also works. Does not matter. Because both of the pointers are moving one step at a time
+        # while slow!=fast:
+        #     slow=slow.next
+        #     fast=fast.next
+        # return slow
 
 def make_linked_list(li,i=0):
     if not li: return None

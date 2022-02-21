@@ -1,8 +1,8 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/627921/Java-or-C%2B%2B-or-Python3-or-Easy-explanation-or-O(logn)-or-O(1)
 # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/627786/C++-O(log-n)-time-O(1)-space-or-Simple-and-clean-or-Use-xor-to-keep-track-of-odd-even-pair/537615
-import unittest
-from typing import List
-
 
 class Solution:
     # https://leetcode.com/problems/single-element-in-a-sorted-array/discuss/100754/Java-Binary-Search-short-(7l)-O(log(n))-w-explanations/235525
@@ -45,74 +45,27 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_0(self):
-        sol = Solution()
-        expected = 1
-        actual = sol.singleNonDuplicate([1,2,2])
-        self.assertEqual(expected, actual)
-    def test_1(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.singleNonDuplicate([1,1,2,3,3,4,4,8,8])
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        expected = 10
-        actual = sol.singleNonDuplicate([3,3,7,7,10,11,11])
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.singleNonDuplicate([0,0,1,1,2,3,3,4,4,5,5,6,6])
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.singleNonDuplicate([0,0,1,1,2,3,3,4,4,5,5,6,6])
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        sol = Solution()
-        expected = 4
-        actual = sol.singleNonDuplicate([0,0,1,1,2,2,3,3,4,5,5])
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.singleNonDuplicate([0,1,1,2,2,3,3,4,4,5,5])
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        expected = 6
-        actual = sol.singleNonDuplicate([1,1,2,2,3,3,4,4,5,5,6])
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        expected = 1
-        actual = sol.singleNonDuplicate([1,2,2])
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.singleNonDuplicate([1,1,2])
-        self.assertEqual(expected, actual)
-
-    def test_10(self):
-        sol = Solution()
-        expected = 3
-        actual = sol.singleNonDuplicate([1,1,2,2,3])
-        self.assertEqual(expected, actual)
-
-    def test_11(self):
-        sol = Solution()
-        expected = 1
-        actual = sol.singleNonDuplicate([1])
-        self.assertEqual(expected, actual)
+    def test00(self):
+        self.assertEqual(1, get_sol().singleNonDuplicate([1,2,2]))
+    def test01(self):
+        self.assertEqual(2, get_sol().singleNonDuplicate([1,1,2,3,3,4,4,8,8]))
+    def test02(self):
+        self.assertEqual(10, get_sol().singleNonDuplicate([3,3,7,7,10,11,11]))
+    def test03(self):
+        self.assertEqual(2, get_sol().singleNonDuplicate([0,0,1,1,2,3,3,4,4,5,5,6,6]))
+    def test04(self):
+        self.assertEqual(2, get_sol().singleNonDuplicate([0,0,1,1,2,3,3,4,4,5,5,6,6]))
+    def test05(self):
+        self.assertEqual(4, get_sol().singleNonDuplicate([0,0,1,1,2,2,3,3,4,5,5]))
+    def test06(self):
+        self.assertEqual(0, get_sol().singleNonDuplicate([0,1,1,2,2,3,3,4,4,5,5]))
+    def test07(self):
+        self.assertEqual(6, get_sol().singleNonDuplicate([1,1,2,2,3,3,4,4,5,5,6]))
+    def test08(self):
+        self.assertEqual(1, get_sol().singleNonDuplicate([1,2,2]))
+    def test09(self):
+        self.assertEqual(2, get_sol().singleNonDuplicate([1,1,2]))
+    def test10(self):
+        self.assertEqual(3, get_sol().singleNonDuplicate([1,1,2,2,3]))
+    def test11(self):
+        self.assertEqual(1, get_sol().singleNonDuplicate([1]))

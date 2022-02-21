@@ -70,4 +70,5 @@ class MyTestCase(unittest.TestCase):
         properties = [[7,7],[1,2],[9,7],[7,3],[3,10],[9,8],[8,10],[4,3],[1,5],[1,5]]
         Output= 6
         self.assertEqual(Output, get_sol().numberOfWeakCharacters(properties))
-    # def test6(self):
+    def test6(self):
+        self.assertEqual(2,get_sol().numberOfWeakCharacters([[8,10],[1,5],[1,5]]))

@@ -1,10 +1,6 @@
-from heapq import *
-import unittest
-from collections import *
-from typing import List
-
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     # deque
     # https://www.youtube.com/watch?v=ShbRCjvB_yQ
@@ -58,35 +54,18 @@ class Solution3:
             res.append(q[0][1])
         return res
 
+
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow(nums = [1,3,-1,-3,5,3,6,7], k = 3)
-        expected = [3,3,5,5,6,7]
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow(nums = [1], k = 1)
-        expected = [1]
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow(nums = [1,-1], k = 1)
-        expected = [1,-1]
-        self.assertEqual(expected, actual)
-    def test_4(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow(nums = [9,11], k = 2)
-        expected = [11]
-        self.assertEqual(expected, actual)
-    def test_5(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow(nums = [4,-2], k = 2)
-        expected = [4]
-        self.assertEqual(expected, actual)
-    def test_6(self):
-        sol = Solution()
-        actual = sol.maxSlidingWindow([9,10,9,-7,-4,-8,2,-6],5)
-        expected = [10,10,9,2]
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual([3,3,5,5,6,7], get_sol().maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3))
+    def test02(self):
+        self.assertEqual([1], get_sol().maxSlidingWindow([1], 1))
+    def test03(self):
+        self.assertEqual([1,-1], get_sol().maxSlidingWindow([1,-1], 1))
+    def test04(self):
+        self.assertEqual([11], get_sol().maxSlidingWindow( [9,11], 2))
+    def test05(self):
+        self.assertEqual([4], get_sol().maxSlidingWindow( [4,-2], 2))
+    def test06(self):
+        self.assertEqual([10,10,9,2], get_sol().maxSlidingWindow([9,10,9,-7,-4,-8,2,-6],5))
 

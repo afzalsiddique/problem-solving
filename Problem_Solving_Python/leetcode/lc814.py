@@ -1,10 +1,6 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -72,90 +68,16 @@ class Solution4:
 
 
 
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
-
-def serialize(root):
-    en = 'null'
-    sep = ','
-    if not root: return ''
-
-    q = deque()
-    res = [str(root.val)]
-    q.append(root)
-    while q:
-        cur = q.popleft()
-        for child in [cur.left, cur.right]:
-            if child:
-                q.append(child)
-                res.append(str(child.val))
-            else:
-                res.append(en)
-    while res and res[-1]=='null': res.pop()
-    return sep.join(res)
-
-
-def get_sol_obj():
-    return Solution()
 class tester(unittest.TestCase):
-    def test1(self):
-        Input = '1,1,1,0'
-        Output= '1,1,1'
-        Input = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(Input)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test2(self):
-        Input= '1,null,0,0,1'
-        Output= '1,null,0,null,1'
-        root = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(root)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test3(self):
-        Input= '1,0,1,0,0,0,1'
-        Output= '1,null,1,null,1'
-        root = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(root)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test4(self):
-        Input= '1,1,0,1,1,0,1,0'
-        Output= '1,1,0,1,1,null,1'
-        root = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(root)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test5(self):
-        Input= '0,0,1'
-        Output= '0,null,1'
-        root = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(root)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
-    def test7(self):
-        Input= '0,null,0,1'
-        Output= '0,null,0,1'
-        root = deserialize(Input)
-        actual_root = get_sol_obj().pruneTree(root)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
+    def test01(self):
+        self.assertEqual('1,1,1',ser(get_sol().pruneTree(des([1,1,1,0]))))
+    def test02(self):
+        self.assertEqual('1,null,0,null,1',ser(get_sol().pruneTree(des([1,None,0,0,1]))))
+    def test03(self):
+        self.assertEqual('1,null,1,null,1',ser(get_sol().pruneTree(des([1,0,1,0,0,0,1]))))
+    def test04(self):
+        self.assertEqual('1,1,0,1,1,null,1',ser(get_sol().pruneTree(des([1,1,0,1,1,0,1,0]))))
+    def test05(self):
+        self.assertEqual('0,null,1',ser(get_sol().pruneTree(des([0,0,1]))))
+    def test06(self):
+        self.assertEqual('0,null,0,1',ser(get_sol().pruneTree(des([0,None,0,1]))))

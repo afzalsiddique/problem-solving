@@ -6,12 +6,11 @@ class Solution:
         di[0]=-1 # first occurence of 0 is at index -1
         cur=0
         for i,x in enumerate(nums):
-            cur+=x
-            y=cur%k
-            if y in di and i-di[y]>=2:
+            cur=(cur+x)%k
+            if cur in di and i-di[cur]>=2:
                 return True
-            if y not in di:
-                di[y]=i
+            if cur not in di:
+                di[cur]=i
         return False
 class Solution2:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:

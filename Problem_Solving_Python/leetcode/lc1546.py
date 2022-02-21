@@ -3,6 +3,20 @@ def get_sol(): return Solution()
 
 # OVERLAPPING LEETCODE 560
 class Solution:
+    def maxNonOverlapping(self, A: List[int], k: int) -> int:
+        di={}
+        di[0]=-1
+        res=0
+        last=-1
+        cur=0
+        for i,x in enumerate(A):
+            cur+=x
+            if cur-k in di and di[cur-k]>=last:
+                res+=1
+                last=i
+            di[cur]=i
+        return res
+class Solution2:
     # https://www.youtube.com/watch?v=0LWRSbYH5oM
     def maxNonOverlapping(self, nums: List[int], target: int) -> int:
         prefix_sum = 0
@@ -20,24 +34,18 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
     def test01(self):
-        nums = [-1, 3, 5, 1, 4, 2, -9]
-        target = 6
-        Output=2
-        self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
+        self.assertEqual(2, get_sol().maxNonOverlapping([3, 5, 1, 4, 2, -9], 6))
     def test02(self):
-        nums = [1,1,1,1,1]
-        target = 2
-        Output = 2
-        self.assertEqual(Output, get_sol().maxNonOverlapping(nums, target))
+        self.assertEqual(2, get_sol().maxNonOverlapping([1,1,1,1,1], 2))
     def test03(self):
-        nums,target = [-2,6,6,3,5,4,1,2,8], 10
-        Output= 3
-        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
+        self.assertEqual(3,get_sol().maxNonOverlapping([-2,6,6,3,5,4,1,2,8], 10))
     def test04(self):
-        nums,target = [0,0,0], 0
-        Output= 3
-        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
+        self.assertEqual(3,get_sol().maxNonOverlapping([0,0,0], 0))
     def test05(self):
-        nums,target = [1,1,1], 1
-        Output= 3
-        self.assertEqual(Output,get_sol().maxNonOverlapping(nums,target))
+        self.assertEqual(3,get_sol().maxNonOverlapping([1,1,1], 1))
+    def test06(self):
+        self.assertEqual(2, get_sol().maxNonOverlapping([-1, 3, 5, 1, 4, 2, -9],6))
+    def test07(self):
+        self.assertEqual(2,get_sol().maxNonOverlapping([-5,5,-4,5,4], 5))
+    def test08(self):
+        self.assertEqual(0,get_sol().maxNonOverlapping([-5], 5))

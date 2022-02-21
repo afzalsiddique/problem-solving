@@ -88,20 +88,11 @@ class Solution3:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        nums = [3,2,3]
-        actual = get_sol().majorityElement(nums)
-        expected = 3
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        nums = [2,2,1,1,1,2,2]
-        actual = get_sol().majorityElement(nums)
-        expected = 2
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        nums = [6,5,5]
-        actual = get_sol().majorityElement(nums)
-        expected = 5
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(3, get_sol().majorityElement([3,2,3]))
+    def test02(self):
+        self.assertEqual(2, get_sol().majorityElement([2,2,1,1,1,2,2]))
+    def test03(self):
+        self.assertEqual(5, get_sol().majorityElement([6,5,5]))
     def test04(self):
         self.assertEqual(100,get_sol().majorityElement([-1,100,2,100,100,4,100]))

@@ -42,12 +42,6 @@ class Solution3:
         return res
 class Tester(unittest.TestCase):
     def test01(self):
-        nums = [4,5,0,-2,-3,1]
-        k = 5
-        Output= 7
-        self.assertEqual(Output, get_sol().subarraysDivByK(nums, k))
+        self.assertEqual(7, get_sol().subarraysDivByK([4,5,0,-2,-3,1] ,5))
     def test02(self):
-        nums = [-5]
-        k = 5
-        Output= 1
-        self.assertEqual(Output, get_sol().subarraysDivByK(nums, k))
+        self.assertEqual(1, get_sol().subarraysDivByK([-5] , 5))

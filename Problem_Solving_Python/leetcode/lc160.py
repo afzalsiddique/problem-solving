@@ -18,15 +18,14 @@ class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
         n1,n2=self.getLength(headA),self.getLength(headB)
         if n1<n2: return self.getIntersectionNode(headB,headA) # make a longer linked list
-        a,b=headA,headB
         diff=n1-n2
         while diff:
-            a=a.next
+            headA=headA.next
             diff-=1
-        while a!=b:
-            a=a.next
-            b=b.next
-        return a
+        while headA!=headB:
+            headA=headA.next
+            headB=headB.next
+        return headA
 class Solution2:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         if not headA or not headB:return None

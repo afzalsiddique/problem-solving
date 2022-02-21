@@ -1,15 +1,11 @@
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+# from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-    def __repr__(self):
-        return str(self.val)
+    def __repr__(self): return str(self.val)
 
 class Solution:
     def hasCycle(self, head: ListNode) -> bool:
@@ -21,16 +17,17 @@ class Solution:
             fast = fast.next.next
             if fast==slow:return True
         return False
-    def hasCycle2(self, head: ListNode) -> bool:
-        if not head:return False
-        slow=head
-        fast=head.next
-        while True:
-            if fast is None:return False
-            if fast.next is None:return False
-            if fast==slow:return True
-            slow = slow.next
-            fast = fast.next.next
+class Solution2:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head: return False
+        dummy=ListNode(-1)
+        dummy.next=head
+        slow=dummy
+        fast=dummy.next.next
+        while fast and fast.next and slow!=fast:
+            slow=slow.next
+            fast=fast.next.next
+        return slow==fast
 
 def make_linked_list(li,i=0):
     if not li: return None
@@ -86,3 +83,8 @@ class tester(unittest.TestCase):
         new_head = make_linked_list(head)
         add_cycle(new_head,pos)
         self.assertEqual(Output,get_sol().hasCycle(new_head))
+    def test06(self):
+        head,pos = [1],0
+        new_head = make_linked_list(head)
+        add_cycle(new_head,pos)
+        self.assertEqual(True,get_sol().hasCycle(new_head))

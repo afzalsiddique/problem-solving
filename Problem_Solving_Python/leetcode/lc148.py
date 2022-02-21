@@ -1,15 +1,6 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-
-
-
-
-
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -18,6 +9,51 @@ class ListNode:
     def __repr__(self):
         return str(self.val) + "->" + str(self.next)
 class Solution:
+    def getLen(self,node:ListNode): return 1+self.getLen(node.next) if node else 0
+    def conquer(self,node):
+        if not node or not node.next: return node
+        n=self.getLen(node)
+        if n==2:
+            res=node
+            if node.val>node.next.val:
+                res=node.next
+                node.next.next=node
+                node.next=None
+            return res
+
+        A,B=self.divide(node)
+        A=self.conquer(A)
+        B=self.conquer(B)
+        res=self.mergeTwoLists(A,B)
+        return res
+
+    def divide(self, node1):
+        n=self.getLen(node1)
+        if n==0 or n==1: return node1,None
+        cur=node1
+        n=n//2-1
+        while n:
+            cur=cur.next
+            n-=1
+        node2=cur.next
+        cur.next=None
+        return node1, node2
+    def mergeTwoLists(self, A: Optional[ListNode], B: Optional[ListNode]) -> Optional[ListNode]:
+        dummy=ListNode(-1)
+        cur=dummy
+        while A and B:
+            if A.val<B.val:
+                cur.next=A
+                A=A.next
+            else:
+                cur.next=B
+                B=B.next
+            cur=cur.next
+        cur.next = A if A else B # if one of them is at the end(means None), then the other one will append to the result directly.
+        return dummy.next
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        return self.conquer(head)
+class Solution2:
     def sortList(self, head: ListNode) -> ListNode:
         def merge_two_lists(head1:ListNode, head2:ListNode):
             if not head1 and not head2:return None
@@ -49,7 +85,7 @@ class Solution:
             if n==0:return None
             if n==1:return head
             if n==2:
-                if head.val<=head.next.data:
+                if head.val<=head.next.val:
                     return head
                 else:
                     new_head = head.next
@@ -69,30 +105,16 @@ class Solution:
 
         return helper(head)
 
-
-def make_linked_list(li:List) -> ListNode:
-    """
-    given a list it creates a linked list and returns the head of the linked list
-    """
-    n = len(li)
-    if n==0:
-        return None
-    if n==1:
-        return ListNode(li[0])
-    temp = ListNode(li[-1], None)
-    for i in range(n-2,-1,-1):
-        temp = ListNode(li[i],temp)
-    return temp
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        actual = Solution().sortList(make_linked_list([2,1,6,5,4]))
+    def test01(self):
+        actual = get_sol().sortList(make_linked_list([2,1,6,5,4]))
         expected = make_linked_list([1,2,4,5,6])
         self.assertEqual(str(expected), str(actual))
-    def test_2(self):
-        actual = Solution().sortList(make_linked_list([5,-1,3,4,0]))
+    def test02(self):
+        actual = get_sol().sortList(make_linked_list([5,-1,3,4,0]))
         expected = make_linked_list([-1,0,3,4,5])
         self.assertEqual(str(expected), str(actual))
-    def test_3(self):
-        actual = Solution().sortList(make_linked_list([]))
+    def test03(self):
+        actual = get_sol().sortList(make_linked_list([]))
         expected = make_linked_list([])
         self.assertEqual(str(expected), str(actual))

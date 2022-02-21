@@ -1,5 +1,5 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -37,15 +37,16 @@ class Solution2:
         return valid(root,float('-inf'),float('inf'))
 
 
+
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(True, get_sol().isValidBST(deserialize("2,1,3")))
+        self.assertEqual(True, get_sol().isValidBST(des([2,1,3])))
     def test2(self):
-        self.assertEqual(False, get_sol().isValidBST(deserialize("5,1,4,null,null,3,6")))
+        self.assertEqual(False, get_sol().isValidBST(des([5,1,4,None,None,3,6])))
     def test3(self):
-        self.assertEqual(False, get_sol().isValidBST(deserialize("2,2,2")))
+        self.assertEqual(False, get_sol().isValidBST(des([2,2,2])))
     def test4(self):
-        self.assertEqual(False, get_sol().isValidBST(deserialize("5,4,6,null,null,3,7")))
+        self.assertEqual(False, get_sol().isValidBST(des([5,4,6,None,None,3,7])))
     # def test5(self):
     # def test6(self):
     # def test7(self):

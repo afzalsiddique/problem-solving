@@ -1,6 +1,6 @@
 from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 
 # NON-OVERLAPPING LEETCODE 1546
 class Solution:
@@ -67,14 +67,13 @@ class Solution3:
         curSum=0
         for i,x in enumerate(A):
             curSum+=x
-            if curSum-k in di:
-                res+=di[curSum-k]
+            res+=di[curSum-k]
             di[curSum]+=1
         return res
 class tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(5,Solution().subarraySum([5,5,10,-10,10],10))
+        self.assertEqual(5,get_sol().subarraySum([5,5,10,-10,10],10))
     def test2(self):
-        self.assertEqual(5,Solution().subarraySum([5,5,15,-15,0,0,25,5],30))
+        self.assertEqual(5,get_sol().subarraySum([5,5,15,-15,0,0,25,5],30))
     def test3(self):
-        self.assertEqual(9,Solution().subarraySum([3,4,7,2,-3,1,4,2,-13,0,7],7))
+        self.assertEqual(9,get_sol().subarraySum([3,4,7,2,-3,1,4,2,-13,0,7],7))

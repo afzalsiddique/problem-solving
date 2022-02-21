@@ -3,7 +3,7 @@ def get_sol(): return Solution()
 
 # check out leetcode 560
 class Solution:
-    def solve(self, nums, k):
+    def solve(self, nums:List[int], k:int):
         n = len(nums)
         di,ans=defaultdict(int),0
         pre=[0] * n

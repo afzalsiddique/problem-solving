@@ -1,5 +1,5 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+def get_sol(): return Solution2()
 # https://www.youtube.com/watch?v=ZYsuW19NMeo
 class Solution:
     # dp denotes maximum profit when considering items[0 .... i]
@@ -24,7 +24,8 @@ class Solution:
 class Solution2:
     # dp denotes maximum profit when considering items[i+1 .... n-1]
     def jobScheduling(self, start: List[int], end: List[int], profit: List[int]) -> int:
-        start, end, profit = zip(*sorted(zip(start, end, profit)))
+        # start, end, profit = zip(*sorted(zip(start, end, profit)))
+        start, end, profit = zip(*sorted(zip(start, end, profit),key=lambda x:x[0]))
         n=len(start)
         dp = [profit[i] for i in range(n)]
         for i in reversed(range(n)):
@@ -41,7 +42,7 @@ class Solution2:
 class Solution3:
     def jobScheduling(self, start: List[int], end: List[int], profit: List[int]) -> int:
         n = len(start)
-        start, end, profit = zip(*sorted(zip(start, end, profit)))
+        start, end, profit = zip(*sorted(zip(start, end, profit),key=lambda x:x[0]))
 
         dp = [0 for _ in range(n + 1)]
         for i in reversed(range(n)):

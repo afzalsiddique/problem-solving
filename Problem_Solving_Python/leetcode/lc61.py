@@ -55,8 +55,6 @@ class Solution2:
         return head
 
 
-
-
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(make_linked_list([4,5,1,2,3]), get_sol().rotateRight(make_linked_list([1,2,3,4,5]), 2))
