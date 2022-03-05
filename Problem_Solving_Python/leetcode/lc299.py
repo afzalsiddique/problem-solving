@@ -1,14 +1,9 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-# one pass
-# https://www.youtube.com/watch?v=pHm7VOMzJpI
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    # one pass
+    # https://www.youtube.com/watch?v=pHm7VOMzJpI
     def getHint(self, secret: str, guess: str) -> str:
         n=len(secret)
         count,A,B=[0]*10,0,0
@@ -25,8 +20,8 @@ class Solution:
                 count[g]-=1
         return str(A)+'A'+str(B)+'B'
 
-# very easy. two passes
 class Solution2:
+    # very easy. two passes
     def getHint(self, secret: str, guess: str) -> str:
         n=len(secret)
         s_di,g_di,A=defaultdict(int),defaultdict(int),0
@@ -43,28 +38,16 @@ class Solution2:
 
 
 class tester(unittest.TestCase):
-    def test1(self):
-        secret = "1807"
-        guess = "7810"
-        Output= "1A3B"
-        self.assertEqual(Output,Solution().getHint(secret,guess))
-    def test2(self):
-        secret = "1123"
-        guess = "0111"
-        Output= "1A1B"
-        self.assertEqual(Output,Solution().getHint(secret,guess))
-    def test3(self):
-        secret = "1"
-        guess = "0"
-        Output= "0A0B"
-        self.assertEqual(Output,Solution().getHint(secret,guess))
-    def test4(self):
-        secret = "1"
-        guess = "1"
-        Output= "1A0B"
-        self.assertEqual(Output,Solution().getHint(secret,guess))
-    def test5(self):
-        secret = "1122"
-        guess = "2211"
-        Output= "0A4B"
-        self.assertEqual(Output,Solution().getHint(secret,guess))
+    def test01(self):
+        self.assertEqual("1A3B",get_sol().getHint("1807","7810"))
+    def test02(self):
+        self.assertEqual("1A1B",get_sol().getHint("1123","0111"))
+    def test03(self):
+        self.assertEqual("0A0B",get_sol().getHint("1","0"))
+    def test04(self):
+        self.assertEqual("1A0B",get_sol().getHint("1","1"))
+    def test05(self):
+        self.assertEqual("0A4B",get_sol().getHint("1122","2211"))
+    def test06(self):
+        self.assertEqual("0A1B",get_sol().getHint("8493", "7618"))
+

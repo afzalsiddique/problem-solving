@@ -1,6 +1,21 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # The key point: reduce right by removing the rightest '1' bit until left<=right;
+    def rangeBitwiseAnd(self, left: int, right: int) -> int:
+        while right>left:
+            right=right & (right-1)
+        return right
+class Solution2:
+    # https://www.youtube.com/watch?v=-qrpJykY2gE&t=477s
+    def rangeBitwiseAnd(self, left: int, right: int) -> int:
+        cnt=0
+        while left!=right:
+            left=left>>1
+            right=right>>1
+            cnt+=1
+        return left<<cnt
+class Solution3:
     def rangeBitwiseAnd(self, left: int, right: int) -> int:
         def get_bin(num):
             bin_num = bin(num)[2:]

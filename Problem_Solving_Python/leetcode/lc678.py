@@ -1,14 +1,10 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
-# greedy
-# time O(n) space O(1)
 class Solution:
+    # greedy
+    # time O(n) space O(1)
     # https://www.youtube.com/watch?v=2H9gMIIGyvY
     def checkValidString(self, s: str) -> bool:
         balance = 0
@@ -19,8 +15,9 @@ class Solution:
                 balance-=1
             if balance<0: return False
         if balance==0: return True
+
         balance = 0
-        for i,c in enumerate(reversed(s)):
+        for c in s[::-1]:
             if c in '*)':
                 balance+=1
             else:
@@ -29,9 +26,9 @@ class Solution:
         return True
 
 
-# stack
-# time O(n) space O(n)
 class Solution2:
+    # stack
+    # time O(n) space O(n)
     # https://www.youtube.com/watch?v=KuE_Cn3xhxI
     def checkValidString(self, s: str) -> bool:
         st_open,st_star=[],[]
@@ -55,9 +52,9 @@ class Solution2:
             if st_star[-1] < temp: return False
             st_star.pop()
         return True
-# backtracking
-# TLE
 class Solution3:
+    # backtracking
+    # TLE
     def checkValidString(self, s: str) -> bool:
         n=len(s)
         def helper(i, path):
@@ -89,22 +86,31 @@ class Solution3:
 
 
 
-def get_sol_obj():
-    return Solution()
-class tester(unittest.TestCase):
-    def test2(self):
-        s = "()"
-        Output= True
-        self.assertEqual(Output,get_sol_obj().checkValidString(s))
-    def test3(self):
-        s = "(*)"
-        Output= True
-        self.assertEqual(Output,get_sol_obj().checkValidString(s))
-    def test4(self):
-        s = "(*))"
-        Output= True
-        self.assertEqual(Output,get_sol_obj().checkValidString(s))
-    def test5(self):
-        s = "(((((*(()((((*((**(((()()*)()()()*((((**)())*)*)))))))(())(()))())((*()()(((()((()*(())*(()**)()(())"
-        Output= False
-        self.assertEqual(Output,get_sol_obj().checkValidString(s))
+
+class Tester(unittest.TestCase):
+    def test02(self):
+        self.assertEqual(True, get_sol().checkValidString("()"))
+    def test03(self):
+        self.assertEqual(True, get_sol().checkValidString("(*)"))
+    def test04(self):
+        self.assertEqual(True, get_sol().checkValidString("(*))"))
+    def test05(self):
+        self.assertEqual(False, get_sol().checkValidString("(((((*(()((((*((**(((()()*)()()()*((((**)())*)*)))))))(())(()))())((*()()(((()((()*(())*(()**)()(())"))
+    def test06(self):
+        self.assertEqual(True,get_sol().checkValidString("((((()(()()()*()(((((*)()*(**(())))))(())()())(((())())())))))))(((((())*)))()))(()((*()*(*)))(*)()"))
+    def test07(self):
+        self.assertEqual(True,get_sol().checkValidString("((((()(()()()*()(((((*)()*(**(())))))(())()())(((())())())))))))(((((())*)))()))(()((*()*(*)))"))
+    def test08(self):
+        self.assertEqual(True,get_sol().checkValidString("**(*"))
+    def test09(self):
+        self.assertEqual(False,get_sol().checkValidString("***((("))
+    def test10(self):
+        self.assertEqual(False,get_sol().checkValidString("(****("))
+    def test11(self):
+        self.assertEqual(False,get_sol().checkValidString("((**))(("))
+    def test12(self):
+        self.assertEqual(False,get_sol().checkValidString("(((((*(()((((*((**(((()()*)()()()*((((**)())*)*)))))))))((*(((((**(**)"))
+    def test13(self):
+        self.assertEqual(False,get_sol().checkValidString("(((((*(((*(*******)))((*(((((****"))
+    def test14(self):
+        self.assertEqual(False,get_sol().checkValidString("((*(((*(****))(("))

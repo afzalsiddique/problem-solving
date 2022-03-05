@@ -7,20 +7,20 @@ from typing import List
 
 
 
-# https://www.youtube.com/watch?v=ZfzVig8UqBQ
 class Solution:
+    # https://www.youtube.com/watch?v=ZfzVig8UqBQ
     def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
         if n <= 2:
             return [x for x in range(n)]
 
-        neighbors = [set() for x in range(n)]
+        graph = [set() for _ in range(n)]
         for start, end in edges:
-            neighbors[start].add(end)
-            neighbors[end].add(start)
+            graph[start].add(end)
+            graph[end].add(start)
 
         leaves = []
         for i in range(n):
-            if len(neighbors[i]) == 1:
+            if len(graph[i]) == 1:
                 leaves.append(i)
 
         remaining_nodes = n
@@ -29,9 +29,9 @@ class Solution:
             temp = []
 
             for leaf in leaves:
-                for neighbor in neighbors[leaf]:
-                    neighbors[neighbor].remove(leaf)
-                    if len(neighbors[neighbor]) == 1:
+                for neighbor in graph[leaf]:
+                    graph[neighbor].remove(leaf)
+                    if len(graph[neighbor]) == 1:
                         temp.append(neighbor)
             leaves = temp
 

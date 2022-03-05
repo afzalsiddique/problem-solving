@@ -67,16 +67,16 @@ class mytestcase(unittest.TestCase):
         self.assertEqual(2, get_sol().firstMissingPositive([3,4,-1,1]))
     def test5(self):
         Output= 3
-        self.assertEqual(Output, get_sol().firstMissingPositive(nums = [1,2,0]))
+        self.assertEqual(Output, get_sol().firstMissingPositive([1,2,0]))
     def test6(self):
         Output= 2
-        self.assertEqual(Output, get_sol().firstMissingPositive(nums = [3,4,-1,1]))
+        self.assertEqual(Output, get_sol().firstMissingPositive([3,4,-1,1]))
     def test7(self):
         Output= 1
-        self.assertEqual(Output, get_sol().firstMissingPositive(nums = [7,8,9,11,12]))
+        self.assertEqual(Output, get_sol().firstMissingPositive([7,8,9,11,12]))
     def test8(self):
         Output= 2
-        self.assertEqual(Output, get_sol().firstMissingPositive(nums = [1]))
+        self.assertEqual(Output, get_sol().firstMissingPositive([1]))
     def test9(self):
         Output= 2
-        self.assertEqual(Output, get_sol().firstMissingPositive(nums = [1,1]))
+        self.assertEqual(Output, get_sol().firstMissingPositive([1,1]))

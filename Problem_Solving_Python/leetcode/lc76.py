@@ -1,7 +1,10 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+
 # https://leetcode.com/problems/minimum-window-substring/discuss/26810/Java-solution.-using-two-pointers-+-HashMap/260540
-import unittest
-from collections import defaultdict, Counter
 # similar to 438
+
 # https://leetcode.com/problems/minimum-window-substring/discuss/226911/Python-two-pointer-sliding-window-with-explanation
 # https://www.youtube.com/watch?v=U1q16AFcjKs&t=90s
 class Solution:
@@ -51,7 +54,33 @@ class Solution2:
                 l+=1
             r+=1
         return "" if ans[0]==float('inf') else s[ans[1]:ans[2]+1]
+class Solution3:
+    # required['a]=-1 means: we have more 'a's than we need
+    def minWindow(self, s: str, t: str) -> str:
+        LETTERS=string.ascii_lowercase+string.ascii_uppercase
+        def valid():
+            ans=all(required[x]<=0 for x in LETTERS)
+            return ans
 
+        n=len(s)
+        required=Counter()
+        for x in t:
+            required[x]+=1
+
+        start,end=[0,0]
+        res=float('inf')
+        i,j=0,0
+        while i<=j:
+            while j<n and not valid():
+                required[s[j]]-=1
+                j+=1
+            if valid() and j-i<res:
+                res=j-i
+                start,end=i,j
+            if i<j:
+                required[s[i]]+=1
+            i+=1
+        return s[start:end]
 class tester(unittest.TestCase):
     def test1(self):
         self.assertEqual('BANC', Solution().minWindow(s = "ADOBECODEBANC", t = "ABC"))

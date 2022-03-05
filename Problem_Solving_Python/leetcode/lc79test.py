@@ -6,7 +6,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
         word = 'SEE'
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = True
         self.assertEqual(expected, actual)
 
@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]]
         word = "ABCCED"
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = True
         self.assertEqual(expected, actual)
 
@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]]
         word = "ABCB"
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = False
         self.assertEqual(expected, actual)
 
@@ -30,7 +30,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["A", "B", "C"], ["S", "F", "C"], ["A", "D", "E"]]
         word = "ABFD"
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = True
         self.assertEqual(expected, actual)
 
@@ -38,7 +38,7 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["A"]]
         word = "A"
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = True
         self.assertEqual(expected, actual)
 
@@ -46,6 +46,6 @@ class MyTestCase(unittest.TestCase):
         solution = Solution()
         board = [["a"]]
         word = "ab"
-        actual = solution.exist(board, word)
+        actual = solution.exist(word, board)
         expected = False
         self.assertEqual(expected, actual)

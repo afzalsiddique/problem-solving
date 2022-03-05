@@ -1,6 +1,22 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
+    def deleteAndEarn(self, A: List[int]) -> int:
+        @cache
+        def dp(i):
+            if i==n:
+                return 0
+            option1=A[i]*count[A[i]]+dp(bisect_right(A,A[i]+1))
+            # option1=A[i]*(bisect_right(A,A[i])-bisect_left(A,A[i])) +dp(bisect_right(A,A[i]+1)) # count not required
+            option2=dp(bisect_right(A,A[i]))
+            return max(option1,option2)
+
+        n=len(A)
+        count=Counter(A)
+        A.sort()
+        return dp(0)
+class Solution2:
     # time O(n)
     # space O(n) for creating gold array otherwise space O(1)
     def deleteAndEarn(self, nums: List[int]) -> int:
@@ -19,12 +35,8 @@ class Solution:
         return max(last,second_last)
 
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
-        nums = [3,4,2]
-        Output= 6
-        self.assertEqual(Output,get_sol().deleteAndEarn(nums))
+        self.assertEqual(6,get_sol().deleteAndEarn([3,4,2]))
     def test02(self):
-        nums = [2,2,3,3,3,4]
-        Output= 9
-        self.assertEqual(Output,get_sol().deleteAndEarn(nums))
+        self.assertEqual(9,get_sol().deleteAndEarn([2,2,3,3,3,4]))

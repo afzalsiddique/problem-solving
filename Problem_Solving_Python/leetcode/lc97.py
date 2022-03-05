@@ -1,12 +1,48 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-class Solution:
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+class Solution6:
+    # because dp table only accesses the prev row and the prev col, we can have 1d dp
+    # memory O(len(s2)) time O(m*n)
+    def isInterleave(self, s1, s2, s3):
+        m,n,l=len(s1),len(s2),len(s3)
+        if l!=m+n: return False
+        s1,s2,s3='#'+s1,'#'+s2,'#'+s3
+        dp=[False]*(n+1)
+        for i in range(m+1):
+            for j in range(n+1):
+                if i==0 and j==0: # when both strings are empty, it considered interleaving. s1='',s2='',s3=''-> True
+                    dp[j]=True
+                elif i==0: # when s1 is empty string. s1='',s2='abc',s3='abc'->True
+                    dp[j]=dp[j-1] and s2[j]==s3[j]
+                elif j==0: # when s2 is empty string. s1='abc',s2='',s3='abc'->True
+                    dp[j]=dp[j] and s1[i]==s3[i]
+                else:
+                    dp[j]=(dp[j] and s1[i]==s3[i+j]) or (dp[j-1] and s2[j]==s3[i+j])
+        return dp[-1]
+class Solution5:
+    # because dp table only accesses the prev row and the prev col, we can have 1d dp
+    # memory O(2*len(s2)) time O(m*n)
+    def isInterleave(self, s1, s2, s3):
+        m,n,l=len(s1),len(s2),len(s3)
+        if l!=m+n: return False
+        s1,s2,s3='#'+s1,'#'+s2,'#'+s3
+        prev=[False]*(n+1)
+        for i in range(m+1):
+            cur=[False]*(n+1)
+            for j in range(n+1):
+                if i==0 and j==0: # when both strings are empty, it considered interleaving. s1='',s2='',s3=''-> True
+                    cur[j]=True
+                elif i==0: # when s1 is empty string. s1='',s2='abc',s3='abc'->True
+                    cur[j]=cur[j-1] and s2[j]==s3[j]
+                elif j==0: # when s2 is empty string. s1='abc',s2='',s3='abc'->True
+                    cur[j]=prev[j] and s1[i]==s3[i]
+                else:
+                    cur[j]=(prev[j] and s1[i]==s3[i+j]) or (cur[j-1] and s2[j]==s3[i+j])
+            prev=cur
+        return prev[-1] # or return cur[-1]
+class Solution4:
+    # memory O(m*n) time O(m*n)
     # https://leetcode.com/problems/interleaving-string/discuss/31879/My-DP-solution-in-C%2B%2B
     def isInterleave(self, s1, s2, s3):
         m,n,l=len(s1),len(s2),len(s3)
@@ -15,16 +51,36 @@ class Solution:
         dp=[[False]*(n+1) for _ in range(m+1)]
         for i in range(m+1):
             for j in range(n+1):
-                if i==0 and j==0:
+                if i==0 and j==0: # when both strings are empty, it considered interleaving. s1='',s2='',s3=''-> True
                     dp[i][j]=True
-                elif i==0:
+                elif i==0: # when s1 is empty string. s1='',s2='abc',s3='abc'->True
                     dp[i][j]=(dp[i][j-1] and s2[j]==s3[i+j])
-                elif j==0:
+                    # dp[i][j]=(dp[i][j-1] and s2[j]==s3[j])
+                elif j==0: # when s2 is empty string. s1='abc',s2='',s3='abc'->True
                     dp[i][j]=(dp[i-1][j] and s1[i]==s3[i+j])
+                    # dp[i][j]=(dp[i-1][j] and s1[i]==s3[i])
                 else:
                     dp[i][j]=(dp[i-1][j] and s1[i]==s3[i+j]) or (dp[i][j-1] and s2[j]==s3[i+j])
         return dp[-1][-1]
+class Solution:
+    # it wants you to try to make s3 from the letters of s1 and s2, but without changing the order that letters appear
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        @cache
+        def dp(i, j, k):
+            if k==l:
+                return True
+            res=False
+            if i<m and s1[i]==s3[k]:
+                res|= dp(i + 1, j, k + 1)
+            if j<n and s2[j]==s3[k]:
+                res|= dp(i, j + 1, k + 1)
+            return res
 
+
+        m,n,l=len(s1),len(s2),len(s3)
+        if m+n!=l: return False
+        return dp(0, 0, 0)
+class Solution2:
     # WA.
     def isInterleave3(self, s1, s2, s3):
         m,n,l=len(s1),len(s2),len(s3)
@@ -49,7 +105,7 @@ class Solution:
 
 
 # brute force. time: 2^(m+n) space: m+n
-class Solution2:
+class Solution3:
     def isInterleave(self, s1, s2, s3):
         def helper(s1,i,s2,j,res,s3):
             if res==s3 and i==len(s1) and j==len(s2):
@@ -77,40 +133,21 @@ class Solution2:
 #                 i, j = i - 1, j + 1
 #         return s1[i:] + s2[j:] == s3[p:] and i >= 0
 
+
 class tester(unittest.TestCase):
-    def test1(self):
-        s1 = "aabcc"
-        s2 = "dbbca"
-        s3 = "aadbbcbcac"
-        Output= True
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
-    def test2(self):
-        s1 = ""
-        s2 = ""
-        s3 = "a"
-        Output= False
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
-    def test3(self):
-        s1 = "cabbcaaacacbac"
-        s2 = "acabaabacabcca"
-        s3 = "cacabaabacaabccbabcaaacacbac"
-        Output= True
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
-    def test4(self):
-        s1 = "a"
-        s2 = ""
-        s3 = "c"
-        Output= False
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
-    def test5(self):
-        s1 = "a"
-        s2 = ""
-        s3 = "a"
-        Output= True
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
-    def test6(self):
-        s1 = "db"
-        s2 = "b"
-        s3 = "cbb"
-        Output= False
-        self.assertEqual(Output,Solution().isInterleave(s1,s2,s3))
+    def test01(self):
+        self.assertEqual(True,get_sol().isInterleave("aabcc","dbbca","aadbbcbcac"))
+    def test02(self):
+        self.assertEqual(False,get_sol().isInterleave("","","a"))
+    def test03(self):
+        self.assertEqual(True,get_sol().isInterleave("cabbcaaacacbac","acabaabacabcca","cacabaabacaabccbabcaaacacbac"))
+    def test04(self):
+        self.assertEqual(False,get_sol().isInterleave("a","","c"))
+    def test05(self):
+        self.assertEqual(True,get_sol().isInterleave("a","","a"))
+    def test06(self):
+        self.assertEqual(False,get_sol().isInterleave("db","b","cbb"))
+    def test07(self):
+        self.assertEqual(False,get_sol().isInterleave("a", "b", "a"))
+    def test08(self):
+        self.assertEqual(True,get_sol().isInterleave("", "", ""))

@@ -1,10 +1,6 @@
-from bisect import bisect_left
-from collections import deque, defaultdict
-from heapq import *
-import unittest
-from typing import List
-import random
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return RandomizedSet()
 
 class RandomizedSet:
     def __init__(self):
@@ -27,19 +23,19 @@ class RandomizedSet:
         return True
     def getRandom(self) -> int:
         return self.li[random.randint(0,len(self.li)-1)]
-class mycase(unittest.TestCase):
-    def test1(self):
-        commands = ["RandomizedSet","remove","remove","insert","getRandom","remove","insert"]
-        inputs = [[],[0],[0],[0],[],[0],[0]]
+class Tester(unittest.TestCase):
+    def do_test(self,commands, inputs):
         outputs = []
-        for c,i in zip(commands, inputs):
-            if c == 'RandomizedSet':
-                r = RandomizedSet()
-            elif c =='insert':
-                outputs.append(r.insert(i[0]))
-            elif c=='remove':
-                outputs.append(r.remove(i[0]))
-            elif c=='getRandom':
-                outputs.append(r.getRandom())
-        exptected = [False,False,True,0,True,True]
-        self.assertEqual(exptected,outputs)
+        obj = ""
+        for i,cmd,input in zip(range(len(inputs)),commands,inputs):
+            if cmd=='RandomizedSet': obj = get_sol(); outputs.append(None)
+            elif cmd=='insert': outputs.append(obj.insert(input[0]))
+            elif cmd=='remove': outputs.append(obj.remove(input[0]))
+            elif cmd=='getRandom': outputs.append(obj.getRandom())
+        return outputs
+    def test01(self):
+        commands = ["RandomizedSet","remove","remove","insert","getRandom","remove","insert"]
+        inputs=[[],[0],[0],[0],[],[0],[0]]
+        expected = [None,False,False,True,0,True,True]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)

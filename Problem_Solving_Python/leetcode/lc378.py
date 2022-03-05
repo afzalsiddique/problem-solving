@@ -53,6 +53,7 @@ class Solution2:
         return heappop(min_heap)[0]
 
 
+
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(13, get_sol().kthSmallest([ [1, 5, 9], [10, 11, 13], [12, 13, 15] ], 8))
@@ -63,4 +64,6 @@ class MyTestCase(unittest.TestCase):
     def test04(self):
         self.assertEqual(2, get_sol().kthSmallest([[1,4],[2,5]], 2))
     def test05(self):
+        self.assertEqual(3, get_sol().kthSmallest([[1,4],[3,5]], 2))
+    def test06(self):
         self.assertEqual(14, get_sol().kthSmallest([[1,3,5],[6,7,12],[11,14,14]], 8))

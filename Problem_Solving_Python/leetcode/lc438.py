@@ -1,11 +1,36 @@
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 # similar to 76
+
 class Solution:
+    # required['a]=-1 means: we have more 'a's than we need
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        def enough():
+            ans=all(required[x]<=0 for x in string.ascii_lowercase)
+            return ans
+        def valid():
+            ans=all(required[x]==0 for x in string.ascii_lowercase)
+            return ans
+
+        n=len(s)
+        required=Counter()
+        for x in p:
+            required[x]+=1
+
+        res=[]
+        i,j=0,0
+        while i<=j:
+            while j<n and not enough():
+                required[s[j]]-=1
+                j+=1
+            if valid():
+                res.append(i)
+            if i<j:
+                required[s[i]]+=1
+            i+=1
+        return res
+class Solution2:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         if len(s)<len(p):return []
         required = defaultdict(int)
@@ -29,8 +54,9 @@ class Solution:
             if required[left_char]>0:found-=1
             else:found+=1
         return res
+class Solution3:
     # TLE
-    def findAnagrams_(self, s: str, p: str) -> List[int]:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
         di,res = {},[]
         for c in p:
             if c not in di:di[c]=1
@@ -59,11 +85,11 @@ class Solution:
 
 class mycase(unittest.TestCase):
     def test1(self):
-        self.assertEqual([0,6],Solution().findAnagrams("cbaebabacd", "abc"))
+        self.assertEqual([0,6],get_sol().findAnagrams("cbaebabacd", "abc"))
     def test2(self):
-        self.assertEqual([0,1,2],Solution().findAnagrams('abab','ab'))
+        self.assertEqual([0,1,2],get_sol().findAnagrams('abab','ab'))
     def test3(self):
-        self.assertEqual([],Solution().findAnagrams("aaaaaaaaaa","aaaaaaaaaaaaa"))
+        self.assertEqual([],get_sol().findAnagrams("aaaaaaaaaa","aaaaaaaaaaaaa"))
     # def test4(self):
     # def test5(self):
 

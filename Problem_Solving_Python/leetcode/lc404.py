@@ -1,16 +1,26 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
+    def __repr__(self): return str(self.val)
 class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        def recur(node, leftChild):
+            if not node:
+                return 0
+            res=0
+            if leftChild and not node.left and not node.right:
+                res+=node.val
+            res+= recur(node.left, True)
+            res+= recur(node.right, False)
+            return res
+
+        return recur(root,False)
+class Solution2:
     total = 0
     def sumOfLeftLeaves(self, root: TreeNode) -> int:
         def helper(root:TreeNode):
@@ -24,39 +34,12 @@ class Solution:
         helper(root)
         return self.total
 
-
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
 class tester(unittest.TestCase):
     def test1(self):
-        root = deserialize('3,9,20,null,null,15,7')
-        Output= 24
-        self.assertEqual(Output,Solution().sumOfLeftLeaves(root))
+        self.assertEqual(24,Solution().sumOfLeftLeaves(des([3,9,20,None,None,15,7])))
     def test2(self):
-        root = deserialize('1')
-        Output= 0
-        self.assertEqual(Output,Solution().sumOfLeftLeaves(root))
+        self.assertEqual(0,Solution().sumOfLeftLeaves(des([1])))
     def test3(self):
-        root = deserialize('0,2,4,1,null,3,-1,5,1,null,6,null,8')
-        Output= 5
-        self.assertEqual(Output,Solution().sumOfLeftLeaves(root))
+        self.assertEqual(5,Solution().sumOfLeftLeaves(des([0,2,4,1,None,3,-1,5,1,None,6,None,8])))
+    def test4(self):
+        self.assertEqual(0,Solution().sumOfLeftLeaves(des([1,None,2])))

@@ -75,26 +75,14 @@ class Solution:
 
 class tester(unittest.TestCase):
     def test01(self):
-        nums = [1,2,3,1]
-        Output= 4
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(4,get_sol().rob([1,2,3,1]))
     def test02(self):
-        nums = [2,7,9,3,1]
-        Output= 12
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(12,get_sol().rob([2,7,9,3,1]))
     def test03(self):
-        nums = [2,1]
-        Output= 2
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(2,get_sol().rob([2,1]))
     def test04(self):
-        nums = [183,219,57,193,94,233,202,154,65,240,97,234,100,249,186,66,90,238,168,128,177,235,50,81,185,165,217,207,88,80,112,78,135,62,228,247,211]
-        Output= 3365
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(3365,get_sol().rob([183,219,57,193,94,233,202,154,65,240,97,234,100,249,186,66,90,238,168,128,177,235,50,81,185,165,217,207,88,80,112,78,135,62,228,247,211]))
     def test05(self):
-        nums = [2,1,1,2]
-        Output= 4
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(4,get_sol().rob([2,1,1,2]))
     def test06(self):
-        nums = [1,2]
-        Output= 2
-        self.assertEqual(Output,get_sol().rob(nums))
+        self.assertEqual(2,get_sol().rob([1,2]))

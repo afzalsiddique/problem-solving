@@ -1,8 +1,23 @@
-# https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution/10980
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        def dfs(i,path):
+            if i==n:
+                res.append(''.join(path))
+                return
+            for c in di[digits[i]]:
+                dfs(i+1,path+[c])
+
+        n=len(digits)
+        if n==0: return []
+        di={'2':'abc','3':'def','4':'ghi','5':'jkl','6':'mno','7':'pqrs','8':'tuv','9':'wxyz'}
+        res=[]
+        dfs(0,[])
+        return res
+class Solution2:
+    # https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution/10980
     def letterCombinations(self, digits: str) -> List[str]:
         if len(digits) == 0:
             return []
@@ -58,3 +73,10 @@ class Solution:
         li = []
         helper(li, "", digits)
         return li
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(["ad","ae","af","bd","be","bf","cd","ce","cf"],get_sol().letterCombinations("23"))
+    def test02(self):
+        self.assertEqual([],get_sol().letterCombinations(""))
+    def test03(self):
+        self.assertEqual(["a","b","c"],get_sol().letterCombinations("2"))

@@ -1,12 +1,31 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-# https://www.youtube.com/watch?v=NTF7sDU0IWA
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    # when out of bounds move one step right and change direction. Then continue until a valid cell is found.
+    def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
+        TOP_RIGHT=[-1,1]
+        BOTTOM_LEFT=[1,-1]
+        def valid(x,y): return 0<=x<m and 0<=y<n
+        def changeDir(dx,dy):
+            return BOTTOM_LEFT if [dx,dy]==TOP_RIGHT else TOP_RIGHT
+
+        m,n=len(mat),len(mat[0])
+        x,y=0,0
+        res=[]
+        dx,dy=TOP_RIGHT
+        while len(res)!=m*n:
+            if not valid(x,y): # when out of bounds move one step right and change direction
+                dx,dy=changeDir(dx,dy)
+                x,y=x,y+1 # move right
+            while len(res)!=m*n and not valid(x,y): # then continue until a valid cell is found
+                x,y=x+dx,y+dy
+            res.append(mat[x][y])
+            x,y=x+dx,y+dy
+        return res
+
+class Solution5:
+    # https://www.youtube.com/watch?v=NTF7sDU0IWA
     def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
         m,n=len(matrix),len(matrix[0])
         res=[]
@@ -102,12 +121,23 @@ class Solution4:
             for i,j in di[ii]:
                 res.append(mat[i][j])
         return res
-class tester(unittest.TestCase):
-    def test1(self):
+
+class Tester(unittest.TestCase):
+    def test01(self):
         mat = [[1,2,3],[4,5,6],[7,8,9]]
-        Output= [1,2,4,7,5,3,6,8,9]
-        self.assertEqual(Output,Solution().findDiagonalOrder(mat))
-    def test2(self):
+        self.assertEqual([1,2,4,7,5,3,6,8,9],get_sol().findDiagonalOrder(mat))
+    def test02(self):
         mat = [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15],[16,17,18,19,20],[21,22,23,24,25]]
-        Output= [1,2,4,7,5,3,6,8,9]
-        self.assertEqual(Output,Solution().findDiagonalOrder(mat))
+        self.assertEqual([1,2,6,11,7,3,4,8,12,16,21,17,13,9,5,10,14,18,22,23,19,15,20,24,25],get_sol().findDiagonalOrder(mat))
+    def test03(self):
+        mat = [[1,2],[3,4]]
+        self.assertEqual([1,2,3,4],get_sol().findDiagonalOrder(mat))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):
+    # def test10(self):
+    # def test11(self):
+    # def test12(self):

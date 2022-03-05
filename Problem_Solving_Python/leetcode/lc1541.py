@@ -2,54 +2,43 @@ import itertools; import math; import operator; import random; import re; from b
 def get_sol(): return Solution()
 class Solution:
     def minInsertions(self, s: str) -> int:
-        st_size=0 # size of the stack.
-        cnt=0
+        remainingClosing=0 # no of closing parenthesis left to balance off
+        insert=0 # total insertion
         for ch in s:
             if ch == '(':
-                if st_size%2:
-                    st_size-=1
-                    cnt+=1
-                st_size+=2
+                if remainingClosing%2: # out of 2 two closing parenthesis, 1 has been balanced off.
+                    remainingClosing-=1 # balance off by inserting closing parenthesis
+                    insert+=1 # insert closing parenthesis
+                remainingClosing+=2
             else:
-                if not st_size:
-                    st_size+=2
-                    cnt+=1
-                st_size-=1
-        return st_size+cnt
+                if not remainingClosing:
+                    insert+=1 # insert opening parenthesis
+                    remainingClosing+=2
+                remainingClosing-=1
+        return remainingClosing+insert
+
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        s = "(()))"
-        Output= 1
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_2(self):
-        s = "())"
-        Output= 0
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_3(self):
-        s = "))())("
-        Output= 3
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_4(self):
-        s = "(((((("
-        Output= 12
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_5(self):
-        s = ")))))))"
-        Output= 5
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_6(self):
-        s = ")"
-        Output= 2
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_7(self):
-        s = "))"
-        Output= 1
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_8(self):
-        s = "))))"
-        Output= 2
-        self.assertEqual(Output, get_sol().minInsertions(s))
-    def test_9(self):
-        s = "(()))(()))()())))"
-        Output= 4
-        self.assertEqual(Output, get_sol().minInsertions(s))
+    def test01(self):
+        self.assertEqual(1, get_sol().minInsertions("(()))"))
+    def test02(self):
+        self.assertEqual(0, get_sol().minInsertions("())"))
+    def test03(self):
+        self.assertEqual(3, get_sol().minInsertions("))())("))
+    def test04(self):
+        self.assertEqual(12, get_sol().minInsertions("(((((("))
+    def test05(self):
+        self.assertEqual(5, get_sol().minInsertions(")))))))"))
+    def test06(self):
+        self.assertEqual(2, get_sol().minInsertions(")"))
+    def test07(self):
+        self.assertEqual(1, get_sol().minInsertions("))"))
+    def test08(self):
+        self.assertEqual(2, get_sol().minInsertions("))))"))
+    def test09(self):
+        self.assertEqual(4, get_sol().minInsertions("(()))(()))()())))"))
+    def test10(self):
+        self.assertEqual(2, get_sol().minInsertions("()))"))
+    def test11(self):
+        self.assertEqual(1, get_sol().minInsertions("(()))"))
+    def test12(self):
+        self.assertEqual(3, get_sol().minInsertions("()()))"))

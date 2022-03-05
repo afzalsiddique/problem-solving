@@ -1,9 +1,6 @@
-import unittest
-from collections import deque
-from typing import List
-def get_sol_obj(): return Solution()
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def diffWaysToCompute(self, expression: str) -> List[int]:
         def helper(expr):
@@ -16,38 +13,25 @@ class Solution:
             res = []
             for i in range(len(expr)):
                 if expr[i] not in '+-*': continue
-                if expr[i] =='+':
-                    ans1=helper(expr[:i])
-                    ans2=helper(expr[i+1:])
-                    for a1 in ans1:
-                        for a2 in ans2:
-                            res.append(a1+a2)
-                elif expr[i]=='-':
-                    ans1=helper(expr[:i])
-                    ans2=helper(expr[i+1:])
-                    for a1 in ans1:
-                        for a2 in ans2:
-                            res.append(a1-a2)
-                elif expr[i]=='*':
-                    ans1=helper(expr[:i])
-                    ans2=helper(expr[i+1:])
-                    for a1 in ans1:
-                        for a2 in ans2:
-                            res.append(a1*a2)
+                ans1=helper(expr[:i])
+                ans2=helper(expr[i+1:])
+                # for a1,a2 in product(ans1,ans2):
+                #     if expr[i]=='+': res.append(a1+a2)
+                #     elif expr[i]=='-': res.append(a1-a2)
+                #     elif expr[i]=='*': res.append(a1*a2)
+                for a1 in ans1:
+                    for a2 in ans2:
+                        if expr[i]=='+': res.append(a1+a2)
+                        elif expr[i]=='-': res.append(a1-a2)
+                        elif expr[i]=='*': res.append(a1*a2)
             return res
 
         return helper(expression)
 
 class MyTestCase(unittest.TestCase):
-    def test_01(self):
-        expression = "2-1-1"
-        Output= [0,2]
-        self.assertEqual(Output, get_sol_obj().diffWaysToCompute(expression))
-    def test_02(self):
-        expression = "2*3-4*5"
-        Output= [-34,-14,-10,-10,10]
-        self.assertEqual(Output, get_sol_obj().diffWaysToCompute(expression))
-    def test_03(self):
-        expression = "22*3-4*5"
-        Output= []
-        self.assertEqual(Output, get_sol_obj().diffWaysToCompute(expression))
+    def test01(self):
+        self.assertEqual([0,2], sorted(get_sol().diffWaysToCompute("2-1-1")))
+    def test02(self):
+        self.assertEqual([-34,-14,-10,-10,10], sorted(get_sol().diffWaysToCompute("2*3-4*5")))
+    def test03(self):
+        self.assertEqual([-374, -110, -110, 46, 310], sorted(get_sol().diffWaysToCompute("22*3-4*5")))

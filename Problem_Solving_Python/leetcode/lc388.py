@@ -1,5 +1,5 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 class Solution:
     def lengthLongestPath(self, input: str) -> int:
         def get_tab_count(s):

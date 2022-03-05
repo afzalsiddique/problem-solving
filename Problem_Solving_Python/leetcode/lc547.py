@@ -1,9 +1,25 @@
-import unittest
-from collections import defaultdict
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    def findCircleNum(self, graph: List[List[int]]) -> int:
+        def dfs(u):
+            res=False
+            for v in range(n):
+                if graph[u][v]:
+                    res=True
+                    graph[u][v]=0
+                    graph[v][u]=0
+                    dfs(v)
+
+            return res
+
+        n=len(graph)
+        res=0
+        for i in range(n):
+            res+=dfs(i)
+        return res
+class Solution2:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
         parent = {}
 
@@ -45,57 +61,18 @@ class Solution:
         return len(s)
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
-        expected = 2
-        actual = sol.findCircleNum([[1,1,0],[1,1,0],[0,0,1]])
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        expected = 3
-        actual = sol.findCircleNum([[1,0,0],[0,1,0],[0,0,1]])
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        expected = 1
-        actual = sol.findCircleNum([[1,0,0,1],[0,1,1,0],[0,1,1,1],[1,0,1,1]])
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.findCircleNum(0)
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(2, get_sol().findCircleNum([[1,1,0],[1,1,0],[0,0,1]]))
+    def test02(self):
+        self.assertEqual(3, get_sol().findCircleNum([[1,0,0],[0,1,0],[0,0,1]]))
+    def test03(self):
+        self.assertEqual(1, get_sol().findCircleNum([[1,0,0,1],[0,1,1,0],[0,1,1,1],[1,0,1,1]]))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):
+    # def test10(self):
+    # def test11(self):
+    # def test12(self):
