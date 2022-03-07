@@ -6,33 +6,29 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
+    def __repr__(self): return str(self.val)
 class Solution:
     def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root: return []
         q=deque([root])
-        di = defaultdict(list)
-        depth=0
+        res=[]
         while q:
+            li=[]
             for _ in range(len(q)):
                 node=q.popleft()
-                di[depth]+=[node.val]
+                li.append(node.val)
                 if node.left: q.append(node.left)
                 if node.right: q.append(node.right)
-            depth+=1
-
-        return [di[x] for x in sorted(di,reverse=True)]
-
-
+            res.append(li)
+        res.reverse()
+        return res
 
 
 class Tester(unittest.TestCase):
     def test01(self):
-        self.assertEqual([[15,7],[9,20],[3]],get_sol().levelOrderBottom(des([3,9,20,None,None,15,7])))
+        self.assertEqual([[15, 7], [9, 20], [3]],get_sol().levelOrderBottom(des([3,9,20,None,None,15,7])))
     def test02(self):
         self.assertEqual([[1]],get_sol().levelOrderBottom(des([1])))
     def test03(self):
         self.assertEqual([],get_sol().levelOrderBottom(des([])))
     # def test04(self):
-    # def test05(self):
-    # def test06(self):
-    # def test07(self):

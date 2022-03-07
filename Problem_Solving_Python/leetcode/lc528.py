@@ -1,11 +1,18 @@
-# https://www.youtube.com/watch?v=fWS0TCcr-lE
-import unittest
-from bisect import bisect_left
-from random import randint
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(x): return Solution(x)
 
+# https://www.youtube.com/watch?v=fWS0TCcr-lE
 
 class Solution:
+    def __init__(self, w: List[int]):
+        self.li=list(accumulate(w))
+    def pickIndex(self) -> int:
+        maxx=self.li[-1]
+        randVal=random.randint(0,maxx-1)
+        randIdx=bisect_right(self.li,randVal)
+        return randIdx
+class Solution2:
 
     def __init__(self, w: List[int]):
         self.w = w
@@ -13,7 +20,7 @@ class Solution:
         for i in range(1, len(self.w)):
             self.cumulative_sum.append(self.cumulative_sum[-1] + self.w[i])
     def pickIndex(self) -> int:
-        rand_int = randint(1, self.cumulative_sum[-1])
+        rand_int = random.randint(1, self.cumulative_sum[-1])
         idx = bisect_left(self.cumulative_sum, rand_int)
         return idx
 

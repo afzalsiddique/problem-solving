@@ -1,39 +1,35 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
+    def __repr__(self): return str(self.val)
 
-# time O(n)
 class Solution:
+    # time O(n)
     # https://leetcode.com/problems/maximum-binary-tree/discuss/258364/Python-O(n)-solution-with-explanation.
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
         if not nums: return None
-        st=[]
-        last=None
+        st=[] # decreasing stack
         for num in nums:
-            while st and num>st[-1].val:
+            last=None
+            while st and num>st[-1].val: # everything inside the stack is greater than num
                 last=st.pop()
             node = TreeNode(num)
             if last:
                 node.left = last
             if st:
                 st[-1].right = node
-            last = None
             st.append(node)
         return st[0]
 
 
-# time O(n^2)
-# with range(lo,hi)
 class Solution2:
+    # time O(n^2)
+    # with range(lo,hi)
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
         def helper(lo,hi):
             if lo>hi: return None
@@ -64,27 +60,14 @@ class Solution3:
 
         return helper(nums)
 
-def serialize(root):
-    en = 'null'
-    sep = ','
-    if not root: return ''
-    q = deque()
-    res = [str(root.val)]
-    q.append(root)
-    while q:
-        cur = q.popleft()
-        for child in [cur.left, cur.right]:
-            if child:
-                q.append(child)
-                res.append(str(child.val))
-            else:
-                res.append(en)
-    return sep.join(res)
 
-class mytestcase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual( "6,3,5,null,2,0,null,null,1" ,serialize(Solution().constructMaximumBinaryTree([3,2,1,6,0,5])))
-    def test2(self):
-        self.assertEqual( "3,null,2,null,1" ,serialize(Solution().constructMaximumBinaryTree([3,2,1])))
-    def test3(self):
-        self.assertEqual( "###" ,serialize(Solution().constructMaximumBinaryTree([1,2,3])))
+
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual( "6,3,5,null,2,0,null,null,1" ,ser(get_sol().constructMaximumBinaryTree([3,2,1,6,0,5])))
+    def test02(self):
+        self.assertEqual( "3,null,2,null,1" ,ser(get_sol().constructMaximumBinaryTree([3,2,1])))
+    def test03(self):
+        self.assertEqual( "3,2,null,1" ,ser(get_sol().constructMaximumBinaryTree([1,2,3])))
+    def test04(self):
+        self.assertEqual( "5,null,4,null,3,2" ,ser(get_sol().constructMaximumBinaryTree([5,4,2,3])))

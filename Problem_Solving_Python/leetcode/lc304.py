@@ -1,19 +1,39 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(m): return NumMatrix(m)
 class NumMatrix:
-    def __init__(self, matrix: List[List[int]]):
-        n = len(matrix)
-        m = len(matrix[0])
-        dp = defaultdict(int)
+    # padded with zeros around the borders
+    def __init__(self, mat: List[List[int]]):
+        self.mat=mat
+        m,n= len(mat), len(mat[0])
+        for row in mat:
+            row.append(0)
+        mat.append([0] * (n + 1))
+        for i in range(m-1,-1,-1):
+            for j in range(n-1,-1,-1):
+                mat[i][j]+=mat[i+1][j]+mat[i][j+1]-mat[i+1][j+1]
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        mat=self.mat
+        return mat[row1][col1]-mat[row2+1][col1]-mat[row1][col2+1]+mat[row2+1][col2+1]
 
-        for i in range(n):
-            for j in range(m):
-                dp[i,j] = dp[i-1,j] + dp[i,j-1] - dp[i-1,j-1] + matrix[i][j]
-        self.dp=dp
-    def sumRegion(self, r1: int, c1: int, r2: int, c2: int) -> int:
-        dp=self.dp
-        return dp[r2, c2] + dp[r1-1, c1-1] - dp[r1-1, c2] - dp[r2, c1-1]
-
+class NumMatrix3:
+    # no padding with zeros around the borders
+    def __init__(self, mat: List[List[int]]):
+        self.mat=mat
+        m,n= len(mat), len(mat[0])
+        for i in range(m-1,-1,-1):
+            for j in range(n-1,-1,-1):
+                mat[i][j]+=mat[i+1][j] if i+1<m else 0
+                mat[i][j]+=mat[i][j+1] if j+1<n else 0
+                mat[i][j]-=mat[i+1][j+1] if i+1<m and j+1<n else 0
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        mat=self.mat
+        m,n= len(mat), len(mat[0])
+        res=mat[row1][col1]
+        res-=mat[row2+1][col1] if row2+1<m else 0
+        res-=mat[row1][col2+1] if col2+1<n else 0
+        res+=mat[row2+1][col2+1] if row2+1<m and col2+1<n else 0
+        return res
 class NumMatrix2:
     def __init__(self, matrix: List[List[int]]):
         self.matrix=matrix

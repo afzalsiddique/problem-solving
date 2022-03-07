@@ -18,9 +18,34 @@ class Solution:
                 right-=1
             cnt+=1
         return cnt
-
-
 class Solution2:
+    def numRescueBoats(self, A: List[int], limit: int) -> int:
+        def canCarry(noOfBoats):
+            cnt=0
+            i,j=0,n-1
+            while i<j:
+                if A[i]+A[j]<=limit:
+                    i+=1
+                    j-=1
+                else:
+                    j-=1
+                cnt+=1
+            if i==j:
+                cnt+=1
+            return cnt<=noOfBoats
+
+        n=len(A)
+        A.sort()
+        lo,hi=0,n
+        while lo<=hi:
+            m=(lo+hi)//2
+            if canCarry(m):
+                hi=m-1
+            else:
+                lo=m+1
+        return lo
+
+class Solution3:
     # wrong
     def numRescueBoats(self, people: List[int], limit: int) -> int:
         cnt=0
@@ -42,23 +67,11 @@ class Solution2:
 
 
 class tester(unittest.TestCase):
-    def test1(self):
-        people = [1,2]
-        limit = 3
-        Output= 1
-        self.assertEqual(Output,Solution().numRescueBoats(people, limit))
-    def test2(self):
-        people = [3,2,2,1]
-        limit = 3
-        Output= 3
-        self.assertEqual(Output,Solution().numRescueBoats(people, limit))
-    def test3(self):
-        people = [3,5,3,4]
-        limit = 5
-        Output= 4
-        self.assertEqual(Output,Solution().numRescueBoats(people, limit))
-    def test4(self):
-        people = [5,1,4,2]
-        limit = 6
-        Output= 2
-        self.assertEqual(Output,Solution().numRescueBoats(people, limit))
+    def test01(self):
+        self.assertEqual(1,get_sol().numRescueBoats([1,2], 3))
+    def test02(self):
+        self.assertEqual(3,get_sol().numRescueBoats([3,2,2,1], 3))
+    def test03(self):
+        self.assertEqual(4,get_sol().numRescueBoats([3,5,3,4], 5))
+    def test04(self):
+        self.assertEqual(2,get_sol().numRescueBoats([5,1,4,2], 6))

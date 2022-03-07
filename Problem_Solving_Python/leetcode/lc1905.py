@@ -33,14 +33,16 @@ class Solution:
 class MyTestCase(unittest.TestCase):
     def test1(self):
         grid1,grid2 = [[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]],  [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]
-        Output= 3
-        self.assertEqual(Output, get_sol().countSubIslands(grid1,grid2))
+        self.assertEqual(3, get_sol().countSubIslands(grid1,grid2))
     def test2(self):
         grid1,grid2 = [[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]],  [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]
-        Output= 2
-        self.assertEqual(Output, get_sol().countSubIslands(grid1,grid2))
-    # def test3(self):
-    # def test4(self):
+        self.assertEqual(2, get_sol().countSubIslands(grid1,grid2))
+    def test3(self):
+        grid1,grid2 = [[1,1,1,1,1],[1,0,1,0,1]],  [[0,1,0,1,0],[1,0,0,0,1]]
+        self.assertEqual(4, get_sol().countSubIslands(grid1,grid2))
+    def test4(self):
+        grid1,grid2 = [[1,0,0,0,0],[1,1,0,1,1]],  [[1,0,1,1,0],[0,1,0,1,0]]
+        self.assertEqual(2, get_sol().countSubIslands(grid1,grid2))
     # def test5(self):
     # def test6(self):
     # def test7(self):

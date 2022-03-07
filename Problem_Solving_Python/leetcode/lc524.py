@@ -1,8 +1,9 @@
-import unittest
-from typing import List
-# https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/discuss/99583/Python-Simple-(Two-pointer)
-# https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/discuss/1077674/Python-O(mn)-solution-explained
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/discuss/99583/Python-Simple-(Two-pointer)
+    # https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/discuss/1077674/Python-O(mn)-solution-explained
     def findLongestWord(self, s: str, d: List[str]) -> str:
         d.sort(key=lambda x:(-len(x),x))
         for word in d:
@@ -20,16 +21,8 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
-        actual = sol.findLongestWord(s = "abpcplea", d = ["ale","apple","monkey","plea"])
-        expected = "apple"
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        actual = sol.findLongestWord(s = "abpcplea", d = ["a","b","c"])
-        expected = "a"
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual("apple", get_sol().findLongestWord("abpcplea", ["ale","apple","monkey","plea"]))
+    def test02(self):
+        self.assertEqual("a", get_sol().findLongestWord("abpcplea", ["a","b","c"]))
 

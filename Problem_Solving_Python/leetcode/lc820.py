@@ -66,7 +66,7 @@ class Solution3:
         return sum(lengths)+cnt
 
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
         words = ["time", "me", "bell"]
         Output= 10

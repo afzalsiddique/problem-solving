@@ -2,6 +2,34 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(k): return MyCircularQueue(k)
 class MyCircularQueue:
     def __init__(self, k: int):
+        self.k=k
+        self.begin=0
+        self.end=-1
+        self.li=[-1]*k
+        self.left=k
+    def enQueue(self, value: int) -> bool:
+        if self.isFull(): return False
+        self.left-=1
+        self.end=(self.end+1)%self.k
+        self.li[self.end]=value
+        return True
+    def deQueue(self) -> bool:
+        if self.isEmpty(): return False
+        self.left+=1
+        self.begin=(self.begin+1)%self.k
+        return True
+    def Front(self) -> int:
+        if self.isEmpty(): return -1
+        return self.li[self.begin]
+    def Rear(self) -> int:
+        if self.isEmpty(): return -1
+        return self.li[self.end]
+    def isEmpty(self) -> bool:
+        return self.left == self.k
+    def isFull(self) -> bool:
+        return self.left == 0
+class MyCircularQueue2:
+    def __init__(self, k: int):
         self.capacity=k
         self.left=k
         self.q=[-1]*k
@@ -66,9 +94,16 @@ class tester(unittest.TestCase):
             elif cmd=='isEmpty':
                 outputs.append(obj.isEmpty())
         return outputs
-    def test_01(self):
+    def test01(self):
         commands = ["MyCircularQueue", "enQueue", "enQueue", "enQueue", "enQueue", "Rear", "isFull", "deQueue", "enQueue", "Rear"]
         inputs=[       [3],             [1],         [2],      [3],        [4],      [],     [],       [],        [4],      []]
         exptected = [   None,           True,       True,     True,       False,     3,     True,     True,       True,     4]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(exptected,outputs)
+    def test02(self):
+        commands = ["MyCircularQueue","enQueue","enQueue","deQueue","enQueue","deQueue","enQueue","deQueue","enQueue","deQueue", "Front"]
+        inputs=[[2],[1],[2],[],[3],[],[3],[],[3],[],[]]
+        exptected = [None, True, True, True, True, True, True, True, True, True, 3]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(exptected,outputs)
+

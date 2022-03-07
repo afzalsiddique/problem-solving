@@ -1,32 +1,24 @@
-from heapq import *
-import unittest
-from collections import Counter, defaultdict
-import random
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
-from typing import List
-
-
-# bucket. Time: O(n)
-# https://www.youtube.com/watch?v=EYFcQRwcqk0&t=133s
 class Solution:
-    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        di,n= defaultdict(int), len(nums)
-        bucket = [[] for _ in range(n+1)]
-        for num in nums:
-            di[num]+=1
-        for num in di:
-            bucket[di[num]].append(num)
-        res = []
-        for i in reversed(range(n+1)):
-            if not bucket[i]:continue
-            for item in bucket[i]:
-                if k==0:return res
-                res.append(item)
+    # bucket. Time: O(n)
+    # https://www.youtube.com/watch?v=EYFcQRwcqk0&t=133s
+    def topKFrequent(self, A: List[int], k: int) -> List[int]:
+        n=len(A)
+        di=Counter(A)
+        bucket=[[] for _ in range(n+1)]
+        for x in di:
+            bucket[di[x]].append(x)
+        res=[]
+        for i in range(n,-1,-1):
+            while k and bucket[i]:
+                res.append(bucket[i].pop())
                 k-=1
-
         return res
-# heap
 class Solution2:
+    # heap
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         pq = []
         di = defaultdict(int)
@@ -104,5 +96,5 @@ class Solution3:
 
 
 class mycase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual([1,2],Solution().topKFrequent(nums = [1,1,1,2,2,3], k = 2))
+    def test01(self):
+        self.assertEqual([1,2],get_sol().topKFrequent([1,1,1,2,2,3], 2))

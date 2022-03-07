@@ -70,39 +70,18 @@ class Solution3:
                 lo=mid+1
         return lo
 
-class tester(unittest.TestCase):
-    def test1(self):
-        weights = [1,2,3,4,5,6,7,8,9,10]
-        D = 5
-        Output= 15
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test2(self):
-        weights = [3,2,2,4,1,4]
-        D = 3
-        Output= 6
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test3(self):
-        weights = [1,2,3,1,1]
-        D = 4
-        Output= 3
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test4(self):
-        weights = [1]
-        D = 1
-        Output= 1
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test5(self):
-        weights = [500]
-        D = 1
-        Output= 500
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test6(self):
-        weights = [500,500]
-        D = 1
-        Output= 1000
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
-    def test7(self):
-        weights = [500,500]
-        D = 100
-        Output= 500
-        self.assertEqual(Output,Solution().shipWithinDays(weights,D))
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(15,get_sol().shipWithinDays([1,2,3,4,5,6,7,8,9,10],5))
+    def test02(self):
+        self.assertEqual(6,get_sol().shipWithinDays([3,2,2,4,1,4],3))
+    def test03(self):
+        self.assertEqual(3,get_sol().shipWithinDays([1,2,3,1,1],4))
+    def test04(self):
+        self.assertEqual(1,get_sol().shipWithinDays([1],1))
+    def test05(self):
+        self.assertEqual(500,get_sol().shipWithinDays([500],1))
+    def test06(self):
+        self.assertEqual(1000,get_sol().shipWithinDays([500,500],1))
+    def test07(self):
+        self.assertEqual(500,get_sol().shipWithinDays([500,500],100))

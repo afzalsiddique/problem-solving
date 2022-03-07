@@ -2,6 +2,47 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(k): return MyCircularDeque(k)
 class MyCircularDeque:
     def __init__(self, k: int):
+        self.k=k
+        self.begin=0
+        self.end=-1
+        self.li=[-1]*k
+        self.left=k
+    def insertFront(self, value: int) -> bool:
+        if self.isFull(): return False
+        self.left-=1
+        self.begin=(self.begin-1)%self.k
+        self.li[self.begin]=value
+        return True
+    def insertLast(self, value: int) -> bool:
+        if self.isFull(): return False
+        self.left-=1
+        self.end=(self.end+1)%self.k
+        self.li[self.end]=value
+        return True
+    def deleteFront(self) -> bool:
+        if self.isEmpty(): return False
+        self.left+=1
+        self.begin=(self.begin+1)%self.k
+        return True
+    def deleteLast(self) -> bool:
+        if self.isEmpty(): return False
+        self.left+=1
+        self.end=(self.end-1)%self.k
+        return True
+    def getFront(self) -> int:
+        if self.isEmpty(): return -1
+        return self.li[self.begin]
+    def getRear(self) -> int:
+        if self.isEmpty(): return -1
+        return self.li[self.end]
+    def isEmpty(self) -> bool:
+        return self.left == self.k
+    def isFull(self) -> bool:
+        return self.left == 0
+
+
+class MyCircularDeque2:
+    def __init__(self, k: int):
         self.capacity = k
         self.left=k
 
@@ -86,13 +127,13 @@ class tester(unittest.TestCase):
             elif cmd=='isEmpty':
                 outputs.append(obj.isEmpty())
         return outputs
-    def test_01(self):
+    def test01(self):
         commands = ["MyCircularDeque", "insertLast", "insertLast", "insertFront", "insertFront", "getRear", "isFull", "deleteLast", "insertFront", "getFront"]
         inputs=[[3], [1], [2], [3], [4], [], [], [], [4], []]
         exptected = [None, True, True, True, False, 2, True, True, True, 4]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(exptected,outputs)
-    def test_02(self):
+    def test02(self):
         commands = ["MyCircularDeque","insertFront","insertLast","getFront","insertLast","getFront","insertFront","getRear","getFront","getFront","deleteLast","getRear"]
         inputs=[       [5],              [7],          [0],         [],        [3],        [],          [9],         [],       [],         [],        [],        []]
         exptected = [None,              True,          True,        7,        True,        7,          True,           3,      9,          9,         True,      0]

@@ -3,24 +3,35 @@ from binary_tree_tester import *
 def get_sol(): return Solution()
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
-        M=10**9+7
         @cache
-        def dfs(i,j):
-            if i==m:
-                return j==n
-            if j==n:
+        def dp(i:int,j:int):
+            if j==len(t):
                 return 1
+            if i==len(s):
+                return 0
             res=0
-            res+=dfs(i+1,j)
-            res%=M
-
             if s[i]==t[j]:
-                res+=dfs(i+1,j+1)
-                res%=M
+                res+=dp(i+1,j+1)
+            res+=dp(i+1,j)
             return res
 
-        m,n=len(s),len(t)
-        return dfs(0,0)
+        return dp(0,0)
+class Solution3:
+    def numDistinct(self, s: str, t: str) -> int:
+        @cache
+        def dp(i,j):
+            if i==len(s):
+                return j==len(t)
+            if j==len(t):
+                return 1
+            res=0
+            res+=dp(i+1,j)
+
+            if s[i]==t[j]:
+                res+=dp(i+1,j+1)
+            return res
+
+        return dp(0,0)
 class Solution2:
     def numDistinct(self, s: str, t: str) -> int:
         m,n=len(t),len(s)
@@ -39,8 +50,10 @@ class Solution2:
                     dp[i][j]=dp[i][j-1]
         return dp[-1][-1]
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
         self.assertEqual(3,get_sol().numDistinct("rabbbit","rabbit"))
     def test02(self):
         self.assertEqual(5,get_sol().numDistinct("babgbag","bag"))
+    def test03(self):
+        self.assertEqual(3,get_sol().numDistinct("abbb","ab"))
