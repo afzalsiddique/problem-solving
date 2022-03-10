@@ -1,10 +1,7 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-class Solution(object):
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+class Solution:
     def convert(self, s, numRows):
         if numRows == 1 or numRows >= len(s):
             return s
@@ -56,10 +53,12 @@ class Solution2:
         # print(res)
         return res
 
-class tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual("PAHNAPLSIIGYIR",Solution().convert(s = "PAYPALISHIRING", numRows = 3))
-    def test2(self):
-        self.assertEqual("PINALSIGYAHRPI",Solution().convert(s = "PAYPALISHIRING", numRows = 4))
-    def test3(self):
-        self.assertEqual("A",Solution().convert(s = "A", numRows = 1))
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual("PAHNAPLSIIGYIR",get_sol().convert("PAYPALISHIRING", 3))
+    def test02(self):
+        self.assertEqual("PINALSIGYAHRPI",get_sol().convert("PAYPALISHIRING", 4))
+    def test03(self):
+        self.assertEqual("A",get_sol().convert("A", 1))
+    def test04(self):
+        self.assertEqual("ABC",get_sol().convert("ABC", 1))

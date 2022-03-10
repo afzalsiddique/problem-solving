@@ -1,12 +1,5 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -15,6 +8,7 @@ class TreeNode:
         self.right = right
     def __repr__(self): return str(self.val)
 class Solution:
+    # time O(n) space O(n)
     def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
         def deep(node:TreeNode):
             if not node: return 0,None # depth,TreeNode
@@ -25,65 +19,43 @@ class Solution:
             elif right_depth>left_depth:
                 return right_depth+1,right_parent
             else:
-                return 1+max(left_depth,right_depth), node
+                return 1+left_depth, node
 
         return deep(root)[1]
 
+class Solution2:
+    # time O(n) space O(n)
+    def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        def depth(node):
+            if not node:
+                return 0
+            return 1+max(depth(node.left),depth(node.right))
+        def dfs(node,depth):
+            if not node:
+                return 0
+            if depth==maxDepth:
+                di[node]=1
+                return 1
+            di[node]=dfs(node.left,depth+1)+dfs(node.right,depth+1)
+            return di[node]
+        def smallest(node):
+            if not node:
+                return None
+            if node.left in di and di[node.left]==di[node]:
+                return smallest(node.left)
+            if node.right in di and di[node.right]==di[node]:
+                return smallest(node.right)
+            return node
 
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
+        di={}
+        maxDepth=depth(root)
+        dfs(root,1)
+        return smallest(root)
 
-    return root
-
-def serialize(root):
-    en = 'null'
-    sep = ','
-    if not root: return ''
-
-    q = deque()
-    res = [str(root.val)]
-    q.append(root)
-    while q:
-        cur = q.popleft()
-        for child in [cur.left, cur.right]:
-            if child:
-                q.append(child)
-                res.append(str(child.val))
-            else:
-                res.append(en)
-    while res and res[-1]=='null': res.pop()
-    return sep.join(res)
-
-
-class tester(unittest.TestCase):
-    def test1(self):
-        Input = '3,5,1,6,2,0,8,null,null,7,4'
-        Output= '2,7,4'
-        Input = deserialize(Input)
-        actual_root = get_sol().subtreeWithAllDeepest(Input)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual('2,7,4',ser(get_sol().subtreeWithAllDeepest(des([3,5,1,6,2,0,8,None,None,7,4]))))
     def test02(self):
-        Input = '5,6,2,null,null,7,4'
-        Output= '2,7,4'
-        Input = deserialize(Input)
-        actual_root = get_sol().subtreeWithAllDeepest(Input)
-        actual = serialize(actual_root)
-        self.assertEqual(Output,actual)
+        self.assertEqual('2,7,4',ser(get_sol().subtreeWithAllDeepest(des([5,6,2,None,None,7,4]))))
+    def test03(self):
+        self.assertEqual('1',ser(get_sol().subtreeWithAllDeepest(des([1]))))

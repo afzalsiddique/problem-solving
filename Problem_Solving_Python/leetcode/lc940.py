@@ -13,7 +13,18 @@ class Solution:
             dp[idx]=tmp+1
             dp[idx]%=MOD
         return sum(dp)%MOD
-
+class Solution2:
+    def distinctSubseqII(self, s: str) -> int:
+        M=10**9+7
+        s='#'+s
+        n=len(s)
+        dp=[[0]*26 for _ in range(n)]
+        for i in range(1,n):
+            tmp=sum(dp[i-1][j] for j in range(26))%M
+            for j in range(26):
+                dp[i][j]=dp[i-1][j]
+            dp[i][ord(s[i])-ord('a')]=(tmp+1)%M
+        return sum(dp[-1][j] for j in range(26))%M
 
 
 class Tester(unittest.TestCase):

@@ -1,9 +1,6 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 # cycle detection using dfs
 # time O(n^2) space O(n)
@@ -33,8 +30,8 @@ class tester(unittest.TestCase):
     def test1(self):
         input = [[1,2], [1,3], [2,3]]
         Output= [2,3]
-        self.assertEqual(Output,Solution().findRedundantConnection(input))
+        self.assertEqual(Output,get_sol().findRedundantConnection(input))
     def test2(self):
         input = [[1,2], [2,3], [3,4], [1,4], [1,5]]
         Output= [1,4]
-        self.assertEqual(Output,Solution().findRedundantConnection(input))
+        self.assertEqual(Output,get_sol().findRedundantConnection(input))

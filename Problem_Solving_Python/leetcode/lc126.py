@@ -1,29 +1,40 @@
-# https://leetcode.com/problems/word-ladder-ii/discuss/40482/Python-simple-BFS-layer-by-layer/322524
-import collections
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class Solution:
+    # https://leetcode.com/problems/word-ladder-ii/discuss/1359027/C%2B%2BPython-BFS-Level-by-Level-with-Picture-Clean-and-Concise
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
-        if endWord not in wordList:
-            return []
+        wordSet = set(wordList)  # to check if a word is existed in the wordSet, in O(1)
+        wordSet.discard(beginWord)
 
-        wordSet = set(wordList)  # faster checks against dictionary
-        layer = {}
-        layer[beginWord] = [[beginWord]]  # stores current word and all possible sequences how we got to it
+        def neighbors(word):
+            for i in range(len(word)):  # change every possible single letters and check if it's in wordSet
+                for c in string.ascii_lowercase:
+                    newWord = word[:i] + c + word[i + 1:]
+                    if newWord in wordSet:
+                        yield newWord
 
-        while layer:
-            newlayer = collections.defaultdict(list)  # returns [] on missing keys, just to simplify code
-            for word in layer:
+        level = {}
+        level[beginWord] = [[beginWord]]  # level[word] is all possible sequence paths which start from beginWord and end at `word`.
+        while level:
+            nextLevel = defaultdict(list)
+            for word, paths in level.items():
                 if word == endWord:
-                    return layer[word]  # return all found sequences
-                for i in range(len(word)):  # change every possible letter and check if it's in dictionary
-                    for c in 'abcdefghijklmnopqrstuvwxyz':
-                        newWord = word[:i] + c + word[i + 1:]
-                        if newWord in wordSet:
-                            newlayer[newWord] += [j + [newWord] for j in layer[
-                                word]]  # add new word to all sequences and form new layer element
-            wordSet -= set(newlayer.keys())  # remove from dictionary to prevent loops
-            layer = newlayer  # move down to new layer
+                    return paths  # return all shortest sequence paths
+                for nei in neighbors(word):
+                    for path in paths:
+                        nextLevel[nei].append(path + [nei])  # form new paths with `nei` word at the end
+            wordSet -= set(nextLevel.keys())  # shortest path to nextLevel.keys() words already found. remove these words to prevent loops
+            level = nextLevel  # move to new level
 
         return []
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual([['hot', 'dot', 'dog', 'cog'], ['hot', 'lot', 'log', 'cog']], get_sol().findLadders("hot", "cog", ["hot","dot","dog","lot","log","cog"]))
+    def test02(self):
+        self.assertEqual([], get_sol().findLadders("hit", "cog", ["hot","dot","dog","lot","log"]))
+    def test03(self):
+        self.assertEqual([["hit","hot","dot","dog","cog"],["hit","hot","lot","log","cog"]], get_sol().findLadders("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+    def test04(self):
+        self.assertEqual([['cet', 'get', 'gee', 'gte', 'ate', 'ats', 'its', 'ito', 'ibo', 'ibm', 'ism'], ['cet', 'cat', 'can', 'ian', 'inn', 'ins', 'its', 'ito', 'ibo', 'ibm', 'ism'], ['cet', 'cot', 'con', 'ion', 'inn', 'ins', 'its', 'ito', 'ibo', 'ibm', 'ism']], get_sol().findLadders("cet", "ism", ["kid","tag","pup","ail","tun","woo","erg","luz","brr","gay","sip","kay","per","val","mes","ohs","now","boa","cet","pal","bar","die","war","hay","eco","pub","lob","rue","fry","lit","rex","jan","cot","bid","ali","pay","col","gum","ger","row","won","dan","rum","fad","tut","sag","yip","sui","ark","has","zip","fez","own","ump","dis","ads","max","jaw","out","btu","ana","gap","cry","led","abe","box","ore","pig","fie","toy","fat","cal","lie","noh","sew","ono","tam","flu","mgm","ply","awe","pry","tit","tie","yet","too","tax","jim","san","pan","map","ski","ova","wed","non","wac","nut","why","bye","lye","oct","old","fin","feb","chi","sap","owl","log","tod","dot","bow","fob","for","joe","ivy","fan","age","fax","hip","jib","mel","hus","sob","ifs","tab","ara","dab","jag","jar","arm","lot","tom","sax","tex","yum","pei","wen","wry","ire","irk","far","mew","wit","doe","gas","rte","ian","pot","ask","wag","hag","amy","nag","ron","soy","gin","don","tug","fay","vic","boo","nam","ave","buy","sop","but","orb","fen","paw","his","sub","bob","yea","oft","inn","rod","yam","pew","web","hod","hun","gyp","wei","wis","rob","gad","pie","mon","dog","bib","rub","ere","dig","era","cat","fox","bee","mod","day","apr","vie","nev","jam","pam","new","aye","ani","and","ibm","yap","can","pyx","tar","kin","fog","hum","pip","cup","dye","lyx","jog","nun","par","wan","fey","bus","oak","bad","ats","set","qom","vat","eat","pus","rev","axe","ion","six","ila","lao","mom","mas","pro","few","opt","poe","art","ash","oar","cap","lop","may","shy","rid","bat","sum","rim","fee","bmw","sky","maj","hue","thy","ava","rap","den","fla","auk","cox","ibo","hey","saw","vim","sec","ltd","you","its","tat","dew","eva","tog","ram","let","see","zit","maw","nix","ate","gig","rep","owe","ind","hog","eve","sam","zoo","any","dow","cod","bed","vet","ham","sis","hex","via","fir","nod","mao","aug","mum","hoe","bah","hal","keg","hew","zed","tow","gog","ass","dem","who","bet","gos","son","ear","spy","kit","boy","due","sen","oaf","mix","hep","fur","ada","bin","nil","mia","ewe","hit","fix","sad","rib","eye","hop","haw","wax","mid","tad","ken","wad","rye","pap","bog","gut","ito","woe","our","ado","sin","mad","ray","hon","roy","dip","hen","iva","lug","asp","hui","yak","bay","poi","yep","bun","try","lad","elm","nat","wyo","gym","dug","toe","dee","wig","sly","rip","geo","cog","pas","zen","odd","nan","lay","pod","fit","hem","joy","bum","rio","yon","dec","leg","put","sue","dim","pet","yaw","nub","bit","bur","sid","sun","oil","red","doc","moe","caw","eel","dix","cub","end","gem","off","yew","hug","pop","tub","sgt","lid","pun","ton","sol","din","yup","jab","pea","bug","gag","mil","jig","hub","low","did","tin","get","gte","sox","lei","mig","fig","lon","use","ban","flo","nov","jut","bag","mir","sty","lap","two","ins","con","ant","net","tux","ode","stu","mug","cad","nap","gun","fop","tot","sow","sal","sic","ted","wot","del","imp","cob","way","ann","tan","mci","job","wet","ism","err","him","all","pad","hah","hie","aim","ike","jed","ego","mac","baa","min","com","ill","was","cab","ago","ina","big","ilk","gal","tap","duh","ola","ran","lab","top","gob","hot","ora","tia","kip","han","met","hut","she","sac","fed","goo","tee","ell","not","act","gil","rut","ala","ape","rig","cid","god","duo","lin","aid","gel","awl","lag","elf","liz","ref","aha","fib","oho","tho","her","nor","ace","adz","fun","ned","coo","win","tao","coy","van","man","pit","guy","foe","hid","mai","sup","jay","hob","mow","jot","are","pol","arc","lax","aft","alb","len","air","pug","pox","vow","got","meg","zoe","amp","ale","bud","gee","pin","dun","pat","ten","mob"]))
