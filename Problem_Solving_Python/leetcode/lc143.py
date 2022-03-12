@@ -1,17 +1,11 @@
-import pickle
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-    def __repr__(self):
-        return str(self.val) + "->" + str(self.next)
+    def __repr__(self): return str(self.val) + "->" + str(self.next)
 
 # https://www.youtube.com/watch?v=meOY1wajrnw
 class Solution:
@@ -60,29 +54,20 @@ class Solution2:
             cur=cur.next
         cur.next=None
 
-def make_linked_list(li,i=0):
-    if i==len(li)-1:return ListNode(li[i])
-    cur = ListNode(li[i])
-    cur.next = make_linked_list(li,i+1)
-    return cur
-class tester(unittest.TestCase):
-    def test1(self):
-        expected = make_linked_list([1,4,2,3])
+class Tester(unittest.TestCase):
+    def test01(self):
         actual=make_linked_list([1,2,3,4])
-        Solution().reorderList(actual)
-        self.assertEqual(expected,actual)
-    def test2(self):
-        expected = make_linked_list([1,5,2,4,3])
+        get_sol().reorderList(actual)
+        self.assertEqual(make_linked_list([1,4,2,3]),actual)
+    def test02(self):
         actual=make_linked_list([1,2,3,4,5])
-        Solution().reorderList(actual)
-        self.assertEqual(expected,actual)
-    def test3(self):
-        expected = make_linked_list([1,10,2,9,3,8,4,7,5,6])
+        get_sol().reorderList(actual)
+        self.assertEqual(make_linked_list([1,5,2,4,3]),actual)
+    def test03(self):
         actual=make_linked_list([1,2,3,4,5,6,7,8,9,10])
-        Solution().reorderList(actual)
-        self.assertEqual(expected,actual)
-    def test4(self):
-        expected = make_linked_list([1,11,2,10,3,9,4,8,5,7,6])
+        get_sol().reorderList(actual)
+        self.assertEqual(make_linked_list([1,10,2,9,3,8,4,7,5,6]),actual)
+    def test04(self):
         actual=make_linked_list([1,2,3,4,5,6,7,8,9,10,11])
-        Solution().reorderList(actual)
-        self.assertEqual(expected,actual)
+        get_sol().reorderList(actual)
+        self.assertEqual(make_linked_list([1,11,2,10,3,9,4,8,5,7,6]),actual)

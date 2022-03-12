@@ -2,6 +2,24 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
+    def totalFruit(self, A: List[int]) -> int:
+        n=len(A)
+        res=0
+        left,right=0,0
+        count=Counter()
+        while right<n:
+            while len(count)>2:
+                count[A[left]]-=1
+                if count[A[left]]==0:
+                    count.pop(A[left])
+                left+=1
+            res=max(res,sum(count.values()))
+            count[A[right]]+=1
+            right+=1
+        if len(count)<=2:
+            res=max(res,sum(count.values()))
+        return res
+class Solution2:
     def totalFruit(self, tree: List[int]) -> int:
         maxx=1
         n = len(tree)

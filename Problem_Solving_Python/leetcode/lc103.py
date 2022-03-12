@@ -1,13 +1,35 @@
-# https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/discuss/33904/JAVA-Double-Stack-Solution
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
-################################ UNNECESSARY CODES PRESENT IN THIS SOLUTION ##############################
+# https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/discuss/33904/JAVA-Double-Stack-Solution
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root: return []
+        st=[root]
+        res=[]
+        dir=1
+        while st:
+            nxtLevel=[]
+            tmpRes=[]
+            for i in range(len(st))[::dir]:
+                node=st[i]
+                tmpRes.append(node.val)
+                children=[node.left,node.right]
+                for child in children[::dir]:
+                    if child: nxtLevel.append(child)
+            res.append(tmpRes)
+            if dir==-1: nxtLevel.reverse()
+            st=nxtLevel
+            dir*=(-1)
+        return res
+class Solution2:
+    ################################ UNNECESSARY CODES PRESENT IN THIS SOLUTION ##############################
     def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
         if root is None:return []
         st1=[(root,'r')]
@@ -21,17 +43,17 @@ class Solution:
                 if side=='r':
                     if node.right:
                         st2.append((node.right,'l'))
-                        sub_ans.append(node.right.value)
+                        sub_ans.append(node.right.val)
                     if node.left:
                         st2.append((node.left,'l'))
-                        sub_ans.append(node.left.value)
+                        sub_ans.append(node.left.val)
                 else: # side=='l':
                     if node.left:
                         st2.append((node.left,'r'))
-                        sub_ans.append(node.left.value)
+                        sub_ans.append(node.left.val)
                     if node.right:
                         st2.append((node.right,'r'))
-                        sub_ans.append(node.right.value)
+                        sub_ans.append(node.right.val)
             if sub_ans:
                 ans.append(sub_ans)
             sub_ans = []
@@ -40,17 +62,26 @@ class Solution:
                 if side=='r':
                     if node.right:
                         st1.append((node.right,'l'))
-                        sub_ans.append(node.right.value)
+                        sub_ans.append(node.right.val)
                     if node.left:
                         st1.append((node.left,'l'))
-                        sub_ans.append(node.left.value)
+                        sub_ans.append(node.left.val)
                 else: # side=='l':
                     if node.left:
                         st1.append((node.left,'r'))
-                        sub_ans.append(node.left.value)
+                        sub_ans.append(node.left.val)
                     if node.right:
                         st1.append((node.right,'r'))
-                        sub_ans.append(node.right.value)
+                        sub_ans.append(node.right.val)
             if sub_ans:
                 ans.append(sub_ans)
         return ans
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual([[3],[20,9],[15,7]],get_sol().zigzagLevelOrder(des([3,9,20,None,None,15,7])))
+    def test02(self):
+        self.assertEqual([[1]],get_sol().zigzagLevelOrder(des([1])))
+    def test03(self):
+        self.assertEqual([],get_sol().zigzagLevelOrder(des([])))
+    def test04(self):
+        self.assertEqual([[1],[3,2],[4,5]],get_sol().zigzagLevelOrder(des([1,2,3,4,None,None,5])))

@@ -2,49 +2,52 @@ import itertools; import math; import operator; import random; import string; fr
 def get_sol(): return MyLinkedList()
 
 class Node:
-    def __init__(self,val,next=None):
+    def __init__(self, val=0, nextNode=None):
         self.val = val
-        self.next=next
-    def __repr__(self): return str(self.val) + "->" + str(self.next)
+        self.next = nextNode
 class MyLinkedList:
-    def __init__(self):
-        self.dummy_tail = Node(-1)
-        self.dummy_head = Node(-1,self.dummy_tail)
-        self.n=0
-    def _get_node(self,index):
-        if index>=self.n: return None
-        if index==-1: return self.dummy_head
-        cur = self.dummy_head
-        while index:
-            cur = cur.next
-            index-=1
-        return cur.next
-    def get(self, index: int) -> int:
-        node = self._get_node(index)
-        if node: return node.val
-        return -1
 
-    def _add_after(self, val, node):
-        next = node.next
-        node.next = Node(val, next)
-        self.n+=1
+    def __init__(self):
+        self.head = Node(0)  # Dummy node
+        self.size = 0
+    def get(self, index: int) -> int:
+        if index >= self.size:
+            return -1
+
+        cur = self.head
+        for _ in range(index + 1):
+            cur = cur.next
+        return cur.val
+
     def addAtHead(self, val: int) -> None:
-        self._add_after(val,self.dummy_head)
+        self.addAtIndex(0, val)
 
     def addAtTail(self, val: int) -> None:
-        node = self._get_node(self.n-1)
-        self._add_after(val,node)
+        self.addAtIndex(self.size, val)
 
     def addAtIndex(self, index: int, val: int) -> None:
-        if index>self.n: return None
-        node = self._get_node(index-1)
-        self._add_after(val,node)
+        if index > self.size:  # Invalid index
+            return
+
+        prev = self.head
+        for i in range(index):
+            prev = prev.next
+
+        # Add newNode between [prev] and [prev.next]
+        newNode = Node(val, prev.next)
+        prev.next = newNode
+        self.size += 1
 
     def deleteAtIndex(self, index: int) -> None:
-        if index>=self.n: return None
-        self.n-=1
-        node = self._get_node(index-1)
-        node.next = node.next.next
+        if index >= self.size:  # Invalid index
+            return
+
+        prev = self.head
+        for i in range(index):
+            prev = prev.next
+
+        prev.next = prev.next.next
+        self.size -= 1
 
 class tester(unittest.TestCase):
     def do_test(self,commands, inputs):
@@ -52,8 +55,7 @@ class tester(unittest.TestCase):
         obj = ""
         for i,cmd,input in zip(range(len(inputs)),commands,inputs):
             if cmd=='MyLinkedList':
-                obj = get_sol()
-                outputs.append(None)
+                obj = get_sol(); outputs.append(None)
             elif cmd=='get':
                 outputs.append(obj.get(input[0]))
             elif cmd=='addAtHead':

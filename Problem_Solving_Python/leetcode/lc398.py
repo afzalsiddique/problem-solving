@@ -1,6 +1,7 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(x): return Solution(x)
 class Solution:
+    # reservoir sampling
     def __init__(self, nums: List[int]):
         self.nums = nums
     def pick(self, target: int) -> int:

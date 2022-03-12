@@ -1,70 +1,15 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
-    def __repr__(self):
-        return str(self.val)
-    def display(self):
-        lines, *_ = self._display_aux()
-        for line in lines:
-            print(line)
-        # return '\n'.join(lines)
-    def _display_aux(self):
-        """Returns list of strings, width, height, and horizontal coordinate of the root."""
-        # No child.
-        if self.right is None and self.left is None:
-            line = '%s' % self.val
-            width = len(line)
-            height = 1
-            middle = width // 2
-            return [line], width, height, middle
+    def __repr__(self): return str(self.val)
 
-        # Only left child.
-        if self.right is None:
-            lines, n, p, x = self.left._display_aux()
-            s = '%s' % self.val
-            u = len(s)
-            first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
-            second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
-            shifted_lines = [line + u * ' ' for line in lines]
-            return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
-
-        # Only right child.
-        if self.left is None:
-            lines, n, p, x = self.right._display_aux()
-            s = '%s' % self.val
-            u = len(s)
-            first_line = s + x * '_' + (n - x) * ' '
-            second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
-            shifted_lines = [u * ' ' + line for line in lines]
-            return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
-
-        # Two children.
-        left, n, p, x = self.left._display_aux()
-        right, m, q, y = self.right._display_aux()
-        s = '%s' % self.val
-        u = len(s)
-        first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
-        second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
-        if p < q:
-            left += [n * ' '] * (q - p)
-        elif q < p:
-            right += [m * ' '] * (p - q)
-        zipped_lines = zip(left, right)
-        lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
-        return lines, n + m + u, max(p, q) + 2, n + u // 2
-
-# time O(n) space O(height)
 class Solution:
+    # time O(n) space O(height)
     # https://leetcode.com/problems/recover-binary-search-tree/discuss/32535/No-Fancy-Algorithm-just-Simple-and-Powerful-In-Order-Traversal
     first,second=None,None
     prev=TreeNode(float('-inf'))
@@ -82,8 +27,8 @@ class Solution:
         traverse(root)
         self.first.val,self.second.val=self.second.val,self.first.val
 
-# time O(n) space O(n)
 class Solution3:
+    # time O(n) space O(n)
     def recoverTree(self, root: TreeNode) -> None:
         res=[]
 
@@ -93,7 +38,7 @@ class Solution3:
             res.append(root.val)
             if root.right: in_order(root.right)
 
-        def search(root,key):
+        def search(root,key): # given node.val return node pointer
             if not root: return None
             if root.val==key: return root
             return search(root.left,key) or search(root.right,key)
@@ -115,31 +60,12 @@ class Solution3:
         node_p=search(root,p)
         node_q=search(root,q)
         node_p.val,node_q.val=node_q.val,node_p.val
-
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<=1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
-class tester(unittest.TestCase):
-    def test1(self):
-        root=deserialize('1,3,null,null,2')
-        Solution().recoverTree(root)
-        root.display()
+class Tester(unittest.TestCase):
+    def test01(self):
+        root=des([1,3,None,None,2])
+        get_sol().recoverTree(root)
+        self.assertEqual("3,1,null,null,2",ser(root))
+    def test02(self):
+        root=des([3,1,4,None,None,2])
+        get_sol().recoverTree(root)
+        self.assertEqual("2,1,4,null,null,3",ser(root))

@@ -1,3 +1,6 @@
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def letterCasePermutation(self, S: str):
         res = []
@@ -22,3 +25,20 @@ class Solution:
         make_list()
         backtrack(0)
         return res
+
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(sorted(['ab','Ab','aB','AB']), sorted(get_sol().letterCasePermutation('ab')))
+    def test02(self):
+        self.assertEqual(sorted(["a1b2","a1B2","A1b2","A1B2"]), sorted(get_sol().letterCasePermutation('a1b2')))
+    def test03(self):
+        self.assertEqual(sorted(["3z4","3Z4"]), sorted(get_sol().letterCasePermutation("3z4")))
+    def test04(self):
+        self.assertEqual(sorted(["12345"]), sorted(get_sol().letterCasePermutation("12345")))
+    def test05(self):
+        self.assertEqual(sorted(["0"]), sorted(get_sol().letterCasePermutation("0")))
+    def test06(self):
+        self.assertEqual(sorted(["00a","00A"]), sorted(get_sol().letterCasePermutation("00a")))
+    def test07(self):
+        self.assertEqual(sorted(["a00","A00"]), sorted(get_sol().letterCasePermutation("a00")))
+
