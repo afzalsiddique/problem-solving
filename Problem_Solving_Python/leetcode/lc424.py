@@ -1,9 +1,7 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution2()
-######################################################
-#  NO_CHARS_REPLACED = WINDOW_SIZE - MOST_FREQ_LETTER
-######################################################
 class Solution:
+    #  NO_CHARS_REPLACED = WINDOW_SIZE - MOST_FREQ_LETTER
     def characterReplacement(self, s: str, k: int) -> int:
         n = len(s)
         left,right=0,0
@@ -17,7 +15,32 @@ class Solution:
                 left+=1
             maxx = max(maxx, right-left)
         return maxx
+class Solution4:
+    # sliding window template
+    def characterReplacement(self, s: str, k: int) -> int:
+        def replace(char:str):
+            left,right=0,0
+            res=0
+            operationLeft=k
+            while right<len(s):
+                while right<len(s):
+                    if not operationLeft and s[right]!=char:
+                        break
+                    if s[right]!=char:
+                        operationLeft-=1
+                    right+=1
+                res=max(res,right-left)
+                if left<len(s) and s[left]!=char:
+                    operationLeft+=1
+                left+=1
+            return res
+
+        res=0
+        for char in string.ascii_uppercase:
+            res=max(res,replace(char))
+        return res
 class Solution2:
+    #  NO_CHARS_REPLACED = WINDOW_SIZE - MOST_FREQ_LETTER
     def characterReplacement(self, s: str, k: int) -> int:
         n = len(s)
         count = Counter()
@@ -32,6 +55,7 @@ class Solution2:
             maxx = max(maxx, end-start+1)
         return maxx
 class Solution3:
+    #  NO_CHARS_REPLACED = WINDOW_SIZE - MOST_FREQ_LETTER
     def characterReplacement(self, s: str, k: int) -> int:
         n = len(s)
         count = Counter()
@@ -43,7 +67,7 @@ class Solution3:
                 start+=1
             maxx = max(maxx, end-start+1)
         return maxx
-class Solution4:
+class Solution5:
     def characterReplacement(self, s: str, k: int) -> int:
         def f(ch): # every char except 'ch' will be replaced
             n=len(s)
@@ -63,30 +87,23 @@ class Solution4:
         return max(f(letter) for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        expected = 4
-        self.assertEqual(expected, get_sol().characterReplacement("ABAB",2))
-    def test2(self):
-        expected = 4
-        self.assertEqual(expected, get_sol().characterReplacement("AABABBA", 1))
-    def test3(self):
-        expected = 5
-        self.assertEqual(expected, get_sol().characterReplacement("AAAAA", 1))
-    def test4(self):
-        expected = 6
-        self.assertEqual(expected, get_sol().characterReplacement("AAAAAB", 1))
-    def test5(self):
-        expected = 6
-        self.assertEqual(expected, get_sol().characterReplacement("BAAAAA", 1))
-    def test6(self):
-        expected = 4
-        self.assertEqual(expected, get_sol().characterReplacement("AABB", 3))
-    def test7(self):
-        expected = 5
-        self.assertEqual(expected, get_sol().characterReplacement("ABCABCAB", 3))
-    def test8(self):
-        expected = 4
-        self.assertEqual(expected, get_sol().characterReplacement("ABCABCAB", 2))
-    def test9(self):
-        expected = 5
-        self.assertEqual(expected, get_sol().characterReplacement("ABCDABCDAB", 3))
+    def test01(self):
+        self.assertEqual(4, get_sol().characterReplacement("ABAB",2))
+    def test02(self):
+        self.assertEqual(4, get_sol().characterReplacement("AABABBA", 1))
+    def test03(self):
+        self.assertEqual(5, get_sol().characterReplacement("AAAAA", 1))
+    def test04(self):
+        self.assertEqual(6, get_sol().characterReplacement("AAAAAB", 1))
+    def test05(self):
+        self.assertEqual(6, get_sol().characterReplacement("BAAAAA", 1))
+    def test06(self):
+        self.assertEqual(4, get_sol().characterReplacement("AABB", 3))
+    def test07(self):
+        self.assertEqual(5, get_sol().characterReplacement("ABCABCAB", 3))
+    def test08(self):
+        self.assertEqual(4, get_sol().characterReplacement("ABCABCAB", 2))
+    def test09(self):
+        self.assertEqual(5, get_sol().characterReplacement("ABCDABCDAB", 3))
+    def test10(self):
+        self.assertEqual(4, get_sol().characterReplacement("AAAA", 0))

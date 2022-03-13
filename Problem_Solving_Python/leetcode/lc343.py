@@ -1,11 +1,6 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class Solution:
     def integerBreak(self, n: int) -> int:
@@ -24,7 +19,17 @@ class Solution:
             return di[n]
 
         return helper(n)
-
+class Solution2:
+    def integerBreak(self, n: int) -> int:
+        dp = [[0]*(n+1) for _ in range(n+1)]
+        dp[0] = [1 for _ in range(n+1)]
+        for row in dp:
+            row[0] = 1
+        dp[0][0] = 1
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                dp[i][j] = max(dp[i-1][j], dp[i][j-i]*i)
+        return dp[n][n]
 class tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(1,Solution().integerBreak(1))

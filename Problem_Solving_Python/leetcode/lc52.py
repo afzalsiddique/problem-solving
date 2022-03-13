@@ -1,8 +1,9 @@
-# https://leetcode.com/problems/n-queens-ii/
-# https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 
 class Solution:
+    # https://www.youtube.com/watch?v=xFv_Hl4B83A&t=529s
     def totalNQueens(self, n: int) -> int:
         res = []
         queens = [-1] * n
@@ -36,7 +37,19 @@ class Solution:
         return len(res)
 
 
+class MyTestCase(unittest.TestCase):
 
+    def test_1(self):
+        solution = Solution()
+        actual = solution.totalNQueens(4)
+        expected = 2
+        self.assertEqual(expected, actual)
+
+    def test_2(self):
+        solution = Solution()
+        actual = solution.totalNQueens(5)
+        expected = 10
+        self.assertEqual(expected, actual)
 
 
 
