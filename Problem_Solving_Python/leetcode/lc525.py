@@ -1,12 +1,6 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     # time O(n) space O(n)
     def findMaxLength(self, nums: List[int]) -> int:
@@ -24,9 +18,9 @@ class Solution:
 
 
 class tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(2,Solution().findMaxLength([1,0]))
-    def test2(self):
-        self.assertEqual(2,Solution().findMaxLength([0,1,0]))
-    def test3(self):
-        self.assertEqual(6,Solution().findMaxLength([0,0,1,0,0,0,1,1]))
+    def test01(self):
+        self.assertEqual(2,get_sol().findMaxLength([1,0]))
+    def test02(self):
+        self.assertEqual(2,get_sol().findMaxLength([0,1,0]))
+    def test03(self):
+        self.assertEqual(6,get_sol().findMaxLength([0,0,1,0,0,0,1,1]))

@@ -1,19 +1,12 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
-
-
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
-    def __repr__(self):
-        return str(self.val)
+    def __repr__(self): return str(self.val)
 
 class Solution:
     # https://www.youtube.com/watch?v=GX3X5Ami8L8
@@ -29,65 +22,12 @@ class Solution:
         traverse(root)
         return root
 
-
-def deserialize(data):
-    sep,en = ',','null'
-    data = data.split(sep)
-    l = len(data)
-    if l<=1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
-
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
-
-def serialize(root):
-    sep,en = ',','null'
-    if not root: return ''
-
-    q = deque()
-    res = [str(root.val)]
-    q.append(root)
-    while q:
-        cur = q.popleft()
-        for child in [cur.left, cur.right]:
-            if child:
-                q.append(child)
-                res.append(str(child.val))
-            else:
-                res.append(en)
-    while res and res[-1]==en: res.pop()
-    return sep.join(res)
-class mytestcase(unittest.TestCase):
-    def test1_1(self):
-        root = '4,1,6,0,2,5,7,null,null,null,3,null,null,null,8'
-        Output= '30,36,21,36,35,26,15,null,null,null,33,null,null,null,8'
-        root = deserialize(root)
-        self.assertEqual(Output,serialize(get_sol().convertBST(root)))
-    def test1_2(self):
-        root = '0,null,1'
-        Output= '1,null,1'
-        root = deserialize(root)
-        self.assertEqual(Output,serialize(get_sol().convertBST(root)))
-    def test1_3(self):
-        root = '1,0,2'
-        Output= '3,3,2'
-        root = deserialize(root)
-        self.assertEqual(Output,serialize(get_sol().convertBST(root)))
-    def test1_4(self):
-        root = '3,2,4,1'
-        Output= '7,9,4,10'
-        root = deserialize(root)
-        self.assertEqual(Output,serialize(get_sol().convertBST(root)))
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(ser(des([30,36,21,36,35,26,15,None,None,None,33,None,None,None,8])),ser(get_sol().convertBST(des([4,1,6,0,2,5,7,None,None,None,3,None,None,None,8]))))
+    def test02(self):
+        self.assertEqual(ser(des([1,None,1])),ser(get_sol().convertBST(des([0,None,1]))))
+    def test03(self):
+        self.assertEqual(ser(des([3,3,2])),ser(get_sol().convertBST(des([1,0,2]))))
+    def test04(self):
+        self.assertEqual(ser(des([7,9,4,10])),ser(get_sol().convertBST(des([3,2,4,1]))))

@@ -1,17 +1,17 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
 from ..template.binary_tree import deserialize,serialize
-def get_sol(): return Solution4()
+def get_sol(): return Solution()
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
         @functools.lru_cache(None)
-        def func(i,cur):
+        def func(i, left):
             if i==len(nums):
-                if cur==target:
+                if left==0:
                     return 1
                 return 0
-            return func(i+1,cur+nums[i])+func(i+1,cur-nums[i])
+            return func(i + 1, left + nums[i]) + func(i + 1, left - nums[i])
 
-        return func(0,0)
+        return func(0,target)
 class Solution4:
     # https://www.youtube.com/watch?v=MqYLmIzl8sQ
     # https://www.youtube.com/watch?v=hqGa65Rp5LQ&t=312s
@@ -92,21 +92,23 @@ class Solution2:
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(2,get_sol().sumSubset([1,2,1],3))
-    def test2(self):
+    # def test01(self):
+    #     self.assertEqual(2,get_sol().sumSubset([1,2,1],3))
+    def test02(self):
         self.assertEqual(0,get_sol().findTargetSumWays([1],2))
-    def test3(self):
+    def test03(self):
         self.assertEqual(256,get_sol().findTargetSumWays([0,0,0,0,0,0,0,0,1],1))
-    def test4(self):
+    def test04(self):
         self.assertEqual(2,get_sol().findTargetSumWays([1,0],1))
-    def test5(self):
+    def test05(self):
         self.assertEqual(792,get_sol().findTargetSumWays([1,1,1,1,1,1,1,1,1,1,1,1],2))
-    def test6(self):
+    def test06(self):
         self.assertEqual(5,get_sol().findTargetSumWays([1,1,1,1,1], 3))
-    def test7(self):
+    def test07(self):
         self.assertEqual(0,get_sol().findTargetSumWays([1,1,1,1], 3))
-    def test8(self):
+    def test08(self):
         self.assertEqual(1,get_sol().findTargetSumWays([1,1,1], 3))
-    def test9(self):
+    def test09(self):
         self.assertEqual(5564,get_sol().findTargetSumWays([50,37,6,20,35,41,45,3,20,36,49,1,20,10,43,4,44,15,44,34], 25))
+    def test10(self):
+        self.assertEqual(7219,get_sol().findTargetSumWays([42,36,4,15,17,15,31,1,11,2,12,28,22,9,2,31,48,18,48,5], 15))

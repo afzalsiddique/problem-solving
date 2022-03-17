@@ -4,6 +4,22 @@ def get_sol(): return Solution()
 
 class Solution:
     def integerBreak(self, n: int) -> int:
+        @cache
+        def dp(left):
+            if left<0:
+                return float('-inf')
+            if left==0:
+                return 1
+            res=float('-inf')
+            for i in range(1,left+1):
+                res=max(res, i*dp(left - i))
+            return res
+
+        if n==2: return 1
+        if n==3: return 2
+        return dp(n)
+class Solution3:
+    def integerBreak(self, n: int) -> int:
         di={}
         def helper(n):
             if n==1 or n==2: return 1
@@ -32,18 +48,20 @@ class Solution2:
         return dp[n][n]
 class tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(1,Solution().integerBreak(1))
+        self.assertEqual(1,get_sol().integerBreak(1))
     def test2(self):
-        self.assertEqual(1,Solution().integerBreak(2))
+        self.assertEqual(1,get_sol().integerBreak(2))
     def test3(self):
-        self.assertEqual(2,Solution().integerBreak(3))
+        self.assertEqual(2,get_sol().integerBreak(3))
     def test4(self):
-        self.assertEqual(4,Solution().integerBreak(4))
+        self.assertEqual(4,get_sol().integerBreak(4))
     def test5(self):
-        self.assertEqual(6,Solution().integerBreak(5))
+        self.assertEqual(6,get_sol().integerBreak(5))
     def test6(self):
-        self.assertEqual(9,Solution().integerBreak(6))
+        self.assertEqual(9,get_sol().integerBreak(6))
     def test7(self):
-        self.assertEqual(36,Solution().integerBreak(10))
+        self.assertEqual(36,get_sol().integerBreak(10))
     def test8(self):
-        self.assertEqual(18,Solution().integerBreak(8))
+        self.assertEqual(18,get_sol().integerBreak(8))
+    def test9(self):
+        self.assertEqual(4374,get_sol().integerBreak(23))

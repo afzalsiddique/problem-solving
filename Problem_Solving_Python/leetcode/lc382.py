@@ -15,8 +15,8 @@ class Solution:
         res=-1
         count = 0
         while cur:
-            tmp = random.randint(0,count)
-            if tmp==0:
+            if random.randint(0,count)==0:
+            # if random.randint(0,count)==count: # also works
                 res=cur.val
             count+=1
             cur=cur.next

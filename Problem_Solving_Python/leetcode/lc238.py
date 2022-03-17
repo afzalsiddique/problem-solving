@@ -2,23 +2,20 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
-    # https://leetcode.com/problems/product-of-array-except-self/submissions/
     # https://leetcode.com/problems/product-of-array-except-self/discuss/65622/Simple-Java-solution-in-O(n)-without-extra-space/67603
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        res = [0 for i in range(n)]
-        res[0] = 1
-        left = 1
-        for i in range(1, n):
-            left = left * nums[i-1]
-            res[i] = left
-        right = 1
-        for i in range(n-1, 0, -1):
-            res[i] = res[i] * right
-            right = right * nums[i]
-        res[0] = res[0] * right
-        return res
+    def productExceptSelf(self, A: List[int]) -> List[int]:
+        n=len(A)
+        res=[1]*n
+        left=1
+        for i in range(n-1):
+            left*=A[i]
+            res[i+1]=left
 
+        right=1
+        for i in range(n-1,0,-1):
+            right*=A[i]
+            res[i-1]*=right
+        return res
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual([60, 40, 30, 24], get_sol().productExceptSelf([2,3,4,5]))

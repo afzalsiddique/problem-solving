@@ -1,6 +1,6 @@
 from collections import Counter
 # union find class
-class UnionFind:
+class UnionFind: # if no of items at the time of instantiation, create a method add and use dict instead of array
     def __init__(self,n):
         self.n=n
         self.par=[i for i in range(n)]

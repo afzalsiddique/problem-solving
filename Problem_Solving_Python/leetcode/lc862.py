@@ -2,39 +2,41 @@ import functools; import itertools; import math; import operator; import random;
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/discuss/189039/Detailed-intuition-behind-Deque-solution
-    def shortestSubarray(self, nums: List[int], k: int) -> int:
-        n=len(nums)
+    def shortestSubarray(self, A: List[int], k: int) -> int:
+        n=len(A)
         res=float('inf')
         deq = deque()
-        pre = [0]+list(itertools.accumulate(nums))
+        A = [0]+list(itertools.accumulate(A))
         for i in range(n+1):
-            while deq and pre[i]-pre[deq[0]]>=k:
+            while deq and A[i]-A[deq[0]]>=k:
                 res=min(res,i-deq.popleft())
-            while deq and pre[i]<=pre[deq[-1]]:
+            while deq and A[i]<=A[deq[-1]]:
                 deq.pop()
             deq.append(i)
         return -1 if res==float('inf') else res
 
 
 
-class MyTestCase(unittest.TestCase):
-    def test1(self):
-        nums,k = [1],  1
-        Output= 1
-        self.assertEqual(Output, get_sol().shortestSubarray(nums,k))
-    def test2(self):
-        nums,k = [1,2],  4
-        Output= -1
-        self.assertEqual(Output, get_sol().shortestSubarray(nums,k))
-    def test3(self):
-        nums,k = [2,-1,2],  3
-        Output= 3
-        self.assertEqual(Output, get_sol().shortestSubarray(nums,k))
-    def test4(self):
-        nums,k = [56,-21,56,35,-9], 61
-        Output= 2
-        self.assertEqual(Output, get_sol().shortestSubarray(nums,k))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
-    # def test8(self):
+class Tester(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(1, get_sol().shortestSubarray([1],  1))
+    def test02(self):
+        self.assertEqual(-1, get_sol().shortestSubarray([1,2],  4))
+    def test03(self):
+        self.assertEqual(3, get_sol().shortestSubarray([2,-1,2],  3))
+    def test04(self):
+        self.assertEqual(2, get_sol().shortestSubarray([56,-21,56,35,-9], 61))
+    def test05(self):
+        self.assertEqual(3, get_sol().shortestSubarray([84,-37,32,40,95], 167))
+    def test06(self):
+        self.assertEqual(3, get_sol().shortestSubarray([-28,81,-20,28,-29], 89))
+    def test07(self):
+        self.assertEqual(2, get_sol().shortestSubarray([56,-21,56,35,-9], 61))
+    def test08(self):
+        self.assertEqual(2, get_sol().shortestSubarray([-34,37,51,3,-12,-50,51,100,-47,99,34,14,-13,89,31,-14,-44,23,-38,6], 151))
+    def test09(self):
+        self.assertEqual(2, get_sol().shortestSubarray([37,51,-50,51,100], 151))
+    def test10(self):
+        self.assertEqual(2, get_sol().shortestSubarray([37,51,-50,51,100,-47], 151))
+    def test11(self):
+        self.assertEqual(2, get_sol().shortestSubarray([-34,37,51,3,-12,-50,51,100,-47], 151))

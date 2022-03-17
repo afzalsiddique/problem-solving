@@ -1,6 +1,6 @@
-import unittest
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def mySqrt(self, x):
         l, r = 0, x
@@ -15,35 +15,15 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        solution = Solution()
-        actual = solution.mySqrt(9)
-        expected = 3
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
-        actual = solution.mySqrt(10)
-        expected = 3
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        solution = Solution()
-        actual = solution.mySqrt(4)
-        expected = 2
-        self.assertEqual(expected, actual)
-    def test_4(self):
-        solution = Solution()
-        actual = solution.mySqrt(8)
-        expected = 2
-        self.assertEqual(expected, actual)
-    def test_5(self):
-        solution = Solution()
-        actual = solution.mySqrt(0)
-        expected = 0
-        self.assertEqual(expected, actual)
-    def test_6(self):
-        solution = Solution()
-        actual = solution.mySqrt(1)
-        expected = 1
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(3, get_sol().mySqrt(9))
+    def test02(self):
+        self.assertEqual(3, get_sol().mySqrt(10))
+    def test03(self):
+        self.assertEqual(2, get_sol().mySqrt(4))
+    def test04(self):
+        self.assertEqual(2, get_sol().mySqrt(8))
+    def test05(self):
+        self.assertEqual(0, get_sol().mySqrt(0))
+    def test06(self):
+        self.assertEqual(1, get_sol().mySqrt(1))
