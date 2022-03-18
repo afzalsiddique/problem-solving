@@ -1,6 +1,6 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 # https://www.youtube.com/watch?v=1xfx6M_GqFk
 class Solution3:
     def numSquares(self, n: int) -> int:
@@ -57,3 +57,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().numSquares(4))
     def test_5(self):
         self.assertEqual(2, get_sol().numSquares(5))
+    def test_6(self):
+        self.assertEqual(3, get_sol().numSquares(6110))

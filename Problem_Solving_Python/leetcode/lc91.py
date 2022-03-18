@@ -1,6 +1,21 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
+    def numDecodings(self, s: str) -> int:
+        @cache
+        def dfs(i):
+            if i==n: return 1
+            if s[i]=='0': return 0
+            res=0
+            res+=dfs(i+1)
+            if i<n-1 and int(s[i:i+2])<=26:
+                res+=dfs(i+2)
+            return res
+
+        n=len(s)
+        return dfs(0)
+class Solution3:
     def numDecodings(self, s: str) -> int:
         def dfs(s:str):
             if s in dp: return dp[s]
@@ -16,16 +31,6 @@ class Solution:
             return ans
 
         dp={}
-        return dfs(s)
-class Solution3:
-    def numDecodings(self, s: str) -> int:
-        @functools.lru_cache(None)
-        def dfs(s:str):
-            if not s: return 1
-            if s[0]=='0': return 0
-            if len(s)==1: return 1
-            return dfs(s[1:]) + (dfs(s[2:]) if int(s[:2])<=26 else 0)
-
         return dfs(s)
 class Solution2:
     def numDecodings(self, s: str) -> int:
@@ -53,43 +58,43 @@ class Solution2:
 
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(2, Solution().numDecodings('12'))
-    def test2(self):
-        self.assertEqual(3, Solution().numDecodings('226'))
-    def test3(self):
-        self.assertEqual(0, Solution().numDecodings('0'))
-    def test4(self):
-        self.assertEqual(0, Solution().numDecodings('06'))
-    def test5(self):
-        self.assertEqual(433494437, Solution().numDecodings('111111111111111111111111111111111111111111'))
-    def test_1(self):
-        self.assertEqual(2, get_sol().numDecodings(s = '11'))
-    def test_2(self):
-        self.assertEqual(1, get_sol().numDecodings(s = '10'))
-    def test_3(self):
-        self.assertEqual(0, get_sol().numDecodings(s = '01'))
-    def test_4(self):
-        self.assertEqual(0, get_sol().numDecodings(s = '0002'))
-    def test_5(self):
-        self.assertEqual(1, get_sol().numDecodings(s = '27'))
-    def test_6(self):
-        self.assertEqual(1, get_sol().numDecodings(s = '72'))
-    def test_7(self):
-        self.assertEqual(3, get_sol().numDecodings(s = '121'))
-    def test_8(self):
-        self.assertEqual(2, get_sol().numDecodings(s = '811'))
-    def test_9(self):
-        self.assertEqual(2, get_sol().numDecodings(s = '181'))
-    def test_10(self):
-        self.assertEqual(3, get_sol().numDecodings(s = '118'))
-    def test_11(self):
-        self.assertEqual(3, get_sol().numDecodings(s = '2262'))
-    def test_12(self):
-        self.assertEqual(3, get_sol().numDecodings(s = '226'))
-    def test_13(self):
-        self.assertEqual(0, get_sol().numDecodings(s = '0'))
-    def test_14(self):
-        self.assertEqual(0, get_sol().numDecodings(s = '230'))
-    def test_15(self):
-        self.assertEqual(4, get_sol().numDecodings(s = '227257'))
+    def test01(self):
+        self.assertEqual(2, get_sol().numDecodings('12'))
+    def test02(self):
+        self.assertEqual(3, get_sol().numDecodings('226'))
+    def test03(self):
+        self.assertEqual(0, get_sol().numDecodings('0'))
+    def test04(self):
+        self.assertEqual(0, get_sol().numDecodings('06'))
+    def test05(self):
+        self.assertEqual(433494437, get_sol().numDecodings('111111111111111111111111111111111111111111'))
+    def test06(self):
+        self.assertEqual(2, get_sol().numDecodings('11'))
+    def test07(self):
+        self.assertEqual(1, get_sol().numDecodings( '10'))
+    def test08(self):
+        self.assertEqual(0, get_sol().numDecodings( '01'))
+    def test10(self):
+        self.assertEqual(0, get_sol().numDecodings( '0002'))
+    def test11(self):
+        self.assertEqual(1, get_sol().numDecodings( '27'))
+    def test12(self):
+        self.assertEqual(1, get_sol().numDecodings( '72'))
+    def test13(self):
+        self.assertEqual(3, get_sol().numDecodings( '121'))
+    def test14(self):
+        self.assertEqual(2, get_sol().numDecodings( '811'))
+    def test15(self):
+        self.assertEqual(2, get_sol().numDecodings( '181'))
+    def test16(self):
+        self.assertEqual(3, get_sol().numDecodings('118'))
+    def test17(self):
+        self.assertEqual(3, get_sol().numDecodings('2262'))
+    def test18(self):
+        self.assertEqual(3, get_sol().numDecodings('226'))
+    def test19(self):
+        self.assertEqual(0, get_sol().numDecodings('0'))
+    def test20(self):
+        self.assertEqual(0, get_sol().numDecodings('230'))
+    def test21(self):
+        self.assertEqual(4, get_sol().numDecodings('227257'))

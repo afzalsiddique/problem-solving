@@ -1,9 +1,59 @@
-import unittest
-from collections import defaultdict
-from typing import List
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
+class UnionFind:
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
+    def union(self,a,b):
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def unionAll(self,li):
+        if len(li)<1: return
+        first=li[0]
+        for second in li[1:]:
+            self.union(first,second)
 class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        emailToName={}
+        uf=UnionFind()
+        for a in accounts:
+            name=a[0]
+            for email in a[1:]:
+                emailToName[email]=name
+            uf.unionAll(a[1:])
+
+        di=defaultdict(list)
+        for email in emailToName:
+            rep_email=uf.find(email)
+            di[rep_email].append(email)
+        for email in di:
+            di[email].sort()
+
+        res=[]
+        for rep_email in di:
+            name=emailToName[rep_email]
+            li=[name]+di[rep_email]
+            res.append(li)
+        return res
+
+class Solution2:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
         parent = {}
 
@@ -61,57 +111,9 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-
-    def test_1(self):
-        sol = Solution()
+    def test01(self):
         expected = [["John",'1', '2', '3'],  ["John", "101"], ["Mary", "999"]]
-        actual = sol.accountsMerge(accounts = [["John", "1", "2"], ["John", "101"], ["John", "1", "3"], ["Mary", "999"]])
-        self.assertEqual(expected, actual)
-
-    def test_2(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_4(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_5(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_6(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_7(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_8(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
-
-    def test_9(self):
-        sol = Solution()
-        expected = 0
-        actual = sol.firstBadVersion(0)
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, get_sol().accountsMerge([["John", "1", "2"], ["John", "101"], ["John", "1", "3"], ["Mary", "999"]]))
+    def test02(self):
+        expected = [["Ethan","1","2","3"],["Gabe","4","5","6"],["Hanzo","7","8","9"],["Kevin","10","11","12"],["Fern","13","14","15"]]
+        self.assertEqual(expected, get_sol().accountsMerge([["Gabe","4","6","5"],["Kevin","11","12","10"],["Ethan","3","2","1"],["Hanzo","9","8","7"],["Fern","15","14","13"]]))

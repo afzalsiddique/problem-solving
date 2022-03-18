@@ -1,20 +1,15 @@
-import math
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
-    def __repr__(self):
-        return str(self.val)
+    def __repr__(self): return str(self.val)
 
-# leetcode original
 class Solution:
+    # leetcode original
     count = Counter()
     ans = []
     # return string
@@ -86,35 +81,29 @@ class Solution3:
 
         dfs(root)
         return res
-def my_deserialize(data):
-    sep,en = ',','#'
-    data = data.split(sep)
-    l = len(data)
-    if l<1:return None
-    root = TreeNode(int(data[0]))
-    q = deque()
-    q.append(root)
-    i=1
-    while i<l and q:
 
-        curr = q.popleft()
-        if data[i]!=en:
-            curr.left = TreeNode(int(data[i]))
-            q.append(curr.left)
-        i+=1
-        if i<l and data[i]!=en:
-            curr.right = TreeNode(int(data[i]))
-            q.append(curr.right)
-        i+=1
-
-    return root
-class mytestcase(unittest.TestCase):
-    def test1(self):
-        root = my_deserialize("1,2,3,#,#,4,5")
-        self.assertEqual("####",Solution().dfs(root))
-    def test2(self):
-        root = my_deserialize("1,2,3,4,#,2,4,#,#,4")
-        self.assertEqual("####",Solution().dfs(root))
-    def test3(self):
-        root = my_deserialize("1,2,3")
-        self.assertEqual("####",Solution().dfs(root))
+class Tester(unittest.TestCase):
+    def test01(self):
+        Output=[]
+        root=des([1,2,3,None,None,4,5])
+        Output=map(des,Output)
+        Output=list(map(ser,Output))
+        actual=get_sol().findDuplicateSubtrees(root)
+        actual=list(map(ser,actual))
+        self.assertEqual(Output,actual)
+    def test02(self):
+        Output=[[4],[2,4]]
+        root=des([1,2,3,4,None,2,4,None,None,4])
+        Output=map(des,Output)
+        Output=list(map(ser,Output))
+        actual=get_sol().findDuplicateSubtrees(root)
+        actual=list(map(ser,actual))
+        self.assertEqual(Output,actual)
+    def test03(self):
+        Output=[[2,3],[3]]
+        root=des([2,2,2,3,None,3,None])
+        Output=map(des,Output)
+        Output=list(map(ser,Output))
+        actual=get_sol().findDuplicateSubtrees(root)
+        actual=list(map(ser,actual))
+        self.assertEqual(Output,actual)

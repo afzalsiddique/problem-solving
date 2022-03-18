@@ -23,6 +23,34 @@ class UnionFind: # if no of items at the time of instantiation, create a method 
             self.find(a)
         count=Counter(self.par)
         return list(count.values())
+class UnionFind2:
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
+    def union(self,a,b):
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def unionAll(self,li):
+        if len(li)<1: return
+        first=li[0]
+        for second in li[1:]:
+            self.union(first,second)
 # union find 1
 root = {}
 def find(x):

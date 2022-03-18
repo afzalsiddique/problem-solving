@@ -39,19 +39,13 @@ class Solution2:
         return res
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        actual = get_sol().kSmallestPairs(nums1 = [1,7,11], nums2 = [2,4,6], k = 3)
-        self.assertEqual([[1,2],[1,4],[1,6]], actual)
-    def test_2(self):
-        expected = [[1,1],[1,1]]
-        actual = get_sol().kSmallestPairs(nums1 = [1,1,2], nums2 = [1,2,3], k = 2)
-        self.assertEqual(expected, actual)
-    def test_3(self):
-        expected = [[1,3],[2,3]]
-        actual = get_sol().kSmallestPairs(nums1 = [1,2], nums2 = [3], k = 3)
-        self.assertEqual(expected, actual)
-    def test_4(self):
-        expected = [[1,3],[2,3],[1,5]]
-        actual = get_sol().kSmallestPairs(nums1 = [1,2,4,5,6], nums2 = [3,5,7,9], k = 3)
-        self.assertEqual(expected, actual)
-
+    def test01(self):
+        self.assertEqual([[1,2],[1,4],[1,6]], get_sol().kSmallestPairs( [1,7,11],  [2,4,6],  3))
+    def test02(self):
+        self.assertEqual([[1,1],[1,1]], get_sol().kSmallestPairs( [1,1,2],  [1,2,3],  2))
+    def test03(self):
+        self.assertEqual([[1,3],[2,3]], get_sol().kSmallestPairs( [1,2],  [3],  3))
+    def test04(self):
+        self.assertEqual([[1,3],[2,3],[1,5]], get_sol().kSmallestPairs( [1,2,4,5,6],  [3,5,7,9],  3))
+    def test05(self):
+        self.assertEqual(sorted([[1,1],[1,1],[2,1],[1,2],[1,2],[2,2],[1,3],[1,3],[2,3]]), sorted(get_sol().kSmallestPairs([1,1,2], [1,2,3], 10)))
