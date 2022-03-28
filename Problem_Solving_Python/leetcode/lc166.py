@@ -35,35 +35,21 @@ class Solution:
         return '-'+res if minus else res
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        numerator,denominator = 1,  2
-        Output= "0.5"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test2(self):
-        numerator,denominator = 2,  1
-        Output= "2"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test3(self):
-        numerator,denominator = 2,  3
-        Output= "0.(6)"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test4(self):
-        numerator,denominator = 4,  333
-        Output= "0.(012)"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test5(self):
-        numerator,denominator = 1,  5
-        Output= "0.2"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test6(self):
-        numerator,denominator = -50, 8
-        Output= "-6.25"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test7(self):
-        numerator,denominator = -2147483648, 1
-        Output= "-2147483648"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
-    def test8(self):
-        numerator,denominator = 1, 6
-        Output= "0.1(6)"
-        self.assertEqual(Output, get_sol().fractionToDecimal(numerator,denominator))
+    def test01(self):
+        self.assertEqual("0.5", get_sol().fractionToDecimal( 1,  2))
+    def test02(self):
+        self.assertEqual("2", get_sol().fractionToDecimal( 2,  1))
+    def test03(self):
+        self.assertEqual("0.(6)", get_sol().fractionToDecimal( 2,  3))
+    def test04(self):
+        self.assertEqual("0.(012)", get_sol().fractionToDecimal( 4,  333))
+    def test05(self):
+        self.assertEqual("0.2", get_sol().fractionToDecimal( 1,  5))
+    def test06(self):
+        self.assertEqual("-6.25", get_sol().fractionToDecimal( -50, 8))
+    def test07(self):
+        self.assertEqual("-2147483648", get_sol().fractionToDecimal( -2147483648, 1))
+    def test08(self):
+        self.assertEqual("0.1(6)", get_sol().fractionToDecimal( 1, 6))
+    def test09(self):
+        self.assertEqual("0", get_sol().fractionToDecimal( 0, -5))

@@ -1,12 +1,5 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
     # trie + dfs
@@ -22,7 +15,7 @@ class Solution:
         res=[]
         trie = Trie()
         for word in products:
-            trie.insert(word)
+            trie.add(word)
 
         for i,c in enumerate(searchWord):
             temp=[]
@@ -48,7 +41,7 @@ class Trie:
     def __init__(self):
         self.root=Node('#')
 
-    def insert(self, word: str) -> None:
+    def add(self, word: str) -> None:
         node=self.root
         for c in word:
             if c not in node.children:

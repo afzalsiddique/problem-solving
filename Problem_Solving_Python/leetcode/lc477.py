@@ -12,14 +12,10 @@ class Solution:
         return total
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        nums = [4,14,2]
-        Output= 6
-        self.assertEqual(Output, get_sol().totalHammingDistance(nums))
-    def test2(self):
-        nums = [4,14,4]
-        Output= 4
-        self.assertEqual(Output, get_sol().totalHammingDistance(nums))
+    def test01(self):
+        self.assertEqual(6, get_sol().totalHammingDistance([4,14,2]))
+    def test02(self):
+        self.assertEqual(4, get_sol().totalHammingDistance([4,14,4]))
     # def test3(self):
     # def test4(self):
     # def test5(self):

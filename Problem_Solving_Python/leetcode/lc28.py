@@ -65,7 +65,7 @@ class Solution2:
                 i+=1
                 j+=1
                 if j==len(needle):
-                    return i-j
+                    return i-n
             else:
                 if j==0:
                     i+=1
@@ -130,17 +130,17 @@ class Solution3:
 
 
 class Tester(unittest.TestCase):
-    def test_1(self):
-        self.assertEqual(2, get_sol().strStr(haystack = "hello", needle = "ll"))
-    def test_2(self):
-        self.assertEqual(-1, get_sol().strStr(haystack = "aaaaa", needle = "bba"))
-    def test_3(self):
-        self.assertEqual(0, get_sol().strStr(haystack = "", needle = ""))
-    def test_4(self):
+    def test01(self):
+        self.assertEqual(2, get_sol().strStr("hello", "ll"))
+    def test02(self):
+        self.assertEqual(-1, get_sol().strStr("aaaaa", "bba"))
+    def test03(self):
+        self.assertEqual(0, get_sol().strStr("", ""))
+    def test04(self):
         self.assertEqual(0, get_sol().strStr("a","a"))
-    def test_5(self):
+    def test05(self):
         self.assertEqual(0, get_sol().strStr("mississippi","mississippi"))
-    def test_6(self):
+    def test06(self):
         self.assertEqual(-1, get_sol().strStr( "mississippi" ,"issipi"))
-    def test_7(self):
+    def test07(self):
         self.assertEqual(4, get_sol().strStr( "mississippi" ,"issip"))

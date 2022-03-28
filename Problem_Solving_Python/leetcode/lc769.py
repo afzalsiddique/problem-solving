@@ -1,4 +1,5 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/max-chunks-to-make-sorted/discuss/138844/Python-O(n)-Very-Detailed-Explanation
@@ -12,6 +13,16 @@ class Solution:
                 chunks+=1
         return chunks
 class Solution2:
+    # time O(n) space O(n)
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        left_max=list(accumulate(arr,max))
+        right_min=list(accumulate(arr[::-1],min))[::-1]
+        chunks=1
+        for i in range(len(arr)-1):
+            if left_max[i]<right_min[i+1]:
+                chunks+=1
+        return chunks
+class Solution4:
     # https://leetcode.com/problems/max-chunks-to-make-sorted/discuss/113520/Java-solution-left-max-and-right-min.
     # time O(n) space O(n)
     def maxChunksToSorted(self, arr):
@@ -48,32 +59,21 @@ class Solution3:
                 chunks+=1
         return chunks
 
-class tester(unittest.TestCase):
+
+class Tester(unittest.TestCase):
     def test01(self):
-        arr = [4,3,2,1,0]
-        Output= 1
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(1, get_sol().maxChunksToSorted([0]))
     def test02(self):
-        arr = [1,0,2,3,4]
-        Output= 4
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(2, get_sol().maxChunksToSorted([0,1]))
     def test03(self):
-        arr = [1,2,0,3]
-        Output= 2
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(2, get_sol().maxChunksToSorted([0,2,1]))
     def test04(self):
-        arr = [4,0,2,3,1]
-        Output= 1
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(2, get_sol().maxChunksToSorted([1,2,0,3]))
     def test05(self):
-        arr = [0]
-        Output= 1
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(1, get_sol().maxChunksToSorted([4,3,2,1,0]))
     def test06(self):
-        arr = [0,1]
-        Output= 2
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(4, get_sol().maxChunksToSorted([1,0,2,3,4]))
     def test07(self):
-        arr = [0,2,1,4,3]
-        Output= 3
-        self.assertEqual(Output, get_sol().maxChunksToSorted(arr))
+        self.assertEqual(1, get_sol().maxChunksToSorted([4,0,2,3,1]))
+    def test08(self):
+        self.assertEqual(3, get_sol().maxChunksToSorted([0,2,1,4,3]))

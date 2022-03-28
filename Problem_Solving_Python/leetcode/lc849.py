@@ -1,8 +1,6 @@
-import unittest
-from typing import List
-def get_sol_obj(): return Solution2()
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def maxDistToClosest(self, seats):
         people = (i for i, seat in enumerate(seats) if seat)
@@ -43,32 +41,41 @@ class Solution2:
         end=cnt # [1,0,0,0]
         return max(start,end,middle//2)
 
+class Solution3:
+    def maxDistToClosest(self, A: List[int]) -> int:
+        n=len(A)
+        left=0
+        while left<n and A[left]==0:
+            left+=1
+        leftMax=left
+        right=n-1
+        while right>=0 and A[right]==0:
+            right-=1
+        rightMax=n-1-right
+
+        middleMax=float('-inf')
+        i=left
+        cnt=0
+        while i<n:
+            if A[i]==1:
+                middleMax=max(middleMax,ceil(cnt/2))
+                cnt=0
+            else:
+                cnt+=1
+            i+=1
+        return max(leftMax,rightMax,middleMax)
 class MyTestCase(unittest.TestCase):
-    def test_01(self):
-        seats = [1,0,0,0,1,0,1]
-        Output= 2
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_02_1(self):
-        seats = [1,0,0,0]
-        Output= 3
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_02_2(self):
-        seats = [0,0,0,1]
-        Output= 3
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_03_1(self):
-        seats = [1,0,0]
-        Output= 2
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_03_2(self):
-        seats = [0,0,1]
-        Output= 2
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_04(self):
-        seats = [0,1]
-        Output= 1
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
-    def test_05(self):
-        seats = [1,0,0,1]
-        Output= 1
-        self.assertEqual(Output, get_sol_obj().maxDistToClosest(seats))
+    def test01(self):
+        self.assertEqual(2, get_sol().maxDistToClosest([1,0,0,0,1,0,1]))
+    def test02_1(self):
+        self.assertEqual(3, get_sol().maxDistToClosest([1,0,0,0]))
+    def test02_2(self):
+        self.assertEqual(3, get_sol().maxDistToClosest([0,0,0,1]))
+    def test03_1(self):
+        self.assertEqual(2, get_sol().maxDistToClosest([1,0,0]))
+    def test03_2(self):
+        self.assertEqual(2, get_sol().maxDistToClosest([0,0,1]))
+    def test04(self):
+        self.assertEqual(1, get_sol().maxDistToClosest([0,1]))
+    def test05(self):
+        self.assertEqual(1, get_sol().maxDistToClosest([1,0,0,1]))

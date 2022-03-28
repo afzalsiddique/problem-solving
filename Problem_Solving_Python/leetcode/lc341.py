@@ -1,60 +1,35 @@
-import builtins
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+def get_sol(x): return NestedIterator(x)
+class NestedInteger:
+    def isInteger(self) -> bool:
+        pass
+    def getInteger(self) -> int:
+        pass
+    def getList(self):
+        pass
 
-
-
-
-# """
-# This is the interface that allows for creating nested lists.
-# You should not implement it, or speculate about its implementation
-# """
-# class NestedInteger:
-#    def isInteger(self) -> bool:
-#        """
-#        @return True if this NestedInteger holds a single integer, rather than a nested list.
-#        """
-#
-#    def getInteger(self) -> int:
-#        """
-#        @return the single integer that this NestedInteger holds, if it holds a single integer
-#        Return None if this NestedInteger holds a nested list
-#        """
-#
-#    def getList(self) -> [NestedInteger]:
-#        """
-#        @return the nested list that this NestedInteger holds, if it holds a nested list
-#        Return None if this NestedInteger holds a single integer
-#        """
-
-# iterate from the back using stack
 class NestedIterator:
-    def __init__(self, nestedList):
-        self.stack = []
-        for i in reversed(nestedList):
-            self.stack.append(i)
-
-    def next(self)->int:
-        return self.stack.pop().getInteger()
-
-    def hasNext(self)->bool:
-        while self.stack:
-            currInteger = self.stack[-1]
-            if currInteger.isInteger():
-                return True
-            currInteger= self.stack.pop()
-            for i in reversed(currInteger.getList()):
-                self.stack.append(i)
-        return False
+    def __init__(self, nestedList: [NestedInteger]):
+        self.st=[]
+        self.prepareStack(nestedList)
+    def next(self) -> int:
+        if self.hasNext():
+            return self.st.pop().getInteger()
+    def hasNext(self) -> bool:
+        st=self.st
+        while st and not st[-1].isInteger():
+            li=st.pop().getList()
+            self.prepareStack(li)
+        return len(st)>0
+    def prepareStack(self,li):
+        for i in range(len(li)-1,-1,-1):
+            self.st.append(li[i])
 
 # iterate from the front using queue
 class NestedIterator2:
 
-    def __init__(self, nestedList: [NestedInteger2]):
+    def __init__(self, nestedList: [NestedInteger]):
         self.queue = deque(nestedList)
 
     def next(self)->int:

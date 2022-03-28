@@ -1,14 +1,25 @@
-import itertools
-import math
-import operator
-import random
-from bisect import *
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-def get_sol(): return Solution2()
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        @cache
+        def factorial(n): return 1 if n==0 else n*factorial(n-1)
+        def nP2(n): return factorial(n)//factorial(n-2)
+        count=defaultdict(int)
+        for i,(x1,y1) in enumerate(points):
+            for j,(x2,y2) in enumerate(points):
+                if i==j: continue
+                x,y=abs(x2-x1),abs(y2-y1)
+                dist=x*x+y*y
+                count[i,dist]+=1
+
+        res=0
+        for it in count:
+            if count[it]>=2:
+                res+=nP2(count[it])
+        return res
+class Solution3:
     def numberOfBoomerangs(self, points: List[List[int]]) -> int:
         def sq_dist(a,b): # euclidean distance squared
             return (a[0]-b[0])**2 + (a[1]-b[1])**2

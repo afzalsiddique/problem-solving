@@ -26,8 +26,64 @@ class Solution:
                 prev = int(prev / cur)
             cur, sign = 0, c
         return result + prev
-
-class Solution2:
+class Solution6:
+    # no stack but simulates stack
+    def calculate(self, s: str) -> int:
+        prevSign='+'
+        prev=0
+        res=0
+        num=0
+        for i in range(len(s)+1):
+            if i<len(s) and s[i]==' ':
+                continue
+            if i<len(s) and '0'<=s[i]<='9':
+                num=num*10+int(s[i])
+            else:
+                if prevSign=='+':
+                    prev=num
+                elif prevSign=='-':
+                    prev=-num
+                elif prevSign=='*':
+                    res-=prev
+                    prev=num*prev
+                else:
+                    res-=prev
+                    sign=1 if prev>0 else -1
+                    prev=abs(prev)
+                    prev=(prev//num)*sign
+                res+=prev
+                num=0
+                if i<len(s): prevSign=s[i]
+        return res
+class Solution4:
+    # one iteration and stack
+    def calculate(self, s: str) -> int:
+        st=[]
+        prevSign='+'
+        num=0
+        for i in range(len(s)+1):
+            if i<len(s) and s[i]==' ':
+                continue
+            if i<len(s) and '0'<=s[i]<='9':
+                num=num*10+int(s[i])
+            else:
+                if prevSign=='+':
+                    st.append(num)
+                elif prevSign=='-':
+                    st.append(-num)
+                elif prevSign=='*':
+                    st.append(st.pop()*num)
+                else:
+                    last=st.pop()
+                    sign=1 if last>0 else -1
+                    last=abs(last)
+                    tmp=last//num
+                    st.append(tmp*sign)
+                num=0
+                if i<len(s): prevSign=s[i]
+        return sum(st)
+class Solution5:
+    # stack and replace
     def calculate(self, s: str) -> int:
         s=s.replace(" ","")
         s=s+"+"

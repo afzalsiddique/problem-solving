@@ -8,10 +8,10 @@ class TreeNode:
 class Solution:
     def longestZigZag(self, root):
         self.maxx=float('-inf')
-        def dfs(root):
-            if not root: return [-1, -1]
-            left_left,left_right = dfs(root.left)
-            right_left,right_right=dfs(root.right)
+        def dfs(node):
+            if not node: return [-1, -1]
+            left_left,left_right = dfs(node.left)
+            right_left,right_right=dfs(node.right)
             self.maxx=max(self.maxx,left_right + 1, right_left + 1)
             return [left_right + 1, right_left + 1]
         dfs(root)

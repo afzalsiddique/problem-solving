@@ -48,7 +48,7 @@ class Solution2:
         curIdx=0
         startIdx=0
         numToBeRotated=nums[startIdx]
-        for i in range(n):
+        for _ in range(n):
             nxtIdx=(curIdx+k)%n
             nxt = nums[nxtIdx]
             nums[nxtIdx]=numToBeRotated
@@ -106,7 +106,7 @@ class Solution4:
         nums.reverse()
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         nums = [1,2,3,4,5,6,7]; k = 3
         get_sol().rotate(nums,k)
         self.assertEqual( [5,6,7,1,2,3,4],nums)
@@ -138,3 +138,7 @@ class Tester(unittest.TestCase):
         nums,k = [1,2,3,4,5,6,7,8,9], 3
         get_sol().rotate(nums,k)
         self.assertEqual([7,8,9,1,2,3,4,5,6],nums)
+    def test9(self):
+        nums,k = [3, 8, 9, 7, 6], 3
+        get_sol().rotate(nums,k)
+        self.assertEqual([9, 7, 6, 3, 8],nums)

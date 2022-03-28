@@ -16,25 +16,30 @@ class Solution:
         for key in di:
             groups.append(di[key])
         return groups
+class Solution2:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        def createCount(s:str)->dict:
+            count={c:0 for c in string.ascii_lowercase}
+            for c in s:
+                count[c]+=1
+            return count
+        def serialize(count:dict)->str:
+            li=[]
+            for c in string.ascii_lowercase:
+                li.append(str(count[c]))
+            return ','.join(li)
+
+        di=defaultdict(list) # key: str(serialized), value:List[str]
+        for s in strs:
+            count=createCount(s)
+            serialized = serialize(count)
+            di[serialized].append(s)
+
+        return [x for x in di.values()]
 class MyTestCase(unittest.TestCase):
-    # def test_1(self):
-    #     solution = Solution()
-    #     strs = ["eat","tea","tan","ate","nat","bat"]
-    #     actual = solution.groupAnagrams(strs)
-    #     actual = sorted(actual)
-    #     expected = sorted([["bat"],["nat","tan"],["ate","eat","tea"]])
-    #     self.assertEqual(expected, actual)
-
-    def test_2(self):
-        solution = Solution()
-        strs = [""]
-        actual = solution.groupAnagrams(strs)
-        expected = [[""]]
-        self.assertEqual(expected, actual)
-
-    def test_3(self):
-        solution = Solution()
-        strs = ["a"]
-        actual = solution.groupAnagrams(strs)
-        expected = [["a"]]
-        self.assertEqual(expected, actual)
+    def test01(self):
+        self.assertEqual(sorted([["bat"],["nat","tan"],["ate","eat","tea"]]), sorted(get_sol().groupAnagrams(["eat","tea","tan","ate","nat","bat"])))
+    def test02(self):
+        self.assertEqual([[""]], get_sol().groupAnagrams([""]))
+    def test03(self):
+        self.assertEqual([["a"]], get_sol().groupAnagrams(["a"]))

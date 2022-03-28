@@ -8,16 +8,18 @@ class SegmentTree:
         self.arr=arr
         treeSize=self.nearestPowerOf2(len(arr))*2-1
         self.segment= [0] * treeSize
-        self.construct(0, 0, self.n - 1)
-    def construct(self, si, l, r):
-        segment,arr= self.segment, self.arr
+        self.construct()
+    def construct(self):
+        def helper(si,l,r):
+            if l==r:
+                segment[si]=arr[l]
+                return segment[si]
+            mid=(l+r)//2
+            segment[si]=helper(2*si+1,l,mid)+helper(2*si+2,mid+1,r) # for sum query
+            return self.segment[si]
 
-        if l==r:
-            segment[si]=arr[l]
-            return segment[si]
-        mid=(l+r)//2
-        segment[si]=self.construct(2*si+1,l,mid)+self.construct(2*si+2,mid+1,r) # for sum query
-        return self.segment[si]
+        segment,arr= self.segment, self.arr
+        helper(0,0,self.n-1)
     def sumRange(self, left, right):
         def helper(si, sl, sr):
             if sl>=left and sr<=right: # total overlap
@@ -44,8 +46,8 @@ class SegmentTree:
         segment=self.segment
         diff=val-self.arr[i]
         self.arr[i]+=diff
-        return helper(0,0,self.n-1)
-    def nearestPowerOf2(self,i): # works for 32 bit integer
+        helper(0,0,self.n-1)
+    def nearestPowerOf2(self,i): # nearest power of 2 which is greater or equal to i. Works for 32 bit integer
         i-=1
         i|=i>>1
         i|=i>>2

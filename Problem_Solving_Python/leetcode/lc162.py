@@ -2,6 +2,32 @@ import itertools; import math; import operator; import random; import string; fr
 def get_sol(): return Solution()
 # ***************** nums[i] != nums[i + 1] for all valid i ***************
 class Solution:
+    def findPeakElement(self, A: List[int]) -> int:
+        n=len(A)
+        if n==1: return 0
+        if A[0]>A[1]: return 0
+        if A[-1]>A[-2]: return n-1
+        lo,hi=0,n-1
+        while lo<=hi:
+            m=(lo+hi)//2
+            if A[m]>A[m-1] and A[m]>A[m+1]:
+                return m
+            if A[m+1]>A[m]:
+                lo=m+1
+            else:
+                hi=m-1
+class Solution2:
+    def findPeakElement(self, nums: List[int]) -> int:
+        lo,hi=0,len(nums)-1
+        while lo<hi:
+            mid1=(lo+hi)//2
+            mid2=mid1+1
+            if nums[mid1]<nums[mid2]:
+                lo=mid2
+            else:
+                hi=mid1
+        return lo
+class Solution4:
     # https://www.youtube.com/watch?v=a7D77DdhlFc
     def findPeakElement(self, nums: List[int]) -> int:
         n=len(nums)
@@ -14,17 +40,6 @@ class Solution:
                 hi=mid-1
             else:
                 lo=mid+1
-        return lo
-class Solution2:
-    def findPeakElement(self, nums: List[int]) -> int:
-        lo,hi=0,len(nums)-1
-        while lo<hi:
-            mid1=(lo+hi)//2
-            mid2=mid1+1
-            if nums[mid1]<nums[mid2]:
-                lo=mid2
-            else:
-                hi=mid1
         return lo
 class Solution3:
     # bad solution
@@ -49,11 +64,11 @@ class Solution3:
         return ans
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(2, get_sol().findPeakElement([1,2,3,1]))
-    def test2(self):
+    def test02(self):
         self.assertEqual(3, get_sol().findPeakElement([10,80,10,30,10,20,10]))
-    def test3(self):
-        nums = [1,2,1,3,5,6,4]
-        Output= 5
-        self.assertEqual(Output, get_sol().findPeakElement(nums))
+    def test03(self):
+        self.assertEqual(5, get_sol().findPeakElement([1,2,1,3,5,6,4]))
+    def test04(self):
+        self.assertEqual(0, get_sol().findPeakElement([1]))

@@ -1,11 +1,28 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import cache; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList
-# from ..template.binary_tree import deserialize,serialize
-def get_sol(): return Solution()
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+def get_sol(): return Solution2()
 
 # a^4567 % k = (a^4560 % k) * (a^7 % k) % k = (a^456 % k)^10 % k * (a^7 % k) % k
+# f(a,4567) = f(a, 4560) * f(a, 7) % k = f(f(a, 456),10) * f(a,7)%k;
 # https://www.youtube.com/watch?v=bg0P_3UiG5I&t=987s
 
 class Solution:
+    # https://leetcode.com/problems/super-pow/discuss/84472/C%2B%2B-Clean-and-Short-Solution
+    def superPow(self, a: int, b: List[int]) -> int:
+        def pow_mod(a,b): # (a**b)%M
+            res = 1
+            for i in range(b):
+                res *= a%M
+                res %= M
+            return res
+        def f() -> int:
+            if not b: return 1
+            last_digit = b.pop()
+            return pow_mod(f(), 10) * pow_mod(a, last_digit) % M
+
+        M=1337
+        return f()
+class Solution2:
     # https://leetcode.com/problems/super-pow/discuss/84485/8ms-JAVA-solution-using-fast-power
     # https://leetcode.com/problems/super-pow/discuss/84472/C%2B%2B-Clean-and-Short-Solution
     def superPow(self, a: int, b: List[int]) -> int:
@@ -22,22 +39,6 @@ class Solution:
             result = (result * normalPow(a,b[i])) % M
             a = normalPow(a, 10)
         return result
-class Solution2:
-    # https://leetcode.com/problems/super-pow/discuss/84472/C%2B%2B-Clean-and-Short-Solution
-    def superPow(self, a: int, b: List[int]) -> int:
-        def pow_mod(a,b): # (a**b)%k
-            res = 1
-            for i in range(b):
-                res *= a%k
-                res %= k
-            return res
-        def f(a: int, b: List[int]) -> int:
-            if not b: return 1
-            last_digit = b.pop()
-            return pow_mod(f(a,b),10) * pow_mod(a,last_digit) % k
-
-        k=1337
-        return f(a,b)
 
 
 

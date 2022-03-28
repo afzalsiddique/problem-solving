@@ -47,23 +47,55 @@ class Solution:
         for i in res:
             li.append(i)
         return li
+
+class Node:
+    def __init__(self, val:int, summ:int):
+        self.val=val
+        self.summ=summ # no of nodes (including duplicates) which are less than this node
+        self.dup=1
+        self.left=None
+        self.right=None
 class Solution2:
+    # tle. binary search tree
+    # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76580/9ms-short-Java-BST-solution-get-answer-when-building-BST
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        def insert(num:int,node:Node,i:int,preSum:int):
+            if not node:
+                node = Node(num,0)
+                res[i]=preSum
+            elif node.val==num:
+                node.dup+=1
+                res[i]=preSum+node.summ
+            elif node.val>num:
+                node.summ+=1 # a node will be inserted somewhere in the left subtree
+                node.left=insert(num, node.left, i, preSum)
+            else:
+                node.right=insert(num,node.right,i,preSum+node.dup+node.summ)
+            return node
+
+        n=len(nums)
+        res=[0]*n
+        root=None
+        for i in range(n-1,-1,-1):
+            root=insert(nums[i],root,i,0)
+        return res
+
+class Solution3:
     # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/408322/Python-Different-Concise-Solutions
     def countSmaller(self, nums: List[int]) -> List[int]:
         nums = nums[::-1]
         min_v = min(nums) if nums else 0
 
-        import collections
-        record = collections.defaultdict(int)
+        record = defaultdict(int)
 
         res = []
-        for n in nums:
+        for num in nums:
             cnt = 0
-            for target in range(min_v,n):
+            for target in range(min_v,num):
                 if target in record:
                     cnt += record[target]
             res.append(cnt)
-            record[n]+=1
+            record[num]+=1
         return res[::-1]
 
 

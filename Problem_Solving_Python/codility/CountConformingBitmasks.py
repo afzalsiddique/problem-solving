@@ -1,20 +1,22 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(a,b,c): return solution(a,b,c)
 def solution(A, B, C):
-    def conforms(X,A): # x conforms A
-        for i in range(30):
-            a=(A>>i) & 1
-            x=(X>>i) & 1
-            if a==1 and x==0:
-                return False
-        return True
-    def conformsAny(X): return any(conforms(X,a) for a in [A,B,C])
+    # https://stackoverflow.com/questions/10401239/count-bitmasks-enumerate-0s
+    N=30
+    def supers(A):
+        zeros = sum(1 for i in range(N) if (A>>i)&1==0)
+        return 2**zeros
 
     res=0
-    for i in range(2**10):
-        res+=conformsAny(i)
+    res+=supers(A)
+    res+=supers(B)
+    res+=supers(C)
+    res-=supers(A|B)
+    res-=supers(B|C)
+    res-=supers(C|A)
+    res+=supers(A|B|C)
     return res
+
 
 class Tester(unittest.TestCase):
     def test01(self):

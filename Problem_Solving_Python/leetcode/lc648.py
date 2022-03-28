@@ -67,24 +67,24 @@ class tester(unittest.TestCase):
         dictionary = ["ac","ab"]
         sentence = "it is abnormal that this solution is accepted"
         Output= "it is ab that this solution is ac"
-        self.assertEqual(Output,Solution().replaceWords(dictionary,sentence))
+        self.assertEqual(Output,get_sol().replaceWords(dictionary,sentence))
     def test2(self):
         dictionary = ["cat","bat","rat"]
         sentence = "the cattle was rattled by the battery"
         Output= "the cat was rat by the bat"
-        self.assertEqual(Output,Solution().replaceWords(dictionary,sentence))
+        self.assertEqual(Output,get_sol().replaceWords(dictionary,sentence))
     def test3(self):
         dictionary = ["a", "aa", "aaa", "aaaa"]
         sentence = "a aa a aaaa aaa aaa aaa aaaaaa bbb baba ababa"
         Output= "a a a a a a a a bbb baba a"
-        self.assertEqual(Output,Solution().replaceWords(dictionary,sentence))
+        self.assertEqual(Output,get_sol().replaceWords(dictionary,sentence))
     def test4(self):
         dictionary = ["catt","cat","bat","rat"]
         sentence = "the cattle was rattled by the battery"
         Output= "the cat was rat by the bat"
-        self.assertEqual(Output,Solution().replaceWords(dictionary,sentence))
+        self.assertEqual(Output,get_sol().replaceWords(dictionary,sentence))
     def test5(self):
         dictionary = ["a","b","c"]
         sentence = "aadsfasf absbs bbab cadsfafs"
         Output= "a a b c"
-        self.assertEqual(Output,Solution().replaceWords(dictionary,sentence))
+        self.assertEqual(Output,get_sol().replaceWords(dictionary,sentence))

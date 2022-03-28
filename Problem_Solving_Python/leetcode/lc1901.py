@@ -36,7 +36,8 @@ class MyTestCase(unittest.TestCase):
         mat = [[10,20,15],[21,30,14],[7,16,32]]
         Output= [1,1]
         self.assertEqual(Output, get_sol().findPeakGrid(mat))
-    # def test3(self):
+    def test3(self):
+        self.assertEqual([3,7],get_sol().findPeakGrid([[1,2,3,4,5,6,7,8],[2,3,4,5,6,7,8,9],[3,4,5,6,7,8,9,10],[4,5,6,7,8,9,10,11]]))
     # def test4(self):
     # def test5(self):
     # def test6(self):
