@@ -6,6 +6,7 @@ def solution(A):
     row_first_max_index=[(-1,-1)]*m
     row_second_max=[float('-inf')]*m
     row_second_max_index=[(-1,-1)]*m
+
     for i in range(m):
         for j in range(n):
             if A[i][j]>=row_first_max[i]:
@@ -34,42 +35,39 @@ def solution(A):
     res=0
     for i in range(m):
         row_selected_one,col_selected_one=row_first_max_index[i]
-        a=row_first_max[i]
         for j in range(n):
             row_selected_two,col_selected_two=col_first_max_index[j]
-            b=col_first_max[j]
             if row_selected_two!=row_selected_one and col_selected_two!=col_selected_one:
-                res=max(res,a+b)
-            secondMaxRow,secondMaxCol=col_second_max_index[j]
-            b=col_second_max[j]
-            if secondMaxRow!=row_selected_one and secondMaxCol!=col_selected_one:
-                res=max(res,a+b)
+                res=max(res,row_first_max[i]+col_first_max[j])
+            row_selected_two,col_selected_two=col_second_max_index[j]
+            if row_selected_two!=row_selected_one and col_selected_two!=col_selected_one:
+                res=max(res,row_first_max[i]+col_second_max[j])
     return res
 
 
-class Tester(unittest.TestCase):
-    def test01(self): # 4 + 2
-        self.assertEqual(6,solution([
-            [1,4],
-            [2,3]
-        ]))
-    def test02(self): # 15+8
-        self.assertEqual(23,solution([
-            [15,1,5],
-            [16,3,8],
-            [2,6,4]
-        ]))
-    def test03(self): # 12+12
-        self.assertEqual(24,solution([
-            [12,12],
-            [12,12],
-            [0,7]
-        ]))
-    def test04(self): # 14+8
-        self.assertEqual(22,solution([
-            [1,2,14],
-            [8,3,15]
-        ]))
+# class Tester(unittest.TestCase):
+#     def test01(self): # 4+2
+#         self.assertEqual(6,solution([
+#             [1,4],
+#             [2,3]
+#         ]))
+#     def test02(self): # 15+8
+#         self.assertEqual(23,solution([
+#             [15,1,5],
+#             [16,3,8],
+#             [2,6,4]
+#         ]))
+#     def test03(self): # 12+12
+#         self.assertEqual(24,solution([
+#             [12,12],
+#             [12,12],
+#             [0,7]
+#         ]))
+#     def test04(self): # 14+8
+#         self.assertEqual(22,solution([
+#             [1,2,14],
+#             [8,3,15]
+#         ]))
     # def test05(self):
     # def test06(self):
     # def test07(self):

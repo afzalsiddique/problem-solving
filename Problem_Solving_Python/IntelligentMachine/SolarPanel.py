@@ -19,6 +19,15 @@ def solution(A,x,y):
         surplus+=A[right]
         cost+=y-x
         right-=1
+
+    cost=n*y
+    i=0
+    while i<n and surplus>=2*A[i]:
+        cost=cost-y+x
+        surplus-=2*A[i]
+        res=min(res,cost)
+        i+=1
+
     return res
 def takeY(A,x,y):
     A.sort(reverse=True)
@@ -31,17 +40,17 @@ def takeY(A,x,y):
         cost+=y
     return cost
 
-def takeOnlyY(A, x, y):
-    A.sort()
-    n=len(A)
-    cost=n*y
-    surplus=sum(A)
-    left=0
-    while left<n and surplus>=2*A[left]:
-        surplus-=2*A[left]
-        left+=1
-        cost-=y
-    return cost
+# def takeOnlyY(A, x, y):
+#     A.sort()
+#     n=len(A)
+#     cost=n*y
+#     surplus=sum(A)
+#     left=0
+#     while left<n and surplus>=2*A[left]:
+#         surplus-=2*A[left]
+#         left+=1
+#         cost-=y
+#     return cost
 
 
 class Tester(unittest.TestCase):
@@ -65,3 +74,16 @@ class Tester(unittest.TestCase):
         self.assertEqual(2,solution([4,5],1,100))
     def test10(self):
         self.assertEqual(1,solution([4,5],100,1))
+    def test11(self):
+        self.assertEqual(13,solution([2,3,3,5,8],4,9))
+# ([2,3,3,5,8],4,9)
+# ([1,2,5,6],2,1)
+# ([4,5],100,1)
+# ([4,5],1,100)
+# ([1,1,1,3],3,1)
+# ([1,1,1,3],3,1)
+# ([1,1,1,1,1],2,5)
+# ([4,1,5,3],5,2)
+# ([2,2,1,2,2],2,3)
+# ([4,2,7],4,100)
+# ([5,3,8,3,2],2,5)

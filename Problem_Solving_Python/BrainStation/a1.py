@@ -1,27 +1,30 @@
 # from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 import heapq
-# n,k = list(map(int,input().split()))
-li = list(map(int,input().split()))
-print(li)
-pq = []
-for i in range(n):
-    heapq.heappush(pq,li[i])
-    if len(pq)>k:
-        heapq.heappop(pq)
-res=None
-while pq:
-    res=heapq.heappop(pq)
-print(res)
-# return res
 
+def myFunc(n,k,li):
+    pq = []
+    for i in range(n):
+        heapq.heappush(pq,li[i])
+        if len(pq)>k:
+            heapq.heappop(pq)
+    res=None
+    while pq:
+        res=heapq.heappop(pq)
+    return res
 def takeInput():
     n,k = list(map(int,input().split()))
     li = list(map(int,input().split()))
+    return n,k,li
+
+# n,k,li=takeInput()
+# print(myFunc(n,k,li))
 
 
-# class MyTestCase(unittest.TestCase):
-#     def test01(self):
-#         self.assertEqual(97,myFunc(15,1,))
+
+import unittest
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(97,myFunc(15,1,[0, 78, 24, 24, 61, 60, 0, 65, 52, 57, 97, 51, 56, 13, 10]))
     # def test02(self):
     # def test03(self):
     # def test04(self):
