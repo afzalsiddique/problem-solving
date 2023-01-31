@@ -7,20 +7,23 @@ class Solution:
     def candy(self, ratings: List[int]) -> int:
         if not ratings:
             return 0
-        rst = 1
+        rst = 1 # 0th element
         up = 1 # up=1 but down = 0. because peak is included in the up but not included in down
         down = peak = 0
         for i in range(1, len(ratings)):
+            # if rising, then update up/peak and clear down
             if ratings[i] > ratings[i - 1]:
                 up += 1
                 peak = up
                 down = 0
                 rst += up
+            # if equal, then add 1 and clear up/down/peak
             elif ratings[i] == ratings[i - 1]:
                 up = 1
                 down = 0
                 peak = 0
                 rst += 1
+            # if declining, then update down and clear up
             else:
                 up = 1
                 down += 1
@@ -116,3 +119,7 @@ class Tester(unittest.TestCase):
         self.assertEqual(12,get_sol().candy([29,51,87,87,72,12]))
     def test06(self):
         self.assertEqual(12,get_sol().candy([1,2,3,4]))
+    def test07(self):
+        self.assertEqual(18,get_sol().candy([1,6,10,8,7,3,2]))
+    def test08(self):
+        self.assertEqual(11,get_sol().candy([6,10,8,7,3]))
