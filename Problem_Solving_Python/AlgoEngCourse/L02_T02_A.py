@@ -1,19 +1,5 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+from itertools import accumulate; from math import floor,ceil,sqrt,log,log2; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 def get_sol(): return Solution()
-class Solution:
-    # https://www.youtube.com/watch?v=8CYhffMML8o
-    def longestValidParentheses(self, s: str) -> int:
-        st = [-1]
-        maxx = 0
-        for i in range(len(s)):
-            if s[i]=='(':st.append(i)
-            else:
-                st.pop()
-                if not st:st.append(i)
-                else:maxx=max(maxx, i-st[-1])
-        return maxx
-
 class SegmentTree:
     def __init__(self,arr):
         self.n=len(arr)
@@ -34,7 +20,7 @@ class SegmentTree:
 
         segment,arr= self.segment, self.arr
         helper(0,0,self.n-1)
-    def minRange(self, left, right):
+    def minQuery(self, left, right):
         def helper(si, sl, sr):
             if sl>=left and sr<=right: # total overlap
                 return segment[si]
@@ -56,7 +42,34 @@ class SegmentTree:
         i|=i>>8
         i|=i>>16
         return i+1
-class Solution2:
+
+class MinSparseTable:
+    def __init__(self,arr:List[int]):
+        self.arr = arr
+        self.buildTable(arr)
+    def buildTable(self,arr:List[int]):
+        n=len(arr)
+        noOfRows = int(log(n) / log(2))
+        self.dp = [[0]*n for _ in range(noOfRows+1)]
+
+        for j in range(n):
+            self.dp[0][j] = arr[j]
+
+        for i in range(1,noOfRows+1):
+            j=0
+            while j + (1 << i) <= n:
+                leftInterval = self.dp[i-1][j]
+                rightInterval = self.dp[i-1][j + (1 << (i - 1))]
+                self.dp[i][j] = min(leftInterval,rightInterval)
+                j+=1
+
+    def minQuery(self,l,r):
+        length = r-l+1
+        p = floor(log2(length))
+        k = 1<<p
+        return min(self.dp[p][l],self.dp[p][r-k+1])
+
+class Solution:
     def longestValidParentheses(self, s: str) -> int:
         def get_imbal(c): return 1 if c=='(' else -1
         n=len(s)
@@ -78,7 +91,7 @@ class Solution2:
 
             for j in range(1,len(idx)):
                 curidx = idx[j]
-                if  val == sgmin.minRange(lastidx+1, curidx+1):
+                if val == sgmin.minQuery(lastidx + 1, curidx + 1):
                     curlen += curidx - lastidx
                 else:
                     curlen = 0
@@ -86,6 +99,8 @@ class Solution2:
                 maxlen = max(maxlen, curlen)
 
         return maxlen
+
+
 class Tester(unittest.TestCase):
     def test01(self):
         self.assertEqual(2,get_sol().longestValidParentheses('(()'))

@@ -1,5 +1,5 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from l1t1 import TreeNode, insertIntoBST
+from L01_T01_A import TreeNode, insertIntoBST
 
 def get_path(node:TreeNode,val)->Optional[List[TreeNode]]:
     # if not node: return []
