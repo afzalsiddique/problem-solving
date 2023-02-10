@@ -69,17 +69,18 @@ class Solution2:
 
 
 
+
 class Tester(unittest.TestCase):
     def test01(self):
-        self.assertEqual(True,get_sol().ip_v4("172.16.254.1"))
+        self.assertEqual("IPv4",get_sol().validIPAddress("172.16.254.1"))
     def test02(self):
-        self.assertEqual(False,get_sol().ip_v4("@1.16.254.1"))
+        self.assertEqual("Neither",get_sol().validIPAddress("@1.16.254.1"))
     def test03(self):
-        self.assertEqual(False,get_sol().ip_v4("1@.16.254.1"))
+        self.assertEqual("Neither",get_sol().validIPAddress("1@.16.254.1"))
     def test04(self):
-        self.assertEqual(False,get_sol().ip_v4("12.16.256.1"))
+        self.assertEqual("Neither",get_sol().validIPAddress("12.16.256.1"))
     def test05(self):
-        self.assertEqual(True,get_sol().ip_v6("2001:0db8:85a3:0:0:8A2E:0370:7334"))
+        self.assertEqual("IPv6",get_sol().validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334"))
     def test06(self):
         self.assertEqual("IPv4",get_sol().validIPAddress("172.16.254.1"))
     def test07(self):
@@ -94,3 +95,5 @@ class Tester(unittest.TestCase):
         self.assertEqual("IPv4",get_sol().validIPAddress("192.0.0.1"))
     def test12(self):
         self.assertEqual("Neither",get_sol().validIPAddress("1.0.1."))
+    def test13(self):
+        self.assertEqual("Neither",get_sol().validIPAddress("00.0.1.0"))

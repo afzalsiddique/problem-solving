@@ -18,6 +18,24 @@ class Solution:
         return res
 class Solution2:
     def findPairs(self, nums: List[int], k: int) -> int:
+        if k==0:
+            count = Counter(nums)
+            return sum(1 for v in count.values() if v>1)
+
+        nums.sort()
+        sett = set()
+        res = 0
+        for x in nums:
+            if x in sett: continue
+            prev = x-k
+            if prev in nums:
+                res+=1
+                sett.remove(prev)
+            sett.add(x)
+
+        return res
+class Solution3:
+    def findPairs(self, nums: List[int], k: int) -> int:
         nums.sort()
         minn = nums[-1] - k
         cnt = 0
@@ -32,6 +50,24 @@ class Solution2:
             if idx >= 0 and nums[idx] == key and idx!=i:
                 cnt += 1
         return cnt
+class Solution4:
+    def findPairs(self, nums: List[int], k: int) -> int:
+        if k==0:
+            count = Counter(nums)
+            return sum(1 for v in count.values() if v>1)
+
+        nums.sort()
+        di = defaultdict(int)
+        for x in nums:
+            if x in di: continue
+            prev = x-k
+            if prev in nums:
+                di[x]=di[prev]+1
+                di.pop(prev)
+            else:
+                di[x]=1
+
+        return sum(v-1 for k,v in di.items() if v!=1)
 
 class MyTestCase(unittest.TestCase):
     def test01(self):
@@ -42,5 +78,11 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().findPairs( [1,3,1,5,4],  0))
     def test04(self):
         self.assertEqual(2, get_sol().findPairs( [1,2,4,4,3,3,0,9,2,3],  3))
+    def test05(self):
+        self.assertEqual(1, get_sol().findPairs( [1,2,4,4,3,3,2,3],  3))
     def test06(self):
         self.assertEqual(2, get_sol().findPairs( [-1,-2,-3],  1))
+    def test07(self):
+        self.assertEqual(1, get_sol().findPairs( [1,1,1,1,1],  0))
+    def test08(self):
+        self.assertEqual(2, get_sol().findPairs( [1,1,1,2,2,2],  0))

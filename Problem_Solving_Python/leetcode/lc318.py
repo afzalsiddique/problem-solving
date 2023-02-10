@@ -4,18 +4,22 @@ def get_sol(): return Solution()
 class Solution:
     # O(n*s) + O(n^2), where s is the average length of word and n is number of words. Space complexity is O(n)
     def maxProduct(self, words: List[str]) -> int:
-        def getMask(word:str):
-            mask=0
-            for c in word:
-                mask|=(1<<(ord(c)-ord('a')))
+        def turnOn(mask:int, c:str)->int:
+            i = ord(c)-ord('a')
+            return mask | (1 << i)
+        def getMask(s:str)->int:
+            mask = 0
+            for c in s:
+                mask = turnOn(mask,c)
             return mask
 
-        li = [getMask(w) for w in words]
-        res=0
-        for i,x in enumerate(li):
-            for j,y in enumerate(li):
-                if not x&y:
-                    res=max(res,len(words[i])*len(words[j]))
+        lens = [len(word) for word in words]
+        words = [getMask(word) for word in words]
+        res = 0
+        for i,mask1 in enumerate(words):
+            for j,mask2 in enumerate(words):
+                if not mask1&mask2:
+                    res=max(res,lens[i]*lens[j])
         return res
 
 class Solution3:

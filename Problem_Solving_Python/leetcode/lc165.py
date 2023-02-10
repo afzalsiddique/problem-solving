@@ -34,6 +34,28 @@ class Solution2:
             return -1
         return 0
 
+class Solution3:
+    def compareVersion(self, v1: str, v2: str) -> int:
+        if len(v1)<len(v2): # v1 longer or equal
+            return (-1)*self.compareVersion(v2,v1) # multiply with -1. because we are flipping the order
+
+        v1 = list(map(int,v1.split('.')))
+        v2 = list(map(int,v2.split('.')))
+
+        i=0
+        while i<len(v2): # iterate upto the length of smaller version
+            if v1[i]>v2[i]:
+                return 1
+            elif v1[i]<v2[i]:
+                return -1
+            i+=1
+
+        while i<len(v1): # iterate upto the length of longer version
+            if v1[i]>0:
+                return 1
+            i+=1
+
+        return 0
 
 
 class MyTestCase(unittest.TestCase):

@@ -54,6 +54,7 @@ class Solution2:
 
         return helper(s,'(')+helper(s[::-1],')')
 
+
 class MyTestCase(unittest.TestCase):
     def test01(self):
         Input= "())"
@@ -73,5 +74,13 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
     def test05(self):
         Input= "(()())(("
+        Output= 2
+        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+    def test06(self):
+        Input= "()(("
+        Output= 2
+        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+    def test07(self):
+        Input= "))()"
         Output= 2
         self.assertEqual(Output, get_sol().minAddToMakeValid(Input))

@@ -8,12 +8,12 @@ class Solution:
     # https://www.youtube.com/watch?v=2H9gMIIGyvY
     def checkValidString(self, s: str) -> bool:
         balance = 0
-        for c in s:
-            if c in '(*':
+        for c in s: # assuming imbalance happened because of insufficient opening parenthesis
+            if c in '(*': # treat * as opening
                 balance+=1
             else:
                 balance-=1
-            if balance<0: return False
+            if balance<0: return False # even after treating all stars as opening parenthesis imbalance remains
         if balance==0: return True
 
         balance = 0
@@ -25,6 +25,39 @@ class Solution:
             if balance<0: return False
         return True
 
+class Solution4:
+    def checkValidString(self, s: str) -> bool:
+        if s[-1]=='(': return False
+        if s[0]==')': return False
+        bal = 0
+        star=0
+        for c in s:
+            if bal<0 and star<abs(bal):
+                return False
+            if c=='(':
+                bal+=1
+            elif c==')':
+                bal-=1
+            else:
+                star+=1
+        if bal>0 and star<bal:
+            return False
+
+        bal=0
+        star=0
+        for c in s[::-1]:
+            if bal>0 and star<abs(bal):
+                return False
+            if c=='(':
+                bal+=1
+            elif c==')':
+                bal-=1
+            else:
+                star+=1
+        if bal<0 and star<abs(bal):
+            return False
+
+        return True
 
 class Solution2:
     # stack
@@ -114,3 +147,7 @@ class Tester(unittest.TestCase):
         self.assertEqual(False,get_sol().checkValidString("(((((*(((*(*******)))((*(((((****"))
     def test14(self):
         self.assertEqual(False,get_sol().checkValidString("((*(((*(****))(("))
+    def test15(self):
+        self.assertEqual(False,get_sol().checkValidString("((*"))
+    def test16(self):
+        self.assertEqual(False,get_sol().checkValidString("*))"))
