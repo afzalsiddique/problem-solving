@@ -49,3 +49,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual([[1,3],[2,3],[1,5]], get_sol().kSmallestPairs( [1,2,4,5,6],  [3,5,7,9],  3))
     def test05(self):
         self.assertEqual(sorted([[1,1],[1,1],[2,1],[1,2],[1,2],[2,2],[1,3],[1,3],[2,3]]), sorted(get_sol().kSmallestPairs([1,1,2], [1,2,3], 10)))
+    def test06(self):
+        self.assertEqual(sorted([[-10, 3], [-10, 100], [-4, 3], [-4, 100], [0, 3], [0, 100]]), sorted(get_sol().kSmallestPairs([-10,-4,0], [3,100], 10)))
+    def test07(self):
+        self.assertEqual(sorted([[-10, 3], [-10, 5], [-10, 6], [-10, 7], [-10, 8], [-4, 3], [-4, 5], [-4, 6], [-4, 7], [0, 3]]), sorted(get_sol().kSmallestPairs([-10,-4,0,0,6], [3,5,6,7,8,100], 10)))

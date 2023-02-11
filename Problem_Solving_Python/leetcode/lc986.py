@@ -9,7 +9,7 @@ class Solution:
             a_start,a_end=A[i]
             b_start,b_end=B[j]
             # if not min(a_end,b_end)<max(a_start,b_start): # also works
-            if b_start<=a_end and a_start<=b_end:
+            if a_start<=b_end and b_start<=a_end:
                 res.append([max(a_start,b_start),min(a_end,b_end)])
             if a_end<b_end:
                 i+=1

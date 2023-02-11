@@ -16,7 +16,33 @@ class Solution:
                     remainingClosing+=2
                 remainingClosing-=1
         return remainingClosing+insert
+class Solution2:
+    def minInsertions(self, s: str) -> int:
+        def isTwoClosing(i):
+            if i+1==n: return False
+            return s[i]==s[i+1]==')'
 
+        n=len(s)
+        left,insert = 0,0
+        i=0
+        while i<n:
+            if s[i]=='(':
+                left+=2
+            else:
+                if left:
+                    left-=2
+                    if isTwoClosing(i):
+                        i+=1 # two closing found. move one more step to the right
+                    else: # one closing
+                        insert+=1 # another closing required
+                else: # not enough opening
+                    if isTwoClosing(i):
+                        insert+=1 # one opening required
+                        i+=1 # two closing found. move one more step to the right
+                    else:
+                        insert+=2 # one opening and one closing required
+            i+=1
+        return insert+left
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(1, get_sol().minInsertions("(()))"))

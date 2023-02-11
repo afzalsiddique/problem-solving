@@ -1,29 +1,36 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+import itertools;from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-    def __repr__(self): return str(self.val)
+class Solution4:
+    def rob(self, root: Optional[TreeNode]) -> int:
+        TAKE,SKIP=True,False
+        @cache
+        def dp(node:TreeNode,state:bool)->int:
+            if not node: return 0
+            option1,option2=0,0
+            if state==TAKE:
+                option1=node.val+dp(node.left,SKIP)+dp(node.right,SKIP)
+            option2=dp(node.left,TAKE)+dp(node.right,TAKE)
+            return max(option1,option2)
+
+        return dp(root,TAKE)
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
+        MUST_TAKE,SKIP=True,False
         @cache
-        def dp(node, selectCurrent):
-            if not node:
-                return 0
+        def dp(node, state):
+            if not node: return 0
             res=0
             l1,l2,r1,r2=float('-inf'),float('-inf'),float('-inf'),float('-inf')
-            if selectCurrent:
-                l2=dp(node.left,False)
-                r2=dp(node.right,False)
+            if state==MUST_TAKE:
+                l2=dp(node.left,SKIP)
+                r2=dp(node.right,SKIP)
                 res+=node.val
             else:
-                l1=dp(node.left,True)
-                l2=dp(node.left,False)
-                r1=dp(node.right,True)
-                r2=dp(node.right,False)
+                l1=dp(node.left,MUST_TAKE)
+                l2=dp(node.left,SKIP)
+                r1=dp(node.right,MUST_TAKE)
+                r2=dp(node.right,SKIP)
             res+=max(l1,l2)+max(r1,r2)
             return res
 

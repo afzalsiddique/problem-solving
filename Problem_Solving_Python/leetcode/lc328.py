@@ -27,6 +27,27 @@ class Solution:
         return head
 
 
+class Solution2:
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        def getLast(head):
+            while head.next:
+                head=head.next
+            return head
+
+        if not head or not head.next: return head
+        first,second=head,head.next
+
+        odd=head
+        even=head.next
+        while odd and even:
+            t1=even.next
+            t2=t1.next if t1 else None
+            odd.next=t1
+            even.next=t2
+            odd=odd.next
+            even=even.next
+        getLast(head).next=second
+        return head
 
 class MyTestCase(unittest.TestCase):
     def test01(self):

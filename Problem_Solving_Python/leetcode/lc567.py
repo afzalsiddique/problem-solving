@@ -1,12 +1,6 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
-
-
+import itertools;from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+def get_sol(): return Solution()
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
         n1,n2=len(s1),len(s2)
@@ -27,24 +21,19 @@ class Solution:
         if di1==di2: return True
         return False
 
-class tester(unittest.TestCase):
-    def test1(self):
-        s1 = "ab"
-        s2 = "eidbaooo"
-        Output= True
-        self.assertEqual(Output,Solution().checkInclusion(s1,s2))
-    def test2(self):
-        s1 = "ab"
-        s2 = "eidboaoo"
-        Output= False
-        self.assertEqual(Output,Solution().checkInclusion(s1,s2))
-    def test3(self):
-        s1 = "adc"
-        s2 = "dcda"
-        Output= True
-        self.assertEqual(Output,Solution().checkInclusion(s1,s2))
-    def test4(self):
-        s1 = "ab"
-        s2 = "ba"
-        Output= True
-        self.assertEqual(Output,Solution().checkInclusion(s1,s2))
+class Tester(unittest.TestCase):
+    def test01(self):
+        s1,s2 = "ab" ,"eidbaooo"
+        self.assertEqual(True,get_sol().checkInclusion(s1,s2))
+    def test02(self):
+        s1,s2 = "ab" ,"eidboaoo"
+        self.assertEqual(False,get_sol().checkInclusion(s1,s2))
+    def test03(self):
+        s1,s2 = "adc" ,"dcda"
+        self.assertEqual(True,get_sol().checkInclusion(s1,s2))
+    def test04(self):
+        s1,s2 = "ab" ,"ba"
+        self.assertEqual(True,get_sol().checkInclusion(s1,s2))
+    def test05(self):
+        s1,s2 = "horse" ,"ors"
+        self.assertEqual(False,get_sol().checkInclusion(s1,s2))

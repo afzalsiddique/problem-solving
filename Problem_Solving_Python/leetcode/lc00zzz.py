@@ -1,58 +1,26 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+import itertools;from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
-    def minAddToMakeValid(self, s: str) -> int:
-        res1,res2=0,0
-        bal = 0
-        for c in s:
-            if bal<0:
-                res1=max(res1,abs(bal))
-            if c=='(':
-                bal+=1
-            else:
-                bal-=1
-        res1=max(res1,abs(bal))
+    def rob(self, root: Optional[TreeNode]) -> int:
+        TAKE,SKIP=True,False
+        @cache
+        def func(node:TreeNode,state:bool)->int:
+            if not node: return 0
+            option1,option2=0,0
+            if state==TAKE:
+                option1=node.val+func(node.left,SKIP)+func(node.right,SKIP)
+            option2=func(node.left,TAKE)+func(node.right,TAKE)
+            return max(option1,option2)
 
-        bal=0
-        for c in s[::-1]:
-            if bal>0:
-                res2=max(res2,bal)
-            if c=='(':
-                bal+=1
-            else:
-                bal-=1
-        res2=max(res2,abs(bal))
+        return func(root,TAKE)
 
-        # return res1+res2
-        return min(res1,res2)
-
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
-        Input= "())"
-        Output= 1
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+        self.assertEqual(7,Solution().rob(des([3,2,3,None,3,None,1])))
     def test02(self):
-        Input= "((("
-        Output= 3
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+        self.assertEqual(9,Solution().rob(des([3,4,5,1,3,None,1])))
     def test03(self):
-        Input= "()"
-        Output= 0
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+        self.assertEqual(8,Solution().rob(des([4,2,None,1,3])))
     def test04(self):
-        Input= "()))(("
-        Output= 4
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
-    def test05(self):
-        Input= "(()())(("
-        Output= 2
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
-    def test06(self):
-        Input= "()(("
-        Output= 2
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
-    def test07(self):
-        Input= "))()"
-        Output= 2
-        self.assertEqual(Output, get_sol().minAddToMakeValid(Input))
+        self.assertEqual(3038,Solution().rob(des([79,99,77,None,None,None,69,None,60,53,None,73,11,None,None,None,62,27,62,None,None,98,50,None,None,90,48,82,None,None,None,55,64,None,None,73,56,6,47,None,93,None,None,75,44,30,82,None,None,None,None,None,None,57,36,89,42,None,None,76,10,None,None,None,None,None,32,4,18,None,None,1,7,None,None,42,64,None,None,39,76,None,None,6,None,66,8,96,91,38,38,None,None,None,None,74,42,None,None,None,10,40,5,None,None,None,None,28,8,24,47,None,None,None,17,36,50,19,63,33,89,None,None,None,None,None,None,None,None,94,72,None,None,79,25,None,None,51,None,70,84,43,None,64,35,None,None,None,None,40,78,None,None,35,42,98,96,None,None,82,26,None,None,None,None,48,91,None,None,35,93,86,42,None,None,None,None,0,61,None,None,67,None,53,48,None,None,82,30,None,97,None,None,None,1,None,None])))
