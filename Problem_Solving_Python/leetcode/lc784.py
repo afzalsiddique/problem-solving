@@ -26,6 +26,27 @@ class Solution:
         backtrack(0)
         return res
 
+class Solution2:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        def isLetter(i): return not '0'<=s[i]<='9'
+        def changeCase(s,i): # change of the ith char in s
+            diff=ord('a')-ord('A')
+            if 'a'<=s[i]<='z': newChar= chr(ord(s[i])-diff)
+            else: newChar= chr(ord(s[i])+diff)
+            return s[:i]+newChar+s[i+1:]
+        def backtrack(i,s):
+            if i==n:
+                res.append(s)
+                return
+            if isLetter(i):
+                backtrack(i+1,changeCase(s,i)) # change case
+            backtrack(i+1,s) # do not change case
+
+
+        n=len(s)
+        res=[]
+        backtrack(0,s)
+        return res
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(sorted(['ab','Ab','aB','AB']), sorted(get_sol().letterCasePermutation('ab')))

@@ -3,7 +3,7 @@ from binary_tree_tester import ser,des; from a_linked_list import make_linked_li
 def get_sol(): return Solution()
 class Solution:
     # https://www.youtube.com/watch?v=cOFAmaMBVps&t=249s
-    # In python if you has a positive integer, you can't get negative integer by setting its highest bit to 1 because
+    # In python if you have a positive integer, you can't get negative integer by setting its highest bit to 1 because
     # there is no highest bit actually. Int in python is an object and has no upper limit, you could try 1<<31,
     # you get 2147483648 other than -2147483648
     def convert(self,x):

@@ -5,7 +5,6 @@ class Solution:
     def longestStrChain(self, words: List[str]) -> int:
         @cache
         def dfs(word):
-            if not word: return 0
             if word not in words: return 0
             res=0
             for i in range(len(word)):

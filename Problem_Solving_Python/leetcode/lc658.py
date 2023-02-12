@@ -15,6 +15,11 @@ class Solution:
                 right+=1
             else:
                 left-=1
+
+
+        # "left+1". we are favoring left because of the condition
+        # "integer a is closer to x than an integer b, if |a - x| == |b - x| and a < b"
+        # favoring left side made it exclusive
         return arr[left+1:right]
 
 class Solution3:
@@ -35,6 +40,11 @@ class Solution3:
                 left-=1
             else:
                 right+=1
+
+
+        # "left+1". we are favoring left because of the condition
+        # "integer a is closer to x than an integer b, if |a - x| == |b - x| and a < b"
+        # favoring left side made it exclusive
         return A[left+1:right]
 class Solution2:
     # time O(logn) space O(1)
