@@ -1,5 +1,7 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from collections import Counter;
+import unittest; from typing import List;
+
+
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/arithmetic-slices-ii-subsequence/discuss/1455137/Python-short-dp-explained

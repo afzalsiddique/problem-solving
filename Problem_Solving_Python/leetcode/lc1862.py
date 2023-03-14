@@ -1,5 +1,7 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList
-from ..template.binary_tree import deserialize,serialize
+import itertools;
+import unittest; from typing import List;
+
+
 def get_sol(): return Solution()
 # if num==5:
 #   all the numbers in the range [5,10) should contribute 1

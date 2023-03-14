@@ -1,5 +1,8 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools
-from ..template.binary_tree import deserialize,serialize
+import string;
+from collections import defaultdict;
+import unittest; from typing import List;
+
+
 def get_sol(): return Solution()
 class Solution:
     def maxNumOfSubstrings(self, s: str) -> List[str]:

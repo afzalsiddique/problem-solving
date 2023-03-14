@@ -1,5 +1,8 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import cache; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList,SortedDict
-from ..template.binary_tree import deserialize,serialize
+from functools import cache;
+import unittest;
+import functools;
+
+
 def get_sol(): return Solution()
 class Solution:
     # pattern 121: 121, 131, 212, 232, 313, 323.

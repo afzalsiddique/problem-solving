@@ -1,5 +1,6 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-from ..template.binary_tree import deserialize,serialize
+from heapq import *; import unittest; from typing import List;
+
+
 def get_sol(): return Solution()
 class MaxHeap:
     # https://leetcode.com/problems/max-value-of-equation/discuss/709231/JavaPython-Priority-Queue-and-Deque-Solution-O(N)

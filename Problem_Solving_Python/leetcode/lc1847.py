@@ -1,5 +1,8 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List, Optional; import functools;from sortedcontainers import SortedList
-from ..template.binary_tree import deserialize,serialize
+from bisect import *;
+import unittest; from typing import List;
+from sortedcontainers import SortedList
+
+
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/closest-room/discuss/1185851/Python-Sorted-List-solution-explained
