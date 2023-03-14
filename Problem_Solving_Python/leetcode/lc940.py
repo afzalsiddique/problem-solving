@@ -3,14 +3,12 @@ from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     # checkout the image 'lc940img.jpg' in the same folder or https://ibb.co/D9svNYM
-    # no of subsequences ending with a specific char
     def distinctSubseqII(self, s: str) -> int:
         MOD=10**9+7
-        dp=[0]*26
+        dp=[0]*26 # no of subsequences ending with a specific char
         for c in s:
             idx=ord(c)-ord('a')
-            tmp=sum(x for x in dp)
-            dp[idx]=tmp+1
+            dp[idx]=sum(dp)+1 # add this letter to the end of all previously found subsequences
             dp[idx]%=MOD
         return sum(dp)%MOD
 class Solution2:
@@ -25,6 +23,23 @@ class Solution2:
                 dp[i][j]=dp[i-1][j]
             dp[i][ord(s[i])-ord('a')]=(tmp+1)%M
         return sum(dp[-1][j] for j in range(26))%M
+class Solution3:
+    # recursive
+    def distinctSubseqII(self, s: str) -> int:
+        MOD=10**9+7
+        def f(i):
+            idx = ord(s[i])-ord('a')
+            if i==0:
+                dp=[0]*26
+                dp[idx]=1
+                return dp
+            dp=f(i-1)
+            dp[idx]=sum(dp)+1 # add this letter to the end of all previously found subsequences
+            dp[idx]%=MOD
+            return dp
+
+        dp=f(len(s)-1)
+        return sum(dp)%MOD
 
 
 class Tester(unittest.TestCase):

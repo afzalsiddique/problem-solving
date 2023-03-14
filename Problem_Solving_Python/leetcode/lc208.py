@@ -155,8 +155,14 @@ class tester(unittest.TestCase):
                 outputs.append(obj.startsWith(input[0]))
         return outputs
     def test01(self):
-        commands = ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
-        inputs=[[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
-        out_exptected = [None, None, True, False, True, None, True]
+        commands = ["Trie", "insert", "search",  "search", "startsWith", "insert", "search"]
+        inputs=[     [],    ["apple"], ["apple"], ["app"], ["app"],      ["app"],  ["app"]]
+        out_exptected = [None, None,     True,     False,    True,       None,     True]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(out_exptected,outputs)
+    def test02(self):
+        commands = ["Trie",  "insert","search",  "search","search", "startsWith","startsWith","startsWith"]
+        inputs=[     [],     ["hello"],["hell"], ["helloa"],["hello"],["hell"],   ["helloa"],["hello"]]
+        out_exptected = [None,None,   False,      False,     True,     True,      False,      True]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(out_exptected,outputs)

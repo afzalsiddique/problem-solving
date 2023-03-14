@@ -19,6 +19,27 @@ class Solution:
                 temp = min(temp,abs(house-heaters[idx]))
             maxx=max(maxx,temp)
         return maxx
+class Solution5:
+    def findRadius(self, houses: List[int], heaters: List[int]) -> int:
+        def isHouseCovered(pos, radius):
+            i = bisect_right(heaters, pos)
+            if abs(heaters[i-1] - pos)<=radius:
+                return True
+            if i!=len(heaters) and abs(heaters[i] - pos)<=radius:
+                return True
+            return False
+        def allHouseCovered(radius):
+            return all(isHouseCovered(x,radius) for x in houses)
+
+        houses.sort(); heaters.sort()
+        lo,hi=0,sum(heaters)
+        while lo<=hi:
+            m=(lo+hi)//2
+            if allHouseCovered(m):
+                hi=m-1
+            else:
+                lo=m+1
+        return lo
 class Solution4:
     def findRadius(self, houses: List[int], heaters: List[int]) -> int:
         def canConver(radius:int):

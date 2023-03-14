@@ -1,6 +1,6 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 
 # https://leetcode.com/problems/remove-invalid-parentheses/solution/182911
 class Solution:
@@ -18,7 +18,7 @@ class Solution:
                     elif removed == self.min_removed:
                         self.ans.add(cur)
             else:
-                if s[i] != "(" and s[i] != ")":
+                if s[i] != "(" and s[i] != ")": # char
                     dfs(i + 1, left, right, removed, cur + s[i])
                 else:
                     dfs(i + 1, left, right, removed + 1, cur)
@@ -63,6 +63,40 @@ class Solution2:
         dfs(0, 0, 0, left, right, "")
         return list(self.ans)
 
+class Solution3:
+    # TLE.bitmask
+    def minNumRemove(self,s:str):
+        bal=0
+        res=0
+        for c in s:
+            if c=='(':
+                bal-=1
+            elif c==')':
+                if not bal: res+=1
+                else: bal+=1
+        return res+abs(bal)
+    def balanced(self,s:str): return self.minNumRemove(s)==0
+    def countSetBits(self,mask):
+        cnt=0
+        while mask:
+            mask&=mask-1
+            cnt+=1
+        return cnt
+    def is_on(self,mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
+    def getString(self,s,mask):
+        li = [s[i] for i in range(25) if self.is_on(mask,i)]
+        return ''.join(li)
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        n=len(s)
+        k = self.minNumRemove(s)
+        res=set()
+        lengthAfterRemoving = n-k
+        for mask in range(1<<n):
+            if self.countSetBits(mask)==lengthAfterRemoving:
+                myString=self.getString(s,mask)
+                if self.balanced(myString):
+                    res.add(myString)
+        return list(res)
 class Tester(unittest.TestCase):
     def test01(self):
         self.assertEqual(sorted(["()()()","(())()"]), sorted(get_sol().removeInvalidParentheses("()())()")))
@@ -74,3 +108,5 @@ class Tester(unittest.TestCase):
         self.assertEqual(["n"], get_sol().removeInvalidParentheses("n"))
     def test05(self):
         self.assertEqual(["()"], get_sol().removeInvalidParentheses("()("))
+    def test06(self):
+        self.assertEqual(sorted(['z(((fp)))g', 'z((fp))()g', '((zfp))()g', '(z(fp))()g', '(z((fp)))g', '((z(fp)))g']), sorted(get_sol().removeInvalidParentheses("((z(((fp))()((((((g(")))

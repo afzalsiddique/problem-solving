@@ -8,9 +8,9 @@ class Element:
         self.word = word
     def __lt__(self, other):
         if self.count == other.count:
-            return self.word > other.word
+            return self.word > other.idx
         return self.count < other.count
-    def __eq__(self, other): return self.count == other.count and self.word == other.word
+    def __eq__(self, other): return self.count == other.count and self.word == other.idx
 
 class Solution:
     # heap

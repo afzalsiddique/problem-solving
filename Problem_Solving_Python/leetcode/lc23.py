@@ -52,7 +52,7 @@ class Solution:
             def __init__(self, node):
                 self.node = node
             def __lt__(self, other):
-                return self.node.data < other.Node.data
+                return self.node.data < other.TrieNode.data
 
         dummy = cur = ListNode(0)
         q = PriorityQueue()
@@ -60,7 +60,7 @@ class Solution:
             if l:
                 q.put(Wrapper(l))
         while not q.empty():
-            node = q.get().Node
+            node = q.get().TrieNode
             cur.next = node
             cur = cur.next
             node = node.next

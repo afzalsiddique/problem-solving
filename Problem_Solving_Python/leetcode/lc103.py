@@ -1,32 +1,23 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+import itertools;from itertools import accumulate; from math import floor,ceil,sqrt,log2; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 
 # https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/discuss/33904/JAVA-Double-Stack-Solution
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
 class Solution:
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root: return []
-        st=[root]
-        res=[]
-        dir=1
-        while st:
-            nxtLevel=[]
+        q,res = deque([root]), []
+        forward = 1
+        while q:
             tmpRes=[]
-            for i in range(len(st))[::dir]:
-                node=st[i]
+            for _ in range(len(q)):
+                node=q.popleft()
                 tmpRes.append(node.val)
-                children=[node.left,node.right]
-                for child in children[::dir]:
-                    if child: nxtLevel.append(child)
+                if node.left: q.append(node.left)
+                if node.right: q.append(node.right)
+            if not forward: tmpRes.reverse()
             res.append(tmpRes)
-            if dir==-1: nxtLevel.reverse()
-            st=nxtLevel
-            dir*=(-1)
+            forward^=1
         return res
 class Solution2:
     ################################ UNNECESSARY CODES PRESENT IN THIS SOLUTION ##############################

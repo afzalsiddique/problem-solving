@@ -7,7 +7,7 @@ class SegmentTree:
         treeSize=self.nearestPowerOf2(len(arr))*2-1
         self.segment= [0] * treeSize
         self.construct()
-    def construct(self): # O(n*logn)
+    def construct(self): # O(n)
         def helper(si,l,r):
             if l==r:
                 segment[si]=arr[l]
@@ -63,7 +63,7 @@ class MinSparseTable:
                 self.dp[i][j] = min(leftInterval,rightInterval)
                 j+=1
 
-    def minQuery(self,l,r): # O(logn)
+    def minQuery(self,l,r): # O(1)
         length = r-l+1
         p = floor(log2(length))
         k = 1<<p

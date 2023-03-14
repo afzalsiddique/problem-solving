@@ -13,21 +13,19 @@ class Iterator:
         return res
 class PeekingIterator:
     def __init__(self, iterator:Iterator):
-        self.iterator=iterator
-        self.q=deque()
+        self.iterator = iterator
+        self.myNext=None
     def peek(self):
-        q,iterator= self.q, self.iterator
-        if not q:
-            if iterator.hasNext():
-                q.append(iterator.next())
-        if q:
-            return q[0]
-        return -1
+        if self.myNext is None:
+            self.myNext=self.iterator.next()
+        return self.myNext
     def next(self):
-        if self.q: return self.q.popleft()
-        return self.iterator.next()
+        self.peek()
+        ans = self.myNext
+        self.myNext=None
+        return ans
     def hasNext(self):
-        return len(self.q)>0 or self.iterator.hasNext()
+        return self.myNext is not None or self.iterator.hasNext()
 
 
 

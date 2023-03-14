@@ -1,57 +1,89 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 class Solution:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
-        m,n=len(nums1),len(nums2)
-        k=min(k,m*n)
-        indices = [0]*m
-        res = []
-        i1=0
-        while len(res)<k:
-            j1=indices[i1]
-            i2=i1+1
-            if i2<m:
-                j2=indices[i2]
-                a = [nums1[i1],nums2[j1]]
-                b = [nums1[i2],nums2[j2]]
-                if sum(a)<=sum(b):
-                    res.append(a)
-                    indices[i1]+=1
-                    if indices[i1]==n:
-                        i1+=1
-                else:
-                    res.append(b)
-                    indices[i2]+=1
-            else:
-                res.append([nums1[i1],nums2[j1]])
-                indices[i1]+=1
-        return res
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        pre = []
+        curSum = sum(nums[i] for i in range(k-1))
+        for i in range(k-1,len(nums)):
+            curSum+=nums[i]
+            pre.append(curSum)
+            curSum-=nums[i-k+1]
 
+        n=len(pre)
+        left_max=[0]*n # index
+        for i in range(1,n):
+            if pre[i]>pre[left_max[i-1]]:
+                left_max[i]=i
+            else:
+                left_max[i]=left_max[i-1]
+
+        right_max=[n-1]*n # index
+        for i in range(n-2,-1,-1):
+            if pre[i]>=pre[right_max[i+1]]:
+                right_max[i]=i
+            else:
+                right_max[i]=right_max[i+1]
+
+        maxIdx=[None,None,None]
+        maxSum=float('-inf')
+        for i in range(n):
+            left_fake_idx=i-k
+            right_fake_idx=i+k
+            if not left_fake_idx>=0 or not right_fake_idx<n: continue
+            left=left_max[left_fake_idx]
+            right=right_max[right_fake_idx]
+            curIdx=[left,i,right]
+            l,cur,r=pre[left],pre[i],pre[right]
+            tmpSum=pre[left]+pre[i]+pre[right]
+            if tmpSum>maxSum:
+                maxIdx=[left,i,right]
+                maxSum=tmpSum
+            elif tmpSum==maxSum:
+                maxIdx=min(maxIdx,curIdx)
+        return maxIdx
 
 class Correct:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
-        m,n=len(nums1),len(nums2)
-        res=[]
-        pq=[]
-        for i in range(m):
-            a,b=nums1[i],nums2[0]
-            heappush(pq,[a+b,a,b,0]) # [sum(key for heap), a,b,idx of nums2]
-        while len(res)!=k and pq:
-            _,a,b,idx=heappop(pq)
-            res.append([a,b])
-            idx+=1 # make pair of next number of nums2 and a
-            if idx==len(nums2): continue
-            new_b=nums2[idx]
-            heappush(pq,[a+new_b,a,new_b,idx])
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        n=len(nums)
+        # calculate prefix sum
+        pre=[] # prefix sum
+        cur=0 # current_sum/running_sum
+        left,right=0,0
+        while right<k-1:
+            cur+=nums[right]
+            right+=1
+        while right<n:
+            cur+=nums[right]
+            pre.append(cur)
+            cur-=nums[left]
+            left+=1
+            right+=1
+
+        left_max=[0]*len(pre) # index. first k are invalid
+        right_max=[0]*len(pre) # index. last k are invalid
+        idx=0
+        for i in range(len(pre)-k):
+            if pre[i]>pre[idx]:
+                idx=i
+            left_max[i+k]=idx
+
+        idx=len(pre)-1
+        for i in range(len(pre)-1,k-1,-1): # first k and last k values from the prefix sum are invalid
+            if pre[i]>=pre[idx]:
+                idx=i
+            right_max[i-k]=idx
+        # print(pre)
+        # print(left_max)
+        # print(right_max)
+
+        maxx=float('-inf')
+        for i in range(k,len(pre)-k):
+            if pre[i]+pre[left_max[i]]+pre[right_max[i]]>maxx:
+                res=[left_max[i],i,right_max[i]]
+                maxx=pre[i]+pre[left_max[i]]+pre[right_max[i]]
         return res
 
 class Tester(unittest.TestCase):
     def test01(self):
-        a,b,k = [-10,-4,0], [3,100], 10
-        self.assertEqual(Correct().kSmallestPairs(a,b,k), Solution().kSmallestPairs(a,b,k))
-    def test02(self):
-        a,b,k = [-10,-4,0,0,6], [3,5,6,7,8,100], 10
-        self.assertEqual(Correct().kSmallestPairs(a,b,k), Solution().kSmallestPairs(a,b,k))
-    def test03(self):
-        a,b,k = [-10,-4,0,0,6], [3,5,6,7,8,100], 10
-        self.assertEqual(Correct().kSmallestPairs(a,b,k), Solution().kSmallestPairs(a,b,k))
+        a,b = [17,9,3,2,7] ,1
+        self.assertEqual(Correct().maxSumOfThreeSubarrays(a,b), Solution().maxSumOfThreeSubarrays(a,b))

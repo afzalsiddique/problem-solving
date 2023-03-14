@@ -6,7 +6,8 @@ class Solution:
         startCol = 0
         endCol = len(mat[0])-1
 
-        while startCol <= endCol:
+        while True:
+        # while startCol <= endCol:
             midCol = (endCol+startCol)//2
             maxRow = 0
 
@@ -24,7 +25,7 @@ class Solution:
             else:                           # leftIsBig
                 endCol = midCol-1
 
-        return []
+        # return []
 
 
 class MyTestCase(unittest.TestCase):
@@ -38,7 +39,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(Output, get_sol().findPeakGrid(mat))
     def test3(self):
         self.assertEqual([3,7],get_sol().findPeakGrid([[1,2,3,4,5,6,7,8],[2,3,4,5,6,7,8,9],[3,4,5,6,7,8,9,10],[4,5,6,7,8,9,10,11]]))
-    # def test4(self):
+    def test4(self):
+        self.assertEqual([2,4],get_sol().findPeakGrid([[25,37,23,37,19],[45,19,2,43,26],[18,1,37,44,50]]))
     # def test5(self):
     # def test6(self):
     # def test7(self):

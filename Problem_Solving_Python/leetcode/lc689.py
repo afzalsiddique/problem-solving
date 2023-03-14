@@ -1,5 +1,43 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
+class Solution3:
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        pre = []
+        curSum = sum(nums[i] for i in range(k-1))
+        for i in range(k-1,len(nums)):
+            curSum+=nums[i]
+            pre.append(curSum)
+            curSum-=nums[i-k+1]
+
+        n=len(pre)
+        left_max=[None]*n # index
+        right_max=[None]*n # index
+        idx=0
+        for i in range(len(pre)-k):
+            if pre[i]>pre[idx]:
+                idx=i
+            left_max[i]=idx
+
+        idx=n-1
+        for i in range(len(pre)-1,k-1,-1):
+            if pre[i]>=pre[idx]:
+                idx=i
+            right_max[i]=idx
+
+        maxIdx=[None,None,None]
+        maxSum=float('-inf')
+        for i in range(n):
+            left_fake_idx,right_fake_idx=i-k,i+k
+            if not left_fake_idx>=0 or not right_fake_idx<n: continue
+            left,right=left_max[left_fake_idx], right_max[right_fake_idx]
+            curIdx=[left,i,right]
+            tmpSum=pre[left]+pre[i]+pre[right]
+            if tmpSum>maxSum:
+                maxIdx=[left,i,right]
+                maxSum=tmpSum
+            elif tmpSum==maxSum:
+                maxIdx=min(maxIdx,curIdx)
+        return maxIdx
 class Solution:
     # https://www.youtube.com/watch?v=wN1nPANp3hk
     def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
@@ -41,6 +79,7 @@ class Solution:
                 res=[left_max[i],i,right_max[i]]
                 maxx=pre[i]+pre[left_max[i]]+pre[right_max[i]]
         return res
+
 class Solution2:
     def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
         n=len(nums)
@@ -81,15 +120,13 @@ class Solution2:
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        nums,k = [1,2,1,2,6,7,5,1],  2
-        Output= [0,3,5]
-        self.assertEqual(Output, get_sol().maxSumOfThreeSubarrays(nums,k))
+        self.assertEqual([0,3,5], get_sol().maxSumOfThreeSubarrays([1,2,1,2,6,7,5,1],  2))
     def test2(self):
-        nums,k = [1,2,1,2,1,2,1,2,1],  2
-        Output= [0,2,4]
-        self.assertEqual(Output, get_sol().maxSumOfThreeSubarrays(nums,k))
-    # def test3(self):
-    # def test4(self):
+        self.assertEqual([0,2,4], get_sol().maxSumOfThreeSubarrays([1,2,1,2,1,2,1,2,1],  2))
+    def test3(self):
+        self.assertEqual([3,8,14], get_sol().maxSumOfThreeSubarrays([17,9,3,2,7,10,20,1,13,4,5,16,4,1,17,6,4,19,8,3],  4))
+    def test4(self):
+        self.assertEqual([0,1,4], get_sol().maxSumOfThreeSubarrays([17,9,3,2,7] ,1))
     # def test5(self):
     # def test6(self):
     # def test7(self):

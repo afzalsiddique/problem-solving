@@ -1,30 +1,45 @@
-import itertools;from itertools import accumulate; from math import floor,ceil,sqrt,log2; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n=len(nums)
-        zeros=sum(1 for x in nums if x==0)
-        if zeros>=2: return [0]*n
-        if zeros==1:
-            prod=1
-            idx_zero=-1
-            for i,x in enumerate(nums):
-                if x==0:
-                    idx_zero=i
-                else:
-                    prod*=x
-            return [0]*idx_zero+[prod]+[0]*(n-1-idx_zero)
-        prod=reduce(lambda a,b:a*b,nums)
-        return [prod//x for x in nums]
+    def minCameraCover(self, root: Optional[TreeNode]) -> int:
+        HAS_CAM,NO_CAM_BUT_MONI,NO_CAM_NO_MONI=1,0,-1
+        def at_one_child_has_cam(l,r):
+            return l==HAS_CAM or r==HAS_CAM
+        def one_child_monitored(c):
+            return c==HAS_CAM or c==NO_CAM_NO_MONI
+        def both_children_monitored(l,r):
+            return one_child_monitored(l) and one_child_monitored(r)
+
+        res=0
+        def recur(node):
+            nonlocal res
+            if not node: return NO_CAM_BUT_MONI
+            if not node.left and not node.right: return NO_CAM_NO_MONI
+            l,r=recur(node.left),recur(node.right)
+            if at_one_child_has_cam(l,r):
+                return NO_CAM_BUT_MONI
+            elif both_children_monitored(l,r):
+                return NO_CAM_NO_MONI
+            else:
+                res+=1
+                return HAS_CAM
+
+        ans = recur(root)
+        if ans==NO_CAM_NO_MONI:
+            res+=1
+        return res
 
 
 class MyTestCase(unittest.TestCase):
-    def test01(self):
-        self.assertEqual([60, 40, 30, 24], get_sol().productExceptSelf([2,3,4,5]))
-    def test02(self):
-        self.assertEqual([24,12,8,6], get_sol().productExceptSelf([1,2,3,4]))
-    def test03(self):
-        self.assertEqual([0,0,9,0,0], get_sol().productExceptSelf([-1,1,0,-3,3]))
-    def test04(self):
-        self.assertEqual([0,0,0,0,0], get_sol().productExceptSelf([1,0,2,3,0]))
+    def test1(self):
+        self.assertEqual(1, get_sol().minCameraCover(deserialize("0,1,null,2,3")))
+    def test2(self):
+        self.assertEqual(2, get_sol().minCameraCover(deserialize("0,1,null,2,null,3,null,null,4")))
+    def test3(self):
+        self.assertEqual(1, get_sol().minCameraCover(deserialize("0")))
+    def test4(self):
+        self.assertEqual(1, get_sol().minCameraCover(deserialize("0,0,0")))
+    def test5(self):
+        self.assertEqual(2, get_sol().minCameraCover(deserialize("0,null,0,null,0,0,0")))

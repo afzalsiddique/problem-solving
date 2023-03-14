@@ -102,8 +102,8 @@ class tester(unittest.TestCase):
         self.assertEqual(exptected,outputs)
     def test02(self):
         commands = ["MyCircularQueue","enQueue","enQueue","deQueue","enQueue","deQueue","enQueue","deQueue","enQueue","deQueue", "Front"]
-        inputs=[[2],[1],[2],[],[3],[],[3],[],[3],[],[]]
-        exptected = [None, True, True, True, True, True, True, True, True, True, 3]
+        inputs=[         [2],            [1],     [2],       [],      [3],       [],     [3],         [],     [3],     [],         []]
+        exptected = [   None,           True,     True,     True,    True,     True,    True,        True,    True,    True,       3]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(exptected,outputs)
 

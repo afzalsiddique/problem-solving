@@ -142,3 +142,7 @@ class Tester(unittest.TestCase):
         nums,k = [3, 8, 9, 7, 6], 3
         get_sol().rotate(nums,k)
         self.assertEqual([9, 7, 6, 3, 8],nums)
+    def test10(self):
+        nums,k = [1,2], 3
+        get_sol().rotate(nums,k)
+        self.assertEqual([2,1],nums)

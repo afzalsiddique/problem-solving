@@ -18,16 +18,39 @@ class Solution:
             li.append(max(di.values())+1)
         return max(li)
 
-class tester(unittest.TestCase):
+class Solution2:
+    # not good
+    def maxPoints(self, points: List[List[int]]) -> int:
+        n=len(points)
+        if n<2: return n
+        di = defaultdict(set)
+        for i in range(n):
+            for j in range(n):
+                if i==j: continue
+                x1,y1=points[i]
+                x2,y2=points[j]
+                delX,delY=x2-x1,y2-y1
+                if delY==0:
+                    eq='y='+str(y1)
+                elif delX==0:
+                    eq='x='+str(x1)
+                else:
+                    m = delY/delX
+                    c = y1 - m * x1
+                    eq = 'y='+str(m)+'x'+'+'+str(c)
+                di[eq].add(tuple(points[i]))
+                di[eq].add(tuple(points[j]))
+        return max(len(val) for val in di.values())
+class Tester(unittest.TestCase):
     def test01(self):
-        points = [[1,1],[2,2],[3,3]]
-        Output= 3
-        self.assertEqual(Output,get_sol().maxPoints(points))
+        self.assertEqual(3,get_sol().maxPoints([[1,1],[2,2],[3,3]]))
     def test02(self):
-        points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
-        Output= 4
-        self.assertEqual(Output,get_sol().maxPoints(points))
+        self.assertEqual(4,get_sol().maxPoints([[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]))
     def test03(self):
-        points = [[1,1]]
-        Output= 1
-        self.assertEqual(Output,get_sol().maxPoints(points))
+        self.assertEqual(1,get_sol().maxPoints([[1,1]]))
+    def test04(self):
+        self.assertEqual(3,get_sol().maxPoints([[3,3],[1,4],[1,1],[2,1],[2,2]]))
+    def test05(self):
+        self.assertEqual(3,get_sol().maxPoints([[2,3],[3,3],[-5,3]]))
+    def test06(self):
+        self.assertEqual(5,get_sol().maxPoints([[0,0],[4,5],[7,8],[8,9],[5,6],[3,4],[1,1]]))

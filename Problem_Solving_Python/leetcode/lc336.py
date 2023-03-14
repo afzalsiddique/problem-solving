@@ -6,7 +6,7 @@ class TrieNode:
         self.idx = -1
         self.pdromes_below = []
         self.children = defaultdict(TrieNode)
-    def isRoot(self): return self.idx==-1
+    def isNotEnding(self): return self.idx != -1
 
 class Trie:
     def __init__(self):
@@ -14,25 +14,27 @@ class Trie:
     def add(self, word, idx):
         node = self.root
         for i, letter in enumerate(reversed(word)):
-            if self.is_palindrome(word[:len(word)-i]):
+            remaining=word[:len(word)-i]
+            if self.is_palindrome(remaining):
                 node.pdromes_below.append(idx)
             node = node.children[letter]
         node.idx = idx
 
-    def search(self, word, idx, res):
+    def search(self, word, idx):
+        res=[]
         node = self.root
         for i, letter in enumerate(word):
-            if not node.isRoot() and idx != node.idx and self.is_palindrome(word[i:]):
+            if node.isNotEnding() and idx != node.idx and self.is_palindrome(word[i:]):
                 res.append([idx, node.idx])
             node = node.children.get(letter)
             if not node:
-                return
+                return res
         for p in node.pdromes_below:
             if p != idx:
                 res.append([idx, p])
-        if not node.isRoot() and idx != node.idx:
+        if node.isNotEnding() and idx != node.idx:
             res.append([idx, node.idx])
-        return
+        return res
 
     def is_palindrome(self, w):
         i = 0
@@ -52,7 +54,7 @@ class Solution:
         for idx, w in enumerate(words):
             t.add(w, idx)
         for idx, w in enumerate(words):
-            t.search(w, idx, res)
+            res.extend(t.search(w, idx))
         return res
 
 

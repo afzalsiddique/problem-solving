@@ -20,21 +20,19 @@ class Trie:
 
 class Solution:
     def findWords(self, board, words):
-        def dfs(node, i, j, path):
+        def dfs(node, x, y, path):
             if node.isWord:
                 res.append(path)
                 node.isWord = False
-            if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]): return
-            tmp = board[i][j]
+            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]): return
+            tmp = board[x][y]
             node = node.children.get(tmp)
             if not node:
                 return
-            board[i][j] = "#"
-            dfs(node, i+1, j, path+tmp)
-            dfs(node, i-1, j, path+tmp)
-            dfs(node, i, j-1, path+tmp)
-            dfs(node, i, j+1, path+tmp)
-            board[i][j] = tmp
+            board[x][y] = "#"
+            for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
+                dfs(node, x + dx, y + dy, path + tmp)
+            board[x][y] = tmp
 
         res = []
         trie = Trie()

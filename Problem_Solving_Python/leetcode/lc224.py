@@ -115,3 +115,5 @@ class tester(unittest.TestCase):
         self.assertEqual(-47,get_sol().calculate("(1-(40+5)-3)"))
     def test13(self):
         self.assertEqual(-1,get_sol().calculate("-2+ 1"))
+    def test14(self):
+        self.assertEqual(-3,get_sol().calculate("-(2+1)"))

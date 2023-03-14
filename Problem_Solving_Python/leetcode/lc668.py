@@ -9,14 +9,14 @@ class Solution:
                 res+=min(x//i,m) # How many numbers are less than or equal to x in that col. add those numbers
             return res>=k
 
-        beg,end=0,m*n
-        while beg<=end:
-            mid=(beg+end)//2
+        lo,hi=0,m*n
+        while lo<=hi:
+            mid=(lo+hi)//2
             if hasLessOrEq(mid):
-                end=mid-1
+                hi=mid-1
             else:
-                beg=mid+1
-        return beg
+                lo=mid+1
+        return lo
 
 class Tester(unittest.TestCase):
     def test01(self):

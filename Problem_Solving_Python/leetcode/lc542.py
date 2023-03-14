@@ -1,9 +1,14 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
-def get_sol(): return Solution()
+def get_sol(): return Solution5()
 class Solution5:
     # bfs
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        def exploreNeigh(x,y)->List[List[int]]:
+            for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                X,Y=x+dx,y+dy
+                if 0<=X<m and 0<=Y<n: yield X,Y
+
         m,n=len(mat),len(mat[0])
         res=[[float('inf')]*n for _ in range(m)]
         q=deque([[x,y] for x in range(m) for y in range(n) if mat[x][y]==0])
@@ -13,9 +18,7 @@ class Solution5:
                 x,y=q.popleft()
                 if res[x][y]!=float('inf'): continue
                 res[x][y]=cnt
-                for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
-                    X,Y=x+dx,y+dy
-                    if not 0<=X<m or not 0<=Y<n: continue
+                for X,Y in exploreNeigh(x,y):
                     if res[X][Y]==float('inf'):
                         q.append([X,Y])
             cnt+=1
@@ -136,3 +139,5 @@ class tester(unittest.TestCase):
         self.assertEqual([[2,1,0,0,1,0,0,1,1,0],[1,0,0,1,0,1,1,2,2,1],[1,1,1,0,0,1,2,2,1,0],[0,1,2,1,0,1,2,3,2,1],[0,0,1,2,1,2,1,2,1,0],[1,1,2,3,2,1,0,1,1,1],[0,1,2,3,2,1,1,0,0,1],[1,2,1,2,1,0,0,1,1,2],[0,1,0,1,1,0,1,2,2,3],[1,2,1,0,1,0,1,2,3,4]],get_sol().updateMatrix([[1,1,0,0,1,0,0,1,1,0],[1,0,0,1,0,1,1,1,1,1],[1,1,1,0,0,1,1,1,1,0],[0,1,1,1,0,1,1,1,1,1],[0,0,1,1,1,1,1,1,1,0],[1,1,1,1,1,1,0,1,1,1],[0,1,1,1,1,1,1,0,0,1],[1,1,1,1,1,0,0,1,1,1],[0,1,0,1,1,0,1,1,1,1],[1,1,1,0,1,0,1,1,1,1]]))
     def test05(self):
         self.assertEqual([[0, 0, 1, 0, 1, 2], [1, 1, 2, 1, 0, 1]],get_sol().updateMatrix([[0,0,1,0,1,1], [1,1,1,1,0,1], ]))
+    def test06(self):
+        self.assertEqual([[0, 0], [1, 1]],get_sol().updateMatrix([[0,0], [1,1]]))
