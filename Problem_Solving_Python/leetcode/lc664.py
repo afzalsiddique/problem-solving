@@ -28,18 +28,23 @@ class Solution:
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(2, get_sol().strangePrinter("abbb"))
-    def test2(self):
+    def test02(self):
         self.assertEqual(2, get_sol().strangePrinter("aaabbb"))
-    def test3(self):
+    def test03(self):
         self.assertEqual(2, get_sol().strangePrinter("aba"))
-    def test4(self):
+    def test04(self):
         self.assertEqual(1, get_sol().strangePrinter("bb"))
-    def test5(self):
+    def test05(self):
         self.assertEqual(1, get_sol().strangePrinter("bbb"))
-    def test6(self):
+    def test06(self):
         self.assertEqual(1, get_sol().strangePrinter("bbb"))
-    def test7(self):
+    def test07(self):
         self.assertEqual(14, get_sol().strangePrinter("abcdefghijklmn"))
-
+    def test08(self):
+        self.assertEqual(3, get_sol().strangePrinter("abbc"))
+    def test09(self):
+        self.assertEqual(7, get_sol().strangePrinter("abcabcabc"))
+    def test10(self):
+        self.assertEqual(5, get_sol().strangePrinter("abcabc"))

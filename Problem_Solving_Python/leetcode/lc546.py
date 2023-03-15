@@ -18,7 +18,7 @@ class Solution:
             ans=float('-inf')
             ans=max(ans,(k+1)*(k+1)+dp(i+1,j,0))
             for m in range(i+1,j+1):
-                if boxes[i]!=boxes[m]: continue
+                if boxes[i]!=boxes[m]: continue # let boxes[i] stick around until it meets boxes[m] which is same color as boxes[i]. At this moment, boxes[i+1:m] would have been removed.
                 ans=max(ans,dp(i+1,m-1,0)+dp(m,j,k+1))
             return ans
 

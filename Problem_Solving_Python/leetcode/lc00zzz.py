@@ -3,35 +3,41 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    def shortestPalindrome(self, s: str) -> str:
-        res=[]
-        l,r=0,len(s)-1
-        hasMiddle=False
-        while l<=r:
-            if l==r:
-                hasMiddle=True
-                break
-            if s[l]==s[r]:
-                res.append(s[l])
-                l+=1
-                r-=1
-            else:
-                res.append(s[r])
-                r-=1
-        if not hasMiddle:
-            res=res[:]+res[::-1]
-        else:
-            res=res[:]+[s[l]]+res[::-1]
-        return ''.join(res)
+    def strangePrinter(self, s: str) -> int:
+        @cache
+        def recur(i,j):
+            if i>j: return 0
+            if i==j: return 1
+            while i+1<=j and s[i]==s[i+1]:
+                i+=1
+            while j-1>=i and s[j]==s[j-1]:
+                j-=1
+            if s[i]!=s[j]:
+                return 2+recur(i+1,j-1)
+            return 1+recur(i+1,j-1)
+
+        return recur(0,len(s)-1)
+
+
 
 class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual("aaacecaaa",get_sol().shortestPalindrome("aacecaaa"))
-    def test2(self):
-        self.assertEqual("dcbabcd",get_sol().shortestPalindrome("abcd"))
-    def test3(self):
-        self.assertEqual("a",get_sol().shortestPalindrome("a"))
-    def test4(self):
-        self.assertEqual("",get_sol().shortestPalindrome(""))
-    def test5(self):
-        self.assertEqual("abbaabba",get_sol().shortestPalindrome("aabba"))
+    def test01(self):
+        self.assertEqual(2, get_sol().strangePrinter("abbb"))
+    def test02(self):
+        self.assertEqual(2, get_sol().strangePrinter("aaabbb"))
+    def test03(self):
+        self.assertEqual(2, get_sol().strangePrinter("aba"))
+    def test04(self):
+        self.assertEqual(1, get_sol().strangePrinter("bb"))
+    def test05(self):
+        self.assertEqual(1, get_sol().strangePrinter("bbb"))
+    def test06(self):
+        self.assertEqual(1, get_sol().strangePrinter("bbb"))
+    def test07(self):
+        self.assertEqual(14, get_sol().strangePrinter("abcdefghijklmn"))
+    def test08(self):
+        self.assertEqual(3, get_sol().strangePrinter("abbc"))
+    def test09(self):
+        self.assertEqual(7, get_sol().strangePrinter("abcabcabc"))
+    def test10(self):
+        self.assertEqual(5, get_sol().strangePrinter("abcabc"))

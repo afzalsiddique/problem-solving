@@ -37,19 +37,14 @@ class Solution2:
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        Output= 7
-        self.assertEqual(Output, get_sol().minDifficulty(li= [6, 5, 4, 3, 2, 1], d = 2))
+        self.assertEqual(7, get_sol().minDifficulty([6, 5, 4, 3, 2, 1], 2))
     def test2(self):
-        Output= -1
-        self.assertEqual(Output, get_sol().minDifficulty(li= [9, 9, 9], d = 4))
+        self.assertEqual(1, get_sol().minDifficulty([9, 9, 9], 4))
     def test3(self):
-        Output= 3
-        self.assertEqual(Output, get_sol().minDifficulty(li= [1, 1, 1], d = 3))
+        self.assertEqual(3, get_sol().minDifficulty([1, 1, 1], 3))
     def test4(self):
-        Output= 15
-        self.assertEqual(Output, get_sol().minDifficulty(li= [7, 1, 7, 1, 7, 1], d = 3))
+        self.assertEqual(15, get_sol().minDifficulty([7, 1, 7, 1, 7, 1], 3))
     def test5(self):
-        Output= 843
-        self.assertEqual(Output, get_sol().minDifficulty(li= [11, 111, 22, 222, 33, 333, 44, 444], d = 6))
+        self.assertEqual(843, get_sol().minDifficulty([11, 111, 22, 222, 33, 333, 44, 444], 6))
     # def test5(self):
     # def test6(self):
