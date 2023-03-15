@@ -3,46 +3,35 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    def minCameraCover(self, root: Optional[TreeNode]) -> int:
-        HAS_CAM,NO_CAM_BUT_MONI,NO_CAM_NO_MONI=1,0,-1
-        def at_least_one_child_has_cam(l,r):
-            return l==HAS_CAM or r==HAS_CAM
-        def one_child_monitored(c):
-            return c==HAS_CAM or c==NO_CAM_BUT_MONI
-        def at_least_one_child_not_monitored(l,r):
-            return not one_child_monitored(l) or not one_child_monitored(r)
-
-        res=0
-        def dfs(node):
-            nonlocal res
-            if not node:
-                return NO_CAM_BUT_MONI
-            l=dfs(node.left)
-            r=dfs(node.right)
-            if at_least_one_child_not_monitored(l,r):
-                res+=1
-                return HAS_CAM
-            elif at_least_one_child_has_cam(l,r):
-                return NO_CAM_BUT_MONI
+    def shortestPalindrome(self, s: str) -> str:
+        res=[]
+        l,r=0,len(s)-1
+        hasMiddle=False
+        while l<=r:
+            if l==r:
+                hasMiddle=True
+                break
+            if s[l]==s[r]:
+                res.append(s[l])
+                l+=1
+                r-=1
             else:
-                return NO_CAM_NO_MONI
+                res.append(s[r])
+                r-=1
+        if not hasMiddle:
+            res=res[:]+res[::-1]
+        else:
+            res=res[:]+[s[l]]+res[::-1]
+        return ''.join(res)
 
-        ans = dfs(root)
-        if ans==NO_CAM_NO_MONI:
-            res+=1
-        return res
-
-
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(1, get_sol().minCameraCover(deserialize("0,1,null,2,3")))
+        self.assertEqual("aaacecaaa",get_sol().shortestPalindrome("aacecaaa"))
     def test2(self):
-        self.assertEqual(2, get_sol().minCameraCover(deserialize("0,1,null,2,null,3,null,null,4")))
+        self.assertEqual("dcbabcd",get_sol().shortestPalindrome("abcd"))
     def test3(self):
-        self.assertEqual(1, get_sol().minCameraCover(deserialize("0")))
+        self.assertEqual("a",get_sol().shortestPalindrome("a"))
     def test4(self):
-        self.assertEqual(1, get_sol().minCameraCover(deserialize("0,0,0")))
+        self.assertEqual("",get_sol().shortestPalindrome(""))
     def test5(self):
-        self.assertEqual(2, get_sol().minCameraCover(deserialize("0,null,1,null,2,3,4")))
-    def test6(self):
-        self.assertEqual(2, get_sol().minCameraCover(deserialize("0,1,2,null,null,null,3")))
+        self.assertEqual("abbaabba",get_sol().shortestPalindrome("aabba"))

@@ -1,10 +1,7 @@
-import random
-from bisect import bisect_left
-from collections import deque, defaultdict, Counter
-from heapq import *
-import unittest
-from typing import List
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
+def get_sol(): return Solution()
 class Solution:
     # kmp
     # https://www.youtube.com/watch?v=c4akpqTwE5g
@@ -47,24 +44,14 @@ class Solution:
             new_s=pre[::-1]+s
             if new_s==new_s[::-1]: return new_s
 
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
-        s = "aacecaaa"
-        Output= "aaacecaaa"
-        self.assertEqual(Output,Solution().shortestPalindrome(s))
+        self.assertEqual("aaacecaaa",get_sol().shortestPalindrome("aacecaaa"))
     def test2(self):
-        s = "abcd"
-        Output= "dcbabcd"
-        self.assertEqual(Output,Solution().shortestPalindrome(s))
+        self.assertEqual("dcbabcd",get_sol().shortestPalindrome("abcd"))
     def test3(self):
-        s = "a"
-        Output= "a"
-        self.assertEqual(Output,Solution().shortestPalindrome(s))
+        self.assertEqual("a",get_sol().shortestPalindrome("a"))
     def test4(self):
-        s = ""
-        Output= ""
-        self.assertEqual(Output,Solution().shortestPalindrome(s))
+        self.assertEqual("",get_sol().shortestPalindrome(""))
     def test5(self):
-        s = "aabba"
-        Output= "abbaabba"
-        self.assertEqual(Output,Solution().shortestPalindrome(s))
+        self.assertEqual("abbaabba",get_sol().shortestPalindrome("aabba"))

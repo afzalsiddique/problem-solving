@@ -1,5 +1,40 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
+class Solution2:
+    # bfs
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        def get_zero_position(board):
+            for i in range(2):
+                for j in range(3):
+                    if board[i][j]==0: return [i,j]
+        def valid(i,j): return 0<=i<2 and 0<=j<3
+        def get_neighbors(board):
+            x,y=get_zero_position(board)
+            res=[]
+            for dx,dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+                X,Y=x+dx,y+dy
+                if valid(X,Y):
+                    brd=[list(row[:]) for row in board] # make a copy of board in List[List[int]]
+                    brd[x][y],brd[X][Y]=brd[X][Y],brd[x][y] # swap piece
+                    brd=tuple(tuple(row[:]) for row in brd) # make it tuple
+                    res.append(brd)
+            return res
+
+        target=((1,2,3),(4,5,0))
+        board=tuple(tuple(row[:]) for row in board) # make it tuple
+        q=deque()
+        q.append(board)
+        vis=set()
+        res=0
+        while q:
+            for _ in range(len(q)):
+                board=q.popleft()
+                if board==target: return res
+                if board in vis: continue
+                vis.add(board)
+                q.extend(get_neighbors(board))
+            res+=1
+        return -1
 class Solution:
     # bfs
     def slidingPuzzle(self, board: List[List[int]]) -> int:
@@ -38,21 +73,13 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        board = [[1,2,3],[4,0,5]]
-        Output= 1
-        self.assertEqual(Output, get_sol().slidingPuzzle(board))
+        self.assertEqual(1, get_sol().slidingPuzzle([[1,2,3],[4,0,5]]))
     def test2(self):
-        board = [[1,2,3],[5,4,0]]
-        Output= -1
-        self.assertEqual(Output, get_sol().slidingPuzzle(board))
+        self.assertEqual(1, get_sol().slidingPuzzle([[1,2,3],[5,4,0]]))
     def test3(self):
-        board = [[4,1,2],[5,0,3]]
-        Output= 5
-        self.assertEqual(Output, get_sol().slidingPuzzle(board))
+        self.assertEqual(5, get_sol().slidingPuzzle([[4,1,2],[5,0,3]]))
     def test4(self):
-        board = [[3,2,4],[1,5,0]]
-        Output= 14
-        self.assertEqual(Output, get_sol().slidingPuzzle(board))
+        self.assertEqual(14, get_sol().slidingPuzzle([[3,2,4],[1,5,0]]))
     # def test5(self):
     # def test6(self):
     # def test7(self):
