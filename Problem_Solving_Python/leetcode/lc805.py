@@ -8,14 +8,11 @@ class Solution:
         @cache
         def canSplit(i:int,num_left:int, sum_left:int):
             if num_left==0:
-                if not sum_left:
-                    return True
-                return False
-            for j in range(i,n):
-                if canSplit(j+1,num_left-1,sum_left-nums[j]):
-                    return True
-                if canSplit(j+1,num_left,sum_left):
-                    return True
+                return sum_left==0
+            if canSplit(i+1,num_left-1,sum_left-nums[i]):
+                return True
+            if canSplit(i+1,num_left,sum_left):
+                return True
             return False
 
         n=len(nums)

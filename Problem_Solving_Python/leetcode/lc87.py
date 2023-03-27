@@ -12,9 +12,10 @@ class Solution:
             for i in range(1,len(s1)): # len(s1) is equal to len(s2)
                 s1_first_i=s1[:i]
                 s2_first_i=s2[:i]
+                s1_skip_first_i=s1[i:]
                 s2_skip_first_i=s2[i:]
                 s2_last_i=s2[-i:]
-                s1_skip_first_i,s2_skip_last_i=s1[i:],s2[:-i]
+                s2_skip_last_i=s2[:-i]
 
                 # g | reat
                 # r | geat

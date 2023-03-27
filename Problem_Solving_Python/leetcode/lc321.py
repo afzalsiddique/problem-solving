@@ -1,4 +1,6 @@
-import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # see lc321.png
@@ -55,6 +57,37 @@ class Solution:
             res=max(res,merge(nums1,nums2,i),key=larger_cmp)
         return res
 
+class Solution2:
+    # tle
+    def maxNumber(self, nums1: List[int], nums2: List[int], k: int) -> List[int]:
+        @cache
+        def dp(i,j,k):
+            if k==1:
+                one=right_max1[i] if i<m else float('-inf')
+                two=right_max2[j] if j<n else float('-inf')
+                return max(one,two)
+            if i==m and j==n: return float('-inf')
+            ans1,ans2,ans3,ans4=float('-inf'),float('-inf'),float('-inf'),float('-inf')
+            if j==n:
+                curDigit=nums1[i]*10**(k-1)
+                ans1=curDigit+dp(i+1,j,k-1)
+                ans3=dp(i+1,j,k)
+            elif i==m:
+                curDigit=nums2[j]*10**(k-1)
+                ans2=curDigit+dp(i,j+1,k-1)
+                ans4=dp(i,j+1,k)
+            else:
+                ans1=nums1[i]*10**(k-1)+dp(i+1,j,k-1)
+                ans2=nums2[j]*10**(k-1)+dp(i,j+1,k-1)
+                ans3=dp(i+1,j,k)
+                ans4=dp(i,j+1,k)
+            return max(ans1,ans2,ans3,ans4)
+
+        right_max1=list(accumulate(nums1[::-1],max))[::-1]
+        right_max2=list(accumulate(nums2[::-1],max))[::-1]
+        m,n=len(nums1),len(nums2)
+        return list(map(int,str(dp(0,0,k))))
+
 class MyTestCase(unittest.TestCase):
     def test1(self):
         nums1,nums2,k = [3,4,6,5],  [9,1,2,5,8,3],  5
@@ -72,7 +105,14 @@ class MyTestCase(unittest.TestCase):
         nums1,nums2,k = [8,6,9], [1,7,5], 3
         Output= [9,7,5]
         self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
+    def test5(self):
+        nums1,nums2,k = [6,9], [7,5], 2
+        Output= [9,7]
+        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
+    def test6(self):
+        nums1,nums2,k = [9,3,9,4,3,6,6,1,8,3,6,5,8,9,0,4,0,7,6,6,5,6,2,8,6,7,1,5,0,3,2,3,9,2,1,4,8,8,1,6,3,9,5,4,3,5,9,5,4,9,3,7,9,9,1,9,9,5,6,2,4,8,1,4,0,3,0,4,2,3,2,7,6,4,8,2,1,9,4,6,0,6,0,5,2,8,6,5,9,8,2,6,1,2,1,0,6,0,1,8,8,8,7,3,1,4,9,7,0,7,7,3,8,2,8,0,5,4,7,6,1,9,8,3,5,0,4,6,2,2,5,4,9,7,4,9,1,6,7,2,0,1,2,5,8,1,1,3,2,9,9,2,1,2,3,3,6,1,8,7], [5,0,1,5,1,0,8,8,7,3,8,9,2,8,9,8,1,5,6,4,5,7,2,0,6,8,8,0,9,4,5,7], 160
+        Output= [9, 9, 9, 9, 9, 8, 7, 8, 8, 0, 9, 4, 5, 7, 0, 4, 0, 7, 6, 6, 5, 6, 2, 8, 6, 7, 1, 5, 0, 3, 2, 3, 9, 2, 1, 4, 8, 8, 1, 6, 3, 9, 5, 4, 3, 5, 9, 5, 4, 9, 3, 7, 9, 9, 1, 9, 9, 5, 6, 2, 4, 8, 1, 4, 0, 3, 0, 4, 2, 3, 2, 7, 6, 4, 8, 2, 1, 9, 4, 6, 0, 6, 0, 5, 2, 8, 6, 5, 9, 8, 2, 6, 1, 2, 1, 0, 6, 0, 1, 8, 8, 8, 7, 3, 1, 4, 9, 7, 0, 7, 7, 3, 8, 2, 8, 0, 5, 4, 7, 6, 1, 9, 8, 3, 5, 0, 4, 6, 2, 2, 5, 4, 9, 7, 4, 9, 1, 6, 7, 2, 0, 1, 2, 5, 8, 1, 1, 3, 2, 9, 9, 2, 1, 2, 3, 3, 6, 1, 8, 7]
+        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
+    def test7(self):
+        self.assertEqual([9, 9, 9, 9, 9, 9, 9, 9, 7, 4, 1, 6, 3, 0, 4, 1, 4, 1, 8, 0, 3, 4, 4, 0, 3, 1, 2, 7, 9, 3, 2, 5, 5, 2, 7, 9, 5, 2, 2, 0, 2, 6, 7, 3, 0, 8, 8, 8, 6, 0, 1, 7, 8, 0, 2, 7, 5, 8, 7, 5, 2, 4, 0, 7, 3, 6, 3, 6, 3, 9, 6, 8, 1, 6, 9, 6, 2, 5, 9, 5, 1, 9, 2, 1, 4, 0, 7, 9, 8, 0, 4, 1, 0, 8, 7, 9, 7, 6, 6, 8, 8, 8, 3, 7, 5, 3, 2, 0, 4, 9, 1, 1, 3, 4, 9, 7, 9, 8, 4, 9, 6, 4, 7, 1, 9, 7, 4, 0, 4, 6, 0, 2, 0, 8, 9, 3, 0, 9, 9, 2], get_sol().maxNumber([3,9,9,6,9,6,2,1,1,7,7,7,1,4,9,9,6,9,5,3,6,4,6,3,8,2,5,1,1,7,9,2,3,7,4,0,3,4,4,0,2,6,7,3,0,8,8,8,6,0,1,7,8,0,2,7,5,8,7,5,2,4,0,7,3,6,3,6,3,9,6,8,1,6,9,6,2,5,9,5,1,9,2,1,4,0,7,9,8,0,4,1,0,8,7,9,7,6,6,8,8,8,3,7,5,3,2,0,4,9,1,1,3,4,9,7,9,8,4,9,6,4,7,1,9,7,4,0,4,6,0,2,0,8,9,3,0,9,9,2], [8,8,9,1,6,3,0,4,1,4,1,8,0,3,1,2,7,9,3,2,5,5,2,7,9,5,2,2], 140))
     # def test8(self):
