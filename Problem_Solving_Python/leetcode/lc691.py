@@ -1,8 +1,6 @@
-import string;
-from collections import Counter;
-import unittest; from typing import List; import functools
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/stickers-to-spell-word/discuss/161470/My-Python-DFS-Solution/333443
@@ -26,36 +24,28 @@ class Solution:
         return res if res < float("inf") else -1
 class Solution3:
     def minStickers(self, stickers: List[str], target: str) -> int:
-        def func(s): return Counter(c for c in s if c in target)
-        def serialize(count:Counter): # serialize a Counter. Counter('a':1,'c':2) -> "1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
-            li = [str(count[c]) for c in string.ascii_lowercase]
-            return ','.join(li)
-        def deserialize(hashed:str): # deserialize the Counter. "1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" -> Counter('a':1,'c':2)
-            li = hashed.split(',')
-            count = Counter()
-            for c in string.ascii_lowercase:
-                idx = ord(c)-ord('a')
-                if int(li[idx]):
-                    count[c]=int(li[idx])
-            return count
-        @functools.lru_cache(None)
-        def dfs(hashed:str,i):
+        def serialize(count:Counter): # serialize a Counter. Counter('a':1,'c':2) -> (1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+            return tuple(count[ch] for ch in string.ascii_lowercase)
+        def deserialize(tup:tuple): # deserialize the Counter. (1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) -> Counter('a':1,'c':2)
+            return Counter({ch:val for ch,val in zip(string.ascii_lowercase,tup)})
+        @cache
+        def dfs(i, hashed: tuple):
             count=deserialize(hashed)
             if all(count[c]==0 for c in count):
                 return 0
             char=target[i]
             res=float('inf')
             if count[char]==0:
-                res=min(res,dfs(serialize(count),i+1))
+                res=min(res, dfs(i + 1, serialize(count)))
             else:
                 for j in range(n):
                     if char in freqs[j]:
-                        res=min(res,1+dfs(serialize(count-freqs[j]),i))
+                        res=min(res, 1 + dfs(i, serialize(count - freqs[j])))
             return res
 
         n=len(stickers)
-        freqs=[func(s) for s in stickers]
-        res=dfs(serialize(Counter(target)),0)
+        freqs=[Counter(s) for s in stickers]
+        res= dfs(0, serialize(Counter(target)))
         return res if res!=float('inf') else -1
 class Solution2:
     # tle
@@ -76,7 +66,7 @@ class Solution2:
                 if int(li[idx]):
                     count[c]=int(li[idx])
             return count
-        @functools.lru_cache(None)
+        @cache
         def dfs(i,hashed:str):
             count=deserialize(hashed)
             if all(count[c]==0 for c in count): return 0
@@ -91,6 +81,34 @@ class Solution2:
         res= dfs(0,serialize(Counter(target)))
         return res if res!=float('inf') else -1
 
+class Solution4:
+    # tle
+    def minStickers(self, stickers: List[str], target: str) -> int:
+        def counter_to_hashable(count:Counter):
+            return tuple(count[ch] for ch in string.ascii_lowercase)
+        def hashable_to_counter(tup:tuple):
+            return Counter({ch:val for ch,val in zip(string.ascii_lowercase,tup)})
+        def hasEveryLetter(count:Counter):
+            return all(count[ch]<=0 for ch in count)
+        def everyLetterFromIthStickerAlreadyTaken(i,count):
+            letters=set(stickers[i])
+            return all(count[ch]<=0 for ch in letters)
+        @cache
+        def dfs(i,tup):
+            count=hashable_to_counter(tup)
+            if hasEveryLetter(count):
+                return 0
+            res=float('inf')
+            for j in range(i,len(stickers)):
+                if everyLetterFromIthStickerAlreadyTaken(j,count): continue
+                hashable_counter=counter_to_hashable(count-Counter(stickers[j]))
+                tmp=dfs(j,hashable_counter)
+                res=min(res,tmp)
+            return res+1
+
+
+        ans=dfs(0,counter_to_hashable(Counter(target)))
+        return ans if ans!=float('inf') else -1
 class Tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(3,get_sol().minStickers(stickers = ["with","example","science"], target = "thehat"))
@@ -102,6 +120,7 @@ class Tester(unittest.TestCase):
         self.assertEqual(3,get_sol().minStickers(["control","heart","interest","stream","sentence","soil","wonder","them","month","slip","table","miss","boat","speak","figure","no","perhaps","twenty","throw","rich","capital","save","method","store","meant","life","oil","string","song","food","am","who","fat","if","put","path","come","grow","box","great","word","object","stead","common","fresh","the","operate","where","road","mean"], "stoodcrease"))
     def test5(self):
         self.assertEqual(3,get_sol().minStickers(["point","square","love","show","ran","certain","soil","period","say","human","duck","meet","speed","lie","differ","depend","thank","floor","sail","father","spring","field","music","too","interest","suit","new","finish","electric","parent","song","read","who","effect","fall","spoke","on","short","center","organ","plain","straight","near","so","she","science","quick","position","problem","history"], "chargeresult"))
-    # def test6(self):
+    def test6(self):
+        self.assertEqual(4,get_sol().minStickers(["heart","seven","consider","just","less","back","an","four","cost","kill","skin","happen","depend","broad","caught","fast","fig","way","under","print","white","war","sent","locate","be","noise","door","get","burn","quite","eight","press","eye","wave","bread","wont","short","cow","plain","who","well","drive","fact","chief","store","night","operate","page","south","once"], "chargeresult"))
     # def test7(self):
     # def test8(self):

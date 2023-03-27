@@ -19,7 +19,7 @@ class Solution:
         res=1
         for i in range(n-1):
             if max_left[i]<=min_right[i+1]:
-                res+=1
+                res+=1 # i is the last index of the current chunk
         return res
 
 class MyTestCase(unittest.TestCase):

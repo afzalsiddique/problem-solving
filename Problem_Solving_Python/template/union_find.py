@@ -51,6 +51,11 @@ class UnionFind2:
         first=li[0]
         for second in li[1:]:
             self.union(first,second)
+    def size_of_groups(self):
+        for a in self.par:
+            self.find(a)
+        count=Counter(self.par.values())
+        return list(count.values())
 # union find 1
 root = {}
 def find(x):

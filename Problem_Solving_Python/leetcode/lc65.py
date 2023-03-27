@@ -79,7 +79,7 @@ class Solution2:
         #         and (not decimal_found or (decimal_found and digit_before_decimal_found) or (decimal_found and digit_after_decimal_found)):
         #     return True
         return False
-class tester(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
         s = "0"
         Output= True

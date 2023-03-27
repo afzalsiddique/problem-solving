@@ -17,7 +17,7 @@ class Solution:
                 if a[i]!=b[i]:
                     cnt+=1
                     if cnt>2: return False
-            return True
+            return True # because a and b are anagrams
 
         for i,a in enumerate(strs):
             for j in range(i+1,len(strs)):

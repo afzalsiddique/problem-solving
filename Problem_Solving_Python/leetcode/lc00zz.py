@@ -3,40 +3,36 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    def shortestPath(self, grid: List[List[int]], k: int) -> int:
-        m,n=len(grid),len(grid[0])
-        VISITED=-1
-        def valid(x,y): return 0<=x<m and 0<=y<n
-        def dfs(x,y,k):
-            if k<0: return float('inf')
-            if grid[x][y]==VISITED: return float('inf')
-            if x==m-1 and y==n-1: return 0
-            res=float('inf')
-            val=grid[x][y]
-            grid[x][y]=VISITED
-            for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
-                X,Y=x+dx,y+dy
-                if not valid(X,Y): continue
-                if grid[X][Y]==1:
-                    res=min(res,dfs(X,Y,k-1))
-                else:
-                    res=min(res,dfs(X,Y,k))
-            grid[x][y]=val
-            return res+1
+    def countPalindromicSubsequences(self, s: str) -> int:
+        M=10**9+7
+        @cache
+        def unique_letters(i,j):
+            return len(set(s[i:j+1]))
+        @cache
+        def dp(i,j,prev_equal):
+            if i>j: return 0
+            ans=0
+            if s[i]==s[j]:
+                if prev_equal:
+                    ans+=unique_letters(i,j)
+                ans+=dp(i+1,j-1,True)
+            else:
+                ans+=dp(i+1,j,False)
+                ans+=dp(i,j-1,False)
+            ans%=M
+            return ans
 
-        res=dfs(0,0,k)
-        return res if res!=float('inf') else -1
+        return dp(0,len(s)-1,True)
 
-class MyTestCase(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(6, get_sol().shortestPath(grid = [[0,0,0],[1,1,0],[0,0,0],[0,1,1],[0,0,0]], k = 1))
-    def test2(self):
-        self.assertEqual(-1, get_sol().shortestPath(grid = [[0,1,1],[1,1,1],[1,0,0]], k = 1))
-    def test3(self):
-        self.assertEqual(14, get_sol().shortestPath([[0,0],[1,0],[1,0],[1,0],[1,0],[1,0],[0,0],[0,1],[0,1],[0,1],[0,0],[1,0],[1,0],[0,0]], 4))
-    def test4(self):
-        self.assertEqual(20, get_sol().shortestPath([[0,0,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,1,1,1,1,1,1,1],[0,1,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,1,1,1,1,1,1,1],[0,1,0,1,1,1,1,0,0,0],[0,1,0,0,0,0,0,0,1,0],[0,1,1,1,1,1,1,0,1,0],[0,0,0,0,0,0,0,0,1,0]], 1))
-    def test5(self):
-        self.assertEqual(8, get_sol().shortestPath([[0,0,0,0,0,0],[1,0,1,0,1,0],[1,0,0,0,1,1],[1,1,1,1,1,0]], 1))
-    # def test6(self):
-    # def test7(self):
+class Tester(unittest.TestCase):
+    def test_1(self):
+        self.assertEqual(6,get_sol().countPalindromicSubsequences('bccb'))
+    def test_2(self):
+        self.assertEqual(104860361,get_sol().countPalindromicSubsequences('abcdabcdabcdabcdabcdabcdabcdabcddcbadcbadcbadcbadcbadcbadcbadcba'))
+    # def test_3(self):
+    # def test_4(self):
+    # def test_5(self):
+    # def test_6(self):
+    # def test_7(self):
+    # def test_8(self):
+    # def test_9(self):

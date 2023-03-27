@@ -4,16 +4,20 @@ import unittest; from typing import List;
 
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/minimum-number-of-k-consecutive-bit-flips/solutions/238609/java-c-python-one-pass-and-o-1-space/comments/236804
     def minKBitFlips(self, nums: List[int], k: int) -> int:
         n=len(nums)
         flipped = [False]*n
         validFlipTimesFromPastWindowKForCurrentIdx = 0 # no of flips done to the current index from previous flips
         res =0
         for i in range(n):
-            if i>=k:
-                if flipped[i-k]:
+            if i-k>=0:
+                if flipped[i-k]: # 'i-k' is outside the current window. So update it.
                     validFlipTimesFromPastWindowKForCurrentIdx-=1
 
+            # '0' is flipped even no of times or '1' is flipped odd no of times, then we need to flip it again
+            # if (nums[i]==0 and validFlipTimesFromPastWindowKForCurrentIdx%2==0) or (nums[i]==1 and validFlipTimesFromPastWindowKForCurrentIdx%2==1):
+            # same as
             if validFlipTimesFromPastWindowKForCurrentIdx%2 == nums[i]:
                 if i+k>n:
                     return -1
@@ -70,7 +74,8 @@ class Tester(unittest.TestCase):
         self.assertEqual(3, get_sol().minKBitFlips(nums = [0,0,0,1,0,1,1,0], k = 3))
     def test4(self):
         self.assertEqual(17, get_sol().minKBitFlips([1,1,1,1,1,1,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,1,1,0,0,0,0,1,1,1], 8))
-    # def test5(self):
+    def test5(self):
+        self.assertEqual(2, get_sol().minKBitFlips([1,0,1,1,0,1], 3))
     # def test6(self):
     # def test7(self):
     # def test8(self):

@@ -21,7 +21,7 @@ class Solution:
                 if d==target[i]:
                     hope_to_find_same_number=True # still have hope that we can find same number
                     break
-                res+=n_nums**(n_target-i-1)
+                res+=n_nums**(n_target-(i+1)) # fix the first i+1 digits
             if not hope_to_find_same_number: # no hope to find same number
                 return res
         return res+1 # found same number
@@ -59,7 +59,9 @@ class Tester(unittest.TestCase):
         self.assertEqual(29523, get_sol().atMostNGivenDigitSet(["1", "4", "9"], 1000000000))
     def test4(self):
         self.assertEqual(1, get_sol().atMostNGivenDigitSet(["7"], 8))
-    # def test5(self):
-    # def test6(self):
+    def test5(self):
+        self.assertEqual(8, get_sol().atMostNGivenDigitSet(["1","2","3","4","5","6","7","8"], 8))
+    def test6(self):
+        self.assertEqual(2221640, get_sol().atMostNGivenDigitSet(["1","2","3","4","5","6","7","8"], 8363065))
     # def test7(self):
     # def test8(self):

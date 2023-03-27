@@ -58,6 +58,7 @@ class MinSparseTable:
         for i in range(1,noOfRows+1):
             j=0
             while j + (1 << i) <= n:
+            # while j + (1 << (i-1)) < n:
                 leftInterval = self.dp[i-1][j]
                 rightInterval = self.dp[i-1][j + (1 << (i - 1))]
                 self.dp[i][j] = min(leftInterval,rightInterval)

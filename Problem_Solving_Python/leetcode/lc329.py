@@ -1,7 +1,7 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
-
 class Solution:
     def longestIncreasingPath(self, mat: List[List[int]]) -> int:
         @cache
@@ -27,6 +27,20 @@ class Solution:
                 res=max(res, recur(i, j, float('-inf')))
         return res
 
+class Solution2:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        def valid(x,y): return 0<=x<m and 0<=y<n
+        def getNeigh(x,y):
+            return [(x+dx,y+dy) for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)] if valid(x+dx,y+dy)]
+        m,n=len(matrix),len(matrix[0])
+        q=deque([(i,j) for i in range(m) for j in range(n)])
+        res=0
+        while q:
+            for _ in range(len(q)):
+                x,y=q.popleft()
+                q.extend([(nx,ny) for nx,ny in getNeigh(x,y) if matrix[nx][ny]>matrix[x][y]])
+            res+=1
+        return res
 
 
 class MyTestCase(unittest.TestCase):

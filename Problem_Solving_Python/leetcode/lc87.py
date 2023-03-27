@@ -1,22 +1,32 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     def isScramble(self, s1: str, s2: str) -> bool:
-        dp = {}
+        @cache
         def helper(s1:str,s2:str)-> bool:
             if s1==s2: return True
-            if (s1,s2) in dp: return dp[s1,s2]
             if len(s1) != len(s2) or sorted(s1) != sorted(s2): # prunning
-                dp[(s1, s2)] = False
                 return False
             for i in range(1,len(s1)): # len(s1) is equal to len(s2)
-                # print(1,s1[:i],s2[:i],s1[i:],s2[i:])
-                # print(2,s1[:i],s2[-i:],s1[i:],s2[:-i])
-                if helper(s1[:i],s2[:i]) and helper(s1[i:],s2[i:]) \
-                        or helper(s1[:i],s2[-i:]) and helper(s1[i:],s2[:-i]): # swapping
-                    dp[s1,s2]=True
+                s1_first_i=s1[:i]
+                s2_first_i=s2[:i]
+                s2_skip_first_i=s2[i:]
+                s2_last_i=s2[-i:]
+                s1_skip_first_i,s2_skip_last_i=s1[i:],s2[:-i]
+
+                # g | reat
+                # r | geat
+                # (g,r) and (reat,geat)
+                if helper(s1_first_i,s2_first_i) and helper(s1_skip_first_i,s2_skip_first_i):
                     return True
-            dp[s1,s2]=False
+
+                # g | reat
+                # rgea | t
+                # (g,t) and (reat,rgea)
+                if helper(s1_first_i,s2_last_i) and helper(s1_skip_first_i,s2_skip_last_i): # swapping
+                    return True
             return False
 
         return helper(s1,s2)
