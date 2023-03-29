@@ -46,7 +46,9 @@ class MyTestCase(unittest.TestCase):
     def test3(self):
         self.assertEqual(0, get_sol().scheduleCourse(courses = [[3,2],[4,3]]))
     def test4(self):
+        self.assertEqual(3, get_sol().scheduleCourse([[7,17],[9,10],[5,20],[4,18]]))
+    def test5(self):
+        self.assertEqual(4, get_sol().scheduleCourse([[7,17],[3,12],[5,20],[4,18]]))
+    def test6(self):
         self.assertEqual(4, get_sol().scheduleCourse([[7,17],[3,12],[10,20],[9,10],[5,20],[10,19],[4,18]]))
-    # def test5(self):
-    # def test6(self):
     # def test7(self):

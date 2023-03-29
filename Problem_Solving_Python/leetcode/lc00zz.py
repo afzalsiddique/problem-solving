@@ -3,48 +3,40 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    def maxNumber(self, nums1: List[int], nums2: List[int], k: int) -> List[int]:
+    def numWays(self, steps: int, arrLen: int) -> int:
         @cache
-        def dp(i,j,k):
-            if k==1:
-                tmp1=nums1[i:]
-                tmp2=nums2[j:]
-                one=max(tmp1) if tmp1 else float('-inf')
-                two=max(tmp2) if tmp2 else float('-inf')
-                return max(one,two)
-            if i==len(nums1) or j==len(nums2): return float('-inf')
-            part1=dp(i+1,j,k-1)
-            ans1=nums1[i]*10**(k-1)+dp(i+1,j,k-1)
-            part2=dp(i,j+1,k-1)
-            ans2=nums2[j]*10**(k-1)+dp(i,j+1,k-1)
-            ans3=dp(i+1,j,k)
-            ans4=dp(i,j+1,k)
-            return max(ans1,ans2,ans3,ans4)
+        def dp(pos,steps):
+            if steps==0:
+                return pos==0
+            if steps<pos: return 0
+            res=0
+            for s in range(1,steps+1):
+                if pos+s>=arrLen:
+                    break
+                res+=dp(pos+s,steps-s)
 
-        return [int(c) for c in str(dp(0,0,k))]
+            for s in range(1,steps+1):
+                if pos-s<0:
+                    break
+                res+=dp(pos-s,steps-s)
+
+            res+=dp(pos,steps-1)
+            return res%(10**9+7)
+
+        return dp(0,steps)
 
 
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
-        nums1,nums2,k = [3,4,6,5],  [9,1,2,5,8,3],  5
-        Output= [9,8,6,5,3]
-        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
+        self.assertEqual(4,get_sol().numWays(steps = 3, arrLen = 2))
     def test2(self):
-        nums1,nums2,k = [6,7],  [6,0,4],  5
-        Output= [6,7,6,0,4]
-        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
+        self.assertEqual(2,get_sol().numWays(steps = 2, arrLen = 4))
     def test3(self):
-        nums1,nums2,k = [3,9],  [8,9],  3
-        Output= [9,8,9]
-        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
+        self.assertEqual(8,get_sol().numWays(steps = 4, arrLen = 2))
     def test4(self):
-        nums1,nums2,k = [8,6,9], [1,7,5], 3
-        Output= [9,7,5]
-        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
-    def test5(self):
-        nums1,nums2,k = [6,9], [7,5], 2
-        Output= [9,7]
-        self.assertEqual(Output, get_sol().maxNumber(nums1,nums2,k))
-    # def test6(self):
-    # def test7(self):
-    # def test8(self):
+        self.assertEqual(9,get_sol().numWays(4, 3))
+    # def test_5(self):
+    # def test_6(self):
+    # def test_7(self):
+    # def test_8(self):
+    # def test_9(self):

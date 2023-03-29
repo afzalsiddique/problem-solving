@@ -1,8 +1,32 @@
-import unittest; from typing import List; import functools
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        def within(x,y):
+            return 0<=x<m and 0<=y<n
+        def get_next_moves(x,y):
+            return [(x+dx,y+dy) for dx,dy in [(1,0),(1,1),(1,-1)] if within(x+dx,y+dy)]
+        @cache
+        def dfs(x1,y1,x2,y2): # we can apply dp because robots can not move upward
+            res=0
+            for a in get_next_moves(x1,y1):
+                for b in get_next_moves(x2,y2):
+                    res=max(res,dfs(*a,*b))
+
+            if x1==x2 and y1==y2: # pick it once
+                res+=grid[x1][y1]
+            else: # pick both the cherries
+                res+=grid[x1][y1]
+                res+=grid[x2][y2]
+            return res
+
+
+
+        m,n=len(grid),len(grid[0])
+        return dfs(0,0,0,n-1)
+class Solution2:
     def cherryPickup(self, grid: List[List[int]]) -> int:
         @functools.lru_cache(None)
         def dfs(i1,j1,i2,j2):

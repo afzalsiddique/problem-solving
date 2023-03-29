@@ -5,23 +5,23 @@ class Solution:
     def smallestRange(self, nums: List[List[int]]) -> List[int]:
         k=len(nums)
         pq=[]
-        maxx=float('-inf')
+        cur_max=float('-inf')
         for i in range(k):
-            heappush(pq,[nums[i][0],0,i]) # val, idx, row_no
-            maxx=max(maxx,nums[i][0])
+            heappush(pq,[nums[i][0],0,i]) # cur_min, idx, row_no
+            cur_max=max(cur_max,nums[i][0])
 
-        lo,hi=float('inf'),float('-inf')
-        res=float('inf')
+        minn,maxx=float('inf'),float('-inf')
+        max_min_diff=float('inf')
         while len(pq)==k:
-            val,idx,row_no=heappop(pq)
-            if maxx-val<res:
-                res=maxx-val
-                lo,hi=val,maxx
+            cur_min,idx,row_no=heappop(pq)
+            if cur_max-cur_min<max_min_diff:
+                max_min_diff=cur_max-cur_min
+                minn,maxx=cur_min,cur_max
             if idx+1<len(nums[row_no]):
                 heappush(pq,[nums[row_no][idx+1],idx+1,row_no])
-                maxx=max(maxx,nums[row_no][idx+1])
+                cur_max=max(cur_max,nums[row_no][idx+1])
 
-        return [lo,hi]
+        return [minn,maxx]
 class Solution2:
     # tle
     def smallestRange(self, nums: List[List[int]]) -> List[int]:

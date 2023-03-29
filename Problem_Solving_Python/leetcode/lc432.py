@@ -6,10 +6,10 @@ class Node:
         self.prev, self.nxt = None, None
     def __repr__(self): return str(self.key_set)
 
-    def add_key(self, key):
+    def add_key(self, key:str):
         self.key_set.add(key)
 
-    def remove_key(self, key):
+    def remove_key(self, key:str):
         self.key_set.remove(key)
 
     def get_any_key(self):
@@ -33,16 +33,16 @@ class DoubleLinkedList:
         self.head_node.nxt, self.tail_node.prev = self.tail_node, self.head_node
         return
 
-    def insert_after(self, x):
+    def insert_after(self, x:Node):
         node, temp = Node(), x.nxt
         x.nxt, node.prev = node, x
         node.nxt, temp.prev = temp, node
         return node
 
-    def insert_before(self, x):
+    def insert_before(self, x:Node):
         return self.insert_after(x.prev)
 
-    def remove(self, x):
+    def remove(self, x:Node):
         prev_node = x.prev
         prev_node.nxt, x.nxt.prev = x.nxt, prev_node
         return
