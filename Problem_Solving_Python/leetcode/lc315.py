@@ -1,163 +1,96 @@
-import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76583/11ms-JAVA-solution-using-merge-sort-with-explanation
-    def countSmaller(self, nums: List[int]) -> List[int]:
-        def mergesort(nums, index, l, r, res):
-            if l>=r:
+    # consider this problem first
+    # sort array in descending order and return initial index of each element before sorting
+    # li = [7,5,6,4] return -> [[7, 0], [6, 2], [5, 1], [4, 3]]
+    # 7 was at index 0 before sorting
+    # 6 was at index 2 before sorting
+    # 5 was at index 1 before sorting
+    # 4 was at index 3 before sorting
+    def sortArray(self, li) -> List[List[int]]:
+        def mergeSort(lo,hi):
+            if lo==hi:
                 return
-            mid = (l+r)//2
-            mergesort(nums, index, l, mid, res)
-            mergesort(nums, index, mid+1, r, res)
-            merge(nums, index, l, mid, mid+1, r, res)
-        def merge(nums, index, l1, r1, l2, r2, res):
-            start = l1
-            tmp = [0]*(r2-l1+1)
-            count = 0
-            p = 0
-            while l1<=r1 or l2<=r2:
-                if l1>r1:
-                    tmp[p] = index[l2]
-                    p+=1
-                    l2+=1
-                elif l2>r2:
-                    res[index[l1]] += count
-                    tmp[p] = index[l1]
-                    p+=1
-                    l1+=1
-                elif nums[index[l1]] > nums[index[l2]]:
-                    tmp[p] = index[l2]
-                    p+=1
-                    l2+=1
-                    count+=1
-                else:
-                    res[index[l1]] += count
-                    tmp[p]= index[l1]
-                    p+=1
-                    l1+=1
-            for i in range(len(tmp)):
-                index[start+i] = tmp[i]
+            mid=(lo+hi)//2
+            mergeSort(lo,mid)
+            mergeSort(mid+1,hi)
+            merge(lo, mid, hi)
 
-        res = [0] * len(nums)
-        index = [0] * len(res)
-        for i in range(len(res)):
-            index[i] = i
-        mergesort(nums, index, 0, len(nums)-1, res)
-        li = []
-        for i in res:
-            li.append(i)
+        def merge(lo, mid, hi):
+            i,j=lo,mid+1
+            tmp=[]
+            while i<=mid and j<=hi:
+                if li[i][0]>li[j][0]:
+                    tmp.append(li[i])
+                    i+=1
+                else:
+                    tmp.append(li[j])
+                    j+=1
+            while i<=mid:
+                tmp.append(li[i])
+                i+=1
+            while j<=hi:
+                tmp.append(li[j])
+                j+=1
+            for k in range(len(tmp)):
+                li[lo+k]=tmp[k]
+
+        li = [[x,i] for i,x in enumerate(li)]
+        mergeSort(0,len(li)-1)
         return li
 
-class Node:
-    def __init__(self, val:int, summ:int):
-        self.val=val
-        self.summ=summ # no of nodes (including duplicates) which are less than this node
-        self.dup=1
-        self.left=None
-        self.right=None
-class Solution2:
-    # tle. binary search tree
-    # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76580/9ms-short-Java-BST-solution-get-answer-when-building-BST
+    # https://www.youtube.com/watch?v=_sA1xI4XK0c
     def countSmaller(self, nums: List[int]) -> List[int]:
-        def insert(num:int,node:Node,i:int,preSum:int):
-            if not node:
-                node = Node(num,0)
-                res[i]=preSum
-            elif node.val==num:
-                node.dup+=1
-                res[i]=preSum+node.summ
-            elif node.val>num:
-                node.summ+=1 # a node will be inserted somewhere in the left subtree
-                node.left=insert(num, node.left, i, preSum)
-            else:
-                node.right=insert(num,node.right,i,preSum+node.dup+node.summ)
-            return node
+        def mergeSort(lo,hi):
+            if lo==hi:
+                return
+            mid=(lo+hi)//2
+            mergeSort(lo,mid)
+            mergeSort(mid+1,hi)
+            merge(lo, mid, hi)
 
-        n=len(nums)
-        res=[0]*n
-        root=None
-        for i in range(n-1,-1,-1):
-            root=insert(nums[i],root,i,0)
-        return res
+        def merge(lo, mid, hi):
+            i,j=lo,mid+1
+            tmp=[]
+            while i<=mid and j<=hi:
+                if li[i][0]>li[j][0]:
+                    tmp.append(li[i])
+                    count[li[i][1]]+=(hi-j+1) # change. add this line
+                    i+=1
+                else:
+                    tmp.append(li[j])
+                    j+=1
+            while i<=mid:
+                tmp.append(li[i])
+                i+=1
+            while j<=hi:
+                tmp.append(li[j])
+                j+=1
+            for k in range(len(tmp)):
+                li[lo+k]=tmp[k]
 
-class Solution3:
-    # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/408322/Python-Different-Concise-Solutions
-    def countSmaller(self, nums: List[int]) -> List[int]:
-        nums = nums[::-1]
-        min_v = min(nums) if nums else 0
-
-        record = defaultdict(int)
-
-        res = []
-        for num in nums:
-            cnt = 0
-            for target in range(min_v,num):
-                if target in record:
-                    cnt += record[target]
-            res.append(cnt)
-            record[num]+=1
-        return res[::-1]
+        li = [[x,i] for i,x in enumerate(nums)]
+        count = [0]*len(nums) # change. add count array
+        mergeSort(0,len(li)-1)
+        return count  # change. return count array
 
 
-class MyTestCase(unittest.TestCase):
-    def test_1(self):
-        sol = Solution()
-        nums = [7,8,11,12,13,4,5,6,9,10]
-        expected = [3,3,5,5,5,0,0,0,0,0]
-        actual = sol.countSmaller(nums)
-        self.assertEqual(expected, actual)
-    def test_2(self):
-        sol = Solution()
-        nums = [5,2,6,1]
-        expected = [2,1,1,0]
-        actual = sol.countSmaller(nums)
-        self.assertEqual(expected, actual)
-# # https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76583/11ms-JAVA-solution-using-merge-sort-with-explanation
-# from typing import List
-#
-# class Solution:
-#     def countSmaller(self, nums: List[int]) -> List[int]:
-#         def mergesort(nums, indexes, start, end, count):
-#             if end<=start:
-#                 return
-#             mid = (start + end) //2
-#             mergesort(nums, indexes, start, mid, count)
-#             mergesort(nums, indexes, mid + 1, end, count)
-#             merge(nums, indexes, start, end, count)
-#         def merge(nums, indexes, start, end, count):
-#             mid = (start + end) // 2
-#             left_index = start
-#             right_index = mid + 1
-#             rightcount = 0
-#             new_indexes = [0] * (end-start+1)
-#
-#             sort_index = 0
-#             while left_index <= mid and right_index <= end:
-#                 if nums[indexes[right_index]] < nums[indexes[left_index]]:
-#                     new_indexes[sort_index] = indexes[right_index]
-#                     rightcount+=1
-#                     right_index+=1
-#                 else:
-#                     new_indexes[sort_index] = indexes[left_index]
-#                     count[indexes[left_index]] += rightcount
-#                     left_index+=1
-#                 sort_index+=1
-#             while left_index <=mid:
-#                 new_indexes[sort_index] = indexes[left_index]
-#                 count[indexes[left_index]] += rightcount
-#                 left_index+=1
-#                 sort_index+=1
-#             while right_index <= end:
-#                 new_indexes[sort_index] = indexes[right_index]
-#                 right_index+=1
-#                 sort_index+=1
-#             for i in range(start, end):
-#                 indexes[i] = new_indexes[i-start]
-#
-#         res = []
-#         count = [0] * len(nums)
-#         indexes = [i for i in range(len(nums))]
-#         mergesort(nums, indexes, 0, len(nums)-1, count)
-#         for i in range(len(nums)):
-#             res.append(count[i])
-#         return res
+class Tester(unittest.TestCase):
+    def test1(self):
+        li = [7,5,6,4]
+        # 7 was at index 0 before sorting
+        # 6 was at index 2 before sorting
+        # 5 was at index 1 before sorting
+        # 4 was at index 3 before sorting
+        expected = [[7, 0], [6, 2], [5, 1], [4, 3]]
+        self.assertEqual(expected, get_sol().sortArray(li))
+    def test2(self):
+        li = [2,5,1]
+        self.assertEqual([[5, 1], [2, 0], [1, 2]], get_sol().sortArray(li))
+    def test3(self):
+        self.assertEqual([3,3,5,5,5,0,0,0,0,0], get_sol().countSmaller([7,8,11,12,13,4,5,6,9,10]))
+    def test4(self):
+        self.assertEqual([2,1,1,0], get_sol().countSmaller([5,2,6,1]))

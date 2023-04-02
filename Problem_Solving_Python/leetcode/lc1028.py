@@ -1,13 +1,39 @@
-import unittest;
-from Problem_Solving_Python.template.binary_tree import serialize
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-    def __repr__(self): return str(self.val)
 class Solution:
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+        def parseDepthAndVal(i):
+            depth=0
+            while i<n and traversal[i]=='-':
+                depth+=1
+                i+=1
+            val=[]
+            while i<n and '0'<=traversal[i]<='9':
+                val.append(traversal[i])
+                i+=1
+            val=int(''.join(val))
+            return depth,val,i
+        def insertIntoParent(parent, child):
+            if parent.left is None:
+                parent.left=child
+            else:
+                parent.right=child
+
+        dummyRoot=TreeNode(-1)
+        depthDict = defaultdict(list, {-1: [dummyRoot]})
+        n=len(traversal)
+        i=0
+        while i<n:
+            depth,val,i=parseDepthAndVal(i)
+            child=TreeNode(val)
+            parent = depthDict[depth-1][-1]
+            insertIntoParent(parent,child)
+            depthDict[depth].append(child)
+        return dummyRoot.left
+
+class Solution2:
     def recoverFromPreorder(self, traversal: str) -> TreeNode:
         def dfs(i,cur):
             j=i

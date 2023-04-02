@@ -1,6 +1,6 @@
-import unittest; from typing import List; import functools
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # time O(n) space O(n)
@@ -34,6 +34,22 @@ class Solution2:
 
         res=dp[0]
         return 'Alice' if res>0 else 'Bob' if res<0 else 'Tie'
+class Solution5:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        @cache
+        def dp(i):
+            if i>=n: return 0
+
+            res=float('-inf')
+            take=0
+            for j in range(i,min(n,i+3)):
+                take+=stoneValue[j]
+                res=max(res,take-dp(j+1))
+            return res
+
+        n=len(stoneValue)
+        score = dp(0)
+        return "Alice" if score>0 else "Bob" if score<0 else "Tie"
 class Solution3:
     # bad solution
     def stoneGameIII(self, stoneValue: List[int]) -> str:

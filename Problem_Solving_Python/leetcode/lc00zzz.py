@@ -1,51 +1,47 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
-from Problem_Solving_Python.template.binary_tree import deserialize
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def uniquePathsIII(self, grid: List[List[int]]) -> int:
-        def within(x,y): return 0<=x<m and 0<=y<n
-        def get_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
-        def get_start_or_finish(a):
-            for x in range(m):
-                for y in range(n):
-                    if grid[x][y]==a:
-                        return [x,y]
-        def get_finish(): return get_start_or_finish(2)
-        def get_start(): return get_start_or_finish(1)
-        def allVisited():
-            return all(grid[i][j]!=0 for i in range(m) for j in range(n))
-        def dfs(x,y):
-            if [x,y]==FINISH:
-                return allVisited()
-            if grid[x][y]==-1:
-                return 0
-            if grid[x][y]==VISITED:
-                return 0
-            grid[x][y]=VISITED
-            res=0
-            for X,Y in get_moves(x,y):
-                res+=dfs(X,Y)
-            grid[x][y]=0
-            return res
+    # https://www.youtube.com/watch?v=_sA1xI4XK0c
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        def mergeSort(lo,hi):
+            if lo==hi:
+                return
+            mid=(lo+hi)//2
+            mergeSort(lo,mid)
+            mergeSort(mid+1,hi)
+            merge(lo, mid, hi)
 
-        VISITED=3
-        m,n=len(grid),len(grid[0])
-        START,FINISH=get_start(),get_finish()
-        x,y=START
-        grid[x][y]=0
-        return dfs(x,y)
+        def merge(lo, mid, hi):
+            i,j=lo,mid+1
+            tmp=[]
+            while i<=mid and j<=hi:
+                if li[i][0]>li[j][0]:
+                    tmp.append(li[i])
+                    res[li[i][1]]+=(hi-j+1)
+                    i+=1
+                else:
+                    tmp.append(li[j])
+                    j+=1
+            while i<=mid:
+                tmp.append(li[i])
+                i+=1
+            while j<=hi:
+                tmp.append(li[j])
+                j+=1
+            for k in range(len(tmp)):
+                li[lo+k]=tmp[k]
+
+        li = [[x,i] for i,x in enumerate(nums)]
+        res = [0]*len(nums)
+        mergeSort(0,len(li)-1)
+        return res
+        return [x[0] for x in li]
 
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        self.assertEqual(2, get_sol().uniquePathsIII([[1,0,0,0],[0,0,0,0],[0,0,2,-1]]))
+        self.assertEqual([3,3,5,5,5,0,0,0,0,0], get_sol().countSmaller([7,8,11,12,13,4,5,6,9,10]))
     def test2(self):
-        self.assertEqual(4, get_sol().uniquePathsIII([[1,0,0,0],[0,0,0,0],[0,0,0,2]]))
-    def test3(self):
-        self.assertEqual(0,get_sol().uniquePathsIII([[0,1],[2,0]]))
-    # def test4(self):
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
-    # def test8(self):
+        self.assertEqual([2,1,1,0], get_sol().countSmaller([5,2,6,1]))

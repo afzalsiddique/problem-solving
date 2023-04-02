@@ -15,9 +15,8 @@ class Solution:
         max_heap=MaxHeap()
         q_sum=0 # quality_sum
         res=float('inf')
-        for i in range(len(quality)):
-            ratio,q=expect[i]
 
+        for ratio,q in expect:
             max_heap.push(q)
             q_sum+=q
             if len(max_heap)>k:
@@ -29,14 +28,11 @@ class Solution:
 
 class MyTestCase(unittest.TestCase):
     def test1(self):
-        actual = get_sol().mincostToHireWorkers(quality = [10,20,5], wage = [70,50,30], k = 2)
-        Output= 105.00000
-        self.assertEqual(Output, actual)
+        self.assertEqual(105.00000, get_sol().mincostToHireWorkers([10,20,5], [70,50,30], 2))
     def test2(self):
-        actual = get_sol().mincostToHireWorkers(quality = [3,1,10,10,1], wage = [4,8,2,2,7], k = 3)
-        Output= 30.66667
-        self.assertEqual(Output, actual)
-    # def test3(self):
+        self.assertEqual(30.66667, get_sol().mincostToHireWorkers( [3,1,10,10,1], [4,8,2,2,7], 3))
+    def test3(self):
+        self.assertEqual(30.66667, get_sol().mincostToHireWorkers( [9,1,1000], [10,5,100], 2))
     # def test4(self):
     # def test5(self):
     # def test6(self):

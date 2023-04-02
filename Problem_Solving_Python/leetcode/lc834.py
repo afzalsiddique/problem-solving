@@ -1,16 +1,36 @@
-from collections import defaultdict;
-import unittest; from typing import List;
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-    def __repr__(self): return str(self.val)
 class Solution:
-    # https://www.youtube.com/watch?v=lWCZOjUOjRc&t=717s
+    # https://www.youtube.com/watch?v=nGhE4Ekmzbc
+    # https://www.youtube.com/watch?v=gmEsErNo84g
+    def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
+        def postOrder(root:int, pre:int): # calculate res and subTreeSize
+            for i in tree[root]:
+                if i==pre: continue
+                postOrder(i,root)
+                subTreeSize[root]+=subTreeSize[i]
+                res[root]+=res[i]+subTreeSize[i]
+            subTreeSize[root]+=1
+        def preOrder(root:int, pre:int):
+            for i in tree[root]:
+                if i==pre: continue
+                res[i]=res[root] - subTreeSize[i] + (n - subTreeSize[i])
+                # res[i]=res[root] - subTreeSize[i] + (len(subTreeSize) - subTreeSize[i])
+                preOrder(i,root)
+
+        tree=defaultdict(list)
+        for u,v in edges:
+            tree[u].append(v)
+            tree[v].append(u)
+
+        subTreeSize=[0]*n
+        res=[0]*n
+        postOrder(0,-1)
+        preOrder(0,-1)
+        return res
+class Solution2:
     def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
         def dfs1(u:int,par:int): # calculate subDist and subSize
             subSize[u]=1
@@ -38,7 +58,7 @@ class Solution:
         for v in g[0]:
             dfs2(v,0)
         return res
-class Solution2:
+class Solution3:
     # tle
     def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
         INVALID=-1

@@ -5,11 +5,7 @@ class Solution:
         def dfs(x,y,steps):
             if not 0<=x<m or not 0<=y<n: return 0
             if grid[x][y]==-1: return 0
-            if grid[x][y]==2:
-                if steps==total:
-                    return 1
-                return 0
-
+            if grid[x][y]==2: return steps==total
             if (x,y) in vis: return 0
             vis.add((x,y))
 

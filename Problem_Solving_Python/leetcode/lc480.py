@@ -1,6 +1,7 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/sliding-window-median/solutions/262689/python-small-large-heaps/
     def medianSlidingWindow(self,nums, k):
         def move(h1, h2):
             x, i = heappop(h1)
@@ -9,9 +10,9 @@ class Solution:
             return h2[0][0] * 1.0 if k & 1 else (h2[0][0]-h1[0][0]) / 2.0
 
         if k==1: return nums
-        left, right = [], [] # right contains one more numbers if k is odd
-        for idx, a in enumerate(nums[:k]):
-            heappush(left, (-a,idx))
+        left, right = [], [] # right contains one more numbers if k is odd. left is maxheap and right is minheap
+        for i in range(k):
+            heappush(left,(-nums[i],i))
         for _ in range(math.ceil(k/2)):
             move(left, right)
         ans = [get_med(left, right, k)]
