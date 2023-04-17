@@ -15,31 +15,31 @@ class Solution:
             for _ in range(len(q)):
                 s1,i=q.popleft()
                 j=i
-                while i<n and s1[i]==s2[j]:
+                while i<n and s1[i]==s2[j]: # skip same chars
                     i+=1
                     j+=1
                 if i==n: return res
-                while i<n:
-                    if s1[i]==s2[i]:
+                while i<n: # find the index of s2[j] in s1. this index is denoted by i.
+                    if s1[i]==s2[i]: # skip same chars
                         i+=1
                         continue
                     if s1[i]==s2[j]:
-                        tmp=s1[:]
-                        tmp[i],tmp[j]=tmp[j],tmp[i]
-                        q.append((tmp,j))
+                        s1Copy=s1[:]
+                        s1Copy[i],s1Copy[j]=s1Copy[j],s1Copy[i]
+                        q.append((s1Copy,j))
                     i+=1
             res+=1
 
 class Solution2:
     def kSimilarity(self, s1: str, s2: str) -> int:
-        def removeSameChars(l1:List[str], l2:List[str]): # ('abdc','abcd') -> ('dc','cd')
+        def removeSameCharsFromBeginning(l1:List[str], l2:List[str]): # ('abdc','abcd') -> ('dc','cd')
             indices = [i for i in range(len(l1)) if l1[i] != l2[i]]
             l1 = [l1[i] for i in indices]
             l2 = [l2[i] for i in indices]
             return [l1, l2]
         @cache
         def swapFirstCharOfS1(s1:str, s2:str):
-            s1, s2 = removeSameChars(list(s1), list(s2))
+            s1, s2 = removeSameCharsFromBeginning(list(s1), list(s2))
             n=len(s1)
             if n==0: return 0
             firstCharOfS2 = s2[0]
@@ -56,6 +56,51 @@ class Solution2:
 
         return swapFirstCharOfS1(s1,s2)
 
+class UnionFind:
+    # wrong. it might work if the letters are unique
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
+    def union(self,a,b):
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def size_of_groups(self):
+        for a in self.par:
+            self.find(a)
+        count=Counter(self.par.values())
+        return list(count.values())
+class Solution3:
+    # wrong. it might work if the letters are unique
+    def kSimilarity(self, s1: str, s2: str) -> int:
+        di1,di2 = defaultdict(list),defaultdict(list)
+        for i1,c1 in enumerate(s1):
+            di1[c1].append(i1)
+        for i2,c2 in enumerate(s2):
+            di2[c2].append(i2)
+
+        uf = UnionFind()
+        for c in sorted(di1.keys()):
+            for idx1,idx2 in zip(di1[c],di2[c]):
+                uf.union(idx1,idx2)
+
+        sizes = uf.size_of_groups()
+        return sum(sizes) - len(sizes)
 class mytestcase(unittest.TestCase):
     def test1(self):
         self.assertEqual(1, get_sol().kSimilarity(s1 = "ab", s2 = "ba"))
@@ -72,4 +117,8 @@ class mytestcase(unittest.TestCase):
     def test7(self):
         self.assertEqual(3, get_sol().kSimilarity("aabccb", "bbcaca"))
     def test8(self):
+        self.assertEqual(1, get_sol().kSimilarity("abcbca", "ababcc"))
+    def test9(self):
         self.assertEqual(11, get_sol().kSimilarity("accbadbbacadcdedaebc", "caeacbbacddceacadbbd"))
+    def test10(self):
+        self.assertEqual(6, get_sol().kSimilarity("baaabaabbbabbbabaaab", "babbbbbaabaabaaaabba"))

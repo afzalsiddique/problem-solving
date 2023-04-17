@@ -1,8 +1,19 @@
-import unittest; from typing import List;
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    def maxChunksToSorted(self, arr) -> int:
+        n=len(arr)
+        left_max=list(accumulate(arr,lambda a,b:max(a,b)))
+        right_min=list(accumulate(arr[::-1],lambda a,b:min(a,b)))[::-1]
+        res=1
+        for i in range(n-1):
+            if left_max[i]<=right_min[i+1]:
+                res+=1
+        return res
+
+class Solution2:
     def maxChunksToSorted(self, arr: List[int]) -> int:
         n=len(arr)
 
@@ -21,7 +32,6 @@ class Solution:
             if max_left[i]<=min_right[i+1]:
                 res+=1 # i is the last index of the current chunk
         return res
-
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(1, get_sol().maxChunksToSorted(arr = [5,4,3,2,1]))

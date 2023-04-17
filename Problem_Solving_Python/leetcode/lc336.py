@@ -3,10 +3,10 @@ from binary_tree_tester import ser,des; from a_linked_list import make_linked_li
 def get_sol(): return Solution()
 class TrieNode:
     def __init__(self):
-        self.idx = -1
+        self.idx = -1 # similar to isEnd. index of the word which ends here
         self.pdromes_below = []
         self.children = defaultdict(TrieNode)
-    def isNotEnding(self): return self.idx != -1
+    def isEnding(self): return self.idx != -1 # is ending of some word
 
 class Trie:
     def __init__(self):
@@ -19,12 +19,13 @@ class Trie:
                 node.pdromes_below.append(idx)
             node = node.children[letter]
         node.idx = idx
+        return
 
     def search(self, word, idx):
         res=[]
         node = self.root
         for i, letter in enumerate(word):
-            if node.isNotEnding() and idx != node.idx and self.is_palindrome(word[i:]):
+            if node.isEnding() and idx != node.idx and self.is_palindrome(word[i:]):
                 res.append([idx, node.idx])
             node = node.children.get(letter)
             if not node:
@@ -32,7 +33,7 @@ class Trie:
         for p in node.pdromes_below:
             if p != idx:
                 res.append([idx, p])
-        if node.isNotEnding() and idx != node.idx:
+        if node.isEnding() and idx != node.idx: # exact half palindrome. eg-> "abcd" and "dcba"
             res.append([idx, node.idx])
         return res
 
@@ -99,3 +100,5 @@ class Tester(unittest.TestCase):
         self.assertEqual(sorted([[0,1],[1,0]]),sorted(get_sol().palindromePairs(["a",""])))
     def test4(self):
         self.assertEqual(sorted([[1,0]]),sorted(get_sol().palindromePairs(["babsl","ls"])))
+    def test5(self):
+        self.assertEqual(sorted([[1,0]]),sorted(get_sol().palindromePairs(["abc","cb"])))

@@ -27,6 +27,34 @@ class Solution:
             res+=1
         return -1
 
+class Solution2:
+    # tle. no need to keep track which obstacles were broken
+    def shortestPath(self, grid: List[List[int]], k: int) -> int:
+        def within(x,y): return 0<=x<m and 0<=y<n
+        def get_4d_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
+
+        m,n=len(grid),len(grid[0])
+        q = deque()
+        q.append([0,0,set(),set()])
+        res=0
+        while q:
+            for _ in range(len(q)):
+                x,y,vis,obstacles=q.popleft()
+                if (x,y) in vis:
+                    continue
+                newVis=vis.union({(x,y)})
+                if grid[x][y]==1 and len(obstacles)==k:
+                    continue
+                if x==m-1 and y==n-1:
+                    return res
+                if grid[x][y]==1:
+                    newObs=obstacles.union({(x,y)})
+                else:
+                    newObs=obstacles.union({})
+                for X,Y in get_4d_moves(x,y):
+                    q.append([X,Y,newVis,newObs])
+            res+=1
+        return -1
 
 class MyTestCase(unittest.TestCase):
     def test1(self):

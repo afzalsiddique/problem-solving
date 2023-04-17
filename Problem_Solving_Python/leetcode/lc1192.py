@@ -1,5 +1,5 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution2()
+def get_sol(): return Solution()
 class Solution:
     # https://www.youtube.com/watch?v=Rhxs4k6DyMM
     # https://gist.github.com/SuryaPratapK/2774cb957a27448b485609418e272f2b
@@ -80,17 +80,10 @@ class Solution3:
             g[v].remove(u)
         return res
 
-class tester(unittest.TestCase):
-    def test01(self):
-        n = 4
-        connections = [[0,1],[1,2],[2,0],[1,3]]
-        Output= [[1,3]]
-        self.assertEqual(Output,get_sol().criticalConnections(n,connections))
+class Tester(unittest.TestCase):
+    def test1(self):
+        self.assertEqual([[1,3]],get_sol().criticalConnections(4, [[0,1],[1,2],[2,0],[1,3]]))
     def test02(self):
-        n,connections = 2,  [[0,1]]
-        Output= [[0,1]]
-        self.assertEqual(Output,get_sol().criticalConnections(n,connections))
+        self.assertEqual([[0,1]],get_sol().criticalConnections(2,  [[0,1]]))
     def test03(self):
-        n,connections = 6, [[0,1],[1,2],[2,0],[1,3],[3,4],[4,5],[5,3]]
-        Output= [[1,3]]
-        self.assertEqual(Output,get_sol().criticalConnections(n,connections))
+        self.assertEqual([[1,3]],get_sol().criticalConnections(6, [[0,1],[1,2],[2,0],[1,3],[3,4],[4,5],[5,3]]))

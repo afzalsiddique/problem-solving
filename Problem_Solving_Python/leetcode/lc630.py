@@ -13,9 +13,9 @@ class Solution:
         courses.sort(key=lambda x:x[1])
         pq=[]
         total_time=0
-        for time,deadline in courses:
-            total_time+=time
-            heappush(pq,-time)
+        for duration,deadline in courses:
+            total_time+=duration
+            heappush(pq,-duration)
             if total_time>deadline:
                 tmp=heappop(pq)*(-1)
                 total_time-=tmp
@@ -37,7 +37,6 @@ class Solution2:
         courses.sort(key=lambda x:x[1])
         return func(0,0)
 
-
 class MyTestCase(unittest.TestCase):
     def test1(self):
         self.assertEqual(3, get_sol().scheduleCourse(courses = [[100,200],[200,1300],[1000,1250],[2000,3200]]))
@@ -51,4 +50,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(4, get_sol().scheduleCourse([[7,17],[3,12],[5,20],[4,18]]))
     def test6(self):
         self.assertEqual(4, get_sol().scheduleCourse([[7,17],[3,12],[10,20],[9,10],[5,20],[10,19],[4,18]]))
-    # def test7(self):
+    def test7(self):
+        self.assertEqual(4, get_sol().scheduleCourse([[3,12],[7,17],[4,18],[10,19],[5,20]]))
+    def test8(self):
+        self.assertEqual(3, get_sol().scheduleCourse([[100,200],[1000,1200],[300,1300],[400,1300]]))

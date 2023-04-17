@@ -8,6 +8,7 @@ class Solution:
         @cache
         def dp(pos:int,steps:int):
             if not 0<=pos<arrLen: return 0
+            if steps<pos: return 0
             if steps==0: return pos==0
             ans=0
             for dx in [-1,0,1]:

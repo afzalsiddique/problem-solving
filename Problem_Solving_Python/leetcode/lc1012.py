@@ -3,6 +3,8 @@ import unittest;
 
 def get_sol(): return Solution()
 class Solution:
+    # https://www.youtube.com/watch?v=rGGo4FA7CeU
+    # leetcode 902
     # find numbers with no duplicate digits
     # return n - find numbers with no duplicate digits
     def numDupDigitsAtMostN(self, n: int) -> int:
@@ -16,7 +18,7 @@ class Solution:
         n_num=len(str(n))
         if n_num==1: return n-min(9,n)
 
-        res=0
+        res=0 # without repeated digits
 
         # for i in range(n_num-1): # also works
         #     cur=1

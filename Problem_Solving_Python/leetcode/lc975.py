@@ -6,6 +6,8 @@ class Solution2:
 class Solution:
     # https://leetcode.com/problems/odd-even-jump/discuss/1461211/DP-%2B-Stack-%2B-Images-or-O(N*logN)-or-96.54-Faster-or-Combination-of-Generic-Problems
     def oddEvenJumps(self, arr: List[int]) -> int:
+        # this function finds the next greater element. since it is sorted, the next greater element
+        # in this case will be the next smallest element of the greater elements in the smallest position
         def next_greater_element(arr):
             n = len(arr)
             result = [None]*n

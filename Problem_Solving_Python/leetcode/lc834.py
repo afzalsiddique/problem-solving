@@ -2,6 +2,40 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
+class Solution5:
+    # my approach
+    def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
+        def get_size_dfs(u, par):
+            ans=1
+            for v in g[u]:
+                if v==par: continue
+                ans+= get_size_dfs(v,u)
+            size[u]=ans
+            return ans
+        def get_distance_of_root(u, depth, par): # assume root to be 0
+            ans=0
+            for v in g[u]:
+                if v==par: continue
+                ans+= get_distance_of_root(v, depth + 1, u)
+            return ans+depth
+        def reroot_dfs(u,par):
+            if par!=-1:
+                distance[u]=distance[par]+(size[0]-size[u])-size[u]
+            for v in g[u]:
+                if v==par: continue
+                reroot_dfs(v,u)
+
+        size=[0]*n
+        distance = [0]*n
+        g=[[] for _ in range(n)]
+        for a,b in edges:
+            g[a].append(b)
+            g[b].append(a)
+        get_size_dfs(0,-1) # assume root to be 0
+        distance[0]= get_distance_of_root(0, 0, -1) # assume root to be 0
+        reroot_dfs(0,-1) # assume root to be 0
+        # print(distance)
+        return distance
 class Solution:
     # https://www.youtube.com/watch?v=nGhE4Ekmzbc
     # https://www.youtube.com/watch?v=gmEsErNo84g
@@ -110,7 +144,8 @@ class Tester(unittest.TestCase):
         self.assertEqual([0], get_sol().sumOfDistancesInTree(n = 1, edges = []))
     def test3(self):
         self.assertEqual([1,1], get_sol().sumOfDistancesInTree(n = 2, edges = [[1,0]]))
-    # def test4(self):
+    def test4(self):
+        self.assertEqual([3,3,2], get_sol().sumOfDistancesInTree(3, [[2,1],[0,2]]))
     # def test5(self):
     # def test6(self):
     # def test7(self):
