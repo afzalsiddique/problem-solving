@@ -8,7 +8,7 @@ class Solution:
         def get_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
         VISITED=3000
         n=len(grid)
-        pq = [[grid[0][0],0,0]] # val,i,j
+        pq = [[grid[0][0],0,0]] # time,i,j
         while pq:
             val,x,y = heappop(pq)
             if grid[x][y]==VISITED: continue

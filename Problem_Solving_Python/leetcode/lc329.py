@@ -3,6 +3,25 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    # dfs
+    def longestIncreasingPath(self, mat: List[List[int]]) -> int:
+        def within(x,y): return 0 <= x < len(mat) and 0 <= y < len(mat[0])
+        def get_4d_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
+        @cache
+        def dfs(x,y):
+            ans=0
+            for X,Y in get_4d_moves(x,y):
+                if mat[X][Y]>mat[x][y]:
+                    ans=max(ans,1+dfs(X,Y))
+            return ans
+
+        res=0
+        for i in range(len(mat)):
+            for j in range(len(mat[0])):
+                res=max(res,dfs(i,j))
+        return res+1
+class Solution3:
+    # dfs
     def longestIncreasingPath(self, mat: List[List[int]]) -> int:
         @cache
         def recur(x, y, prev):
@@ -28,6 +47,7 @@ class Solution:
         return res
 
 class Solution2:
+    # bfs
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
         def valid(x,y): return 0<=x<m and 0<=y<n
         def getNeigh(x,y):

@@ -2,27 +2,48 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+class MaxHeap(list):
+    def __init__(self):
+        super().__init__()
+    def push(self,x):
+        heappush(self,x)
 class Solution:
-    def scheduleCourse(self, courses: List[List[int]]) -> int:
-        courses.sort(key=lambda x:(x[1],x[0]))
-        pq = []
-        time=0
-        res=0
-        for i,(duration,deadline) in enumerate(courses):
-            while pq and time+duration>deadline:
-                time-=pq[0]*(-1)
-                heappop(pq)
-            if time+duration<=deadline:
-                heappush(pq,-duration)
-                time+=duration
-                res=max(res,len(pq))
-        return res
+    def maxNumber(self, nums1: List[int], nums2: List[int], k: int) -> List[int]:
+        def dp(i,j,k):
+            if k==0:
+                return []
+            res=[]
+            select1,not_select1,select2,not_select2=[],[],[],[]
+            if i<m and j<n:
+                not_select1=dp(i+1,j,k)
+                select1=[nums1[i]]+dp(i+1,j,k-1)
+                not_select2=dp(i,j+1,k)
+                select2=[nums2[j]]+dp(i,j+1,k-1)
+            elif i==m:
+                not_select2=dp(i,j+1,k)
+                select2=[nums2[j]]+dp(i,j+1,k-1)
+            else:
+                not_select1=dp(i+1,j,k)
+                select1=[nums1[i]]+dp(i+1,j,k-1)
+            res=max(res,not_select1,select1,not_select2,select2)
+            return res
 
 
 
-class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(2,get_sol().nextGreaterElement([7,5,4,3,6],[]))
-    # def test02(self):
-    # def test03(self):
-    # def test04(self):
+
+        m,n=len(nums1),len(nums2)
+        return recur(0,0)+len(key)
+
+class MyTestCase(unittest.TestCase):
+    def test_1(self):
+        self.assertEqual(4, get_sol().lengthOfLIS([10,9,2,5,3,7,101,18]))
+    def test_2(self):
+        self.assertEqual(4, get_sol().lengthOfLIS([0,1,0,3,2,3]))
+    def test_3(self):
+        self.assertEqual(1, get_sol().lengthOfLIS([7,7,7,7,7,7,7]))
+    def test_4(self):
+        self.assertEqual(6, get_sol().lengthOfLIS([1,3,6,7,9,4,10,5,6]))
+    def test_5(self):
+        self.assertEqual(6, get_sol().lengthOfLIS([3,5,6,2,5,4,19,5,6,7,12]))
+    def test_6(self):
+        self.assertEqual(3, get_sol().lengthOfLIS([1,2,-10,-8,-7]))

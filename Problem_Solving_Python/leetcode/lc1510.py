@@ -1,30 +1,55 @@
-import math;
-import unittest;
-import functools
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # Think about this problem from alice perspective.
     # If we can find an idx where Alice loses and idx<i, then we can flip the result
     def winnerSquareGame(self, n: int) -> bool:
-        dp=[False]*(n+1)
-        for i in range(1,n+1):
-            sqroot=int(math.sqrt(n))
-            for j in range(1,sqroot+1):
-                idx=i-j*j
-                if idx<0: break
-                if dp[idx]==False:
-                    dp[i]=True
+        dp=[None]*(n+1)
+        dp[0]=False
+        for stone in range(1,n+1):
+            i=1
+            ans=False
+            while stone-i*i>=0:
+                remainingStones=stone-i*i
+                if dp[remainingStones]==False:
+                    ans=True
                     break
+                i+=1
+            dp[stone]=ans
         return dp[-1]
+class Solution3:
+    def winnerSquareGame(self, n: int) -> bool:
+        MAXIMIZER,MINIMIZER=True,False
+        @cache
+        def dfs(stone,player):
+            if not stone:
+                return not player
+            if player==MAXIMIZER:
+                i=1
+                res=MINIMIZER
+                while i*i<=stone:
+                    if dfs(stone-i*i,not player):
+                        return MAXIMIZER
+                    i+=1
+            else:
+                i=1
+                res=MAXIMIZER
+                while i*i<=stone:
+                    if not dfs(stone-i*i, not player):
+                        return MINIMIZER
+                    i+=1
+            return res
+
+        return dfs(n,MAXIMIZER)
 class Solution2:
     # tle. minimax
     def winnerSquareGame(self, n: int) -> bool:
         def get_squares(n):
-            return [i*i for i in range(1,int(math.sqrt(n))+1)]
+            return [i*i for i in range(1,int(sqrt(n))+1)]
 
-        @functools.lru_cache(None)
+        @cache
         def minimax(n,player):
             if n==0: return not player
             res=not player

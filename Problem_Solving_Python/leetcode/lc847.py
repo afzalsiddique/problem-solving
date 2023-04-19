@@ -1,7 +1,6 @@
-from collections import deque;
-import unittest; from typing import List;
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # bfs and (current_node, node_visited_mask) as state
@@ -15,8 +14,7 @@ class Solution:
         n=len(graph)
         q=deque()
         for i in range(n):
-            mask=1<<i
-            q.append((i,mask)) # to allow multiple visits to a node, we put all these simultaneously
+            q.append((i,turn_on(0,i))) # to allow multiple visits to a node, we put all these simultaneously
         vis=set(q)
         res=0
         while q:
@@ -29,6 +27,28 @@ class Solution:
                     if new_state not in vis:
                         q.append(new_state)
                         vis.add(new_state) # add next state so that other state in the current queue can't add the same state once again
+            res+=1
+class Solution4:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        def turn_on(mask,i): return mask | (1<<i)
+        def allSelected(mask, n): return mask == ((1 << n) - 1)
+
+        n=len(graph)
+        q = deque()
+        for i in range(n):
+            q.append([i,turn_on(0,i)]) # (node, visitMask)
+
+        res=0
+        vis=set()
+        while q:
+            for _ in range(len(q)):
+                u,mask = q.popleft()
+                if allSelected(mask,n): return res
+                if (u,mask) in vis: continue
+                vis.add((u,mask))
+                for v in graph[u]:
+                    newMask=turn_on(mask,v)
+                    q.append([v,newMask])
             res+=1
 class Solution2:
     # wrong

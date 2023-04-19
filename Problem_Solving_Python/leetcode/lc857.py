@@ -8,6 +8,7 @@ class MaxHeap:
     def pop(self): return heappop(self.li)*(-1)
     def __len__(self): return len(self.li)
 class Solution:
+    # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/141768/Detailed-explanation-O(NlogN)/148422
     # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/141768/Detailed-explanation-O(NlogN)/262756
     def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
         expect=[[w/q,q] for w,q in zip(wage,quality)] # each worker asking for at least expect[i] for each unit of his quality
@@ -32,7 +33,7 @@ class MyTestCase(unittest.TestCase):
     def test2(self):
         self.assertEqual(30.66667, get_sol().mincostToHireWorkers( [3,1,10,10,1], [4,8,2,2,7], 3))
     def test3(self):
-        self.assertEqual(30.66667, get_sol().mincostToHireWorkers( [9,1,1000], [10,5,100], 2))
+        self.assertEqual(50, get_sol().mincostToHireWorkers( [9,1,1000], [10,5,100], 2))
     # def test4(self):
     # def test5(self):
     # def test6(self):

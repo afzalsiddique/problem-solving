@@ -32,4 +32,4 @@ class MyTestCase(unittest.TestCase):
     def test6(self):
         self.assertEqual(0, get_sol().minPatches(nums = [1,2,2,3], n = 8))
     def test7(self):
-        self.assertEqual(0, get_sol().minPatches(nums = [1,3,3], n = 8))
+        self.assertEqual(1, get_sol().minPatches(nums = [1,3,3], n = 8))

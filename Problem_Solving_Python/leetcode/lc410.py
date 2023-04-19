@@ -1,29 +1,52 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # https://www.youtube.com/watch?v=eEvLI9i02Zw
-    def splitArray(self, nums: List[int], m: int) -> int:
-        def feasible(mid, m):
+    def splitArray(self, nums: List[int], k: int) -> int:
+        def feasible(maxSumOfSplit):
             cnt=1
             total=0
-            for n in nums:
-                total+=n
-                if total>mid:
+            for x in nums:
+                total+=x
+                if total>maxSumOfSplit:
                     cnt+=1
-                    total=n
-            if cnt>m: return False
+                    total=x
+            if cnt>k: return False
             return True
 
         left=max(nums)
         right=sum(nums)
         while left<=right:
             mid = (left+right)//2
-            if feasible(mid,m):
+            if feasible(mid):
                 right=mid-1
             else:
                 left=mid+1
         return left
 
+class Solution2:
+    # tle
+    def splitArray(self, nums: List[int], k: int) -> int:
+        @cache
+        def recur(lo, hi, k):
+            if hi-lo+1<k:
+                return float('inf')
+            if k==1:
+                return sum(nums[lo:hi + 1])
+            res=float('inf')
+            for mid in range(lo, hi):
+                left_1 = recur(lo, mid, 1)
+                right_1 = recur(mid + 1, hi, k - 1)
+                res=min(res,max(left_1,right_1))
+
+                left_2 = recur(lo, mid, k - 1)
+                right_2 = recur(mid + 1, hi, 1)
+                res=min(res,max(left_2,right_2))
+            return res
+
+        return recur(0,len(nums)-1,k)
 class Tester(unittest.TestCase):
     def test01(self):
         self.assertEqual(18,get_sol().splitArray([7,2,5,10,8],2))

@@ -43,7 +43,7 @@ class Solution2:
                 li.pop(start)
             li.insert(0,0)
             return tuple(li),cost
-        @functools.lru_cache(None)
+        @cache
         def dfs(mask:tuple,nums:tuple[int]):
             if not nums: return 0
             if len(nums)==1: return 0

@@ -1,5 +1,5 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
-def get_sol(): return Solution()
+def get_sol(): return Solution2()
 class Solution:
     # https://leetcode.com/problems/maximum-gap/discuss/50643/bucket-sort-JAVA-solution-with-explanation-O(N)-time-and-space
     # https://www.youtube.com/watch?v=21XhR6r5jU8
@@ -26,6 +26,30 @@ class Solution:
             prev=max_buckets[i]
         return res
 
+class Solution2:
+    # https://leetcode.com/problems/maximum-gap/discuss/50643/bucket-sort-JAVA-solution-with-explanation-O(N)-time-and-space
+    # https://www.youtube.com/watch?v=21XhR6r5jU8
+    def maximumGap(self, nums: List[int]) -> int:
+        n=len(nums)
+        if len(set(nums))==1: return 0
+        maxx=max(nums)
+        minn=min(nums)
+        diff=maxx-minn
+        min_buckets=[float('inf')]*(n+1)
+        max_buckets=[float('-inf')]*(n+1)
+        for x in nums:
+            idx = int((x-minn)/diff*n) # normalize between 0 and 1. then multiply by n
+            min_buckets[idx]=min(min_buckets[idx],x)
+            max_buckets[idx]=max(max_buckets[idx],x)
+
+        res=float('-inf')
+        prev=minn # to avoid empty bucket
+        for i in range(n+1):
+            if max_buckets[i]==float('-inf') and min_buckets[i]==float('inf'): # empty buckets. one condition is sufficient.
+                continue
+            res=max(res,min_buckets[i]-prev)
+            prev=max_buckets[i]
+        return res
 
 class MyTestCase(unittest.TestCase):
     def test1(self):

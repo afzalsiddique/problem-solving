@@ -8,7 +8,7 @@ class Solution:
     def stoneGameIII(self, nums: List[int]) -> str:
         n=len(nums)
         dp=[float('-inf')]*(n+1)
-        dp[n]=0 # change 'i' to 'i%4'
+        dp[n]=0 # change 'n' to 'i%4'
         for i in range(n-1,-1,-1):
             take=0
             # dp[i%4]=float('-inf') # add this line
@@ -53,7 +53,7 @@ class Solution5:
 class Solution3:
     # bad solution
     def stoneGameIII(self, stoneValue: List[int]) -> str:
-        @functools.lru_cache(None)
+        @cache
         def func(i:int,turn:int): # turn=1 -> alice's turn. turn=-1 -> bob's turn.
             if i>=n: return 0
             score=0
@@ -77,7 +77,7 @@ class Solution3:
 class Solution4:
     # bad solution
     def stoneGameIII(self, stoneValue: List[int]) -> str:
-        @functools.lru_cache(None)
+        @cache
         def func(i:int,turn:int): # turn=1 -> alice's turn. turn=-1 -> bob's turn.
             if i>=n: return 0
             score=0
@@ -102,15 +102,18 @@ class Solution4:
 
 
 class Tester(unittest.TestCase):
-    def test_1(self):
+    def test1(self):
         self.assertEqual("Bob",get_sol().stoneGameIII([1,2,3,7]))
-    def test_2(self):
+    def test2(self):
         self.assertEqual("Alice",get_sol().stoneGameIII([1,2,3,-9]))
-    def test_3(self):
+    def test3(self):
         self.assertEqual("Tie",get_sol().stoneGameIII([1,2,3,6]))
-    # def test_4(self):
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
-    # def test_9(self):
+    def test4(self):
+        self.assertEqual("Tie",get_sol().stoneGameIII([-1,-2,-3]))
+    def test5(self):
+        self.assertEqual("Alice",get_sol().stoneGameIII([-1,-2]))
+    def test6(self):
+        self.assertEqual("Tie",get_sol().stoneGameIII([-1,-3,-2]))
+    # def test7(self):
+    # def test8(self):
+    # def test9(self):
