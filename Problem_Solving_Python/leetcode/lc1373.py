@@ -45,6 +45,7 @@ class Tester(unittest.TestCase):
         self.assertEqual(14, get_sol().maxSumBST(deserialize("4,8,null,6,1,9,null,-5,4,null,null,null,-3,null,10")))
     def test6(self):
         self.assertEqual(11, get_sol().maxSumBST(deserialize("8,9,8,null,9,null,1,null,null,-3,5,null,-2,null,6")))
-    # def test6(self):
-    # def test7(self):
+    def test7(self):
+        self.assertEqual(25, get_sol().maxSumBST(deserialize("1,null,10,-5,20")))
+    # def test8(self):
 

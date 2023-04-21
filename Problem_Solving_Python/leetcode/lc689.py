@@ -101,12 +101,14 @@ class Solution2:
         right_max=[(float('-inf'),-1)]*len(pre) # (val,index)
         cur=(float('-inf'),-1)
         for i in range(len(pre)-k):
+        # for i in range(len(pre)): # should also work
             if pre[i]>cur[0]:
                 cur=(pre[i],i)
             left_max[i+k]=cur
 
         cur=(float('-inf'),-1)
         for i in range(len(pre)-1,k-1,-1):
+        # for i in range(len(pre)-1,-1,-1): # should also work
             if pre[i]>=cur[0]:
                 cur=(pre[i],i)
             right_max[i-k]=cur

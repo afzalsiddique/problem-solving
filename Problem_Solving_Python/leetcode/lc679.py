@@ -1,6 +1,10 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/24-game/discuss/113972/Very-Easy-JAVA-DFS
+    def judgePoint24(self, nums):
+        return
+class Solution2:
     epsilon=0.001
     def judgePoint24(self, nums):
         if len(nums)==1: return abs(nums[0]-24)<self.epsilon

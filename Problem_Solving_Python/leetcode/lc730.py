@@ -25,16 +25,35 @@ class Solution:
                     while lo<=hi and s[hi]!=s[j]:
                         hi-=1
                     if lo>hi:
+                         # consider the string from i to j is "a...a" "a...a"... where there is no character 'a' inside the leftmost and rightmost 'a'
+                         # eg 'aba'
+                         # inner palindromes are: ['b']
+                         # add 'a' to both sides of the inner palindrome: ['aba']. That's why '*2'
+                         # Then there are also: ['a','aa']. So add 2.
                         dp[i][j]=dp[i+1][j-1]*2+2
                     elif lo==hi:
+                        # consider the string from i to j is "a...a...a" where there is only one character 'a' inside the leftmost and rightmost 'a'
+                        # eg 'aaa'
+                        # inner palindromes are: ['a']
+                        # add 'a' to both sides of the inner palindrome: ['aaa']. That's why '*2'
+                        # Then there is also ['aa']. So add 1.
                         dp[i][j]=dp[i+1][j-1]*2+1
                     else:
+                        # consider the string from i to j is "a...a...a... a" where there are at least two character 'a' close to leftmost and rightmost 'a'
+                        # eg: "aacaa"
+                        # inner palindromes are: ['a','c','aca']
+                        # add 'a' to both sides of the inner palindrome: ['aaa','aca','aacaa']. That's why '*2'
+                        # then subtract the inner palindromes which were already counted previously
                         dp[i][j]=dp[i+1][j-1]*2-dp[lo+1][hi-1]
                 else:
                     dp[i][j]=dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1]
                 dp[i][j]%=MOD
         return dp[0][-1]
-
+class Solution2:
+    # recursion though very similar to bottom-up
+    # https://leetcode.com/problems/count-different-palindromic-subsequences/discuss/754057/Evolve-from-recursion-to-dp
+    def countPalindromicSubsequences(self, s: str) -> int:
+        return 0
 
 
 class Tester(unittest.TestCase):

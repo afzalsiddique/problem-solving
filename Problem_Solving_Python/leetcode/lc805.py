@@ -3,6 +3,8 @@ import itertools; import math; import operator; import random; import string; fr
 # from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution2()
 class Solution2:
+    # totalSum/n = Asum/k = Bsum/(n-k), where k = A.size() and 1 <= k <= n/2;
+    # Asum = totalSum*k/n, which is an integer. So we have totalSum*k%n == 0;
     # https://www.youtube.com/watch?v=VwylCVAVdmo
     def splitArraySameAverage(self, nums: List[int]) -> bool:
         @cache

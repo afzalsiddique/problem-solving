@@ -15,7 +15,7 @@ class Solution:
                     low[u]=min(low[u],low[v])
                     if low[v]>disc[u]:
                         res.append([u,v])
-                else: # backedge found
+                else: # backedge found if not parent
                     if v==parent[u]: continue # ignore parent
                     low[u]=min(low[u],disc[v])
 

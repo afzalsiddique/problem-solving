@@ -1,7 +1,43 @@
-import unittest; from typing import List; import functools
-
-
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
+class Solution2:
+    def maxSatisfaction(self, nums: List[int]) -> int:
+        @cache
+        def dp(i, time):
+            if i==n: return 0
+            res=float('-inf')
+            for j in range(i,n):
+                option1 = nums[i] * time + dp(i + 1, time + 1) # take it
+                option2 = dp(i + 1, time) # skip it
+                res=max(res,option1,option2)
+            return res
+
+        n=len(nums)
+        nums.sort()
+        return dp(0,1)
+class Solution3:
+    # https://www.youtube.com/watch?v=mB24wDI0Bp0
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        n=len(satisfaction)
+        satisfaction.sort()
+        total=0
+        i=n-1
+        while i>=0:
+            total+=satisfaction[i]
+            if total<0:
+                break
+            i-=1
+
+        i+=1
+        k=1
+        res=0
+        while i<n:
+            res+=satisfaction[i]*k
+            k+=1
+            i+=1
+        return res
 class Solution:
     def maxSatisfaction(self, nums:List[int]):
         nums.sort()
@@ -15,21 +51,6 @@ class Solution:
                 res-=running_sum
                 running_sum-=nums[i] # subtracting nums[i] means I start from i+1 dish
         return res
-class Solution2:
-    def maxSatisfaction(self, nums: List[int]) -> int:
-        @functools.lru_cache(None)
-        def func(i,mul):
-            if i==n: return 0
-            res=float('-inf')
-            for j in range(i,n):
-                option1 = nums[i]*mul + func(i+1,mul+1)
-                option2 = func(i+1,mul)
-                res=max(res,option1,option2)
-            return res
-
-        n=len(nums)
-        nums.sort()
-        return func(0,1)
 
 class Tester(unittest.TestCase):
     def test1(self):

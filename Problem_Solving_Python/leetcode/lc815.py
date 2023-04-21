@@ -22,11 +22,40 @@ class Solution: # bfs
                 if from_stop==target: return cnt
                 if from_stop in seen_stops: continue
                 seen_stops.add(from_stop)
-                for route_idx in stop_to_routes[from_stop]: # go to a different route
+                for route_idx in stop_to_routes[from_stop]: # go to a different route and also explore the current route
                     if route_idx in seen_routes: continue
                     seen_routes.add(route_idx)
                     for to_stop in routes[route_idx]: # go to a stop located in a different route
                         q.append([to_stop,cnt+1])
+
+        return -1
+class Solution2:
+    # tle
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        if source==target: return 0
+        station_to_route=defaultdict(list)
+        for r_i,r in enumerate(routes):
+            for stop in routes[r_i]:
+                station_to_route[stop].append(r_i)
+
+        q=deque()
+        for start_route_idx in station_to_route[source]:
+            q.append([source,start_route_idx])
+
+        res=1
+        while q:
+            for _ in range(len(q)):
+                start_station,start_route_idx=q.popleft()
+                for dest_station_same_route in routes[start_route_idx]:
+                    if dest_station_same_route==target:
+                        return res
+                    if start_station==dest_station_same_route: continue
+                    for dest_route_idx in station_to_route[dest_station_same_route]:
+                        if dest_route_idx==start_route_idx:
+                            continue
+                        for dest_station_diff_route in routes[dest_route_idx]:
+                            q.append([dest_station_diff_route,dest_route_idx])
+            res+=1
 
         return -1
 class Solution3:
@@ -101,6 +130,7 @@ class MyTestCase(unittest.TestCase):
         routes,source,target = [[1,7],[3,5]], 5, 5
         Output= 0
         self.assertEqual(Output, get_sol().numBusesToDestination(routes,source,target))
-    # def test6(self):
+    def test6(self):
+        self.assertEqual(-1, get_sol().numBusesToDestination([[25,33],[3,5,13,22,23,29,37,45,49],[15,16,41,47],[5,11,17,23,33],[10,11,12,29,30,39,45],[2,5,23,24,33],[1,2,9,19,20,21,23,32,34,44],[7,18,23,24],[1,2,7,27,36,44],[7,14,33]], 7, 47))
     # def test7(self):
     # def test8(self):

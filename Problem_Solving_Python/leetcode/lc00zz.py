@@ -4,8 +4,9 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     def findRotateSteps(self, ring: str, key: str) -> int:
-        tup = tuple([1,2,3])
-        print(tup[:2])
+        ch = 'A'
+        ch= ch.lower()
+        print(ord(ch)-ord('a'))
 class Tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(4,get_sol().findRotateSteps(ring = "godding", key = "gd"))

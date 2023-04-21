@@ -1,5 +1,6 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-# from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # space O(G*P*len(group))
@@ -10,14 +11,19 @@ class Solution:
         # dp[c][g][p] means for first c crime with g members and at least p profit, what is total schemes can be chosen.
         dp=[[[0 for _ in range(P+1)] for __ in range(G+1)] for ___ in range(len(group)+1)]
         dp[0][0][0] = 1 # not commit for any crime, that's one scheme
+        # INCLUDE EXCLUDE type scenario. KNAPSACK
         for c in range(1,len(group)+1):
             thisGroup=group[c-1]
             thisProfit=profit[c-1]
             for g in range(G+1):
                 for p in range(P+1):
-                    dp[c][g][p]=dp[c-1][g][p]
+                    dp[c][g][p]=dp[c-1][g][p] # EXCLUDE the crime
+                    # we need this condition because without g members we cannot commit this crime
                     if g>=thisGroup:
-                        dp[c][g][p] +=dp[c-1][g-thisGroup][max(0,p-thisProfit)]
+
+                        # the reason why it is [max(0,p-thisProfit)] is because we want schemes with 'AT LEAST' P profit.
+                        # If p-thisProfit is less than 0, then this means only this crime itself is making P profit.
+                        dp[c][g][p] +=dp[c-1][g-thisGroup][max(0,p-thisProfit)] # INCLUDE the crime
                         dp[c][g][p] %= MOD
         res=0
         for g in range(G+1):
@@ -50,7 +56,7 @@ class Solution2:
 class Solution3:
     # tle
     def profitableSchemes(self, n: int, minProfit: int, group: List[int], profit: List[int]) -> int:
-        @functools.lru_cache(None)
+        @cache
         def dfs(start:int,curProfit:int,memberLeft:int):
             ans=0
             if memberLeft<0:

@@ -1,9 +1,24 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-# from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    # https://www.youtube.com/watch?v=VFskby7lUbw
     def maxCoins(self, nums: List[int]) -> int:
-        @functools.lru_cache(None)
+        @cache
+        def dp(l,r):
+            if l>r: return 0
+            res=float('-inf')
+            for i in range(l,r+1):
+                point=nums[l-1]*nums[i]*nums[r+1]+dp(l,i-1)+dp(i+1,r)
+                res=max(res,point)
+            return res
+
+        nums=[1]+nums+[1]
+        return dp(1,len(nums)-2)
+class Solution4:
+    def maxCoins(self, nums: List[int]) -> int:
+        @cache
         def search(nums:tuple[int]):
             ans=0
             for i in range(1,len(nums)-1):
@@ -18,7 +33,7 @@ class Solution:
 class Solution2:
     # tle
     def maxCoins(self, nums: List[int]) -> int:
-        @functools.lru_cache(None)
+        @cache
         def search(left,right):
             ans=0
             for i in range(left+1,right):
@@ -46,19 +61,19 @@ class Solution3:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_1(self):
+    def test1(self):
         self.assertEqual(167, get_sol().maxCoins([3,1,5,8]))
-    def test_2(self):
+    def test2(self):
         self.assertEqual(152, get_sol().maxCoins([3,5,8]))
-    def test_3(self):
+    def test3(self):
         self.assertEqual(48, get_sol().maxCoins([5,8]))
-    def test_4(self):
+    def test4(self):
         self.assertEqual(20, get_sol().maxCoins([3,5]))
-    def test_5(self):
+    def test5(self):
         self.assertEqual(0, get_sol().maxCoins([]))
-    def test_6(self):
+    def test6(self):
         self.assertEqual(1654, get_sol().maxCoins([7,9,8,0,7,1,3,5,5,2,3]))
-    def test_7(self):
+    def test7(self):
         self.assertEqual(48, get_sol().maxCoins([5,8]))
-    def test_8(self):
+    def test8(self):
         self.assertEqual(498010100, get_sol().maxCoins([100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100]))
