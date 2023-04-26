@@ -1,47 +1,54 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    def maxSumBST(self, root: Optional[TreeNode]) -> int:
-        def valid(node: TreeNode,lo=float('-inf'),hi=float('inf')):
-            if not node: return True
-            if not lo<node.val<hi: return False
-            return valid(node.left,lo,node.val) and valid(node.right,node.val,hi)
-
-        def getSum(node):
-            if not node: return 0
-            return getSum(node.left)+getSum(node.right)+node.val
-
-        def dfs(node):
+    def merge(self,s1:str,s2:str)->str:
+        cut=min(len(s1),len(s2))
+        for i in range(cut,0,-1):
+            lastS1=s1[-i:]
+            firstS2=s2[:i]
+            if lastS1==firstS2:
+                return s1+s2[i:]
+        return s1+s2
+    def mergeAll(self, indices:tuple[int],words:List[str]):
+        s=''
+        for i in indices:
+            s=self.merge(s,words[i])
+        return s
+    def shortestSuperstring(self, words: List[str]) -> str:
+        def turn_on(mask,i): return mask | (1<<i)
+        def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
+        def allSelected(mask, n): return mask == ((1 << n) - 1)
+        @cache
+        def backtrack(mask:int,path:tuple[int]):
             nonlocal res
-            if not node: return
-            if valid(node):
-                res=max(res,getSum(node))
-            dfs(node.left)
-            dfs(node.right)
+            if allSelected(mask,n):
+                s = self.mergeAll(path,words)
+                res=min(res,s,key=lambda x:len(x))
+                return
+            for i in range(n):
+                if is_on(mask,i): continue
+                newMask = turn_on(mask,i)
+                backtrack(newMask,tuple(list(path)+[i]))
 
-
-        res=float('-inf')
-        dfs(root)
-        return max(0,res)
-
-
+        n=len(words)
+        res='a'*(20*12+1)
+        backtrack(0,tuple([]))
+        return res
 
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(20, get_sol().maxSumBST(deserialize("1,4,3,2,4,2,5,null,null,null,null,null,null,4,6")))
+        self.assertIn(get_sol().shortestSuperstring(["alex","loves","leetcode"]),["alexlovesleetcode","leetcodelovesalex","lovesleetcodealex"])
     def test2(self):
-        self.assertEqual(2, get_sol().maxSumBST(deserialize("4,3,null,1,2")))
+        self.assertIn(get_sol().shortestSuperstring(["gcta","ctaagt","catg","ttca"]),["gctaagttcatg","ttcatgctaagt"])
     def test3(self):
-        self.assertEqual(0, get_sol().maxSumBST(deserialize("-4,-2,-5")))
+        self.assertIn(get_sol().shortestSuperstring(["abcd","bcde"]),["abcde"])
     def test4(self):
-        self.assertEqual(14, get_sol().maxSumBST(deserialize("4,null,1,-5,4,null,-3,null,10")))
+        self.assertIn(get_sol().shortestSuperstring(["a"]),["a"])
     def test5(self):
-        self.assertEqual(14, get_sol().maxSumBST(deserialize("4,8,null,6,1,9,null,-5,4,null,null,null,-3,null,10")))
-    def test6(self):
-        self.assertEqual(11, get_sol().maxSumBST(deserialize("8,9,8,null,9,null,1,null,null,-3,5,null,-2,null,6")))
-    def test7(self):
-        self.assertEqual(25, get_sol().maxSumBST(deserialize("1,null,10,-5,20")))
+        self.assertIn(get_sol().shortestSuperstring(["cmqitnqwahfl","ygeeoensdpuobhazkn","fxlqkqwemwhpeoblldcv","eoblldcvypdygeeoen","dpuobhazknowcmq","yfhctxzvfxlqkqwemwh","emwhpeoblldcvypdygee","dcvypdygeeoensdpuobh","zvfxlqkqwemwhpeobl"]),["yfhctxzvfxlqkqwemwhpeoblldcvypdygeeoensdpuobhazknowcmqitnqwahfl"])
+    # def test6(self):
     # def test7(self):
-
+    # def test8(self):
+    # def test9(self):

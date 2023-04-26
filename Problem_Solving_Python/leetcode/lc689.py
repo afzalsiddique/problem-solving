@@ -14,13 +14,13 @@ class Solution3:
         right_max=[None]*n # index
         idx=0
         for i in range(len(pre)-k):
-            if pre[i]>pre[idx]:
+            if pre[i]>pre[idx]: # '>' because find the smallest index for left side
                 idx=i
             left_max[i]=idx
 
         idx=n-1
         for i in range(len(pre)-1,k-1,-1):
-            if pre[i]>=pre[idx]:
+            if pre[i]>=pre[idx]: # '>=' because find the smallest index for right side
                 idx=i
             right_max[i]=idx
 

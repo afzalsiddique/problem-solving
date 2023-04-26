@@ -1,11 +1,12 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List; import functools
-# from ..template.binary_tree import deserialize,serialize
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/cat-and-mouse/discuss/298937/DP-memory-status-search-search-strait-forward-and-easy-to-understand
     def catMouseGame(self, graph: List[List[int]]) -> int:
         MOUSE,CAT,DRAW=1,-1,0 # MOUSE is maximizing agent and CAT is minimizing agent
-        @functools.lru_cache(None)
+        @cache
         def search(t, x, y): # t: time, x: mousePos, y: catPos
             if t == len(graph) * 2: # there is loop
                 return 0
@@ -80,7 +81,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().catMouseGame([[1,3],[0],[3],[0,2]]))
     def test3(self):
         self.assertEqual(1, get_sol().catMouseGame([[6],[4,11],[9,12],[5],[1,5,11],[3,4,6],[0,5,10],[8,9,10],[7],[2,7,12],[6,7],[1,4],[2,9]]))
-    # def test4(self):
+    def test4(self):
+        self.assertEqual(1, get_sol().catMouseGame([[2,3],[3,4],[0,4],[0,1],[1,2]]))
     # def test5(self):
     # def test6(self):
     # def test7(self):

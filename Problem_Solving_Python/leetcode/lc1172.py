@@ -9,7 +9,7 @@ class DinnerPlates:
         self.pq=[]
     def push(self, val: int) -> None:
         stacks,pq=self.stacks,self.pq
-        while self.pq and pq[0]<len(stacks) and len(stacks[pq[0]])==self.c:
+        while self.pq and pq[0]<len(stacks) and len(stacks[pq[0]])==self.c: # remove irrelevant stack index from pq
             heappop(pq)
         if self.pq and self.pq[0]<len(stacks):
             stacks[pq[0]].append(val)

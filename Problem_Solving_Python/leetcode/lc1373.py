@@ -1,34 +1,26 @@
-import unittest;
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
-
-
 def get_sol(): return Solution()
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
 class Solution:
-    def maxSumBST(self, root: TreeNode) -> int:
-        def helper(node:TreeNode):
+    # it's just validate binary search starting from leaf node towards root node
+    # and also instead of passing lo and hi as parameters, we return lo and hi
+    def maxSumBST(self, root: Optional[TreeNode]) -> int:
+        def recur(node:Optional[TreeNode]):
             nonlocal res
             if not node:
-                return float('inf'),float('-inf'),0
-            l=helper(node.left)
-            r=helper(node.right)
-            if not l or not r:
-                return None
-            minL,maxL,sumL=l
-            minR,maxR,sumR=r
-            if maxL>=node.val or minR<=node.val:
-                return None
-            summ=sumL+sumR+node.val
+                return [float('inf'),float('-inf'),0]
+            l_min,l_max,l_sum=recur(node.left)
+            r_min,r_max,r_sum=recur(node.right)
+            if None in [l_min,l_max,r_min,r_max]: return [None,None,0]
+            if not l_max<node.val<r_min: return [None,None,0]
+            summ=l_sum+r_sum+node.val
             res=max(res,summ)
-            return min(minL,node.val),max(maxR,node.val),summ
+            return [min(node.val,l_min),max(node.val,r_max),summ]
 
         res=float('-inf')
-        helper(root)
-        return max(res,0)
+        recur(root)
+        return max(0,res)
 
 
 

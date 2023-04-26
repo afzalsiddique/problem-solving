@@ -35,23 +35,23 @@ class Solution:
 
 class Solution2:
     def recoverFromPreorder(self, traversal: str) -> TreeNode:
-        def dfs(i,cur):
+        def dfs(i, depth):
             j=i
             cnt=0 # no of '-'
             while j<n and traversal[j]=='-':
                 cnt+=1
                 j+=1
-            if cnt!=cur+1:# no node can be created then no more chars have been considered so return i
+            if cnt!=depth+1:# no node can be created then no more chars have been considered so return i
                 return None,i
 
             # if this node has one more '-' then the prev node, then this node is child of prev node
-            num=[] # parse int
+            node_val=[] # parse int
             while j<n and traversal[j]!='-':
-                num.append(traversal[j])
+                node_val.append(traversal[j])
                 j+=1
-            node=TreeNode(int(''.join(num)))
-            left,new_i=dfs(j,cur+1)
-            right,new_i=dfs(new_i,cur+1)
+            node=TreeNode(int(''.join(node_val)))
+            left,new_i=dfs(j, depth + 1)
+            right,new_i=dfs(new_i, depth + 1)
             node.left=left
             node.right=right
             return node,new_i

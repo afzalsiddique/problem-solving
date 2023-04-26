@@ -97,7 +97,9 @@ class Tester(unittest.TestCase):
         self.assertIn(get_sol().shortestSuperstring(["abcd","bcde"]),["abcde"])
     def test4(self):
         self.assertIn(get_sol().shortestSuperstring(["a"]),["a"])
-    # def test5(self):
+    def test5(self):
+        self.assertIn(get_sol().shortestSuperstring(["cmqitnqwahfl","ygeeoensdpuobhazkn","fxlqkqwemwhpeoblldcv","eoblldcvypdygeeoen","dpuobhazknowcmq","yfhctxzvfxlqkqwemwh","emwhpeoblldcvypdygee","dcvypdygeeoensdpuobh","zvfxlqkqwemwhpeobl"]),["yfhctxzvfxlqkqwemwhpeoblldcvypdygeeoensdpuobhazknowcmqitnqwahfl"])
+
     # def test6(self):
     # def test7(self):
     # def test8(self):

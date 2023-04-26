@@ -1,51 +1,10 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 class Solution2:
     # use treemap or map in other languages
     pass
 class Solution:
     # https://leetcode.com/problems/odd-even-jump/discuss/1461211/DP-%2B-Stack-%2B-Images-or-O(N*logN)-or-96.54-Faster-or-Combination-of-Generic-Problems
-    def oddEvenJumps(self, arr: List[int]) -> int:
-        # this function finds the next greater element. since it is sorted, the next greater element
-        # in this case will be the next smallest element of the greater elements in the smallest position
-        def next_greater_element(arr):
-            n = len(arr)
-            result = [None]*n
-            stack = []
-            for i in range(n):
-                while stack and arr[stack[-1]] < arr[i]:
-                    result[arr[stack.pop()]] = arr[i]
-                stack.append(i)
-            del stack
-            return result
-
-        if not arr: return 0
-        n = len(arr)
-        arr_sorted = sorted(range(n), key=lambda x: arr[x])
-        nxt_higher = next_greater_element(arr_sorted)
-
-        arr_sorted.sort(key=lambda x: arr[x], reverse=True)
-        nxt_lower = next_greater_element(arr_sorted)
-
-        odd=[0]*n
-        even=[0]*n
-
-        # Last Index is always reachable.
-        odd[-1]=1
-        even[-1]=1
-
-        for i in range(n-2, -1, -1):
-
-            # If Odd Jump is possible
-            if nxt_higher[i] is not None:
-                odd[i] = even[nxt_higher[i]]
-
-            # If Even Jump is possible
-            if nxt_lower[i] is not None:
-                even[i] = odd[nxt_lower[i]]
-
-        return sum(odd) # first jump in odd
-class Solution3:
     def oddEvenJumps(self, arr: List[int]) -> int:
         n=len(arr)
         next_higher,next_lower=[-1 for _ in range(n)],[-1 for _ in range(n)]
@@ -75,6 +34,50 @@ class Solution3:
                 lower[i] = higher[next_lower[i]]
         return sum(higher)
 
+class Solution3:
+    # https://leetcode.com/problems/odd-even-jump/discuss/1461211/DP-%2B-Stack-%2B-Images-or-O(N*logN)-or-96.54-Faster-or-Combination-of-Generic-Problems
+    def oddEvenJumps(self, arr: List[int]) -> int:
+        # this function finds next greater index. since it is sorted in ascending order, the next greater index
+        # in this case will be the next smallest element of the greater elements in the smallest index.
+        # also when sorted in descending order, it will find next smaller element of the smaller elements in the smallest index
+        # check other solution for details
+        def next_greater_index(indices):
+            n = len(indices)
+            result = [None]*n
+            stack = []
+            for i in range(n):
+                while stack and indices[stack[-1]] < indices[i]:
+                    result[indices[stack.pop()]] = indices[i]
+                stack.append(i)
+            return result
+
+        if not arr: return 0
+        n = len(arr)
+        arr_sorted = sorted(range(n), key=lambda x: arr[x])
+        nxt_higher = next_greater_index(arr_sorted)
+
+        arr_sorted.sort(key=lambda x: arr[x], reverse=True)
+        nxt_lower = next_greater_index(arr_sorted)
+        print(nxt_lower)
+
+        odd=[0]*n
+        even=[0]*n
+
+        # Last Index is always reachable.
+        odd[-1]=1
+        even[-1]=1
+
+        for i in range(n-2, -1, -1):
+
+            # If Odd Jump is possible
+            if nxt_higher[i] is not None:
+                odd[i] = even[nxt_higher[i]]
+
+            # If Even Jump is possible
+            if nxt_lower[i] is not None:
+                even[i] = odd[nxt_lower[i]]
+
+        return sum(odd) # first jump in odd
 
 class MyTestCase(unittest.TestCase):
     def test1(self):

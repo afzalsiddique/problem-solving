@@ -16,7 +16,7 @@ class Solution:
             if i==j:
                 return (k+1)*(k+1)
             ans=float('-inf')
-            ans=max(ans,(k+1)*(k+1)+dp(i+1,j,0))
+            ans=max(ans,(k+1)*(k+1)+dp(i+1,j,0)) # just remove the i th box without matching color with other boxes
             for m in range(i+1,j+1):
                 if boxes[i]!=boxes[m]: continue # let boxes[i] stick around until it meets boxes[m] which is same color as boxes[i]. At this moment, boxes[i+1:m] would have been removed.
                 ans=max(ans,dp(i+1,m-1,0)+dp(m,j,k+1))
@@ -61,7 +61,8 @@ class Tester(unittest.TestCase):
         self.assertEqual(15,get_sol().removeBoxes([5,8,8,4,8,5,4]))
     def test_5(self):
         self.assertEqual(18,get_sol().removeBoxes([5,8,3,8,4,8,5,7,4,2]))
-    # def test_6(self):
+    def test_6(self):
+        self.assertEqual(5,get_sol().removeBoxes([5,8,8]))
     # def test_7(self):
     # def test_8(self):
     # def test_9(self):

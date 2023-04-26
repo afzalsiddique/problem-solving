@@ -1,20 +1,56 @@
 from collections import defaultdict;
 import unittest; from typing import List; import functools
 
-
 def get_sol(): return Solution()
 class Solution:
-    # https://leetcode.com/problems/tallest-billboard/discuss/219700/Python-DP-clean-solution(1D)
-    def tallestBillboard(self, rods: List[int]) -> int:
-        dp=defaultdict(int)
+    # https://leetcode.com/problems/tallest-billboard/discuss/204160/C%2B%2B-16-ms-DFS-%2B-memo
+    def tallestBillboard(self, nums):
+        EMPTY,INVALID=-2,-1
+        def dfs(i,s1,s2): # please note that what we are saving in dp is not the same as what we are returning
+            if i==n: return s1 if s1==s2 else float('-inf')
+
+            # dp[i,abs(50-30)]=150 -> add length of 150 to the larger support (supports are: 50 and 30. larger is 50)
+            state=(i,abs(s1-s2))
+            if dp[state]==EMPTY:
+                ans1=dfs(i+1,s1,s2)
+                ans2=dfs(i+1,s1+nums[i],s2)
+                ans3=dfs(i+1,s1,s2+nums[i])
+                # we are saving what length could be added to the larger support
+                best=max(ans1,ans2,ans3)-max(s1,s2)
+                dp[state]=max(INVALID,best)
+            if dp[state]==INVALID:
+                return INVALID
+            # we returning what is maximum length of the support
+            return dp[state]+max(s1,s2)
+
+        n=len(nums)
+        dp=defaultdict(lambda :EMPTY)
+        return dfs(0,0,0)
+class Solution3:
+    # https://leetcode.com/problems/tallest-billboard/discuss/203181/JavaC%2B%2BPython-DP-min(O(SN2)-O(3N2-*-N)
+    def tallestBillboard(self,rods):
+        dp = defaultdict(int)
         dp[0]=0
-        for rod in rods:
-            cur=dp.copy()
-            for totalSum, posSum in dp.items():
-                cur[totalSum+rod]=max(cur[totalSum+rod],dp[totalSum]+rod)
-                cur[totalSum-rod]=max(cur[totalSum-rod],dp[totalSum])
-                cur[totalSum]=max(cur[totalSum],dp[totalSum])
-            dp=cur
+        for x in rods:
+            for d, y in dp.items():
+                # init state
+                # ------|----- d -----|      # tall side
+                # - y --|                    # low  side
+
+                # put x to tall side
+                # ------|----- d -----|---- x --|
+                # - y --|
+                dp[d+x] = max(dp[d+x], y )
+
+                # put x to low side
+                if d >= x:
+                    # ------|----- d -----|
+                    # - y --|---- x ---|
+                    dp[d-x] = max(dp[d-x], y+x)
+                else:
+                    # ------|----- d -----|
+                    # - y --|-------- x --------|
+                    dp[x-d] = max(dp[x-d], y+d)
         return dp[0]
 class Solution2:
     # tle. dfs

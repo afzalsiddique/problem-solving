@@ -3,6 +3,37 @@ import itertools; import math; import operator; import random; import string; fr
 def get_sol(): return Solution()
 class Solution:
     def minFlips(self, mat: List[List[int]]) -> int:
+        def within(x,y): return 0<=x<m and 0<=y<n
+        def get_next_moves(x,y): return [[x+dx,y+dy] for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)] if within(x+dx,y+dy)]+[[x,y]]
+        def flip(tup:tuple[tuple[int]],moves:List[List[int]]):
+            mat=toLi(tup)
+            for x,y in moves:
+                mat[x][y]^=1
+            return toTup(mat)
+        def toTup(mat): return tuple([tuple(row) for row in mat])
+        def toLi(tup): return [list(row) for row in tup]
+        def isGoal(tup): return all(all(x==0 for x in row) for row in tup)
+
+        q = deque()
+        q.append(toTup(mat))
+        vis=set()
+        m,n=len(mat),len(mat[0])
+
+        res=0
+        while q:
+            for _ in range(len(q)):
+                tup=q.popleft()
+                if tup in vis: continue
+                vis.add(tup)
+                if isGoal(tup): return res
+                for x in range(m):
+                    for y in range(n):
+                        moves=get_next_moves(x,y)
+                        q.append(flip(tup,moves))
+            res+=1
+        return -1
+class Solution3:
+    def minFlips(self, mat: List[List[int]]) -> int:
         def singleFlip(mask,i,j):
             idx=i*n+j # flatten to 1d index
             return mask^(1<<idx)
