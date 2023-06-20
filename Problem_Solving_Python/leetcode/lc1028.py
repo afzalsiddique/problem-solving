@@ -3,6 +3,46 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # the parent of the current node is the previous node with a depth of depth-1
+    # "7-8--9--10-11--12--13"
+    # 10 has a depth=2 and the previous node with (depth-1)=1 is 8 and 8 is the parent of 10
+    # 12 has a depth=2 and the previous node with (depth-1)=1 is 11 and 11 is the parent of 12
+    # depth is equal to the number of elements in the stack
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+        def getDepth(i):
+            depth=0
+            while i<len(traversal) and traversal[i]=='-':
+                i+=1
+                depth+=1
+            return depth,i
+        def getValue(i):
+            val=0
+            while i<len(traversal) and traversal[i]!='-':
+                val=val*10+int(traversal[i])
+                i+=1
+            return val,i
+        def insertIntoParent(parent, child):
+            if parent.left is None:
+                parent.left=child
+            else:
+                parent.right=child
+
+        i=0
+        rootVal,i=getValue(i)
+        root=TreeNode(rootVal)
+        stack = []
+        stack.append(root)
+        while i<len(traversal):
+            depth,i=getDepth(i)
+            val,i=getValue(i)
+            while stack and len(stack)!=depth:
+                stack.pop()
+            child=TreeNode(val)
+            parent=stack[-1]
+            insertIntoParent(parent,child)
+            stack.append(child)
+        return root
+class Solution3:
     def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
         def parseDepthAndVal(i):
             depth=0
@@ -62,14 +102,15 @@ class Solution2:
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual("1,401,null,349,88", serialize(get_sol().recoverFromPreorder("1-401--349--88")))
-    def test2(self):
-        self.assertEqual("1,2,5,3,null,6,null,4,null,7", serialize(get_sol().recoverFromPreorder(traversal = "1-2--3---4-5--6---7")))
-    def test3(self):
+    def test02(self):
+        self.assertEqual("1,2,5,3,null,6,null,4,null,7", serialize(get_sol().recoverFromPreorder("1-2--3---4-5--6---7")))
+    def test03(self):
         self.assertEqual("1,401,null,349,88,90", serialize(get_sol().recoverFromPreorder("1-401--349---90--88")))
-    def test4(self):
-        self.assertEqual("1,2,5,3,4,6,7", serialize(get_sol().recoverFromPreorder(traversal = "1-2--3--4-5--6--7")))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
+    def test04(self):
+        self.assertEqual("1,2,5,3,4,6,7", serialize(get_sol().recoverFromPreorder("1-2--3--4-5--6--7")))
+    def test05(self):
+        self.assertEqual("3", serialize(get_sol().recoverFromPreorder("3")))
+    # def test06(self):
+    # def test07(self):

@@ -11,7 +11,7 @@ class Solution:
             if not 0<=i<n or not 0<=j<n: return 0
             if grid[i][j]==0: return 0
             if (i,j) in vis: return 0
-            vis.add((i,j))
+            vis.addInReverse((i, j))
             ans=1
             for di,dj in [(1,0),(0,1),(-1,0),(0,-1)]:
                 ans += dfs(i + di, j + dj, vis)
@@ -53,6 +53,7 @@ class Solution:
 
 
 # tle
+# SAVE AND RESTORE UNION FIND STATE
 class UnionFind:
     def __init__(self):
         self.par={}
@@ -78,7 +79,7 @@ class UnionFind:
         if a!=self.par[a]:
             self.par[a]=self.find(self.par[a])
         return self.par[a]
-    def unionAll(self,li):
+    def unionAll(self,li): # time O(n*n*logn). there can be at most n*n elements in li and each operation takes log n.
         if len(li)==0: return
         if len(li)==1:
             self.add(li[0])
@@ -131,14 +132,14 @@ class Solution2:
         for i in range(m):
             for j in range(n):
                 if grid[i][j]==0:
-                    uf.saveCurrentState()
+                    uf.saveCurrentState() # SAVE UNION FIND STATE
                     li = get_4d_moves(i,j)
                     li = [(x,y) for x,y in li if grid[x][y]==2]
                     li.append((i,j))
                     uf.unionAll(li)
                     tmp=max(uf.size_of_groups())
                     res=max(res,tmp)
-                    uf.restoreSavedState()
+                    uf.restoreSavedState() # RESTORE STATE
         return res
 
 class MyTestCase(unittest.TestCase):

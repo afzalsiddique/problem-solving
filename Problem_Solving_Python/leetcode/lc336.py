@@ -1,6 +1,26 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
+class Solution:
+    # hashmap
+    # https://www.youtube.com/watch?v=gys8p5fEkAg&t=322s
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        def isPalindrome(word): return word==word[::-1]
+        di = {word[::-1]:i for i,word in enumerate(words)}
+        res=[]
+        for i,word in enumerate(words):
+            for length in range(len(word)+1):
+                prefix = word[:length]
+                suffix = word[length:]
+                if isPalindrome(prefix) and suffix in di:
+                    j = di[suffix]
+                    if i!=j:
+                        res.append([j,i])
+                if suffix!="" and isPalindrome(suffix) and prefix in di:
+                    j=di[prefix]
+                    if i!=j:
+                        res.append([i,j])
+        return res
 class TrieNode:
     def __init__(self):
         self.idx = -1 # similar to isEnd. index of the word which ends here
@@ -11,9 +31,9 @@ class TrieNode:
 class Trie:
     def __init__(self):
         self.root = TrieNode()
-    def add(self, word, idx):
+    def addInReverse(self, word, idx):
         node = self.root
-        for i, letter in enumerate(reversed(word)):
+        for i, letter in enumerate(reversed(word)): # add in reverse order
             remaining=word[:len(word)-i]
             if self.is_palindrome(remaining):
                 node.pdromes_below.append(idx)
@@ -47,13 +67,13 @@ class Trie:
             j -= 1
         return True
 
-class Solution:
+class Solution2:
     # https://leetcode.com/problems/palindrome-pairs/discuss/79195/O(n-*-k2)-java-solution-with-Trie-structure/269808
     def palindromePairs(self, words:List[str])->List[List[str]]:
         res = []
         t = Trie()
         for idx, w in enumerate(words):
-            t.add(w, idx)
+            t.addInReverse(w, idx)
         for idx, w in enumerate(words):
             res.extend(t.search(w, idx))
         return res
@@ -102,3 +122,5 @@ class Tester(unittest.TestCase):
         self.assertEqual(sorted([[1,0]]),sorted(get_sol().palindromePairs(["babsl","ls"])))
     def test5(self):
         self.assertEqual(sorted([[1,0]]),sorted(get_sol().palindromePairs(["abc","cb"])))
+    def test6(self):
+        self.assertEqual(sorted([[0,1]]),sorted(get_sol().palindromePairs(["abcb","a"])))

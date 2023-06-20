@@ -73,4 +73,6 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().minRefuelStops(100, 50, [[50,50]]))
     def test7(self):
         self.assertEqual(1, get_sol().minRefuelStops(100, 50, [[25,25],[50,50]]))
+    def test8(self):
+        self.assertEqual(1, get_sol().minRefuelStops(100, 50, [[25,50],[50,25]]))
 

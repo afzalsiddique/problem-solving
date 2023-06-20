@@ -7,7 +7,7 @@ class Solution:
     # https://leetcode.com/problems/arithmetic-slices-ii-subsequence/discuss/1455137/Python-short-dp-explained
     def numberOfArithmeticSlices(self, nums: List[int]) -> int:
         n=len(nums)
-        dp=[Counter() for _ in range(n)]
+        dp=[Counter() for _ in range(n)] # dp[i][d] denotes the number of arithmetic subsequences that ends with A[i] and its common difference is d
         res=0
         for i in range(n):
             for j in range(i):

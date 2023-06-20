@@ -6,9 +6,9 @@ class Di(defaultdict):
     def __missing__(self, key): return key
 class Solution:
     def nextGreater(self, nums) -> List[int]:
-        li = [1,2,3,4]
-        li = list(filter(lambda x:x%2, li))
-        print(li)
+        x = 10
+        x*= 10+2
+        print(x)
 
 class Tester(unittest.TestCase):
     def test1(self):

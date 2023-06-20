@@ -32,7 +32,7 @@ class Solution:
                 return True
             if (playerX, playerY) in vis:
                 return False
-            vis.add((playerX, playerY))
+            vis.addInReverse((playerX, playerY))
             for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
                 newX,newY= playerX + dx, playerY + dy
                 if not 0<=newX<m or not 0<=newY<n:

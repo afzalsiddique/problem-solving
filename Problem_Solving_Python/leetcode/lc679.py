@@ -48,8 +48,8 @@ class Solution2:
                     nums.append(n)
                     if self.judgePoint24(nums): return True
                     nums.pop()
-                nums.add(j, b)  # j should be put back first
-                nums.add(i, a)
+                nums.addInReverse(j, b)  # j should be put back first
+                nums.addInReverse(i, a)
         return False
 
 

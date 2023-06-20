@@ -12,7 +12,7 @@ class Solution:
             if u in seen:
                 return -1.0
             if u==target: return val
-            seen.add(u)
+            seen.addInReverse(u)
             for v,w in graph[u]:
                 res= dfs(v, target, seen, val * w)
                 if res!=-1.0:

@@ -64,7 +64,7 @@ class Solution2:
             if not 0<=i<m or not 0<=j<n: return False
             if grid[i][j]==0: return False
             if (i,j) in vis: return False
-            vis.add((i,j))
+            vis.addInReverse((i, j))
             if i==0: return True
             res=False
             for di,dj in [(1,0),(0,1),(-1,0),(0,-1)]:

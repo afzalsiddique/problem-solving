@@ -3,7 +3,21 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
-    # greedy
+    # O(n)
+    # greedy bfs
+    # https://leetcode.com/problems/jump-game-ii/discuss/18014/Concise-O(n)-one-loop-JAVA-solution-based-on-Greedy
+    def jump(self, nums: List[int]) -> int:
+        n=len(nums)
+        res=curEnd=maxEnd=0
+        for i in range(n-1):
+            maxEnd=max(maxEnd,i+nums[i])
+            if i==curEnd:
+                res+=1
+                curEnd=maxEnd
+
+        return res
+class Solution2:
+    # time O(n^2) although the post says O(n)
     # https://leetcode.com/problems/jump-game-ii/discuss/18028/O(n)-BFS-solution/237098
     # start position from the end
     # Find the leftmost position that can reach the current position.
@@ -20,15 +34,15 @@ class Solution:
             if pos==new_pos: return -1 # not required
             pos=new_pos
         return steps
-class Solution2:
+class Solution3:
     def jump(self, nums: List[int]) -> int:
         @cache
         def dfs(i):
             if i>=len(nums)-1: return 0
             res=float('inf')
             for jump in range(1,nums[i]+1):
-                res=min(res,dfs(i+jump))
-            return res+1
+                res=min(res,1+dfs(i+jump))
+            return res
 
         return dfs(0)
 

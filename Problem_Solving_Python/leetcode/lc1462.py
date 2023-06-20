@@ -85,7 +85,7 @@ class Solution2:
             for p in preqs[course]:
                 preqs[preq].add(p)
             for p in reverse_preqs[preq]:
-                preqs[p].add(course)
+                preqs[p].addInReverse(course)
                 reverse_preqs[course].add(p)
             reverse_preqs[course].add(preq)
         return [query[1] in preqs[query[0]] for query in queries]

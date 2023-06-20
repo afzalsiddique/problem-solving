@@ -1,5 +1,51 @@
 import functools; import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List; from math import sqrt
 def get_sol(): return Solution()
+class Solution:
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        # calculate prefix array with window size k
+        pre = []
+        cur=sum(nums[i] for i in range(k))
+        pre.append(cur)
+        for i in range(k,len(nums)):
+            cur+=nums[i]
+            cur-=nums[i-k]
+            pre.append(cur)
+
+        # calculate right max and left max
+        n=len(pre)
+        leftMax,rightMax=[float('-inf')]*n,[float('-inf')]*n
+        leftMaxIdx,rightMaxIdx=[-1]*n,[-1]*n
+
+        leftMax[0]=pre[0]
+        leftMaxIdx[0]=0
+        for i in range(1,len(pre)):
+            if pre[i]>leftMax[i-1]:
+                leftMax[i]=pre[i]
+                leftMaxIdx[i]=i
+            else:
+                leftMax[i]=leftMax[i-1]
+                leftMaxIdx[i]=leftMaxIdx[i-1]
+
+        rightMax[-1]=pre[-1]
+        rightMaxIdx[-1]=len(pre)-1
+        for i in range(len(pre)-2,-1,-1):
+            if pre[i]>=rightMax[i+1]:
+                rightMax[i]=pre[i]
+                rightMaxIdx[i]=i
+            else:
+                rightMax[i]=rightMax[i+1]
+                rightMaxIdx[i]=rightMaxIdx[i+1]
+
+        # final part
+        res=[]
+        resMax=float('-inf')
+        for i in range(len(pre)):
+            if not i-k>=0 or not i+k<len(pre): continue
+            tmp=leftMax[i-k]+pre[i]+rightMax[i+k]
+            if tmp>resMax:
+                resMax=tmp
+                res=[leftMaxIdx[i-k],i,rightMaxIdx[i+k]]
+        return res
 class Solution3:
     def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
         pre = []
@@ -38,7 +84,7 @@ class Solution3:
             elif tmpSum==maxSum:
                 maxIdx=min(maxIdx,curIdx)
         return maxIdx
-class Solution:
+class Solution4:
     # https://www.youtube.com/watch?v=wN1nPANp3hk
     def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
         n=len(nums)

@@ -9,7 +9,7 @@ class Solution:
             if not 0<=i<m or not 0<=j<n: return
             if grid[i][j]==0: return
             if (i,j) in island: return
-            island.add((i,j))
+            island.addInReverse((i, j))
             for di,dj in self.dir:
                 initialize_island(i+di,j+dj,island)
 

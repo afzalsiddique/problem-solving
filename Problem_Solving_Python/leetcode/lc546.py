@@ -1,12 +1,11 @@
-from collections import Counter;
-import unittest; from typing import List; import functools
-
-
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/remove-boxes/discuss/101310/Java-top-down-and-bottom-up-DP-solutions
     def removeBoxes(self, boxes: List[int]) -> int:
-        @functools.lru_cache(None)
+        @cache
         # i-> left index of the array
         # j-> right index of the array (inclusive)
         # k-> number of consecutive boxes same color as boxes[i] to the left of ith box
@@ -51,18 +50,18 @@ class Solution2:
         return func(boxes)
 
 class Tester(unittest.TestCase):
-    def test_1(self):
+    def test01(self):
         self.assertEqual(23,get_sol().removeBoxes([1,3,2,2,2,3,4,3,1]))
-    def test_2(self):
+    def test02(self):
         self.assertEqual(9,get_sol().removeBoxes([1,1,1]))
-    def test_3(self):
+    def test03(self):
         self.assertEqual(1,get_sol().removeBoxes([1]))
-    def test_4(self):
+    def test04(self):
         self.assertEqual(15,get_sol().removeBoxes([5,8,8,4,8,5,4]))
-    def test_5(self):
+    def test05(self):
         self.assertEqual(18,get_sol().removeBoxes([5,8,3,8,4,8,5,7,4,2]))
-    def test_6(self):
+    def test06(self):
         self.assertEqual(5,get_sol().removeBoxes([5,8,8]))
-    # def test_7(self):
-    # def test_8(self):
-    # def test_9(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):

@@ -32,10 +32,11 @@ class Solution:
         temp = rev_s[:len(rev_s)-cut]
         return temp+s
 
+class Solution2:
     # brute force
     # time O(n^2)
     # space O(n). because new_s is a string whose memory is O(n)
-    def shortestPalindrome2(self, s: str) -> str:
+    def shortestPalindrome(self, s: str) -> str:
         if not s: return s
         if s==s[::-1]: return s
         n=len(s)
