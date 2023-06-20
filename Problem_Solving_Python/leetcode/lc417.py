@@ -7,7 +7,7 @@ class Solution:
         def valid(x,y): return 0<=x<m and 0<=y<n
         def traverse(x,y,vis):
             if (x,y) in vis: return
-            vis.addInReverse((x, y))
+            vis.add((x, y))
             for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
                 if valid(x+dx,y+dy) and mat[x+dx][y+dy]>=mat[x][y]:
                     traverse(x+dx,y+dy,vis)
@@ -34,7 +34,7 @@ class Solution2:
                     if 0 <= new_i < m and 0 <= new_j < n and (new_i, new_j) not in reachable_ocean \
                             and mat[new_i][new_j] >= mat[i][j]: # it's '>=' not '<='
                         q.append( (new_i,new_j) )
-                        reachable_ocean.addInReverse((new_i, new_j))
+                        reachable_ocean.add((new_i, new_j))
             return reachable_ocean
 
         if not mat: return []

@@ -19,7 +19,7 @@ class Solution:
             return False
         def dfs(u,vis):
             if u in vis: return 0
-            vis.addInReverse(u)
+            vis.add(u)
             ans=1
             for v in g[u]:
                 ans+=dfs(v,vis)

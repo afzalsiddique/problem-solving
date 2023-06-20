@@ -29,7 +29,7 @@ def dijkstra(grid:List[List[int]],src,goal,vis):
         cur,x,y=heappop(pq)
         if grid[x][y]==BOX: continue
         if (x,y) in vis: continue
-        vis.addInReverse((x, y))
+        vis.add((x, y))
         if goal[0]==x and goal[1]==y: return cur
         for dx,dy in [(1,0),(0,1),(-1,0),(0,-1),(1,1),(1,-1),(-1,1),(-1,1)]:
         # for dx,dy in [(1,0)]:

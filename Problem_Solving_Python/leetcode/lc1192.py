@@ -42,7 +42,7 @@ class Solution2:
             g[v].add(u)
         def one_component(u, vis): # dfs
             if u in vis: return True
-            vis.addInReverse(u)
+            vis.add(u)
             for nei in g[u]:
                 one_component(nei,vis)
             if len(vis)!=n: return False

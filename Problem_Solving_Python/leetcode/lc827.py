@@ -11,7 +11,7 @@ class Solution:
             if not 0<=i<n or not 0<=j<n: return 0
             if grid[i][j]==0: return 0
             if (i,j) in vis: return 0
-            vis.addInReverse((i, j))
+            vis.add((i, j))
             ans=1
             for di,dj in [(1,0),(0,1),(-1,0),(0,-1)]:
                 ans += dfs(i + di, j + dj, vis)

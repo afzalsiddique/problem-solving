@@ -1,6 +1,6 @@
 from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
 from binary_tree_tester import *; from a_linked_list import make_linked_list
-def get_sol(): return Solution5()
+def get_sol(): return Solution()
 class Solution:
     def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
         @cache
@@ -85,7 +85,7 @@ class Solution2:
             for p in preqs[course]:
                 preqs[preq].add(p)
             for p in reverse_preqs[preq]:
-                preqs[p].addInReverse(course)
+                preqs[p].add(course)
                 reverse_preqs[course].add(p)
             reverse_preqs[course].add(preq)
         return [query[1] in preqs[query[0]] for query in queries]

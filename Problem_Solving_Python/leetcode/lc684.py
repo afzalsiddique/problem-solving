@@ -13,7 +13,7 @@ class Solution:
         def dfs(src,target,visited):
             if src in visited: return False
             if src == target: return True # target is reachable
-            visited.addInReverse(src)
+            visited.add(src)
             for neigh in graph[src]:
                 if dfs(neigh,target,visited):
                     return True

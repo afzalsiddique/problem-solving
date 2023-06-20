@@ -27,7 +27,7 @@ class Solution:
             if i==m: return j
             if mat[i][j]==WALL1 or mat[i][j]==WALL2: return -1
             if (i,j) in vis: return -1
-            vis.addInReverse((i, j))
+            vis.add((i, j))
             for di,dj in [(0,1),(0,-1),(1,0)]: # (left,right,down)
                 ans=dfs(i+di,j+dj,vis)
                 if ans!=-1:
@@ -70,7 +70,7 @@ class Solution2:
             if i==m: return j
             if mat[i][j]==WALL1 or mat[i][j]==WALL2: return -1
             if (i,j) in vis: return -1
-            vis.addInReverse((i, j))
+            vis.add((i, j))
             for di,dj in [(0,1),(0,-1),(1,0)]: # (left,right,down)
                 ans=dfs(i+di,j+dj,vis)
                 if ans!=-1:
