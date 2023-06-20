@@ -22,6 +22,30 @@ class Solution:
                 cur_max=max(cur_max,nums[row_no][idx+1])
 
         return [minn,maxx]
+class Solution3:
+    # https://www.youtube.com/watch?v=Fqal25ZgEDo
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        pq = []
+        maxx=float('-inf')
+        for nums_i in range(len(nums)):
+            x=nums[nums_i][0]
+            heappush(pq,[x,nums_i,0])
+            maxx=max(maxx,x)
+
+        res=[pq[0][0],maxx]
+        range_len=maxx-pq[0][0]
+        while len(pq)==len(nums):
+            a,nums_i,i=heappop(pq)
+            if i+1<len(nums[nums_i]):
+                b = nums[nums_i][i+1]
+                maxx=max(maxx,b)
+                heappush(pq,[b,nums_i,i+1])
+
+            if len(pq)==len(nums) and maxx-pq[0][0]<range_len:
+                minn=pq[0][0]
+                range_len=maxx-minn
+                res=[pq[0][0],maxx]
+        return res
 class Solution2:
     # tle
     def smallestRange(self, nums: List[List[int]]) -> List[int]:

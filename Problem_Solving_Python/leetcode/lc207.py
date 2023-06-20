@@ -47,6 +47,7 @@ class Tester(unittest.TestCase):
     def test4(self):
         self.assertEqual(True,get_sol().canFinish(2, []))
     def test5(self):
+        self.assertEqual(True,get_sol().canFinish(4, [[0,3],[1,3],[2,0],[2,1]]))
+    def test6(self):
         self.assertEqual(True,get_sol().canFinish(5, [[1,4],[2,4],[3,1],[3,2]]))
-    # def test6(self):
     # def test7(self):

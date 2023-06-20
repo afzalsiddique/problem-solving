@@ -14,11 +14,10 @@ class Solution:
         while q:
             for _ in range(len(q)):
                 s1,i=q.popleft()
-                j=i
-                while i<n and s1[i]==s2[j]: # skip same chars
+                while i<n and s1[i]==s2[i]: # skip same chars
                     i+=1
-                    j+=1
                 if i==n: return res
+                j=i
                 while i<n: # find the index of s2[j] in s1. this index is denoted by i.
                     if s1[i]==s2[i]: # skip same chars
                         i+=1
@@ -122,3 +121,5 @@ class mytestcase(unittest.TestCase):
         self.assertEqual(11, get_sol().kSimilarity("accbadbbacadcdedaebc", "caeacbbacddceacadbbd"))
     def test10(self):
         self.assertEqual(6, get_sol().kSimilarity("baaabaabbbabbbabaaab", "babbbbbaabaabaaaabba"))
+    def test11(self):
+        self.assertEqual(9, get_sol().kSimilarity("babcccabcbcbcbbaaabb", "bbcbabbaaacccacbbbcb"))

@@ -5,14 +5,14 @@ def get_sol(): return Solution()
 class Di(defaultdict):
     def __missing__(self, key): return key
 class Solution:
-    def smallestSufficientTeam(self, skills: List[str], people: List[List[str]]) -> List[int]:
-        li = [1,2,None]
-        print(None in li)
-
+    def nextGreater(self, nums) -> List[int]:
+        li = [1,2,3,4]
+        li = list(filter(lambda x:x%2, li))
+        print(li)
 
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(4,get_sol().smallestSufficientTeam([],[]))
+        self.assertEqual(4,get_sol().nextGreater([]))
     # def test2(self):
     # def test3(self):
     # def test4(self):

@@ -10,12 +10,12 @@ class Solution:
         n=len(grid)
         pq = [[grid[0][0],0,0]] # time,i,j
         while pq:
-            val,x,y = heappop(pq)
+            time,x,y = heappop(pq)
             if grid[x][y]==VISITED: continue
             if x==n-1 and y==n-1:
-                return val
+                return time
             for i,j in get_moves(x,y):
-                heappush(pq,[max(val,grid[i][j]),i,j])
+                heappush(pq,[max(time,grid[i][j]),i,j])
             grid[x][y]=VISITED
 class Solution3:
     def swimInWater(self, grid: List[List[int]]) -> int:

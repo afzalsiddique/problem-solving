@@ -94,10 +94,10 @@ class Solution2:
 
 
 class Tester(unittest.TestCase):
-    def test_1(self):
+    def test1(self):
         self.assertIn(get_sol().sortItems(8, 2, [-1,-1,1,0,0,1,0,-1], [[],[6],[5],[6],[3,6],[],[],[]]),[[6,3,4,1,5,2,0,7],[0,7,6,3,4,1,5,2]])
-    def test_2(self):
+    def test2(self):
         self.assertEqual([],get_sol().sortItems(n = 8, m = 2, group = [-1,-1,1,0,0,1,0,-1], beforeItems = [[],[6],[5],[6],[3],[],[4],[]]))
-    def test_3(self):
+    def test3(self):
         self.assertIn(get_sol().sortItems(5, 5, [2,0,-1,3,0], [[2,1,3],[2,4],[],[],[]]),[[3,2,4,1,0],[2,4,1,3,0]])
     # def test_4(self):

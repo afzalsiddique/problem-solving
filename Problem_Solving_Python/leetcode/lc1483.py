@@ -36,21 +36,28 @@ class Tester(unittest.TestCase):
             elif cmd=='getKthAncestor':
                 outputs.append(obj.getKthAncestor(input[0],input[1]))
         return outputs
-    def test_01(self):
+    def test1(self):
         commands = ["TreeAncestor",       "getKthAncestor", "getKthAncestor", "getKthAncestor"]
         inputs=[[7, [-1, 0, 0, 1, 1, 2, 2]], [3, 1],          [5, 2],           [6, 3]]
         expected = [None,                     1,               0,                -1]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(expected,outputs)
-    def test_02(self):
+    def test2(self):
         commands = ["TreeAncestor","getKthAncestor","getKthAncestor","getKthAncestor","getKthAncestor","getKthAncestor"]
         inputs=[[5,[-1,0,0,1,2]],[3,5],[3,2],[2,2],[0,2],[2,1]]
         expected = [None,-1,0,-1,-1,0]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(expected,outputs)
-    def test_03(self):
+    def test3(self):
         commands = ["TreeAncestor","getKthAncestor","getKthAncestor","getKthAncestor"]
         inputs=[[4,[-1,2,3,0]],[2,3],[2,2],[2,1]]
         expected = [None,-1,0,3]
         outputs = self.do_test(commands, inputs)
         self.assertEqual(expected,outputs)
+    def test4(self):
+        commands = ["TreeAncestor","getKthAncestor","getKthAncestor","getKthAncestor","getKthAncestor","getKthAncestor"]
+        inputs=[[5,[-1,0,0,0,3]],[1,5],[3,2],[0,1],[3,1],[3,5]]
+        expected = [None,-1,-1,-1,0,-1]
+        outputs = self.do_test(commands, inputs)
+        self.assertEqual(expected,outputs)
+

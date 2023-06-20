@@ -24,11 +24,11 @@ class Solution:
 
 
 class MyTestCase(unittest.TestCase):
-    def test01(self):
+    def test1(self):
         self.assertEqual(3,get_sol().intersectionSizeTwo([[1,3],[1,4],[2,5],[3,5]]))
-    def test02(self):
+    def test2(self):
         self.assertEqual(5,get_sol().intersectionSizeTwo([[1,2],[2,3],[2,4],[4,5]]))
-    def test03(self):
+    def test3(self):
         self.assertEqual(4,get_sol().intersectionSizeTwo([[18,24],[24,33],[29,37]]))
     # def test04(self):
     # def test05(self):

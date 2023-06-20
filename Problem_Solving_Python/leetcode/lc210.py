@@ -43,13 +43,13 @@ class Solution2:
 
 
 class Tester(unittest.TestCase):
-    def test_1(self):
+    def test1(self):
         self.assertEqual([0,1],get_sol().findOrder(2,[[1,0]]))
-    def test_2(self):
+    def test2(self):
         self.assertIn(get_sol().findOrder(4,[[1,0],[2,0],[3,1],[3,2]]),[[0,1,2,3],[0,2,1,3]])
-    def test_3(self):
+    def test3(self):
         self.assertEqual([0],get_sol().findOrder(1,[]))
-    def test_4(self):
+    def test4(self):
         self.assertEqual([],get_sol().findOrder(2,[[0,1],[1,0]]))
-    def test_5(self):
+    def test5(self):
         self.assertEqual([],get_sol().findOrder(3, [[1,0],[1,2],[0,1]]))

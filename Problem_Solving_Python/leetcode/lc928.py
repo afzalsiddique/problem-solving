@@ -41,6 +41,77 @@ class Solution:
                 idx=u
         return idx
 
+class UnionFind2:
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
+    def union(self,a,b):
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def unionAll(self,li):
+        if len(li)<1: return
+        first=li[0]
+        for second in li[1:]:
+            self.union(first,second)
+    def size_of_groups(self):
+        for a in self.par:
+            self.find(a)
+        count=Counter(self.par.values())
+        return list(count.values())
+class Solution2:
+    # bad solution
+    # not an actual union find solution. rather it is a bfs node count solution
+    def minMalwareSpread(self, graph: List[List[int]], initial: List[int]) -> int:
+        def addToUF(i):
+            uf = UnionFind2()
+            li = initial[:i]+initial[i+1:]
+            uf.unionAll(li)
+            q = deque(li)
+            vis=set()
+            while q:
+                for _ in range(len(q)):
+                    u = q.popleft()
+                    if u in vis: continue
+                    vis.add(u)
+                    for v in g[u]:
+                        if v ==initial[i]: continue # remove nodes and edges
+                        uf.union(u,v)
+                        q.append(v)
+            return sum(uf.size_of_groups())
+
+        m,n=len(graph),len(graph[0])
+        g=defaultdict(set)
+        for i in range(m):
+            for j in range(i):
+                if graph[i][j]==1:
+                    g[i].add(j)
+                    g[j].add(i)
+
+        res=float('inf')
+        res_i=0
+        for i in range(len(initial)):
+            tmp_res=addToUF(i)
+            if tmp_res<res:
+                res,res_i=tmp_res,initial[i]
+            elif tmp_res==res:
+                res_i=min(res_i,initial[i]) # RETURN SMALLEST INDEX
+        return res_i
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(0,get_sol().minMalwareSpread([[1,1,0],[1,1,0],[0,0,1]], [0,1]))

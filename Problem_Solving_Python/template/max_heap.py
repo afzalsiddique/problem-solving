@@ -2,6 +2,7 @@ import itertools; import math; import operator; import random; import re; from b
 
 # implementation 1.3
 class MaxHeap3(list):
+    # two elements
     def __init__(self):
         super().__init__()
     def topPrice(self): return -self[0][0]
@@ -30,7 +31,7 @@ class MaxHeap2(list): # I think we don't need to inherit list class
     def __bool__(self): return True if len(self.data) else False
 
 # implementation 1.1
-class MaxHeap(list): # I think we don't need to inherit list class
+class MaxHeap4(list): # I think we don't need to inherit list class
     def __init__(self):
         super().__init__()
         self.data = []
@@ -42,7 +43,8 @@ class MaxHeap(list): # I think we don't need to inherit list class
     def __bool__(self): return True if len(self.data) else False
 
 # implementation 2
-class Max_heap:
+class MaxHeap:
+    # one element
     def __init__(self):
         self.data = []
     def top(self):
@@ -50,7 +52,7 @@ class Max_heap:
     def push(self, val):
         heappush(self.data, -val)
     def pop(self):
-        return heappop(self.data)
+        return heappop(self.data)*(-1)
     def __repr__(self):
         return str(self.data)
 

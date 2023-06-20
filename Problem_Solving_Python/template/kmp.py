@@ -1,6 +1,6 @@
 # code from gfg
 def computeLPSArray( pat):
-    leng = 0 # length of the previous longest prefix suffix
+    leng = 0 # length of the previous proper longest prefix suffix
     i=1
     m = len(pat)
     lps=[0]*m

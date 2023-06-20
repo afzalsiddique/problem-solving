@@ -30,6 +30,39 @@ class Solution:
         n=len(words)
         letters=Counter(letters)
         return backtrack(0)
+class Solution4:
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
+        def toIdx(c): return ord(c)-ord('a') # ['a'->0, 'b'->1]
+        def iterableToListOfInt(s): return list(map(toIdx,s)) # {'abc'->[0,1,2],  '['b','c','d']->[1,2,3] }
+        def countLetters(mask):
+            count=Counter()
+            for i in range(n):
+                if is_on(mask,i):
+                    tmpCount=Counter(words[i])
+                    count+=tmpCount
+            return count
+        def enoughLetter(count):
+            return all(letterCnt[i]>=count[i] for i in range(26))
+        def calcPoints(mask):
+            res=0
+            for i in range(n):
+                if is_on(mask,i):
+                    for ch in words[i]:
+                        res+=score[ch]
+            return res
+
+
+        letters = list(iterableToListOfInt(letters))
+        words = list(map(iterableToListOfInt,words))
+        letterCnt=Counter(letters)
+        n=len(words)
+        res=0
+        for mask in range(1<<n):
+            count = countLetters(mask)
+            if enoughLetter(count):
+                res=max(res,calcPoints(mask))
+        return res
 class Solution2:
     # tle
     def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:

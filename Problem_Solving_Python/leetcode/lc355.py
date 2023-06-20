@@ -52,7 +52,7 @@ class User:
     def get_news_feed(self):
         li = []
         for folowee in self.followees:
-            li.extend(self.twitter.di[folowee].get_posts())
+            li.extend(self.twitter.oldToNew[folowee].get_posts())
         li.sort(reverse=True)
         res = [x for _,x in li[:10]]
         return res

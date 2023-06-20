@@ -16,7 +16,7 @@ class Solution:
         res=0
         while pos:
             for i in range(n):
-                if arr[i]>=pos:
+                if arr[i]>=pos: # only difference. In lc45, "if i+arr[i]>=pos"
                     new_pos=i
                     res+=1
                     break
@@ -30,7 +30,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().minTaps(5, [3,4,1,1,0,0]))
     def test02(self):
         self.assertEqual(-1, get_sol().minTaps(3, [0,0,0,0]))
-    # def test03(self):
+    def test03(self):
+        self.assertEqual(3, get_sol().minTaps(7, [1,2,1,0,2,1,0,1]))
     # def test04(self):
     # def test05(self):
     # def test06(self):

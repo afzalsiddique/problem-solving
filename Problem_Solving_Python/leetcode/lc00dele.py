@@ -1,54 +1,101 @@
-from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
+class UnionFind:
+    def __init__(s):
+        s.p={}
+        s.s={}
+        s.p2={}
+        s.s2={}
+    def add(s,a):
+        if a not in s.p:
+            s.p[a]=a
+            s.s[a]=1
+    def union(s,a,b):
+        s.add(a),s.add(b)
+        a=s.find(a)
+        b=s.find(b)
+        if a!=b:
+            if s.s[a]<s.s[b]:
+                a,b=b,a
+            s.p[b]=a
+            s.s[a]+=s.s[b]
+    def find(s,a):
+        s.add(a)
+        if a!=s.p[a]:
+            s.p[a]=s.find(s.p[a])
+        return s.p[a]
+    def unionAll(s,li):
+        if len(li)==0: return
+        if len(li)==1:
+            s.add(li[0])
+            return
+        first=li[0]
+        for second in li[1:]:
+            s.union(first,second)
+    def sizes(s):
+        for a in s.p:
+            s.find(a)
+        count=Counter(s.p.values())
+        return list(count.values())
+    def save(s):
+        s.p2={k:v for k, v in s.p.items()}
+        s.s2={k:v for k, v in s.s.items()}
+    def restore(s):
+        s.p={k:v for k, v in s.p2.items()}
+        s.s={k:v for k, v in s.s2.items()}
 class Solution:
-    def merge(self,s1:str,s2:str)->str:
-        cut=min(len(s1),len(s2))
-        for i in range(cut,0,-1):
-            lastS1=s1[-i:]
-            firstS2=s2[:i]
-            if lastS1==firstS2:
-                return s1+s2[i:]
-        return s1+s2
-    def mergeAll(self, indices:tuple[int],words:List[str]):
-        s=''
-        for i in indices:
-            s=self.merge(s,words[i])
-        return s
-    def shortestSuperstring(self, words: List[str]) -> str:
-        def turn_on(mask,i): return mask | (1<<i)
-        def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
-        def allSelected(mask, n): return mask == ((1 << n) - 1)
-        @cache
-        def backtrack(mask:int,path:tuple[int]):
-            nonlocal res
-            if allSelected(mask,n):
-                s = self.mergeAll(path,words)
-                res=min(res,s,key=lambda x:len(x))
-                return
-            for i in range(n):
-                if is_on(mask,i): continue
-                newMask = turn_on(mask,i)
-                backtrack(newMask,tuple(list(path)+[i]))
-
-        n=len(words)
-        res='a'*(20*12+1)
-        backtrack(0,tuple([]))
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        VISITED=2
+        def get_4d_moves(x:int, y:int)->List[tuple[int,int]]:
+            return [(x+dx,y+dy) for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)] if 0<=x<len(grid) and 0<=y<len(grid[0])]
+        def bfs(i, j):
+            if grid[i][j]!=1: return []
+            q=deque()
+            q.append((i, j))
+            li = []
+            while q:
+                i, j=q.popleft()
+                if grid[i][j]==VISITED: continue
+                li.append((i, j))
+                grid[i][j]=VISITED
+                for x,y in get_4d_moves(i, j):
+                    if grid[x][y]==1:
+                        q.append((x,y))
+            return li
+        m,n=len(grid),len(grid[0])
+        res=float('-inf')
+        uf=UnionFind()
+        for i in range(m):
+            for j in range(n):
+                li = bfs(i,j)
+                res=max(res,len(li))
+                uf.unionAll(li)
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==0:
+                    uf.save()
+                    li = get_4d_moves(i,j)
+                    li = [(x,y) for x,y in li if grid[x][y]==2]
+                    li.append((i,j))
+                    uf.unionAll(li)
+                    res=max(res, max(uf.sizes()))
+                    uf.restore()
         return res
 
-class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertIn(get_sol().shortestSuperstring(["alex","loves","leetcode"]),["alexlovesleetcode","leetcodelovesalex","lovesleetcodealex"])
-    def test2(self):
-        self.assertIn(get_sol().shortestSuperstring(["gcta","ctaagt","catg","ttca"]),["gctaagttcatg","ttcatgctaagt"])
-    def test3(self):
-        self.assertIn(get_sol().shortestSuperstring(["abcd","bcde"]),["abcde"])
-    def test4(self):
-        self.assertIn(get_sol().shortestSuperstring(["a"]),["a"])
-    def test5(self):
-        self.assertIn(get_sol().shortestSuperstring(["cmqitnqwahfl","ygeeoensdpuobhazkn","fxlqkqwemwhpeoblldcv","eoblldcvypdygeeoen","dpuobhazknowcmq","yfhctxzvfxlqkqwemwh","emwhpeoblldcvypdygee","dcvypdygeeoensdpuobh","zvfxlqkqwemwhpeobl"]),["yfhctxzvfxlqkqwemwhpeoblldcvypdygeeoensdpuobhazknowcmqitnqwahfl"])
-    # def test6(self):
-    # def test7(self):
-    # def test8(self):
-    # def test9(self):
+
+
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(3, get_sol().largestIsland(grid = [[1,0],[0,1]]))
+    def test02(self):
+        self.assertEqual(4, get_sol().largestIsland(grid = [[1,1],[1,0]]))
+    def test03(self):
+        self.assertEqual(4, get_sol().largestIsland(grid = [[1,1],[1,1]]))
+    def test04(self):
+        self.assertEqual(1, get_sol().largestIsland(grid = [[0,0],[0,0]]))
+    def test05(self):
+        self.assertEqual(1, get_sol().largestIsland(grid = [[0]]))
+    def test06(self):
+        self.assertEqual(1, get_sol().largestIsland(grid = [[1,1,1,0,1,0,0,0,0,1,1,1,0,1,0,1,0,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,1,0,0,0,0,1,1,0],[0,1,1,1,1,0,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,1,1,1,1,0,1,0,1,1,0,0],[1,0,1,0,0,1,0,1,1,1,1,1,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1,1],[1,1,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,1,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,0,1,1,1,1,1,1],[1,0,0,1,1,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,1,1,0,1,1,1,1,0,1,0,0,0,0],[0,1,0,0,0,0,1,0,1,1,1,1,0,0,1,1,0,0,1,1,1,0,1,0,1,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0,1,1,0,1,0,0,1,1,1,1],[0,0,0,0,0,1,0,1,0,0,0,0,1,1,1,0,0,0,1,0,0,1,0,1,1,1,1,0,0,1,1,1,0,0,1,1,0,1,1,1,0,1,1,1,0,0,1,1,1,0],[0,0,1,0,0,1,1,0,0,0,0,0,1,1,0,0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,1,1,1,1,0,1,0,0,1,1,0,1,0,1,1,0,0,0,0,0],[0,1,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,1,0,1,1,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,1],[0,1,1,1,1,1,1,0,0,1,0,1,1,1,0,0,1,1,0,1,0,1,0,1,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,1,1,1,1,0,1,0,0,0],[0,1,1,1,0,0,0,1,1,1,1,1,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,0,1,0,0,1,0,0,1,1,0,0,0,1],[0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,1],[0,1,1,0,1,0,1,0,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,1,0,1,0,0,1,0,1,0,1,1,1,1,1,1,1,1,1,0],[1,1,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,0,1,1,1,0,0,1,0,1,1,0,1,0,1,1,0,1,0,1],[1,1,1,0,0,1,1,1,1,0,0,1,0,1,0,1,0,0,0,0,0,0,1,1,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1,0,0,0,1,1,0,1,1,0,1,0],[1,1,0,1,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,1,0,1,1,1,0,0],[1,0,0,1,0,1,1,0,1,1,1,0,1,1,1,0,1,0,0,1,1,1,0,1,0,0,0,1,0,1,1,0,0,0,0,1,1,1,0,0,1,0,0,0,0,1,0,1,1,0],[0,0,0,1,0,1,0,0,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,0,0,0,0,1,0,0,1,1,0,0,1,1,1,0,1,0,0,1,1],[1,0,1,1,1,1,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,0,1,1,1,1],[1,1,1,0,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,0,0,1,1,0,1,0,0,1,0,1,0,1,0,0,0,0,1,1,1,0,0,1,0,0],[1,0,0,0,1,0,0,1,1,0,1,0,1,1,1,1,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,0,1,0,1,1,1,1,1,0,0,0,1,0,0,0,1,1,1,0],[0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,0,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0],[1,0,1,1,1,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,1,1,1,0,0,1,0,0,1,1,1,0,1,0,1,0,1,1,1,1,0,0,1,0,1,1,1,0,1,0],[1,1,0,0,1,0,0,0,1,1,1,1,1,1,0,0,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,1,1,1,1,0,1,0,1,1],[0,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1,1,1,0,1,1,0,0,0,1,0],[0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,1,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,1,0,1,0,0,0,1],[1,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,0,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,0,1,1],[0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,1],[0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,1,1,0,0,0,1,0,1,1,1,1,1,1,1,0,1,1,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1,1],[0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,0,0,0,1],[1,1,0,1,0,0,0,0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,0,1,1,1,1,1,0,1,0,1,1,1,1,0,0,0,1,0,1,0,0,1,0,1,0,1,0,1],[1,0,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1,1,0,1,1,0,0,1,0,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,0,1,1,0,0,0,0,1,0],[0,1,0,1,1,0,1,1,1,1,0,1,1,0,1,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,1,1,0,0,0,0,0,0],[1,1,1,0,1,0,1,1,0,1,0,0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,0,0,1,1,1,0,1,0,0,1,1,0,1,1,0,0,0,0,1],[1,1,0,1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,1,0,0,0,1,0,1,1,0,0,0,1,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,1],[1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,1,1,0,1,0,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,0,1,1],[1,1,1,0,1,1,1,0,0,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,1,0,1,0,0,0,1,1,1,1,0,0,1,0,0,0],[1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,1,1],[1,0,1,0,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,0,0,0,1,0,0,1,1,1,0,0,0,1,0,1,1,0,0,1,1,1,1,1,0,0,1,1,1,0,0,0],[0,1,0,1,0,1,0,0,1,1,1,0,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,1,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,0,0,0,0,0,1,0],[0,1,1,0,1,1,1,0,0,1,1,1,0,0,1,0,1,0,1,1,1,1,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,1,1,1,0,1,0,1,1,0,0,0,1,1],[0,1,0,0,1,0,1,0,1,0,1,1,0,1,1,1,0,0,1,0,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,1,0,0,1,0,1,0,1,0],[0,1,1,1,1,1,1,1,1,0,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,0,0,0,1,0,0,1,0,1,0,0,0,0,0,0,1,1,0,0,1,1,1,0,1],[1,1,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,1,1,1,0,0,1,0,1,1,1,1,1,1,1],[0,0,1,0,0,1,1,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,0,0,1,1,1,0,1,1,1,0,0,1,1,1,0,0,1,1,0,0,0,0,1,0,0,1],[1,1,0,1,1,0,0,1,0,0,0,1,0,1,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,0,1,1],[0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0],[0,0,0,1,0,0,1,1,0,0,0,1,1,0,1,1,0,1,0,1,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,1,1,0],[0,0,0,1,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,0,1,1,1,0,1,1,0,1,0,1,0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0,1,1,1],[0,0,0,1,1,1,1,1,1,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,0,0,1,0,0,0,0,1,1,1]]))
