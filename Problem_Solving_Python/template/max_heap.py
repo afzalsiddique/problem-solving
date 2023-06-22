@@ -1,5 +1,19 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List
 
+# both min and max heap and two elements
+class Heap4(list):
+    def __init__(self,isMaxHeap=False):
+        super().__init__()
+        self.mul=-1 if isMaxHeap else 1
+    def topVal(self): return self[0][0]*self.mul
+    def topIdx(self): return self[0][1]*self.mul
+    def setTopVal(self,val): self[0][0]=val*self.mul
+    def setTopIdx(self,val): self[0][1]=val*self.mul
+    def push(self, val, idx): heappush(self, [val*self.mul, idx*self.mul])
+    def heappop(self):
+        tmp=heappop(self)
+        assert len(tmp==2)
+        return [tmp[0]*self.mul, tmp[1]*self.mul]
 # implementation 1.3
 class MaxHeap3(list):
     # two elements

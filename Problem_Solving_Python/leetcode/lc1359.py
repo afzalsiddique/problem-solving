@@ -3,7 +3,7 @@ import unittest;
 
 def get_sol(): return Solution()
 class Solution:
-    # https://www.youtube.com/watch?v=H0Yl1AlUuK8
+    # https://www.youtube.com/watch?v=H0Yl1AlUuK8&t=243s
     def countOrders(self, n: int) -> int:
         MOD=10**9+7
         res=1

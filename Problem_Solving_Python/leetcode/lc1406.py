@@ -44,6 +44,7 @@ class Solution5:
             take=0
             for j in range(i,min(n,i+3)):
                 take+=stoneValue[j]
+                # take-dp(j+1) means myScore-Opponent's score
                 res=max(res,take-dp(j+1))
             return res
 

@@ -1,4 +1,6 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class MaxHeap(list):
     def __init__(self):
@@ -37,6 +39,25 @@ class Solution3:
                     dp[i]=max(dp[i],dp[j]+nums[i])
         return max(dp)
 
+class Solution4:
+    # tle
+    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+        @cache
+        def dp(i):
+            if i>=n:
+                return 0
+            res=float('-inf')
+            for j in range(i, i+k):
+                tmp1=nums[i]
+                tmp2=dp(j+1)
+                res=max(res,tmp1,tmp1 + tmp2)
+            return res
+
+        n=len(nums)
+        res=float('-inf')
+        for i in range(n):
+            res=max(res, dp(i))
+        return res
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(37,get_sol().constrainedSubsetSum([10,2,-10,5,20], 2))
@@ -46,5 +67,6 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(23,get_sol().constrainedSubsetSum([10,-2,-10,-5,20], 2))
     def test04(self):
         self.assertEqual(16091,get_sol().constrainedSubsetSum([-8269,3217,-4023,-4138,-683,6455,-3621,9242,4015,-3790], 1))
-    # def test05(self):
+    def test05(self):
+        self.assertEqual(12,get_sol().constrainedSubsetSum([10,2,-10], 2))
     # def test06(self):

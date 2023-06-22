@@ -75,7 +75,9 @@ class MyTestCase(unittest.TestCase):
         Output= [1.00000,2.00000]
         self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
     def test4(self):
-        self.assertEqual([1073741824.0, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 1073741827.0], get_sol().medianSlidingWindow([2147483647,1,2,3,4,5,6,7,2147483647], 2))
+        nums, k = [2147483647,1,2,3,4,5,6,7,2147483647], 2
+        Output= [1073741824.0, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 1073741827.0]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
     # def test5(self):
     # def test6(self):
     # def test7(self):

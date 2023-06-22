@@ -13,6 +13,26 @@ class Solution:
                 res+=1
         return res
 
+class Solution3:
+    # Tried finding next greater or equal.
+    # wrong for this test case [1,1,0,0,1]
+    def nextGreaterOrEqual(self,arr)->List[int]:
+        n=len(arr)
+        res=[-1]*n
+        st=[]
+        for i in range(n):
+            while st and arr[st[-1]]<=arr[i]:
+                idx=st.pop()
+                res[idx]=i
+            st.append(i)
+        return res
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        indices=self.nextGreaterOrEqual(arr)
+        i=res=0
+        while i!=-1:
+            i=indices[i]
+            res+=1
+        return res
 class Solution2:
     def maxChunksToSorted(self, arr: List[int]) -> int:
         n=len(arr)
@@ -48,6 +68,8 @@ class MyTestCase(unittest.TestCase):
     def test07(self):
         self.assertEqual(2, get_sol().maxChunksToSorted(arr = [1,1,0,0,1]))
     def test08(self):
-        self.assertEqual(1, get_sol().maxChunksToSorted(arr = [4,2,2,1,1]))
+        self.assertEqual(2, get_sol().maxChunksToSorted(arr = [0,3,0,3,2]))
     def test09(self):
+        self.assertEqual(1, get_sol().maxChunksToSorted(arr = [4,2,2,1,1]))
+    def test10(self):
         self.assertEqual(2, get_sol().maxChunksToSorted(arr = [3,2,1,7,6,5,4]))
