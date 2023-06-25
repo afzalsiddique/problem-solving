@@ -1,42 +1,42 @@
-from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union, Literal; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def stoneGameII(self, piles: List[int]) -> int:
+    def numberOfArrays(self, s: str, k: int) -> int:
+        def valid(s:str):
+            if s[0]=='0': return False
+            return int(s)<=k
         @cache
-        def dp(i,m):
+        def dp(i:int)->int:
             if i==n:
-                return 0
-            res=float('-inf')
-            summ=0
-            for j in range(1,2*m+1): # j denotes number of piles taken
-                if i+j>n: break
-                summ+=piles[i+j-1]
-                take=summ
-                # take-dp(..) -> myScore-Opponent's score.
-                res=max(res,take-dp(i+j,max(m,j)))
+                return 1
+            res=0
+            for j in range(i,i+noOfDigits):
+                if j==n: break
+                if not valid(s[i:j+1]):
+                    break
+                res+=dp(j+1)
+                res%=M
             return res
 
-        n=len(piles)
-        moreAlice=dp(0,1)
 
-        total = sum(piles)
-        bobScore=(total-moreAlice)//2
-        aliceScore=bobScore+moreAlice
-        return aliceScore
+        M=10**9+7
+        n=len(s)
+        noOfDigits=len(str(k))
+        return dp(0)
 
-
-class Tester(unittest.TestCase):
+class MyTestCase(unittest.TestCase):
     def test01(self):
-        self.assertEqual(9, get_sol().stoneGameII([2,7,9]))
+        self.assertEqual(1, get_sol().numberOfArrays( s = "1000", k = 10000))
     def test02(self):
-        self.assertEqual(104, get_sol().stoneGameII([1,2,3,4,5,100]))
+        self.assertEqual(0, get_sol().numberOfArrays(s = "1000", k = 10))
     def test03(self):
-        self.assertEqual(9, get_sol().stoneGameII([2,7,9,4]))
-    def test04(self):
-        self.assertEqual(10, get_sol().stoneGameII([2,7,9,4,4]))
-    # def test_5(self):
-    # def test_6(self):
-    # def test_7(self):
-    # def test_8(self):
+        self.assertEqual(8, get_sol().numberOfArrays( s = "1317", k = 2000))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):
+    # def test10(self):

@@ -124,3 +124,5 @@ class Tester(unittest.TestCase):
         self.assertEqual(sorted([[1,0]]),sorted(get_sol().palindromePairs(["abc","cb"])))
     def test6(self):
         self.assertEqual(sorted([[0,1]]),sorted(get_sol().palindromePairs(["abcb","a"])))
+    def test7(self):
+        self.assertEqual(sorted([[1,0],[0,2]]),sorted(get_sol().palindromePairs(["lls","s","sssll"])))

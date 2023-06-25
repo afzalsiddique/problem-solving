@@ -10,8 +10,12 @@ class Solution:
             if l>r: return 0
             res=float('-inf')
             for i in range(l,r+1):
-                point=nums[l-1]*nums[i]*nums[r+1]+dp(l,i-1)+dp(i+1,r)
-                res=max(res,point)
+                # nums[l-1] can be out of range. that's why we added [1] at the both ends
+                part1=nums[l-1]*nums[i]*nums[r+1]
+                # arguments of dp is always between 1 and n-2. in other words, it does not receive any [1] from both the ends
+                part2=dp(l,i-1)
+                part3=dp(i+1,r)
+                res=max(res,part1+part2+part3)
             return res
 
         nums=[1]+nums+[1]

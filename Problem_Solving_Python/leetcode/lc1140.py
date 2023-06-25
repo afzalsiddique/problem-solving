@@ -5,7 +5,7 @@ def get_sol(): return Solution()
 class Solution:
     def stoneGameII(self, piles: List[int]) -> int:
         @cache
-        def dp(i,m):
+        def dp(i,m): # think it from alice's perspective and assume to be maximizing agent
             if i==n:
                 return 0
             res=float('-inf')

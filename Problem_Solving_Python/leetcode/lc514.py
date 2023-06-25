@@ -5,6 +5,25 @@ def get_sol(): return Solution()
 class Solution:
     def findRotateSteps(self, ring: str, key: str) -> int:
         @cache
+        def dp(ringIdx,keyIdx):
+            if keyIdx==keyLen:
+                return 0
+            res=float('inf')
+            for move in range(ringLen//2+1):
+                newRingIdx1=(ringIdx+move)%ringLen
+                if ring[newRingIdx1]==key[keyIdx]:
+                    res=min(res,move+dp(newRingIdx1,keyIdx+1))
+
+                newRingIdx2=(ringIdx-move)%ringLen
+                if ring[newRingIdx2]==key[keyIdx]:
+                    res=min(res,move+dp(newRingIdx2,keyIdx+1))
+            return res
+
+        keyLen,ringLen=len(key),len(ring)
+        return dp(0,0)+keyLen
+class Solution5:
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        @cache
         def dp(key_i, ring_i):
             res=float('inf')
             if key_i==len(key): return 0
@@ -72,15 +91,15 @@ class Solution2:
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(4,get_sol().findRotateSteps(ring = "godding", key = "gd"))
-    def test2(self):
+    def test02(self):
         self.assertEqual(13,get_sol().findRotateSteps(ring = "godding", key = "godding"))
-    def test3(self):
+    def test03(self):
         self.assertEqual(137,get_sol().findRotateSteps("caotmcaataijjxi", "oatjiioicitatajtijciocjcaaxaaatmctxamacaamjjx"))
-    def test4(self):
+    def test04(self):
         self.assertEqual(6,get_sol().findRotateSteps("nyngl", "ynl"))
-    def test5(self):
+    def test05(self):
         self.assertEqual(19,get_sol().findRotateSteps("nyngl", "yyynnnnnnlllggg"))
     # def test6(self):
     # def test7(self):

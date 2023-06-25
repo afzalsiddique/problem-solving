@@ -5,6 +5,7 @@ import unittest; from typing import List;
 
 def get_sol(): return Solution()
 class Solution:
+    # Notice that it's impossible for any two valid substrings to overlap unless one is inside another.
     def maxNumOfSubstrings(self, s: str) -> List[str]:
         def func(intervals:List[List[int]]): # maximum number of events can attend
             # print(intervals)
@@ -24,18 +25,18 @@ class Solution:
             right[c]=max(right[c],i)
 
         li=[]
-        for c in string.ascii_lowercase:
-            if c not in left: continue
-            l=left[c]
-            r=right[c]
+        for char in string.ascii_lowercase:
+            if char not in left: continue
+            l=left[char]
+            r=right[char]
             flag=True
             i=l
-            while i<r+1:
-                char=s[i]
-                if left[char]<l:
+            while i<r+1: # inclusive
+                newChar=s[i]
+                if left[newChar]<l:
                     flag=False
                     break
-                r=max(r,right[char])
+                r=max(r,right[newChar])
                 i+=1
             if flag:
                 li.append([l,r])
@@ -46,6 +47,7 @@ class Solution:
             res.append(s[begin:end+1])
         return res
 
+
 class MyTestCase(unittest.TestCase):
     def test01(self):
         self.assertEqual(["e","f","ccc"], get_sol().maxNumOfSubstrings("adefaddaccc"))
@@ -54,10 +56,11 @@ class MyTestCase(unittest.TestCase):
     def test03(self):
         self.assertEqual(["abab"], get_sol().maxNumOfSubstrings("abab"))
     def test04(self):
-        self.assertEqual(["cabcba"], get_sol().maxNumOfSubstrings("cabcba"))
+        self.assertEqual(["baba"], get_sol().maxNumOfSubstrings("baba"))
     def test05(self):
+        self.assertEqual(["cabcba"], get_sol().maxNumOfSubstrings("cabcba"))
+    def test06(self):
         self.assertEqual(["bbcacbaba"], get_sol().maxNumOfSubstrings("bbcacbaba"))
-    # def test06(self):
     # def test07(self):
     # def test08(self):
     # def test09(self):

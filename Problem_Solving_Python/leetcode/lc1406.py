@@ -37,7 +37,7 @@ class Solution2:
 class Solution5:
     def stoneGameIII(self, stoneValue: List[int]) -> str:
         @cache
-        def dp(i):
+        def dp(i): # think it from alice's perspective and assume to be maximizing agent
             if i>=n: return 0
 
             res=float('-inf')

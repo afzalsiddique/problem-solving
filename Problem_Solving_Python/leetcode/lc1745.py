@@ -1,9 +1,25 @@
-import unittest;
-import functools
-
-
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    def checkPartitioning(self, s: str) -> bool:
+        def isPali(s:str): return s==s[::-1]
+        @cache
+        def dp(i,k): # i: index, k: no of partitions left
+            if k==0:
+                tmp=s[i:]
+                # return len(tmp) and isPali(tmp) # len(tmp) -> non empty partitions
+                return isPali(tmp)
+            for j in range(i+1,n):
+                if isPali(s[i:j]) and dp(j,k-1):
+                    return True
+            return False
+
+        n=len(s)
+        return dp(0,2)
+
+class Solution3:
     def checkPartitioning(self, s: str) -> bool:
         def createPalindromeLookupTable(s:str):
             n=len(s)
@@ -20,7 +36,7 @@ class Solution:
             self.look=look
         def palindrome(i, j):
             return self.look[i][j]
-        @functools.lru_cache(None)
+        @cache
         def dfs(l:int,r:int,k:int):
             if k==1:
                 ans= palindrome(l, r)
@@ -38,7 +54,7 @@ class Solution:
 class Solution2:
     def checkPartitioning(self, s: str) -> bool:
         def palindrome(s:str): return s==s[::-1]
-        @functools.lru_cache(None)
+        @cache
         def dfs(s:str,k:int):
             if k==1:
                 return palindrome(s)

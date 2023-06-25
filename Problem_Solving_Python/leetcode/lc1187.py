@@ -5,7 +5,7 @@ def get_sol(): return Solution()
 class Solution:
     # https://leetcode.com/problems/make-array-strictly-increasing/discuss/377495/Java-dp-solution-:-A-simple-change-from-Longest-Increasing-Subsequence/412456
     def makeArrayIncreasing(self, arr1: List[int], arr2: List[int]) -> int:
-        def check(left, right):
+        def check(left, right): # both inclusive
             numsBetween= right - left - 1
             if numsBetween==0: return 0
             start=bisect_right(arr2, arr1[left])

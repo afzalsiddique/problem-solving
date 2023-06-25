@@ -1,13 +1,13 @@
 import functools
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
-class MaxHeap:
-    def __init__(self):
-        self.li=[]
-    def push(self,val): heappush(self.li,-val)
-    def pop(self): return heappop(self.li)*(-1)
-    def __len__(self): return len(self.li)
+class MaxHeap(list):
+    def __init__(self): super().__init__()
+    def push(self,val): heappush(self,-val)
+    def heappop(self): return heappop(self)*(-1)
 class Solution:
+    # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/1103571/forget-about-ratio-buy-apples-based-on-per-kilo-price-instead!
+    # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/141768/Detailed-explanation-O(NlogN)/248117
     # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/141768/Detailed-explanation-O(NlogN)/148422
     # https://leetcode.com/problems/minimum-cost-to-hire-k-workers/discuss/141768/Detailed-explanation-O(NlogN)/262756
     def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
@@ -21,7 +21,7 @@ class Solution:
             max_heap.push(q)
             q_sum+=q
             if len(max_heap)>k:
-                q_sum-=max_heap.pop() # ratio will never decrease. So remove high quality worker to minimize cost
+                q_sum-=max_heap.heappop() # ratio will never decrease. So remove high quality worker to minimize cost
             if len(max_heap)==k: # select exactly k workers
                 res=min(res,ratio*q_sum)
         return res

@@ -1,12 +1,34 @@
-import unittest;
-import functools
-
-
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union, Literal; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     def numberOfArrays(self, s: str, k: int) -> int:
+        def valid(s:str):
+            if s[0]=='0': return False
+            return int(s)<=k
+        @cache
+        def dp(i:int)->int:
+            if i==n:
+                return 1
+            res=0
+            for j in range(i,i+noOfDigits):
+                if j==n: break
+                if not valid(s[i:j+1]):
+                    break
+                res+=dp(j+1)
+                res%=M
+            return res
+
+
+        M=10**9+7
+        n=len(s)
+        noOfDigits=len(str(k))
+        return dp(0)
+class Solution2:
+    def numberOfArrays(self, s: str, k: int) -> int:
         MOD=10**9+7
-        @functools.lru_cache(None)
+        @cache
         def dfs(i):
             if i==len(s):
                 return 1

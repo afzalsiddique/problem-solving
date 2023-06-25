@@ -20,7 +20,8 @@ class Solution5:
             return ans+depth
         def reroot_dfs(u,par):
             if par!=-1:
-                distance[u]=distance[par]+(size[0]-size[u])-size[u]
+                #                       subtree on the other side    subtree on this side
+                distance[u]=distance[par]   + (size[0]-size[u]) -       size[u]
             for v in g[u]:
                 if v==par: continue
                 reroot_dfs(v,u)

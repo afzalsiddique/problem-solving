@@ -3,44 +3,52 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    # It is not possible to find
-    # wrong for this test case [1,1,0,0,1]
-    def nextGreaterOrEqual(self,arr)->List[int]:
-        n=len(arr)
-        res=[-1]*n
-        st=[]
-        for i in range(n):
-            while st and arr[st[-1]]<=arr[i]:
-                idx=st.pop()
-                res[idx]=i
-            st.append(i)
-        return res
-    def maxChunksToSorted(self, arr: List[int]) -> int:
-        indices=self.nextGreaterOrEqual(arr)
-        # print(indices)
-        i=res=0
-        while i!=-1:
-            i=indices[i]
-            res+=1
-        return res
+    def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
+        def turn_on(mask,i): return mask | (1<<i)
+        def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
+        def allSelected(mask, n): return mask == ((1 << n) - 1)
+        @cache
+        def dp(i,mask):
+            if i==n:
+                if allSelected(mask,n):
+                    return 0
+                return float('inf')
+            res=float('inf')
+            for peopleSkills in people:
+                newMask=mask
+                hasAtLeastOneNewSkill=False
+                for skillNo in peopleSkills:
+                    hasAtLeastOneNewSkill=True
+                    if not is_on(newMask,skillNo):
+                        newMask=turn_on(newMask,skillNo)
+                if hasAtLeastOneNewSkill:
+                    res=min(res,1+dp(i+1,newMask))
+                res=min(res,dp(i+1,mask))
+            return res
 
+        n=len(req_skills)
+        skills_indices={s:i for i,s in enumerate(req_skills)}
+        newPeople=[]
+        for skills in people:
+            li=[]
+            for skill in skills:
+                if skill in skills_indices:
+                    li.append(skills_indices[skill])
+            newPeople.append(li)
+        people=newPeople
+        return dp(0,0)
 
 class MyTestCase(unittest.TestCase):
-    def test01(self):
-        self.assertEqual(1, get_sol().maxChunksToSorted(arr = [5,4,3,2,1]))
-    def test02(self):
-        self.assertEqual(4, get_sol().maxChunksToSorted(arr = [2,1,3,4,4]))
-    def test03(self):
-        self.assertEqual(6, get_sol().maxChunksToSorted(arr = [2,1,3,4,4,4,4]))
-    def test04(self):
-        self.assertEqual(1, get_sol().maxChunksToSorted(arr = [4,2,2,3,3]))
-    def test05(self):
-        self.assertEqual(2, get_sol().maxChunksToSorted(arr = [3,2,1,7,6,5]))
-    def test06(self):
-        self.assertEqual(2, get_sol().maxChunksToSorted(arr = [3,2,1,1,7,6,5]))
-    def test07(self):
-        self.assertEqual(2, get_sol().maxChunksToSorted(arr = [1,1,0,0,1]))
-    def test08(self):
-        self.assertEqual(1, get_sol().maxChunksToSorted(arr = [4,2,2,1,1]))
-    def test09(self):
-        self.assertEqual(2, get_sol().maxChunksToSorted(arr = [3,2,1,7,6,5,4]))
+    def test1(self):
+        self.assertEqual([0,2], get_sol().smallestSufficientTeam(["java","nodejs","reactjs"], [["java"],["nodejs"],["nodejs","reactjs"]]))
+    def test2(self):
+        self.assertEqual([1,2], get_sol().smallestSufficientTeam(["algorithms","math","java","reactjs","csharp","aws"], [["algorithms","math","java"],["algorithms","math","reactjs"],["java","csharp","aws"],["reactjs","csharp"],["csharp","math"],["aws","java"]]))
+    def test3(self):
+        self.assertEqual([0,3], get_sol().smallestSufficientTeam(["mmcmnwacnhhdd","vza","mrxyc"], [["mmcmnwacnhhdd"],[],[],["vza","mrxyc"]]))
+    def test4(self):
+        self.assertEqual([12,18,23], get_sol().smallestSufficientTeam(["mwobudvo","goczubcwnfze","yspbsez","pf","ey","hkq"], [[],["mwobudvo"],["hkq"],["pf"],["pf"],["mwobudvo","pf"],[],["yspbsez"],[],["hkq"],[],[],["goczubcwnfze","pf","hkq"],["goczubcwnfze"],["hkq"],["mwobudvo"],[],["mwobudvo","pf"],["pf","ey"],["mwobudvo"],["hkq"],[],["pf"],["mwobudvo","yspbsez"],["mwobudvo","goczubcwnfze"],["goczubcwnfze","pf"],["goczubcwnfze"],["goczubcwnfze"],["mwobudvo"],["mwobudvo","goczubcwnfze"],[],["goczubcwnfze"],[],["goczubcwnfze"],["mwobudvo"],[],["hkq"],["yspbsez"],["mwobudvo"],["goczubcwnfze","ey"]]))
+    def test5(self):
+        self.assertEqual([13, 17, 27, 32, 34, 51], get_sol().smallestSufficientTeam(["hfkbcrslcdjq","jmhobexvmmlyyzk","fjubadocdwaygs","peaqbonzgl","brgjopmm","x","mf","pcfpppaxsxtpixd","ccwfthnjt","xtadkauiqwravo","zezdb","a","rahimgtlopffbwdg","ulqocaijhezwfr","zshbwqdhx","hyxnrujrqykzhizm"], [["peaqbonzgl","xtadkauiqwravo"],["peaqbonzgl","pcfpppaxsxtpixd","zshbwqdhx"],["x","a"],["a"],["jmhobexvmmlyyzk","fjubadocdwaygs","xtadkauiqwravo","zshbwqdhx"],["fjubadocdwaygs","x","zshbwqdhx"],["x","xtadkauiqwravo"],["x","hyxnrujrqykzhizm"],["peaqbonzgl","x","pcfpppaxsxtpixd","a"],["peaqbonzgl","pcfpppaxsxtpixd"],["a"],["hyxnrujrqykzhizm"],["jmhobexvmmlyyzk"],["hfkbcrslcdjq","xtadkauiqwravo","a","zshbwqdhx"],["peaqbonzgl","mf","a","rahimgtlopffbwdg","zshbwqdhx"],["xtadkauiqwravo"],["fjubadocdwaygs"],["x","a","ulqocaijhezwfr","zshbwqdhx"],["peaqbonzgl"],["pcfpppaxsxtpixd","ulqocaijhezwfr","hyxnrujrqykzhizm"],["a","ulqocaijhezwfr","hyxnrujrqykzhizm"],["a","rahimgtlopffbwdg"],["zshbwqdhx"],["fjubadocdwaygs","peaqbonzgl","brgjopmm","x"],["hyxnrujrqykzhizm"],["jmhobexvmmlyyzk","a","ulqocaijhezwfr"],["peaqbonzgl","x","a","ulqocaijhezwfr","zshbwqdhx"],["mf","pcfpppaxsxtpixd"],["fjubadocdwaygs","ulqocaijhezwfr"],["fjubadocdwaygs","x","a"],["zezdb","hyxnrujrqykzhizm"],["ccwfthnjt","a"],["fjubadocdwaygs","zezdb","a"],[],["peaqbonzgl","ccwfthnjt","hyxnrujrqykzhizm"],["xtadkauiqwravo","hyxnrujrqykzhizm"],["peaqbonzgl","a"],["x","a","hyxnrujrqykzhizm"],["zshbwqdhx"],[],["fjubadocdwaygs","mf","pcfpppaxsxtpixd","zshbwqdhx"],["pcfpppaxsxtpixd","a","zshbwqdhx"],["peaqbonzgl"],["peaqbonzgl","x","ulqocaijhezwfr"],["ulqocaijhezwfr"],["x"],["fjubadocdwaygs","peaqbonzgl"],["fjubadocdwaygs","xtadkauiqwravo"],["pcfpppaxsxtpixd","zshbwqdhx"],["peaqbonzgl","brgjopmm","pcfpppaxsxtpixd","a"],["fjubadocdwaygs","x","mf","ulqocaijhezwfr"],["jmhobexvmmlyyzk","brgjopmm","rahimgtlopffbwdg","hyxnrujrqykzhizm"],["x","ccwfthnjt","hyxnrujrqykzhizm"],["hyxnrujrqykzhizm"],["peaqbonzgl","x","xtadkauiqwravo","ulqocaijhezwfr","hyxnrujrqykzhizm"],["brgjopmm","ulqocaijhezwfr","zshbwqdhx"],["peaqbonzgl","pcfpppaxsxtpixd"],["fjubadocdwaygs","x","a","zshbwqdhx"],["fjubadocdwaygs","peaqbonzgl","x"],["ccwfthnjt"]]))
+    # def test6(self):
+    # def test7(self):
+    # def test8(self):

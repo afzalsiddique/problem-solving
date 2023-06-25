@@ -1,5 +1,5 @@
 import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution3()
+def get_sol(): return Solution()
 class Solution2:
     # use treemap or map in other languages
     pass
@@ -7,13 +7,18 @@ class Solution:
     # https://leetcode.com/problems/odd-even-jump/discuss/1461211/DP-%2B-Stack-%2B-Images-or-O(N*logN)-or-96.54-Faster-or-Combination-of-Generic-Problems
     def oddEvenJumps(self, arr: List[int]) -> int:
         n=len(arr)
-        next_higher,next_lower=[-1 for _ in range(n)],[-1 for _ in range(n)]
+        # higher value on the right with the smallest index. basically it is the immediate next element in a sorted array
+        next_higher=[-1 for _ in range(n)]
+        # lower value on the right with the smallest index. basically it is the immediate previous element in a sorted array
+        next_lower=[-1 for _ in range(n)]
         next_higher[-1]=n-1
         next_lower[-1]=n-1
 
         li = sorted([a, i] for i, a in enumerate(arr))
         st=[]
         for a,i in li:
+             # since it is sorted based on value, we can just check whether it is on the right
+             # then this will be the larger value on the right side with smallest index
             while st and st[-1]<i:
                 next_higher[st.pop()]=i
             st.append(i)
@@ -25,14 +30,14 @@ class Solution:
                 next_lower[st.pop()]=i
             st.append(i)
 
-        higher, lower = [0] * n, [0] * n
-        higher[-1] = lower[-1] = 1
+        successfulOddStartingPoints , successfulEvenStartingPoints = [0] * n, [0] * n
+        successfulOddStartingPoints [-1] = successfulEvenStartingPoints[-1] = True # we can successfully jump from the end to the end. coz this is the end
         for i in range(n - 1)[::-1]:
-            if next_higher[i]!=-1:
-                higher[i] = lower[next_higher[i]]
+            if next_higher[i]!=-1: # if jump possible
+                successfulOddStartingPoints [i] = successfulEvenStartingPoints[next_higher[i]]
             if next_lower[i]!=-1:
-                lower[i] = higher[next_lower[i]]
-        return sum(higher)
+                successfulEvenStartingPoints[i] = successfulOddStartingPoints [next_lower[i]]
+        return sum(successfulOddStartingPoints )
 
 class Solution3:
     # https://leetcode.com/problems/odd-even-jump/discuss/1461211/DP-%2B-Stack-%2B-Images-or-O(N*logN)-or-96.54-Faster-or-Combination-of-Generic-Problems

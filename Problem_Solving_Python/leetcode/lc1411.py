@@ -80,8 +80,10 @@ class Tester(unittest.TestCase):
         self.assertEqual(30228214, get_sol().numOfWays(5000))
     def test3(self):
         self.assertEqual(61735875, get_sol().numOfWays(2727))
-    # def test4(self):
-    # def test5(self):
+    def test4(self):
+        self.assertEqual(54, get_sol().numOfWays(2))
+    def test5(self):
+        self.assertEqual(246, get_sol().numOfWays(3))
     # def test6(self):
     # def test7(self):
 

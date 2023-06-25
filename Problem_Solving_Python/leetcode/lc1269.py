@@ -3,6 +3,8 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    # even though arrLen=10^6 we can never reach there coz steps=500
+    # simple dp works
     def numWays(self, steps: int, arrLen: int) -> int:
         MOD=10**9+7
         @cache

@@ -9,27 +9,6 @@ class Solution:
     # 2. current_node: 0
     # https://leetcode.com/problems/shortest-path-visiting-all-nodes/discuss/549233/Breadth-First-Search(BFS)with-intuitive-approach-Thinking-process-or-13-ms
     def shortestPathLength(self, graph: List[List[int]]) -> int:
-        def all_node_visited(mask): return mask==2**n-1
-        def turn_on(mask,i): return mask|(1<<i)
-        n=len(graph)
-        q=deque()
-        for i in range(n):
-            q.append((i,turn_on(0,i))) # to allow multiple visits to a node, we put all these simultaneously
-        vis=set(q)
-        res=0
-        while q:
-            for _ in range(len(q)):
-                u,mask=q.popleft()
-                if all_node_visited(mask):
-                    return res
-                for v in graph[u]:
-                    new_state=(v,turn_on(mask,v))
-                    if new_state not in vis:
-                        q.append(new_state)
-                        vis.add(new_state) # add next state so that other state in the current queue can't add the same state once again
-            res+=1
-class Solution4:
-    def shortestPathLength(self, graph: List[List[int]]) -> int:
         def turn_on(mask,i): return mask | (1<<i)
         def allSelected(mask, n): return mask == ((1 << n) - 1)
 
@@ -49,6 +28,27 @@ class Solution4:
                 for v in graph[u]:
                     newMask=turn_on(mask,v)
                     q.append([v,newMask])
+            res+=1
+class Solution4:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        def all_node_visited(mask): return mask==2**n-1
+        def turn_on(mask,i): return mask|(1<<i)
+        n=len(graph)
+        q=deque()
+        for i in range(n):
+            q.append((i,turn_on(0,i))) # to allow multiple visits to a node, we put all these simultaneously
+        vis=set(q)
+        res=0
+        while q:
+            for _ in range(len(q)):
+                u,mask=q.popleft()
+                if all_node_visited(mask):
+                    return res
+                for v in graph[u]:
+                    new_state=(v,turn_on(mask,v))
+                    if new_state not in vis:
+                        q.append(new_state)
+                        vis.add(new_state) # add next state so that other state in the current queue can't add the same state once again
             res+=1
 class Solution2:
     # wrong

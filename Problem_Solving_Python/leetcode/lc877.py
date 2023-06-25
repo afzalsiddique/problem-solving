@@ -5,7 +5,7 @@ def get_sol(): return Solution2()
 class Solution2:
     def stoneGame(self, piles: List[int]) -> bool:
         @cache
-        def dp(i,j):
+        def dp(i,j): # think it from alice's perspective and assume to be maximizing agent
             if i==j:
                 return piles[i]
 

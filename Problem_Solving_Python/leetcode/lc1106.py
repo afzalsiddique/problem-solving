@@ -4,33 +4,29 @@ import unittest;
 def get_sol(): return Solution()
 class Solution:
     def parseBoolExpr(self, s: str) -> bool:
-        def convert(c): # ['t'-> True, 'f'->False, True->True, False->False, '('->'(', '!'->'!']
-            if c in [True,False]: return c
-            if c=='t': return True
-            if c=='f': return False
-            return c
-        def evaluate(li,op):
-            if op=='|': return any(x==True for x in li)
-            elif op=='&': return all(x==True for x in li)
-            return not li[0]
+        def performOperation(op,li):
+            if op=='!': return not li[0]
+            if op=='|': return any(x for x in li)
+            return all(x for x in li)
 
         n=len(s)
         st = []
+        OPS=['|','!','&']
         i=0
         while i<n:
-            while i<n and s[i]!=')': # add to stack until ')' is found
-                if s[i]!=',': # ignore comma
-                    st.append(convert(s[i]))
-                i+=1
-            if i<n and s[i]==')':
-                li = []
-                while st[-1]!='(':
+            if s[i] in OPS:
+                st.append(s[i])
+            elif s[i]==')':
+                li=[]
+                while st[-1] not in OPS:
                     li.append(st.pop())
-                st.pop() # pop '('
-                op=st.pop() # pop operator
-                st.append(evaluate(li,op))
+                op=st.pop()
+                ans=performOperation(op,li)
+                st.append(ans)
+            elif s[i] in 'tf':
+                st.append(True if s[i]=='t' else False)
             i+=1
-        return convert(st[0])
+        return st[-1]
 class Solution2:
     def parseBoolExpr(self, s: str) -> bool:
         stack = []

@@ -2,6 +2,21 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
+class Solution4:
+    def winnerSquareGame(self, n: int) -> bool:
+        @cache
+        def dp(left): # think it from alice's perspective and assume to be maximizing agent
+            if not left:
+                return False
+            i=1
+            while left-i*i>=0:
+                newLeft= left - i * i
+                if not dp(newLeft):
+                    return True
+                i+=1
+            return False
+
+        return dp(n)
 class Solution:
     # Think about this problem from alice perspective.
     # If we can find an idx where Alice loses and idx<i, then we can flip the result

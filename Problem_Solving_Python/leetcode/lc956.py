@@ -1,56 +1,76 @@
-from collections import defaultdict;
-import unittest; from typing import List; import functools
-
-def get_sol(): return Solution()
-class Solution:
-    # https://leetcode.com/problems/tallest-billboard/discuss/204160/C%2B%2B-16-ms-DFS-%2B-memo
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
+def get_sol(): return Solution3()
+class Solution6:
+    # TLE. basic dp
     def tallestBillboard(self, nums):
-        EMPTY,INVALID=-2,-1
-        def dfs(i,s1,s2): # please note that what we are saving in dp is not the same as what we are returning
-            if i==n: return s1 if s1==s2 else float('-inf')
-
-            # dp[i,abs(50-30)]=150 -> add length of 150 to the larger support (supports are: 50 and 30. larger is 50)
-            state=(i,abs(s1-s2))
-            if dp[state]==EMPTY:
-                ans1=dfs(i+1,s1,s2)
-                ans2=dfs(i+1,s1+nums[i],s2)
-                ans3=dfs(i+1,s1,s2+nums[i])
-                # we are saving what length could be added to the larger support
-                best=max(ans1,ans2,ans3)-max(s1,s2)
-                dp[state]=max(INVALID,best)
-            if dp[state]==INVALID:
-                return INVALID
-            # we returning what is maximum length of the support
-            return dp[state]+max(s1,s2)
+        @cache
+        def dp(i,s1,s2):
+            if i==n:
+                if s1==s2: return s1
+                return float('-inf')
+            option1=dp(i+1,s1,s2)
+            option2=dp(i+1,s1+nums[i],s2)
+            option3=dp(i+1,s1,s2+nums[i])
+            return max(option1,option2,option3)
 
         n=len(nums)
-        dp=defaultdict(lambda :EMPTY)
-        return dfs(0,0,0)
+        return dp(0,0,0)
+class Solution:
+    # Official Solution 2
+    # https://leetcode.com/problems/tallest-billboard/solution/
+    def tallestBillboard(self, rods: List[int]) -> int:
+        # dp[taller-shorter]=taller
+        dp={0:0}
+        for r in rods:
+            # option1: do not add rod any ends. copy dp
+            dpCopy=defaultdict(lambda :float('-inf'))
+            for k,v in dp.items(): dpCopy[k]=v
+            # alternative. Instead of using dpCopy use a list. I don't think option1 is necessary
+            # li = list(dp.items())
+            # for diff,taller in li:
+            for diff,taller in dp.items():
+                shorter=taller-diff
+                # option2: add rod the taller end
+                newDiff1=diff+r
+                newTaller1=taller+r
+                dpCopy[newDiff1]=max(dpCopy[newDiff1],newTaller1)
+                # option3: add rod the shorter end
+                newDiff2=abs(shorter+r-taller)
+                newTaller2=max(taller,shorter+r)
+                dpCopy[newDiff2]=max(dpCopy[newDiff2],newTaller2)
+            dp=dpCopy
+
+        return dp[0]
 class Solution3:
     # https://leetcode.com/problems/tallest-billboard/discuss/203181/JavaC%2B%2BPython-DP-min(O(SN2)-O(3N2-*-N)
     def tallestBillboard(self,rods):
+        # dp[taller-shorter]=shorter
         dp = defaultdict(int)
         dp[0]=0
         for x in rods:
+            # init state
+            # ------|----- d -----|      # tall side
+            # - y --|                    # low  side
+            dpCopy=defaultdict(lambda :float('-inf'))
+            for k,v in dp.items(): dpCopy[k]=v
             for d, y in dp.items():
-                # init state
-                # ------|----- d -----|      # tall side
-                # - y --|                    # low  side
-
                 # put x to tall side
                 # ------|----- d -----|---- x --|
                 # - y --|
-                dp[d+x] = max(dp[d+x], y )
+                dpCopy[d+x] = max(dpCopy[d+x], y )
 
                 # put x to low side
                 if d >= x:
                     # ------|----- d -----|
                     # - y --|---- x ---|
-                    dp[d-x] = max(dp[d-x], y+x)
+                    dpCopy[d-x] = max(dpCopy[d-x], y+x)
                 else:
                     # ------|----- d -----|
                     # - y --|-------- x --------|
-                    dp[x-d] = max(dp[x-d], y+d)
+                    dpCopy[x-d] = max(dpCopy[x-d], y+d)
+            dp=dpCopy
         return dp[0]
 class Solution2:
     # tle. dfs
@@ -73,7 +93,7 @@ class Solution2:
         res=0
         helper(0,0,0,sum(rods))
         return res
-class Solution3:
+class Solution7:
     # tle
     def tallestBillboard(self, rods: List[int]) -> int:
         def isOn(mask:int,i:int):
@@ -95,7 +115,7 @@ class Solution3:
 
 
     def canPartition(self, nums: List[int]) -> bool: # leetcode 416
-        @functools.lru_cache(None)
+        @cache
         def helper(start,target):
             if target==0:
                 return True
@@ -117,7 +137,9 @@ class Tester(unittest.TestCase):
         self.assertEqual(0, get_sol().tallestBillboard([1,2]))
     def test4(self):
         self.assertEqual(1023, get_sol().tallestBillboard([1,2,4,8,16,32,64,128,256,512,50,50,50,150,150,150,100,100,100,123]))
-    # def test5(self):
-    # def test6(self):
+    def test5(self):
+        self.assertEqual(6, get_sol().tallestBillboard([3,4,3,3,2]))
+    def test6(self):
+        self.assertEqual(756, get_sol().tallestBillboard([140,138,133,162,145,164,145,166,145,154,158]))
     # def test7(self):
     # def test8(self):

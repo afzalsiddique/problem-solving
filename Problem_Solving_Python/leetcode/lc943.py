@@ -77,11 +77,11 @@ class Solution2:
                 return startWord
             shortest = None
             for i in range(len(words)):
-                if not is_on(mask, i):
-                    superstring = shortestSuperstring(words[i], turn_on(mask, i))
-                    appended = overlapAppend(startWord,superstring)
-                    if shortest is None or len(appended)<len(shortest):
-                        shortest = appended
+                if is_on(mask, i): continue
+                superstring = shortestSuperstring(words[i], turn_on(mask, i))
+                newShortest = overlapAppend(startWord,superstring)
+                if shortest is None or len(newShortest)<len(shortest):
+                    shortest = newShortest
             return shortest
 
         n=len(words)

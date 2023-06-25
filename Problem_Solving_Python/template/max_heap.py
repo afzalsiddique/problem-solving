@@ -12,7 +12,6 @@ class Heap4(list):
     def push(self, val, idx): heappush(self, [val*self.mul, idx*self.mul])
     def heappop(self):
         tmp=heappop(self)
-        assert len(tmp==2)
         return [tmp[0]*self.mul, tmp[1]*self.mul]
 # implementation 1.3
 class MaxHeap3(list):
@@ -46,15 +45,12 @@ class MaxHeap2(list): # I think we don't need to inherit list class
 
 # implementation 1.1
 class MaxHeap4(list): # I think we don't need to inherit list class
+    # one element
     def __init__(self):
         super().__init__()
-        self.data = []
-    def top(self): return -self.data[0]
-    def push(self, val): heappush(self.data, -val)
-    def heappop(self): return -heappop(self.data)
-    def __repr__(self): return str(self.data)
-    def __len__(self): return len(self.data)
-    def __bool__(self): return True if len(self.data) else False
+    def top(self): return -self[0]
+    def push(self, val): heappush(self, -val)
+    def heappop(self): return -heappop(self)
 
 # implementation 2
 class MaxHeap:

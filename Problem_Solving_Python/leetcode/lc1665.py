@@ -6,14 +6,23 @@ class Solution:
     def minimumEffort(self, tasks: List[List[int]]) -> int:
         initial = 0
         cur=0
-        tasks.sort(key=lambda x:-(x[1]-x[0]))
+        tasks.sort(key=lambda x:(x[1]-x[0]),reverse=True)
         for act,pre in tasks:
             if cur<pre:
-                required=max(act,pre)-cur
+                required=pre-cur
                 cur+=required
                 initial+=required
             cur-=act
         return initial
+class Solution2:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        tasks.sort(key=lambda x:(x[1]-x[0]),reverse=True)
+        current=0
+        for actual,minn in tasks:
+            if current<minn:
+                current+=(minn-current)
+            current-=actual
+        return current+sum(t[0] for t in tasks)
 
 class Tester(unittest.TestCase):
     def test1(self):
