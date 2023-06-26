@@ -3,52 +3,37 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
-        def turn_on(mask,i): return mask | (1<<i)
-        def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False
-        def allSelected(mask, n): return mask == ((1 << n) - 1)
+    # assume that die has numbers from [0,5]
+    def dieSimulator(self, n: int, rollMax: List[int]) -> int:
+        M=10**9+7
         @cache
-        def dp(i,mask):
+        def dp(i, prevNum):
             if i==n:
-                if allSelected(mask,n):
-                    return 0
-                return float('inf')
-            res=float('inf')
-            for peopleSkills in people:
-                newMask=mask
-                hasAtLeastOneNewSkill=False
-                for skillNo in peopleSkills:
-                    hasAtLeastOneNewSkill=True
-                    if not is_on(newMask,skillNo):
-                        newMask=turn_on(newMask,skillNo)
-                if hasAtLeastOneNewSkill:
-                    res=min(res,1+dp(i+1,newMask))
-                res=min(res,dp(i+1,mask))
+                return 1
+            if i>n:
+                return 0
+            res=0
+            for num in range(6):
+                if num==prevNum:
+                    continue
+                for cnt in range(1,rollMax[num]+1):
+                    res+=dp(i+cnt,num)
+                    res%=M
             return res
 
-        n=len(req_skills)
-        skills_indices={s:i for i,s in enumerate(req_skills)}
-        newPeople=[]
-        for skills in people:
-            li=[]
-            for skill in skills:
-                if skill in skills_indices:
-                    li.append(skills_indices[skill])
-            newPeople.append(li)
-        people=newPeople
-        return dp(0,0)
+        return dp(0,-1)
 
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual([0,2], get_sol().smallestSufficientTeam(["java","nodejs","reactjs"], [["java"],["nodejs"],["nodejs","reactjs"]]))
+        self.assertEqual(34, get_sol().dieSimulator(n = 2, rollMax = [1,1,2,2,2,3]))
     def test2(self):
-        self.assertEqual([1,2], get_sol().smallestSufficientTeam(["algorithms","math","java","reactjs","csharp","aws"], [["algorithms","math","java"],["algorithms","math","reactjs"],["java","csharp","aws"],["reactjs","csharp"],["csharp","math"],["aws","java"]]))
+        self.assertEqual(30, get_sol().dieSimulator(n = 2, rollMax = [1,1,1,1,1,1]))
     def test3(self):
-        self.assertEqual([0,3], get_sol().smallestSufficientTeam(["mmcmnwacnhhdd","vza","mrxyc"], [["mmcmnwacnhhdd"],[],[],["vza","mrxyc"]]))
+        self.assertEqual(181, get_sol().dieSimulator(n = 3, rollMax = [1,1,1,2,2,3]))
     def test4(self):
-        self.assertEqual([12,18,23], get_sol().smallestSufficientTeam(["mwobudvo","goczubcwnfze","yspbsez","pf","ey","hkq"], [[],["mwobudvo"],["hkq"],["pf"],["pf"],["mwobudvo","pf"],[],["yspbsez"],[],["hkq"],[],[],["goczubcwnfze","pf","hkq"],["goczubcwnfze"],["hkq"],["mwobudvo"],[],["mwobudvo","pf"],["pf","ey"],["mwobudvo"],["hkq"],[],["pf"],["mwobudvo","yspbsez"],["mwobudvo","goczubcwnfze"],["goczubcwnfze","pf"],["goczubcwnfze"],["goczubcwnfze"],["mwobudvo"],["mwobudvo","goczubcwnfze"],[],["goczubcwnfze"],[],["goczubcwnfze"],["mwobudvo"],[],["hkq"],["yspbsez"],["mwobudvo"],["goczubcwnfze","ey"]]))
+        self.assertEqual(822005673, get_sol().dieSimulator(20, [8,5,10,8,7,2]))
     def test5(self):
-        self.assertEqual([13, 17, 27, 32, 34, 51], get_sol().smallestSufficientTeam(["hfkbcrslcdjq","jmhobexvmmlyyzk","fjubadocdwaygs","peaqbonzgl","brgjopmm","x","mf","pcfpppaxsxtpixd","ccwfthnjt","xtadkauiqwravo","zezdb","a","rahimgtlopffbwdg","ulqocaijhezwfr","zshbwqdhx","hyxnrujrqykzhizm"], [["peaqbonzgl","xtadkauiqwravo"],["peaqbonzgl","pcfpppaxsxtpixd","zshbwqdhx"],["x","a"],["a"],["jmhobexvmmlyyzk","fjubadocdwaygs","xtadkauiqwravo","zshbwqdhx"],["fjubadocdwaygs","x","zshbwqdhx"],["x","xtadkauiqwravo"],["x","hyxnrujrqykzhizm"],["peaqbonzgl","x","pcfpppaxsxtpixd","a"],["peaqbonzgl","pcfpppaxsxtpixd"],["a"],["hyxnrujrqykzhizm"],["jmhobexvmmlyyzk"],["hfkbcrslcdjq","xtadkauiqwravo","a","zshbwqdhx"],["peaqbonzgl","mf","a","rahimgtlopffbwdg","zshbwqdhx"],["xtadkauiqwravo"],["fjubadocdwaygs"],["x","a","ulqocaijhezwfr","zshbwqdhx"],["peaqbonzgl"],["pcfpppaxsxtpixd","ulqocaijhezwfr","hyxnrujrqykzhizm"],["a","ulqocaijhezwfr","hyxnrujrqykzhizm"],["a","rahimgtlopffbwdg"],["zshbwqdhx"],["fjubadocdwaygs","peaqbonzgl","brgjopmm","x"],["hyxnrujrqykzhizm"],["jmhobexvmmlyyzk","a","ulqocaijhezwfr"],["peaqbonzgl","x","a","ulqocaijhezwfr","zshbwqdhx"],["mf","pcfpppaxsxtpixd"],["fjubadocdwaygs","ulqocaijhezwfr"],["fjubadocdwaygs","x","a"],["zezdb","hyxnrujrqykzhizm"],["ccwfthnjt","a"],["fjubadocdwaygs","zezdb","a"],[],["peaqbonzgl","ccwfthnjt","hyxnrujrqykzhizm"],["xtadkauiqwravo","hyxnrujrqykzhizm"],["peaqbonzgl","a"],["x","a","hyxnrujrqykzhizm"],["zshbwqdhx"],[],["fjubadocdwaygs","mf","pcfpppaxsxtpixd","zshbwqdhx"],["pcfpppaxsxtpixd","a","zshbwqdhx"],["peaqbonzgl"],["peaqbonzgl","x","ulqocaijhezwfr"],["ulqocaijhezwfr"],["x"],["fjubadocdwaygs","peaqbonzgl"],["fjubadocdwaygs","xtadkauiqwravo"],["pcfpppaxsxtpixd","zshbwqdhx"],["peaqbonzgl","brgjopmm","pcfpppaxsxtpixd","a"],["fjubadocdwaygs","x","mf","ulqocaijhezwfr"],["jmhobexvmmlyyzk","brgjopmm","rahimgtlopffbwdg","hyxnrujrqykzhizm"],["x","ccwfthnjt","hyxnrujrqykzhizm"],["hyxnrujrqykzhizm"],["peaqbonzgl","x","xtadkauiqwravo","ulqocaijhezwfr","hyxnrujrqykzhizm"],["brgjopmm","ulqocaijhezwfr","zshbwqdhx"],["peaqbonzgl","pcfpppaxsxtpixd"],["fjubadocdwaygs","x","a","zshbwqdhx"],["fjubadocdwaygs","peaqbonzgl","x"],["ccwfthnjt"]]))
+        self.assertEqual(31, get_sol().dieSimulator(n = 2, rollMax = [2,1,1,1,1,1]))
     # def test6(self):
     # def test7(self):
-    # def test8(self):
+

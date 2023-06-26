@@ -1,9 +1,66 @@
-from collections import deque;
-import unittest; from typing import List;
-
-
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    def minPushBox(self, grid: List[List[str]]) -> int:
+        def withinAndNoObstacleAndNoBox(x:int,y:int,b_x:int,b_y:int)->bool:
+            return [x,y]!=[b_x,b_y] and 0<=x<len(grid) and 0<=y<len(grid[0]) and grid[x][y]!='#'
+        def get_4d_moves(x:int, y:int,b_x,b_y)->List[tuple[int,int]]:
+            return [(x+dx,y+dy) for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)] if withinAndNoObstacleAndNoBox(x+dx,y+dy,b_x,b_y)]
+
+        # whether person can reach (x,y) while box is lying at (b_x,b_y)
+        # the box is changing position, so it must be passed as parameter
+        def canReach(p_x, p_y, x, y, b_x, b_y):
+            vis=set()
+            q=deque([(p_x, p_y)])
+            while q:
+                p_x,p_y=q.popleft()
+                if grid[p_x][p_y]=='#': continue
+                if [p_x,p_y]==[x, y]:
+                    return True
+                if (p_x,p_y) in vis: continue
+                vis.add((p_x,p_y))
+                q.extend(get_4d_moves(p_x,p_y,b_x,b_y))
+            return False
+        # Whether person at (p_x,p_y) push the box at (b_x,b_y) in the direction (dx,dy)
+        def canPush(p_x, p_y, b_x, b_y, dx, dy):
+            # video note
+            X,Y= b_x + dx, b_y + dy
+            if not withinAndNoObstacleAndNoBox(X,Y,b_x,b_y): # obstacles or box found
+                return False
+            # in order to push the box the person must be able to reach the cell that is opposite to the direction pushing
+            X,Y= b_x - dx, b_y - dy
+            tmp=canReach(p_x, p_y, X, Y,b_x,b_y)
+            return tmp
+
+        m,n=len(grid),len(grid[0])
+        DIRS=[[1,0],[-1,0],[0,1],[0,-1]]
+        p_x,p_y=[[i,j] for i in range(m) for j in range(n) if grid[i][j]=='S'][0] # person position
+        b_x,b_y=[[i,j] for i in range(m) for j in range(n) if grid[i][j]=='B'][0] # box position
+        target_x,target_y=[[i,j] for i in range(m) for j in range(n) if grid[i][j]=='T'][0] # target position
+        q=deque()
+        q.append((p_x,p_y,b_x,b_y))
+        vis=set()
+        res=0
+        while q:
+            for _ in range(len(q)):
+                state=q.popleft()
+                p_x,p_y,b_x,b_y=state
+                if [b_x,b_y]==[target_x,target_y]:
+                    return res
+                if state in vis:
+                    continue
+                vis.add(state)
+                for dx,dy in DIRS:
+                    if not canPush(p_x, p_y, b_x, b_y, dx, dy):
+                        continue
+                    q.append((b_x,b_y,b_x+dx,b_y+dy))
+
+            res+=1
+        return -1
+
+class Solution2:
     # bfs
     def minPushBox(self, grid: List[List[str]]) -> int:
         def push(playerX, playerY, bx, by):
@@ -96,8 +153,11 @@ class Tester(unittest.TestCase):
     def test3(self):
         self.assertEqual(5,get_sol().minPushBox( [["#","#","#","#","#","#"], ["#","T",".",".","#","#"], ["#",".","#","B",".","#"], ["#",".",".",".",".","#"], ["#",".",".",".","S","#"], ["#","#","#","#","#","#"]]))
     def test4(self):
+        self.assertEqual(7,get_sol().minPushBox([[".",".","T","#",".","."],[".",".",".","#","B","."],["#",".",".",".",".","."],["#",".",".","#",".","S"]]))
+    def test5(self):
         self.assertEqual(7,get_sol().minPushBox([["#",".",".","#","#","#","#","#"],["#",".",".","T","#",".",".","#"],["#",".",".",".","#","B",".","#"],["#",".",".",".",".",".",".","#"],["#",".",".",".","#",".","S","#"],["#",".",".","#","#","#","#","#"]]))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
+    def test6(self):
+        self.assertEqual(-1,get_sol().minPushBox([["#","S","#",".","B","T","#"]]))
+    def test7(self):
+        self.assertEqual(-1,get_sol().minPushBox([["#","#","#","#","#","#","#"],["#","S","#",".","B","T","#"],["#","#","#","#","#","#","#"]]))
     # def test8(self):

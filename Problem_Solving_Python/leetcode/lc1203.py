@@ -50,6 +50,56 @@ class Solution:
         for i in range(len(graph)-1,-1,-1):
             if not dfs(i): return []
         return res[::-1]
+class Solution3:
+    def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
+        NOT_VISITED=0; VISITED=1; PROCESSING=-1
+        def getEntry(u):
+            groupNo=group[u]
+            if groupNo==-1: return u
+            return groupNo+3*10**4+1
+        def getExit(u):
+            groupNo=group[u]
+            if groupNo==-1: return u
+            return groupNo+6*10**4+1
+        def sameGroup(u,v):
+            if group[u]==-1 or group[v]==-1:
+                return False
+            return group[u]==group[v]
+        def dfs(u):
+            if visited[u]==PROCESSING: # loop found
+                return False
+            if visited[u]==VISITED: return True
+            visited[u]=PROCESSING
+            for v in g[u]:
+                if not dfs(v): return False
+            visited[u]=VISITED
+            res.append(u)
+            return True
+
+
+        g=defaultdict(list)
+        for i in range(n):
+            groupNo=group[i]
+            if groupNo==-1: continue
+            g[getEntry(i)].append(i)
+            g[i].append(getExit(i))
+        for u in range(n):
+            for v in beforeItems[u]:
+                if sameGroup(u,v):
+                    g[v].append(u)
+                else:
+                    g[getExit(v)].append(getEntry(u))
+
+        visited = defaultdict(lambda :NOT_VISITED)
+        res=[]
+        for u in range(n):
+            if not dfs(getEntry(u)): return []
+            # if not dfs(getExit(u)): return [] # redundant
+            # if not dfs(u): return [] # redundant
+        res=res[::-1]
+        res=[x for x in res if x<=3*10**4]
+        # res=[x for x in res if x<n] # alternative
+        return res
 class Solution2:
     # wrong
     def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:

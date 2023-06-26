@@ -15,8 +15,10 @@ class Solution:
         dp=[0,0]
         for c in binary:
             idx=int(c)
-            if idx==0: dp[idx]=sum(dp)
-            else: dp[idx]=sum(dp)+1
+            if idx==0:
+                dp[idx]=sum(dp) # add '0' to all existing subsequence. it can not start a subsequence starting '0'
+            else:
+                dp[idx]=sum(dp)+1 # add '1' to all existing subsequence and another subsequence starting with '1'
         return (sum(dp)+int('0' in binary))%M
 class Solution2:
     def numberOfUniqueGoodSubsequences(self, s: str) -> int:

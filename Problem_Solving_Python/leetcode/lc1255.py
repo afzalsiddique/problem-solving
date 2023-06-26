@@ -1,6 +1,9 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # backtrack
     def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
         def takeWord(i:int):
             valid=True
@@ -30,6 +33,41 @@ class Solution:
         n=len(words)
         letters=Counter(letters)
         return backtrack(0)
+class Solution3:
+    # dp
+    def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
+        def wordCanBeFormed(i, lettersLeft:List[str]):
+            for c in words[i]:
+                if c not in lettersLeft:
+                    return False
+                lettersLeft.remove(c)
+            return True
+        def formWord(i, lettersLeft:List[str]):
+            for c in words[i]:
+                lettersLeft.remove(c)
+            return lettersLeft
+        def calculateScore(i):
+            total=0
+            for c in words[i]:
+                i=ord(c)-ord('a')
+                total+=score[i]
+            return total
+
+        @cache
+        def dp(i, lettersLeft:tuple):
+            if i==n:
+                return 0
+            res=0
+            for j in range(i,n):
+                if wordCanBeFormed(j, list(lettersLeft)):
+                    li=formWord(j, list(lettersLeft))
+                    score1=calculateScore(j)
+                    score2=dp(j+1,tuple(li))
+                    res=max(res,score1+score2)
+            return res
+
+        n=len(words)
+        return dp(0,tuple(sorted(letters)))
 class Solution4:
     def maxScoreWords(self, words: List[str], letters: List[str], score: List[int]) -> int:
         def is_on(mask,i): return (mask>>i)&1 # returns 1 when True or 0 when False

@@ -6,10 +6,31 @@ class Solution:
     # it's just validate binary search starting from leaf node towards root node
     # and also instead of passing lo and hi as parameters, we return lo and hi
     def maxSumBST(self, root: Optional[TreeNode]) -> int:
+        def preorder(node):
+            nonlocal res
+            if not node:
+                return [True,float('inf'),float('-inf'),0] # [valid,min,max,sum]
+            isLeftValid,leftMin,leftMax,leftSum=preorder(node.left)
+            isRightValid,rightMin,rightMax,rightSum=preorder(node.right)
+            curSum=None
+            curValid=isLeftValid and isRightValid and leftMax<node.val and rightMin>node.val
+            if curValid:
+                curSum=leftSum+rightSum+node.val
+                res=max(res,curSum)
+            curMin=min(leftMin,node.val)
+            curMax=max(rightMax,node.val)
+            return [curValid, curMin,curMax,curSum]
+
+        res=0
+        preorder(root)
+        return res
+
+class Solution2:
+    def maxSumBST(self, root: Optional[TreeNode]) -> int:
         def recur(node:Optional[TreeNode]):
             nonlocal res
             if not node:
-                return [float('inf'),float('-inf'),0]
+                return [float('inf'),float('-inf'),0] # [min,max,sum]
             l_min,l_max,l_sum=recur(node.left)
             r_min,r_max,r_sum=recur(node.right)
             if None in [l_min,l_max,r_min,r_max]: return [None,None,0]
@@ -21,7 +42,6 @@ class Solution:
         res=float('-inf')
         recur(root)
         return max(0,res)
-
 
 
 class Tester(unittest.TestCase):

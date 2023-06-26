@@ -8,6 +8,8 @@ class Solution:
         MOUSE,CAT,DRAW=1,-1,0 # MOUSE is maximizing agent and CAT is minimizing agent
         @cache
         def search(t, x, y): # t: time, x: mousePos, y: catPos
+            # It takes 2 units of time for both the mouse and cat to visit 1 node each. In 2n time, both will have visited all nodes.
+            # If both have visited all nodes and neither have won yet -> draw.
             if t == len(graph) * 2: # there is loop
                 return 0
             if x == y:
@@ -83,7 +85,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().catMouseGame([[6],[4,11],[9,12],[5],[1,5,11],[3,4,6],[0,5,10],[8,9,10],[7],[2,7,12],[6,7],[1,4],[2,9]]))
     def test4(self):
         self.assertEqual(1, get_sol().catMouseGame([[2,3],[3,4],[0,4],[0,1],[1,2]]))
-    # def test5(self):
+    def test5(self):
+        self.assertEqual(2, get_sol().catMouseGame([[5,6],[3,4],[6],[1,4,5],[1,3,5],[0,3,4,6],[0,2,5]]))
     # def test6(self):
     # def test7(self):
     # def test8(self):
