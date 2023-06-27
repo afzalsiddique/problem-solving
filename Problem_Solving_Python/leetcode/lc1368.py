@@ -3,8 +3,11 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
+    # deque. add items to both ends
     # 0-1 bfs shortest path binary graph
     # https://www.youtube.com/watch?v=cMP1IaWuFuM
+    # just the deque version of dijkstra
+    # dijkstra will also work. see below
     def minCost(self, grid: List[List[int]]) -> int:
         def within(x,y): return 0<=x<m and 0<=y<n
         def get_4d_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
@@ -35,6 +38,36 @@ class Solution:
                         q.appendleft((newCost,X,Y))
                     else:
                         q.append((newCost,X,Y))
+class Solution3:
+    # dijkstra
+    # since weight can be 0 or 1, it can be done with deque
+    def minCost(self, grid: List[List[int]]) -> int:
+        def within(x,y): return 0<=x<m and 0<=y<n
+        def get_4d_moves(x,y): return [(x+dx,y+dy) for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)] if within(x+dx,y+dy)]
+        DIRS={1:(0,1),2:(0,-1),3:(1,0),4:(-1,0)}
+        def get_directed_move(x,y,dir):
+            X,Y=x+DIRS[dir][0],y+DIRS[dir][1]
+            if within(X,Y): return X,Y
+            return None,None
+
+        m,n=len(grid),len(grid[0])
+        start = 0,0,0 # modifications,i,j
+        min_cost=defaultdict(lambda :float('inf'),{(0,0):0})
+        pq = []
+        pq.append(start)
+        while pq:
+            cost,x,y=heappop(pq)
+            if x==m-1 and y==n-1:
+                return cost
+            for X,Y in get_4d_moves(x,y):
+                modificationRequired=False
+                directed_move = get_directed_move(x,y,grid[x][y])
+                if (X,Y)!=directed_move:
+                    modificationRequired=True
+                newCost = cost + modificationRequired
+                if newCost<min_cost[X,Y]:
+                    min_cost[X,Y]=newCost
+                    heappush(pq,(newCost,X,Y))
 
 class Solution2:
     # very slow

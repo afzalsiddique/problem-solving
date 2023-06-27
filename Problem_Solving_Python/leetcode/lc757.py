@@ -9,16 +9,20 @@ class Solution:
         res=2
         last=intervals[0][1]
         second_last=last-1
+        # li = [second_last,last]
         for i in range(1,n):
             a,b=intervals[i]
             if a>last:
                 res+=2
                 last=b
                 second_last=b-1
+                # li+=[second_last,last]
             elif a>second_last:
                 res+=1
                 second_last=last
                 last=b
+                # li+=[last]
+        # return len(li)
         return res
 
 

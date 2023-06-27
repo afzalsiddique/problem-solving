@@ -82,6 +82,26 @@ class Solution4:
 
         return max(dist) if max(dist) < float("inf") else -1
 
+class Solution5:
+    # just heappq. not even proper dijkstra
+    def networkDelayTime(self, times: List[List[int]], n: int, src: int) -> int:
+        g=defaultdict(list)
+        for u,v,w in times:
+            g[u].append((v,w))
+        pq=[]
+        vis=set()
+        pq.append((0,src))
+        while pq:
+            t,u=heappop(pq)
+            if u in vis:
+                continue
+            vis.add(u)
+            if len(vis)==n:
+                return t
+            for v,w in g[u]:
+                newW=t+w
+                heappush(pq,(newW,v))
+        return -1
 
 class MyTestCase(unittest.TestCase):
     def test1(self):

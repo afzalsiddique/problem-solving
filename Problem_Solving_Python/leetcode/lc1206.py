@@ -34,10 +34,10 @@ class Skiplist:
         insert = True
         down = None
         while insert and stack:
-            cur=stack.pop()
-            node=Node(num,cur.next,down)
-            cur.next=node
-            down=node
+            prev=stack.pop()
+            newNode=Node(num,prev.next,down)
+            prev.next=newNode
+            down=newNode
             insert = random.random()<0.5
 
         if insert: # self.head has to be the highest

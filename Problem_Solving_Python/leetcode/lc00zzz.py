@@ -3,37 +3,53 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    # assume that die has numbers from [0,5]
-    def dieSimulator(self, n: int, rollMax: List[int]) -> int:
-        M=10**9+7
-        @cache
-        def dp(i, prevNum):
-            if i==n:
-                return 1
-            if i>n:
-                return 0
-            res=0
-            for num in range(6):
-                if num==prevNum:
-                    continue
-                for cnt in range(1,rollMax[num]+1):
-                    res+=dp(i+cnt,num)
-                    res%=M
-            return res
+    def largestNumber(self, cost: List[int], target: int) -> str:
+        def f(left, cnt):
+            nonlocal res
+            if left==0:
+                res=max(res, cnt, key=lambda x:sum(x.values()))
+                return
+            if left<0:
+                return
+            for num in cost.keys():
+                cnt2=Counter({k:v for k,v in cnt.items()})
+                cnt2[num]+=1
+                f(left-cost[num],cnt2)
+            return
 
-        return dp(0,-1)
+
+        sett=set()
+        costDi={}
+        for i in range(9-1,-1,-1):
+            num=i+1
+            if cost[i] not in sett:
+                costDi[num]=cost[i]
+                sett.add(cost[i])
+        cost=costDi
+
+        res=Counter({i:0 for i in range(1,9+1)})
+        # nums=sorted(cost.keys(),reverse=True)
+        f(target,Counter({i:0 for i in range(1,9+1)}))
+        print(res)
+        res=''.join(map(str,res))
+        return '0' if res=='' else res
+
+
+
+
 
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(34, get_sol().dieSimulator(n = 2, rollMax = [1,1,2,2,2,3]))
+        self.assertEqual("7772", get_sol().largestNumber([4,3,2,5,6,7,2,5,5], 9))
     def test2(self):
-        self.assertEqual(30, get_sol().dieSimulator(n = 2, rollMax = [1,1,1,1,1,1]))
+        self.assertEqual("85", get_sol().largestNumber( [7,6,5,5,5,6,8,7,8], 12))
     def test3(self):
-        self.assertEqual(181, get_sol().dieSimulator(n = 3, rollMax = [1,1,1,2,2,3]))
+        self.assertEqual("0", get_sol().largestNumber([2,4,6,2,4,6,4,4,4], 5))
     def test4(self):
-        self.assertEqual(822005673, get_sol().dieSimulator(20, [8,5,10,8,7,2]))
+        self.assertEqual("0", get_sol().largestNumber([210,77,91,105,1208,511,3392,3029,1029], 4031))
     def test5(self):
-        self.assertEqual(31, get_sol().dieSimulator(n = 2, rollMax = [2,1,1,1,1,1]))
-    # def test6(self):
+        self.assertEqual("87432222222222222222222222222222222222222222222", get_sol().largestNumber([210,77,91,105,1908,3953,530,410,1237], 4447))
+    def test6(self):
+        self.assertEqual("5555443222", get_sol().largestNumber([1000,30,105,70,42,1000,1000,1000,1000], 503))
     # def test7(self):
-
+    # def test8(self):

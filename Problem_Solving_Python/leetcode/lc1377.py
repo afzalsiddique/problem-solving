@@ -1,9 +1,29 @@
 from collections import defaultdict;
 import unittest; from typing import List;
-
-
 def get_sol(): return Solution()
 class Solution:
+    def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+        def dfs(i,par,t): # return target/total
+            if t==0:
+                return int(i==target)
+            totalBranches=len(g[i]) if i==1 else len(g[i])-1
+            targetBranches=0
+            for j in g[i]:
+                if j==par: continue
+                targetBranches+=dfs(j,i,t-1)
+            if totalBranches!=0:
+                return targetBranches/totalBranches
+            # jumping in the same position indefinitely
+            if i==target:
+                return 1
+            return 0
+
+        g=defaultdict(list)
+        for u,v in edges:
+            g[u].append(v)
+            g[v].append(u)
+        return dfs(1,-1,t)
+class Solution2:
     def frogPosition(self, n: int, edges: List[List[int]], time: int, target: int) -> float:
         def dfs(u, par,time):
             if time<0: return 0
@@ -31,21 +51,26 @@ class Solution:
         return dfs(1, -1, time)
 
 
+
+
 class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(0.16666666666666667, get_sol().frogPosition(7, [[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 2, 4))
-    def test2(self):
-        self.assertEqual(0.3333333333333333, get_sol().frogPosition( 7,[[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 1,  7))
-    def test3(self):
+    def test01(self):
+        self.assertEqual(0.5, get_sol().frogPosition(4, [[1,2],[1,4],[2,3]], 2, 4))
+    def test02(self):
+        self.assertEqual(0.5, get_sol().frogPosition(4, [[1,2],[1,4],[2,3]], 3, 4))
+    def test03(self):
         self.assertEqual(0.0, get_sol().frogPosition(6, [[2,1],[4,1],[5,1],[3,1],[6,3]], 7, 3))
-    def test4(self):
+    def test04(self):
         self.assertEqual(1.0, get_sol().frogPosition(1, [], 1, 1))
-    def test5(self):
+    def test05(self):
         self.assertEqual(0.0, get_sol().frogPosition(9, [[2,1],[3,2],[4,3],[5,3],[6,5],[7,3],[8,4],[9,5]], 9, 1))
-    def test6(self):
+    def test06(self):
         self.assertEqual(0.0, get_sol().frogPosition(5, [[2,1],[3,2],[5,3],[4,5]], 4, 1))
-    def test7(self):
+    def test07(self):
         self.assertEqual(0.16666666666666667, get_sol().frogPosition(7, [[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 20, 6))
-    def test8(self):
+    def test08(self):
         self.assertEqual(0.0, get_sol().frogPosition(9, [[2,1],[3,1],[4,2],[5,3],[6,5],[7,4],[8,7],[9,7]], 1, 8))
-    # def test9(self):
+    def test09(self):
+        self.assertEqual(0.16666666666666667, get_sol().frogPosition(7, [[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 2, 4))
+    def test10(self):
+        self.assertEqual(0.3333333333333333, get_sol().frogPosition( 7,[[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 1,  7))

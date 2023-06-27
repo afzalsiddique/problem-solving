@@ -2,6 +2,7 @@ from itertools import accumulate,permutations; from math import floor,ceil,sqrt;
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
+# same as lc664
 class Solution:
     # https://leetcode.com/problems/remove-boxes/discuss/101310/Java-top-down-and-bottom-up-DP-solutions
     def removeBoxes(self, boxes: List[int]) -> int:
