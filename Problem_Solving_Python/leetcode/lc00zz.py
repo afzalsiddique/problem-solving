@@ -1,28 +1,78 @@
-from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union, Literal; from functools import cache; from operator import lt, gt
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class Di(defaultdict):
-    def __missing__(self, key): return key
-class Solution: # bfs
-    # https://www.youtube.com/watch?v=R58Q0J52qzI
-    def numBusesToDestination(self, routes: List[List[int]], src: int, target: int) -> int:
-        def performOperation(op:Literal['!','|','&'],li:List[bool]):
-            return op
-        performOperation('3',[])
+class Heap(list):
+    def __init__(self,isMaxHeap=False):
+        super().__init__()
+        self.mul=-1 if isMaxHeap else 1
+    def topVal(self)->int: return self[0][0]*self.mul
+    def topIdx(self)->int: return self[0][1]*self.mul
+    def setTopVal(self,val): self[0][0]=val*self.mul
+    def setTopIdx(self,val): self[0][1]=val*self.mul
+    def push(self, val, idx): heappush(self, [val*self.mul, idx*self.mul])
+    def heappop(self):
+        tmp=heappop(self)
+        return [tmp[0]*self.mul, tmp[1]*self.mul]
+class Solution:
+    def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
+        def getMedian():
+            if k&1:
+                return mnHeap.topVal()
+            return (mxHeap.topVal()+mnHeap.topVal()) // 2
+        def move(frm:Heap,to:Heap):
+            to.push(*frm.heappop())
+        def clearTop(i):
+            while mxHeap and mxHeap.topIdx()<=i:
+                mxHeap.heappop()
+            while mnHeap and mnHeap.topIdx()<=i:
+                mnHeap.heappop()
 
+        res=[]
+        mxHeap,mnHeap=Heap(True),Heap() # minHeap contains more elements if odd
+        for i in range(k):
+            mnHeap.push(nums[i],i)
+        for _ in range(k//2):
+            move(mnHeap,mxHeap)
+        res.append(getMedian())
+
+        for i in range(k,len(nums)):
+            if nums[i-k]>=mnHeap.topVal(): # expiring on the mxHeap
+                clearTop(i-k)
+                mnHeap.push(nums[i],i)
+            else:
+                clearTop(i-k)
+                mxHeap.push(nums[i],i)
+            move(mxHeap,mnHeap)
+            move(mnHeap,mxHeap)
+            res.append(getMedian())
+        return res
 
 
 class MyTestCase(unittest.TestCase):
-    def test01(self):
-        self.assertEqual(2, get_sol().numBusesToDestination( [[1,2,7],[3,6,7]],  1,  6))
-    def test02(self):
-        self.assertEqual(-1, get_sol().numBusesToDestination( [[7,12],[4,5,15],[6],[15,19],[9,12,13]],  15,  12))
-    def test03(self):
-        self.assertEqual(1, get_sol().numBusesToDestination( [[35,38],[10,37,38],[10,28,37]], 37, 28))
-    def test04(self):
-        self.assertEqual(1, get_sol().numBusesToDestination( [[1,9,12,20,23,24,35,38],[10,21,24,31,32,34,37,38,43],[10,19,28,37],[8],[14,19],[11,17,23,31,41,43,44],[21,26,29,33],[5,11,33,41],[4,5,8,9,24,44]], 37, 28))
-    def test05(self):
-        self.assertEqual(0, get_sol().numBusesToDestination( [[1,7],[3,5]], 5, 5))
-    def test06(self):
-        self.assertEqual(-1, get_sol().numBusesToDestination([[25,33],[3,5,13,22,23,29,37,45,49],[15,16,41,47],[5,11,17,23,33],[10,11,12,29,30,39,45],[2,5,23,24,33],[1,2,9,19,20,21,23,32,34,44],[7,18,23,24],[1,2,7,27,36,44],[7,14,33]], 7, 47))
+    def test1(self):
+        nums, k = [1,3,-1,-3,5,3,6,7],3
+        Output= [1.00000,-1.00000,-1.00000,3.00000,5.00000,6.00000]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    def test2(self):
+        nums, k = [1,2,3,4,2,3,1,4,2], 3
+        Output= [2.00000,3.00000,3.00000,3.00000,2.00000,3.00000,2.00000]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    def test3(self):
+        nums, k = [1,2], 1
+        Output= [1.00000,2.00000]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    def test4(self):
+        nums, k = [2147483647,1,2,3,4,5,6,7,2147483647], 2
+        Output= [1073741824.0, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 1073741827.0]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    def test5(self):
+        nums, k = [1,3,-1,-3],3
+        Output= [1.00000,-1.00000]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    def test6(self):
+        nums, k = [1,3,-1,-3,5,3],3
+        Output= [1.00000,-1.00000,-1.00000,3.00000]
+        self.assertEqual(Output, get_sol().medianSlidingWindow(nums,k))
+    # def test7(self):
+    # def test8(self):
