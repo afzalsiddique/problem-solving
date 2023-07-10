@@ -2,70 +2,39 @@ from itertools import accumulate,permutations; from math import floor,ceil,sqrt;
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class Heap(list):
-    def __init__(self,isMaxHeap=False):
-        super().__init__()
-        self.mul=-1 if isMaxHeap else 1
-    def topVal(self)->int: return self[0][0]*self.mul
-    def topIdx(self)->int: return self[0][1]*self.mul
-    def push(self, val, idx): heappush(self, [val*self.mul, idx*self.mul])
-    def heappop(self):
-        tmp=heappop(self)
-        return [tmp[0]*self.mul, tmp[1]*self.mul]
 class Solution:
-    def judgePoint24(self, cards: List[int]) -> bool:
-        def ways(a,b):
-            li = [a+b,a-b,b-a,a*b]
-            if b!=0: li.append(a/b)
-            if a!=0: li.append(b/a)
-            return li
-    def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
-        def getMedian():
-            if k&1:
-                return float(right.topVal())
-            return (left.topVal()+right.topVal()) / 2
-        def move(frm:Heap,to:Heap):
-            to.push(*frm.heappop())
-        def clearTop(i):
-            while left and left.topIdx()<=i:
-                left.heappop()
-            while right and right.topIdx()<=i:
-                right.heappop()
+    def minTaps(self, n: int, ranges: List[int]) -> int:
+        jumps=[0]*(n+1)
+        for i in range(n+1):
+            idx=max(0,i-ranges[i])
+            rightEnd=i+ranges[i]
+            jumps[idx]=max(jumps[i],rightEnd-idx)
+        return self.jump(jumps)
 
-        if k==1: return list(map(float,nums))
-        res=[]
-        left,right=Heap(True),Heap() # minHeap contains more elements if odd
-        for i in range(k):
-            right.push(nums[i],i)
-        for _ in range(k//2):
-            move(right,left)
-        res.append(getMedian())
-
-        for i in range(k,len(nums)):
-            if nums[i-k]<=left.topVal(): # expiring on the left
-                left.push(nums[i],i)
-            else:
-                right.push(nums[i],i)
-            move(left,right)
-            move(right,left)
-            clearTop(i-k)
-            res.append(getMedian())
+    def jump(self, nums: List[int]) -> int:
+        n=len(nums)
+        pos=n-1
+        res=0
+        while pos:
+            newPos=pos
+            for i in range(pos):
+                if i+nums[i]>=pos:
+                    newPos=i
+                    res+=1
+                    break
+            if pos==newPos: return -1
+            pos=newPos
         return res
 
-
-
-class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual("7772", get_sol().largestNumber([4,3,2,5,6,7,2,5,5], 9))
-    def test2(self):
-        self.assertEqual("85", get_sol().largestNumber( [7,6,5,5,5,6,8,7,8], 12))
-    def test3(self):
-        self.assertEqual("0", get_sol().largestNumber([2,4,6,2,4,6,4,4,4], 5))
-    def test4(self):
-        self.assertEqual("0", get_sol().largestNumber([210,77,91,105,1208,511,3392,3029,1029], 4031))
-    def test5(self):
-        self.assertEqual("87432222222222222222222222222222222222222222222", get_sol().largestNumber([210,77,91,105,1908,3953,530,410,1237], 4447))
-    def test6(self):
-        self.assertEqual("5555443222", get_sol().largestNumber([1000,30,105,70,42,1000,1000,1000,1000], 503))
-    # def test7(self):
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(1, get_sol().minTaps(5, [3,4,1,1,0,0]))
+    def test02(self):
+        self.assertEqual(-1, get_sol().minTaps(3, [0,0,0,0]))
+    def test03(self):
+        self.assertEqual(3, get_sol().minTaps(7, [1,2,1,0,2,1,0,1]))
+    # def test04(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):
     # def test8(self):

@@ -1,27 +1,14 @@
-from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union, \
+    Dict; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
 class Solution:
-    # https://leetcode.com/problems/maximum-equal-frequency/discuss/403628/Easy-Python-Solution-Concise-10-lines-Explained-O(N)/363435
     def maxEqualFreq(self, nums: List[int]) -> int:
-        count=Counter()
-        freq=Counter()
-        maxFreq=0
-        res=0
-        for i,x in enumerate(nums):
-            freq[count[x]]-=1
-            count[x]+=1
-            freq[count[x]]+=1
-            maxFreq=max(maxFreq,count[x])
-            if maxFreq==1:
-                res=i+1
-            elif maxFreq*freq[maxFreq]==i:
-                res=i+1
-            elif (maxFreq-1)*(freq[maxFreq-1]+1)==i:
-                res=i+1
-        return res
+        di={2:'ase'}
+        print(di.get(1,'nai'))
+        print(di.get(2,'nai'))
 
 class MyTestCase(unittest.TestCase):
     def test01(self):

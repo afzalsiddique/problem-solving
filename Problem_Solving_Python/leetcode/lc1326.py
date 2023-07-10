@@ -4,6 +4,29 @@ from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
 class Solution:
     def minTaps(self, n: int, ranges: List[int]) -> int:
+        jumps=[0]*(n+1)
+        for i in range(n+1):
+            idx=max(0,i-ranges[i])
+            rightEnd=i+ranges[i]
+            jumps[idx]=max(jumps[i],rightEnd-idx)
+        return self.jump(jumps)
+
+    def jump(self, nums: List[int]) -> int: # lc 45
+        n=len(nums)
+        pos=n-1
+        res=0
+        while pos:
+            newPos=pos
+            for i in range(pos):
+                if i+nums[i]>=pos:
+                    newPos=i
+                    res+=1
+                    break
+            if pos==newPos: return -1
+            pos=newPos
+        return res
+class Solution2:
+    def minTaps(self, n: int, ranges: List[int]) -> int:
         max_right=[0]*(n+1) # "(n+1)" because [0,n] both are inclusive
         for i,x in enumerate(ranges):
             idx = max(0,i-x)
