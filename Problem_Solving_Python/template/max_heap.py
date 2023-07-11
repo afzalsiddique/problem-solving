@@ -44,7 +44,7 @@ class MaxHeap2(list): # I think we don't need to inherit list class
     def __bool__(self): return True if len(self.data) else False
 
 # implementation 1.1
-class MaxHeap4(list): # I think we don't need to inherit list class
+class MaxHeap4(list):
     # one element
     def __init__(self):
         super().__init__()

@@ -3,38 +3,49 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def minTaps(self, n: int, ranges: List[int]) -> int:
-        jumps=[0]*(n+1)
-        for i in range(n+1):
-            idx=max(0,i-ranges[i])
-            rightEnd=i+ranges[i]
-            jumps[idx]=max(jumps[i],rightEnd-idx)
-        return self.jump(jumps)
+    def isScramble(self, s1: str, s2: str) -> bool:
+        @cache
+        def f(a:str, b:str):
+            if a==b:
+                return True
+            if len(s1) != len(s2) or sorted(s1) != sorted(s2): # prunning
+                print('pruning')
+                return False
+            for i in range(1, len(a)):
+                aFirst=a[:i] # len i
+                aLast=a[i:]
+                bFirst=b[:i] # len i
+                bLast=b[i:]
+                bFirst2=b[:-i]
+                bLast2=b[-i:] # len i
+                if f(aFirst,bFirst) and f(aLast,bLast):
+                    return True
+                if f(aFirst,bLast2) and f(aLast,bFirst2):
+                    return True
+            return False
 
-    def jump(self, nums: List[int]) -> int:
-        n=len(nums)
-        pos=n-1
-        res=0
-        while pos:
-            newPos=pos
-            for i in range(pos):
-                if i+nums[i]>=pos:
-                    newPos=i
-                    res+=1
-                    break
-            if pos==newPos: return -1
-            pos=newPos
-        return res
+        return f(s1,s2)
 
-class MyTestCase(unittest.TestCase):
+
+class tester(unittest.TestCase):
     def test01(self):
-        self.assertEqual(1, get_sol().minTaps(5, [3,4,1,1,0,0]))
+        s1 = "great"
+        s2 = "rgeat"
+        Output= True
+        self.assertEqual(Output,get_sol().isScramble(s1,s2))
     def test02(self):
-        self.assertEqual(-1, get_sol().minTaps(3, [0,0,0,0]))
+        s1 = "abcde"
+        s2 = "caebd"
+        Output= False
+        self.assertEqual(Output,get_sol().isScramble(s1,s2))
     def test03(self):
-        self.assertEqual(3, get_sol().minTaps(7, [1,2,1,0,2,1,0,1]))
-    # def test04(self):
-    # def test05(self):
-    # def test06(self):
-    # def test07(self):
-    # def test8(self):
+        s1 = "a"
+        s2 = "a"
+        Output= True
+        self.assertEqual(Output,get_sol().isScramble(s1,s2))
+    def test04(self):
+        s1 = "abc"
+        s2 = "bca"
+        Output= True
+        self.assertEqual(Output,get_sol().isScramble(s1,s2))
+
