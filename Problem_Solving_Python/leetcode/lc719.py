@@ -8,7 +8,7 @@ class Solution:
             while i<len(nums):
                 while j<len(nums) and (nums[j]-nums[i])<=d:
                     j+=1
-                res+=j-i-1
+                res+=j-i-1 # '-1' because it calculates no of pair
                 i+=1
             return res>=k
 

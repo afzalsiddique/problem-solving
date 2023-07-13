@@ -12,7 +12,7 @@ class Solution:
                         li.append((i,j))
             return li
 
-        def turnOnOrOff(a,b,cnt): # cnt==1 turnOn, cnt==-1 turnOff
+        def turnOnOrOff(a,b,cnt): # cnt==1->turnOn, cnt==-1->turnOff
             rows[a]+=cnt
             cols[b]+=cnt
             diag1[a-b]+=cnt

@@ -14,6 +14,20 @@ class Solution:
                     summ-=d
                     count[d]-=1
                     break
+        # alternative
+        # while summ%3!=0:
+        #     if summ%3==1:
+        #         for d in d1:
+        #             if count[d]:
+        #                 summ-=d
+        #                 count[d]-=1
+        #                 break
+        #     if summ%3==2:
+        #         for d in d2:
+        #             if count[d]:
+        #                 summ-=d
+        #                 count[d]-=1
+        #                 break
 
         res=[]
         for i in range(9,-1,-1):

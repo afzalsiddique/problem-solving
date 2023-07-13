@@ -4,32 +4,33 @@ from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
     def kthSmallest(self, mat: List[List[int]], k: int) -> int:
-        def getSum(li:tuple[int]):
+        def getSum(colIndices:tuple[int]):
             res=0
             for i in range(m):
-                res+=mat[i][li[i]]
+                res+=mat[i][colIndices[i]]
             return res
-        def getNext(li:tuple[int]):
-            li=list(li)
+        def getNext(colIndices:tuple[int]):
+            colIndices=list(colIndices)
             res=[]
             for i in range(m):
-                if li[i]+1<n:
-                    tmp=li[:i]+[li[i]+1]+li[i+1:]
+                if colIndices[i]+1<n:
+                    tmp= colIndices[:i] + [colIndices[i] + 1] + colIndices[i + 1:]
                     res.append(tuple(tmp))
             return res
+
         m,n=len(mat),len(mat[0])
         vis=set()
-        idx=tuple([0 for _ in range(m)])
-        vis.add(idx)
-        pq=[(getSum(idx),idx)]
+        colIndices=tuple([0 for _ in range(m)])
+        vis.add(colIndices)
+        pq=[(getSum(colIndices),colIndices)]
         res=float('-inf')
         for i in range(k):
             if not pq: return res
-            res,idx=heappop(pq)
-            for nIdx in getNext(idx):
-                if nIdx not in vis:
-                    vis.add(nIdx)
-                    heappush(pq,(getSum(nIdx),nIdx))
+            res,colIndices=heappop(pq)
+            for nxtIdx in getNext(colIndices):
+                if nxtIdx not in vis:
+                    vis.add(nxtIdx)
+                    heappush(pq,(getSum(nxtIdx),nxtIdx))
         return res
 
 

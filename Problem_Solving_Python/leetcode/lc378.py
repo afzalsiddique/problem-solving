@@ -1,7 +1,7 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 # from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
-
+# https://leetcode.com/problems/k-th-smallest-prime-fraction/discuss/115819/Summary-of-solutions-for-problems-%22reducible%22-to-LeetCode-378
 class Solution:
     # binary search.  O(N∗log(max−min))
     # https://www.youtube.com/watch?v=G5wLN4UweAM
