@@ -14,8 +14,11 @@ class Solution:
                 if total>maxSplitSum:
                     cnt+=1
                     total=x
+                # if total>maxSplitSum: # if left is set to 0, then use this
+                #     return float('inf')
             return cnt
 
+        # left=0 # alternative. also check the chunk size
         left=max(nums)
         right=sum(nums)
         while left<=right: # binary search

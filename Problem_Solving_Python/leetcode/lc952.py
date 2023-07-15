@@ -1,40 +1,81 @@
-import itertools; import math; import operator; import random; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce; from heapq import *; import unittest; from typing import List;
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class DSU: # disjoint set union
-    # https://www.youtube.com/watch?v=2mva2YRgrW8
-    def __init__(self, n):
-        self.p = [i for i in range(n)]
-    def find(self, x):
-        if self.p[x] != x:
-            self.p[x] = self.find(self.p[x])
-        return self.p[x]
-    def union(self, x, y):
-        xr, yr = self.find(x), self.find(y)
-        self.p[xr] = yr
-    def max_size(self):
-        count=Counter([self.find(i) for i in self.p])
-        return max(count.values())
+class UnionFind:
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
+    def union(self,a,b):
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
+        if a!=b:
+            if self.size[a]<self.size[b]:
+                a,b=b,a
+            self.par[b]=a
+            self.size[a]+=self.size[b]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
+    def unionAll(self,li):
+        if len(li)==0: return
+        if len(li)==1:
+            self.add(li[0])
+            return
+        first=li[0]
+        for second in li[1:]:
+            self.union(first,second)
+    def size_of_groups(self):
+        for a in self.par:
+            self.find(a)
+        count=Counter(self.par.values())
+        return list(count.values())
 class Solution:
+    # https://www.youtube.com/watch?v=2mva2YRgrW8
     def largestComponentSize(self, nums: List[int]) -> int:
+        # @cache. does not improve
         def prime_factors(n):
-            for i in range(2, int(math.sqrt(n))+1):
+            for i in range(2, int(sqrt(n))+1):
                 if n % i == 0:
                     return {i} | prime_factors(n//i)
             return {n}
-        def add(li:List[int]):
-            for i in range(len(li)-1):
-                uf.union(li[i],li[i+1])
 
-        uf=DSU(len(nums))
-        primes=defaultdict(list)
+        uf=UnionFind()
+        primeFactorsToIndices=defaultdict(list)
         for i,x in enumerate(nums):
             li=prime_factors(x)
             for f in li:
-                primes[f].append(i)
-        for f in primes:
-            add(primes[f])
-        return uf.max_size()
+                primeFactorsToIndices[f].append(i)
+        for f in primeFactorsToIndices:
+            uf.unionAll(primeFactorsToIndices[f])
+        return max(uf.size_of_groups())
 class Solution2:
+    # kind of sieve
+    def largestComponentSize(self, nums: List[int]) -> int:
+        n=max(nums)
+        uf = UnionFind()
+        sett=set(nums)
+        is_prime = [True] * (n+1)
+        is_prime[0] = is_prime[1] = False
+        for p in range(2, n+1):
+            if not is_prime[p]: continue
+            li = []
+            for i in range(p, n+1, p):
+                is_prime[i] = False
+                if i in sett:
+                    li.append(i)
+            uf.unionAll(li)
+        res=max(uf.size_of_groups())
+        return res
+class Solution3:
     # tle. brute force
     def largestComponentSize(self, nums: List[int]) -> int:
         def gcd(a,b):

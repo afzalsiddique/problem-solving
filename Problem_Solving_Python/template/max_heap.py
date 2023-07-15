@@ -46,8 +46,7 @@ class MaxHeap2(list): # I think we don't need to inherit list class
 # implementation 1.1
 class MaxHeap4(list):
     # one element
-    def __init__(self):
-        super().__init__()
+    def __init__(self): super().__init__()
     def top(self): return -self[0]
     def push(self, val): heappush(self, -val)
     def heappop(self): return -heappop(self)

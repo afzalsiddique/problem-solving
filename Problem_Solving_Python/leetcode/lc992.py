@@ -24,26 +24,18 @@ class Solution:
         return ans
 
 class tester(unittest.TestCase):
-    def test_1(self):
-        nums = [1,2,1,2,3]
-        k = 2
-        Output = 12
-        self.assertEqual(Output,get_sol().at_most(nums,k))
-    def test_2(self):
-        nums = [1,2,1,2,3]
-        k = 1
-        Output = 5
-        self.assertEqual(Output,get_sol().at_most(nums,k))
-    def test_3(self):
-        nums = [1,2,1,2,3]
-        k = 2
-        Output = 7
-        self.assertEqual(Output,get_sol().subarraysWithKDistinct(nums,k))
-    def test_4(self):
-        nums = [1,2,1,3,4]
-        k = 3
-        Output= 3
-        self.assertEqual(Output,get_sol().subarraysWithKDistinct(nums,k))
+    def testa01(self):
+        self.assertEqual(12,get_sol().at_most([1,2,1,2,3], 2))
+    def testa02(self):
+        self.assertEqual(5,get_sol().at_most([1,2,1,2,3], 1))
+    def testa03(self):
+        self.assertEqual(13,get_sol().at_most([1,2,1,3,4], 3))
+    def testa04(self):
+        self.assertEqual(10,get_sol().at_most([1,2,1,3,4], 2))
+    def test03(self):
+        self.assertEqual(7,get_sol().subarraysWithKDistinct([1,2,1,2,3],2))
+    def test04(self):
+        self.assertEqual(3,get_sol().subarraysWithKDistinct([1,2,1,3,4], 3))
     # def test_5(self):
     # def test_6(self):
     # def test_7(self):

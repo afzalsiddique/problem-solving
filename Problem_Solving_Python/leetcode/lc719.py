@@ -2,24 +2,37 @@ import itertools; import math; import operator; import random; from bisect impor
 def get_sol(): return Solution()
 class Solution:
     def smallestDistancePair(self, nums: List[int], k: int) -> int:
-        def has_at_least_k_pair_with_at_most_d_difference(d):
+        def no_of_pair_with_at_most_d_diff(d):
+            l,r=0,1
             res=0
-            i,j=0,1
-            while i<len(nums):
-                while j<len(nums) and (nums[j]-nums[i])<=d:
-                    j+=1
-                res+=j-i-1 # '-1' because it calculates no of pair
-                i+=1
-            return res>=k
+            while r<n:
+                while l<r and nums[r]-nums[l]>d:
+                    l+=1
+                res+=r-l
+                r+=1
+            return res
 
+        # alternative
+        # def no_of_pair_with_at_most_d_diff(d):
+        #     res=0
+        #     l,r=0,1
+        #     while l<n:
+        #         while r<n and (nums[r]-nums[l])<=d:
+        #             r+=1
+        #         res+=r-l-1 # '-1' because it calculates no of pair
+        #         l+=1
+        #     return res
+
+        n=len(nums)
         nums.sort()
         lo,hi=0,nums[-1]-nums[0]
         while lo<=hi:
             mid=(lo+hi)//2
-            if has_at_least_k_pair_with_at_most_d_difference(mid):
-                hi=mid-1
-            else:
+            cnt=no_of_pair_with_at_most_d_diff(mid)
+            if cnt<k:
                 lo=mid+1
+            else:
+                hi=mid-1
         return lo
 
 class Solution2:

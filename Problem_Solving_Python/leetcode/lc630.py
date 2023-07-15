@@ -2,14 +2,11 @@ from itertools import accumulate,permutations; from math import floor,ceil,sqrt;
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
 def get_sol(): return Solution()
-class MaxHeap:
-    def __init__(self): self.data = []
-    def top(self): return -self.data[0]
-    def push(self, val): heappush(self.data, -val)
-    def pop(self): return heappop(self.data)*(-1)
-    def __repr__(self): return str(self.data)
-    def __len__(self): return len(self.data)
-    def __bool__(self): return True if len(self.data) else False
+class MaxHeap(list):
+    def __init__(self): super().__init__()
+    def top(self): return -self[0]
+    def push(self, val): heappush(self, -val)
+    def heappop(self): return -heappop(self)
 class Solution:
     # https://www.youtube.com/watch?v=ey8FxYsFAMU
     # For any iteration check if taking the course, total_time will exceed the deadline
@@ -25,7 +22,7 @@ class Solution:
             pq.push(dur) # push it to the heap first
             time+=dur
             if time>deadline: # then check the elapsed time
-                time-=pq.pop()
+                time-=pq.heappop()
         return len(pq)
 class Solution2:
     # incorrect. run test case [[7,17],[3,12],[5,20],[10,19],[4,18]] to understand
