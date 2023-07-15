@@ -46,13 +46,15 @@ class Solution2:
             if new_s==new_s[::-1]: return new_s
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual("aaacecaaa",get_sol().shortestPalindrome("aacecaaa"))
-    def test2(self):
+    def test02(self):
         self.assertEqual("dcbabcd",get_sol().shortestPalindrome("abcd"))
-    def test3(self):
+    def test03(self):
         self.assertEqual("a",get_sol().shortestPalindrome("a"))
-    def test4(self):
+    def test04(self):
         self.assertEqual("",get_sol().shortestPalindrome(""))
-    def test5(self):
+    def test05(self):
         self.assertEqual("abbaabba",get_sol().shortestPalindrome("aabba"))
+    def test06(self):
+        self.assertEqual("ababbabbbababbbabbaba",get_sol().shortestPalindrome("ababbbabbaba"))

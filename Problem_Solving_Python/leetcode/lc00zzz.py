@@ -3,49 +3,43 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def isScramble(self, s1: str, s2: str) -> bool:
-        @cache
-        def f(a:str, b:str):
-            if a==b:
-                return True
-            if len(s1) != len(s2) or sorted(s1) != sorted(s2): # prunning
-                print('pruning')
-                return False
-            for i in range(1, len(a)):
-                aFirst=a[:i] # len i
-                aLast=a[i:]
-                bFirst=b[:i] # len i
-                bLast=b[i:]
-                bFirst2=b[:-i]
-                bLast2=b[-i:] # len i
-                if f(aFirst,bFirst) and f(aLast,bLast):
-                    return True
-                if f(aFirst,bLast2) and f(aLast,bFirst2):
-                    return True
-            return False
-
-        return f(s1,s2)
+    def at_most(self,nums,k):
+        n=len(nums)
+        l=r=0
+        count=defaultdict(int)
+        unq_cnt=0
+        res=0
+        while r<n:
+            while l<r and unq_cnt>k:
+                count[nums[l]]-=1
+                if count[nums[l]]==0:
+                    unq_cnt-=1
+                l+=1
+            res+=1
+            if count[nums[r]]==0:
+                unq_cnt+=1
+            count[nums[r]]+=1
+            r+=1
+        return res
+    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
+        ans1=self.at_most(nums,k)
+        ans2=self.at_most(nums,k-1)
+        return ans1-ans2
 
 
 class tester(unittest.TestCase):
-    def test01(self):
-        s1 = "great"
-        s2 = "rgeat"
-        Output= True
-        self.assertEqual(Output,get_sol().isScramble(s1,s2))
-    def test02(self):
-        s1 = "abcde"
-        s2 = "caebd"
-        Output= False
-        self.assertEqual(Output,get_sol().isScramble(s1,s2))
+    def testa01(self):
+        self.assertEqual(12,get_sol().at_most([1,2,1,2,3], 2))
+    def testa02(self):
+        self.assertEqual(5,get_sol().at_most([1,2,1,2,3], 1))
+    def testa03(self):
+        self.assertEqual(13,get_sol().at_most([1,2,1,3,4], 3))
+    def testa04(self):
+        self.assertEqual(10,get_sol().at_most([1,2,1,3,4], 2))
     def test03(self):
-        s1 = "a"
-        s2 = "a"
-        Output= True
-        self.assertEqual(Output,get_sol().isScramble(s1,s2))
+        self.assertEqual(7,get_sol().subarraysWithKDistinct([1,2,1,2,3],2))
     def test04(self):
-        s1 = "abc"
-        s2 = "bca"
-        Output= True
-        self.assertEqual(Output,get_sol().isScramble(s1,s2))
-
+        self.assertEqual(3,get_sol().subarraysWithKDistinct([1,2,1,3,4], 3))
+    # def test_5(self):
+    # def test_6(self):
+    # def test_7(self):

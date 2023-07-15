@@ -16,7 +16,8 @@ class Solution:
                     validFlipTimesFromPastWindowKForCurrentIdx-=1
 
             # '0' is flipped even no of times or '1' is flipped odd no of times, then we need to flip it again
-            # if (nums[i]==0 and validFlipTimesFromPastWindowKForCurrentIdx%2==0) or (nums[i]==1 and validFlipTimesFromPastWindowKForCurrentIdx%2==1):
+            # if (nums[i]+validFlipTimesFromPastWindowKForCurrentIdx)%2==0: # alternative
+            # if (nums[i]==0 and validFlipTimesFromPastWindowKForCurrentIdx%2==0) or (nums[i]==1 and validFlipTimesFromPastWindowKForCurrentIdx%2==1): # alternative
             # same as
             if validFlipTimesFromPastWindowKForCurrentIdx%2 == nums[i]:
                 if i+k>n:

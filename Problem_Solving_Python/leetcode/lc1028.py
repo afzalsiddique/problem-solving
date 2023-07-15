@@ -9,39 +9,81 @@ class Solution:
     # 12 has a depth=2 and the previous node with (depth-1)=1 is 11 and 11 is the parent of 12
     # depth is equal to the number of elements in the stack
     def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
-        def getDepth(i):
-            depth=0
-            while i<len(traversal) and traversal[i]=='-':
+        def getDepth():
+            nonlocal i
+            cnt=0
+            while i<n and traversal[i]=='-':
+                cnt+=1
                 i+=1
-                depth+=1
-            return depth,i
-        def getValue(i):
+            return cnt
+        def getNodeVal():
+            nonlocal i
             val=0
-            while i<len(traversal) and traversal[i]!='-':
+            while i<n and traversal[i]!='-':
                 val=val*10+int(traversal[i])
                 i+=1
-            return val,i
-        def insertIntoParent(parent, child):
-            if parent.left is None:
-                parent.left=child
+            return val
+        def insertIntoParent(par,child):
+            if par.left is None:
+                par.left=child
             else:
-                parent.right=child
+                par.right=child
 
+
+        n=len(traversal)
+        fake=TreeNode(-1)
+        st=[[fake,-1]] # [node,depth]
         i=0
-        rootVal,i=getValue(i)
-        root=TreeNode(rootVal)
-        stack = []
-        stack.append(root)
-        while i<len(traversal):
-            depth,i=getDepth(i)
-            val,i=getValue(i)
-            while stack and len(stack)!=depth:
-                stack.pop()
-            child=TreeNode(val)
-            parent=stack[-1]
-            insertIntoParent(parent,child)
-            stack.append(child)
-        return root
+        while i<n:
+            depth=getDepth()
+            val=getNodeVal()
+            # alternative. Assume fake node lies at depth 0 and root node at depth 1.
+            # In this case stack would be a list of nodes. We don't need the depth info in the stack
+            # while len(st)!=depth+1:
+            while st[-1][1]>=depth:
+                st.pop()
+            par=st[-1][0]
+            node=TreeNode(val)
+            insertIntoParent(par,node)
+            st.append([node,depth])
+        return fake.left
+class Solution4:
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+        def getDepth():
+            nonlocal i
+            cnt=0
+            while i<n and traversal[i]=='-':
+                cnt+=1
+                i+=1
+            return cnt
+        def getNodeVal():
+            nonlocal i
+            val=0
+            while i<n and traversal[i]!='-':
+                val=val*10+int(traversal[i])
+                i+=1
+            return val
+        def insertIntoParent(par,child):
+            if par.left is None:
+                par.left=child
+            else:
+                par.right=child
+
+
+        n=len(traversal)
+        fake=TreeNode(-1)
+        st=[[fake,-1]] # [node,depth]
+        i=0
+        while i<n:
+            depth=getDepth()
+            val=getNodeVal()
+            while st[-1][1]>=depth:
+                st.pop()
+            par=st[-1][0]
+            node=TreeNode(val)
+            insertIntoParent(par,node)
+            st.append([node,depth])
+        return fake.left
 class Solution3:
     def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
         def parseDepthAndVal(i):
