@@ -1,22 +1,25 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize
-def get_sol(): return Solution()
+def get_sol(): return Solution3()
 class Solution3:
     def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
-        stationIndex = 0
-        fuelStock = 0
+        i = 0
+        distanceTravelled = 0
         n = len(stations)
         max_heap = [-startFuel]
         stationCount=0
         while max_heap:
-            current = heappop(max_heap)*(-1) # max heap
-            fuelStock += current
-            if fuelStock >= target:
+            curFuel = heappop(max_heap)*(-1) # max heap
+            distanceTravelled += curFuel
+            if distanceTravelled >= target:
                 return stationCount
-            while stationIndex < n and stations[stationIndex][0] <= fuelStock:
-                heappush(max_heap,-stations[stationIndex][1])
-                stationIndex+=1
+            while i < n and stations[i][0] <= distanceTravelled:
+                heappush(max_heap,-stations[i][1])
+                i+=1
+            # for i in range(n): # wrong. because taking fuel from the same station multiple times
+            #     if stations[i][0]<=distanceTravelled:
+            #         heappush(max_heap,-stations[i][1])
             stationCount+=1
         return -1
 class Solution:
@@ -58,13 +61,14 @@ class Solution2:
             res+=1
         return -1
 
+
 class MyTestCase(unittest.TestCase):
     def test1(self):
         self.assertEqual(0, get_sol().minRefuelStops(target = 1, startFuel = 1, stations = []))
     def test2(self):
         self.assertEqual(-1, get_sol().minRefuelStops(target = 100, startFuel = 1, stations = [[10,100]]))
     def test3(self):
-        self.assertEqual(2, get_sol().minRefuelStops(target = 100, startFuel = 10, stations = [[10,60],[20,30],[30,30],[60,40]]))
+        self.assertEqual(2, get_sol().minRefuelStops(100,10,[[10,60],[20,30],[30,30],[60,40]]))
     def test4(self):
         self.assertEqual(5, get_sol().minRefuelStops(1000,299,[[26,115],[100,47],[444,198],[608,190],[636,157]]))
     def test5(self):
@@ -75,4 +79,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().minRefuelStops(100, 50, [[25,25],[50,50]]))
     def test8(self):
         self.assertEqual(1, get_sol().minRefuelStops(100, 50, [[25,50],[50,25]]))
-
+    def test9(self):
+        self.assertEqual(-1, get_sol().minRefuelStops(100, 50, [[25,30]]))

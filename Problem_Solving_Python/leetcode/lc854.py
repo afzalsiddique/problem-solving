@@ -101,23 +101,23 @@ class Solution3:
         sizes = uf.size_of_groups()
         return sum(sizes) - len(sizes)
 class mytestcase(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(1, get_sol().kSimilarity(s1 = "ab", s2 = "ba"))
-    def test2(self):
+    def test02(self):
         self.assertEqual(2, get_sol().kSimilarity(s1 = "abc", s2 = "bca"))
-    def test3(self):
+    def test03(self):
         self.assertEqual(2, get_sol().kSimilarity(s1 = "abac", s2 = "baca"))
-    def test4(self):
+    def test04(self):
         self.assertEqual(2, get_sol().kSimilarity(s1 = "aabc", s2 = "abca"))
-    def test5(self):
+    def test05(self):
         self.assertEqual(1, get_sol().kSimilarity("cba", "abc"))
-    def test6(self):
+    def test06(self):
         self.assertEqual(3, get_sol().kSimilarity("bccaba", "abacbc"))
-    def test7(self):
+    def test07(self):
         self.assertEqual(3, get_sol().kSimilarity("aabccb", "bbcaca"))
-    def test8(self):
+    def test08(self):
         self.assertEqual(1, get_sol().kSimilarity("abcbca", "ababcc"))
-    def test9(self):
+    def test09(self):
         self.assertEqual(11, get_sol().kSimilarity("accbadbbacadcdedaebc", "caeacbbacddceacadbbd"))
     def test10(self):
         self.assertEqual(6, get_sol().kSimilarity("baaabaabbbabbbabaaab", "babbbbbaabaabaaaabba"))

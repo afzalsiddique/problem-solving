@@ -35,14 +35,14 @@ class Solution2:
         return lo
 
 class Tester(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(3, get_sol().findKthNumber(m = 3, n = 3, k = 5))
-    def test2(self):
+    def test02(self):
         self.assertEqual(6, get_sol().findKthNumber(m = 2, n = 3, k = 6))
-    def test3(self):
+    def test03(self):
         self.assertEqual(312, get_sol().findKthNumber(45, 12, 471))
-    def test4(self):
+    def test04(self):
         self.assertEqual(31666344, get_sol().findKthNumber(9895, 28405, 100787757))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
+    # def test05(self):
+    # def test06(self):
+    # def test07(self):

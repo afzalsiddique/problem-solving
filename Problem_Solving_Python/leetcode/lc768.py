@@ -73,3 +73,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(1, get_sol().maxChunksToSorted(arr = [4,2,2,1,1]))
     def test10(self):
         self.assertEqual(2, get_sol().maxChunksToSorted(arr = [3,2,1,7,6,5,4]))
+    def test11(self):
+        self.assertEqual(5, get_sol().maxChunksToSorted(arr = [3,1,2,4,4,4,4]))

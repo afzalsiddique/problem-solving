@@ -3,6 +3,13 @@ import unittest; from typing import List;
 
 
 def get_sol(): return Solution()
+# class Solution2:
+    # use bfs like leetcode 854
+
+# class Solution3:
+#     https://leetcode.com/problems/couples-holding-hands/discuss/1198075/Easy-C%2B%2B-Solution-oror-Full-Documented-Explanation-oror-Very-Easy-Concept
+
+
 # https://leetcode.com/problems/couples-holding-hands/discuss/336706/The-general-mathematical-idea%3A-permutation-graph-and-graph-decomposition.
 class UnionFind:
     def __init__(self,n):

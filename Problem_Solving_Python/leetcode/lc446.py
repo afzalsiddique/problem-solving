@@ -8,24 +8,32 @@ class Solution:
     def numberOfArithmeticSlices(self, nums: List[int]) -> int:
         n=len(nums)
         dp=[Counter() for _ in range(n)] # dp[i][d] denotes the number of arithmetic subsequences that ends with A[i] and its common difference is d
-        res=0
         for i in range(n):
             for j in range(i):
                 diff=nums[i]-nums[j]
                 dp[i][diff]+=dp[j][diff]+1
-        res+=sum(sum(dp[i].values()) for i in range(n))
+        res=sum(sum(dp[i].values()) for i in range(n))
         return res-(n*(n-1)//2)
+
+
 
 
 class Tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(3,Solution().numberOfArithmeticSlices(nums = [2,4,6,8]))
     def test2(self):
-        self.assertEqual(5,Solution().numberOfArithmeticSlices(nums = [7,7,7,7]))
-    def test3(self):
         self.assertEqual(7,Solution().numberOfArithmeticSlices(nums = [2,4,6,8,10]))
+    def test3(self):
+        self.assertEqual(1,Solution().numberOfArithmeticSlices(nums = [7,7,7]))
     def test4(self):
-        self.assertEqual(16,Solution().numberOfArithmeticSlices(nums = [7,7,7,7,7]))
+        self.assertEqual(5,Solution().numberOfArithmeticSlices(nums = [7,7,7,7]))
     def test5(self):
+        self.assertEqual(16,Solution().numberOfArithmeticSlices(nums = [7,7,7,7,7]))
+    def test6(self):
+        self.assertEqual(42,Solution().numberOfArithmeticSlices(nums = [7,7,7,7,7,7]))
+    def test7(self):
+        self.assertEqual(8,Solution().numberOfArithmeticSlices(nums = [2,4,6,8,7,7,7,7]))
+    def test8(self):
+        self.assertEqual(9,Solution().numberOfArithmeticSlices(nums = [2,7,4,7,6,7,8,7]))
+    def test9(self):
         self.assertEqual(0,Solution().numberOfArithmeticSlices(nums = [0,2000000000,-294967296]))
-    # def test6(self):
