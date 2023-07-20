@@ -3,15 +3,17 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # PERSON POSITION AND BOX POSITION IS ENOUGH TO REPRESENT A STATE
+    # after pushing the box, the person's new position is the old position of the box
     def minPushBox(self, grid: List[List[str]]) -> int:
         def withinAndNoObstacleAndNoBox(x:int,y:int,b_x:int,b_y:int)->bool:
-            return [x,y]!=[b_x,b_y] and 0<=x<len(grid) and 0<=y<len(grid[0]) and grid[x][y]!='#'
+            return 0<=x<len(grid) and 0<=y<len(grid[0]) and [x,y]!=[b_x,b_y] and grid[x][y]!='#'
         def get_4d_moves(x:int, y:int,b_x,b_y)->List[tuple[int,int]]:
             return [(x+dx,y+dy) for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)] if withinAndNoObstacleAndNoBox(x+dx,y+dy,b_x,b_y)]
 
         # whether person can reach (x,y) while box is lying at (b_x,b_y)
         # the box is changing position, so it must be passed as parameter
-        def canReach(p_x, p_y, x, y, b_x, b_y):
+        def canReach(p_x, p_y, b_x, b_y, x, y):
             vis=set()
             q=deque([(p_x, p_y)])
             while q:
@@ -31,7 +33,7 @@ class Solution:
                 return False
             # in order to push the box the person must be able to reach the cell that is opposite to the direction pushing
             X,Y= b_x - dx, b_y - dy
-            tmp=canReach(p_x, p_y, X, Y,b_x,b_y)
+            tmp= canReach(p_x, p_y, b_x, b_y, X, Y)
             return tmp
 
         m,n=len(grid),len(grid[0])
@@ -40,7 +42,7 @@ class Solution:
         b_x,b_y=[[i,j] for i in range(m) for j in range(n) if grid[i][j]=='B'][0] # box position
         target_x,target_y=[[i,j] for i in range(m) for j in range(n) if grid[i][j]=='T'][0] # target position
         q=deque()
-        q.append((p_x,p_y,b_x,b_y))
+        q.append((p_x,p_y,b_x,b_y)) # ******* ENOUGH TO REPRESENT A STATE ************
         vis=set()
         res=0
         while q:
@@ -55,7 +57,7 @@ class Solution:
                 for dx,dy in DIRS:
                     if not canPush(p_x, p_y, b_x, b_y, dx, dy):
                         continue
-                    q.append((b_x,b_y,b_x+dx,b_y+dy))
+                    q.append((b_x,b_y,b_x+dx,b_y+dy)) # now the person is at the box position
 
             res+=1
         return -1

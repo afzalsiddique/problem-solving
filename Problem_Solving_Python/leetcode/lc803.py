@@ -39,6 +39,7 @@ class Solution:
             for x,y in get_4d_moves(i,j):
                 if grid[x][y] != 1: continue
                 uf.union((i, j), (x, y))
+                # if x==0: uf.union((x,y),(-1,-1)) # redundant
 
             if i == 0: uf.union(DUMMY_CONNECTED_TO_TOP, (i, j))
 

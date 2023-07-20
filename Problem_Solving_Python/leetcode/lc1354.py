@@ -27,10 +27,12 @@ class Solution:
             other = summ-cur
             if other==0:
                 return False
-            prev=cur%other # why mod? -> https://leetcode.com/problems/construct-target-array-with-multiple-sums/discuss/510256/JavaC++Python-Backtrack-OJ-is-wrong/499352
-            mxHeap.push(prev)
-            summ-=cur
-            summ+=prev
+            newCur=cur%other # why mod? -> https://leetcode.com/problems/construct-target-array-with-multiple-sums/discuss/510256/JavaC++Python-Backtrack-OJ-is-wrong/499352
+            mxHeap.push(newCur)
+            summ=other+newCur
+            # alternative
+            # summ-=cur
+            # summ+=newCur
         return summ==len(target)
 class Solution2:
     def isPossible(self, target: List[int]) -> bool:
