@@ -3,38 +3,60 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def fallingSquares(self, positions: List[List[int]]) -> List[int]:
-        def overlapping(l1,r1,l2,r2):
-            return min(r1,r2)>max(l1,l2)
-        n=len(positions)
-        res=[]
-        maxx=float('-inf')
-        li = []
-        for i in range(n):
-            curmax=0
-            l1,h1=positions[i]
-            r1=l1+h1
-            for l2,r2,h2 in li:
-                if overlapping(l1,r1,l2,r2):
-                    curmax=max(curmax,h2)
+    def longestDecomposition(self, text: str) -> int:
+        @cache
+        def dp(idx):
+            if idx>n-idx-1:
+                return 0
+            res=0
+            ch=text[idx]
+            ch_i=0
+            found=False
+            while pos[ch][ch_i]<idx:
+                ch_i+=1
+            iCopy=pos[ch][ch_i]
+            jStart=bisect_right(pos[ch],iCopy)
+            while jStart<len(pos[ch]) and pos[ch][jStart]<n-idx:
+                j=pos[ch][jStart]
+                i=iCopy
+                if j<=i:
+                    continue
+                if j>=n-idx:
+                    break
+                while i<n-i-1 and j<n-idx and text[i]==text[j]:
+                    i+=1
+                    j+=1
+                if j==n-idx:
+                    ans=2+dp(i)
+                    res=max(res,ans)
+                    found=True
+                    break
+                if found:
+                    break
+                jStart+=1
+            return max(res,1)
 
-            newHeight=curmax+h1
-            li.append([l1,r1,newHeight])
-            maxx=max(maxx,newHeight)
-            res.append(maxx)
+        n=len(text)
+        pos=defaultdict(list)
+        for i,a in enumerate(text): pos[a].append(i)
+        res=dp(0)
         return res
 
 
-class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual([2,5], get_sol().fallingSquares([[1,2],[2,3]]))
-    def test2(self):
-        self.assertEqual([2,5,5], get_sol().fallingSquares([[1,2],[2,3],[6,1]]))
-    def test3(self):
-        self.assertEqual([100,100], get_sol().fallingSquares([[100,100],[200,100]]))
-    def test4(self):
-        self.assertEqual([1,10,18], get_sol().fallingSquares([[2,1],[2,9],[1,8]]))
-    # def test5(self):
-    # def test6(self):
-    # def test7(self):
-
+class MyTestCase(unittest.TestCase):
+    def test01(self):
+        self.assertEqual(5,get_sol().longestDecomposition("ghiabcadamabcghi"))
+    def test02(self):
+        self.assertEqual(1,get_sol().longestDecomposition("merchant"))
+    def test03(self):
+        self.assertEqual(11,get_sol().longestDecomposition("antaprezatepzapreanta"))
+    def test04(self):
+        self.assertEqual(3,get_sol().longestDecomposition("helloadamhello"))
+    def test05(self):
+        self.assertEqual(2,get_sol().longestDecomposition("abcabc"))
+    def test06(self):
+        self.assertEqual(4,get_sol().longestDecomposition("ghiabcabcghi"))
+    def test07(self):
+        self.assertEqual(7,get_sol().longestDecomposition("ghiabcdefhelloadamhelloabcdefghi"))
+    def test08(self):
+        self.assertEqual(1000,get_sol().longestDecomposition("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))

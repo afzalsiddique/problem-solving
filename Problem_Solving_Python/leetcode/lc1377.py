@@ -2,6 +2,29 @@ from collections import defaultdict;
 import unittest; from typing import List;
 def get_sol(): return Solution()
 class Solution:
+    # instead of undirected graph construct a directed graph
+    def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+        def dfs(u,t): # return probability
+            if t==0 or len(g[u])==0:
+                return 1 if u==target else 0
+
+            prob=0
+            for v in g[u]:
+                prob=dfs(v,t-1)
+                if prob: # if target is found among the children of the current node
+                    break
+
+            totalBranches=len(g[u])
+            prob=prob*(1/totalBranches)
+            return prob
+
+        g={1:[]} # instead of undirected graph construct a directed graph
+        for a,b in edges:
+            if a not in g: a,b=b,a
+            g[a].append(b)
+            g[b]=[]
+        return dfs(1,t)
+class Solution3:
     def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
         def dfs(i,par,t): # return target/total
             if t==0:
@@ -49,7 +72,6 @@ class Solution2:
 
         if len(edges)==0: return 1.0
         return dfs(1, -1, time)
-
 
 
 

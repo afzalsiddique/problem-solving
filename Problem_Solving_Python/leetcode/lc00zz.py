@@ -3,44 +3,60 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def minimumDistance(self, word: str) -> int:
-        def getCord(i): return [i//6,i%6]
-        def dist(i,j):
-            x1,y1=getCord(i)
-            x2,y2=getCord(j)
-            return abs(x1-x2)+abs(y1-y2)
-        def dp(i,j,word_i):
-            if word_i==len(word):
-                return 0
-            minn=float('inf')
-            minn=min(minn,dist(i,j)+)
+    def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+        def f(u,t,par):
+            found=False
+            if u==target:
+                found=True
+            if t==0:
+                return [found, 1 if found else 0]
+            val=0
+            for v in g[u]:
+                if v==par:
+                    continue
+                newFound,newVal=f(v,t-1,u)
+                if newFound:
+                    found=newFound
+                    val=newVal
+                    break
+            if found:
+                length=len(g[u])-1
+                if length:
+                    val=val*(1/length)
+                else:
+                    val=1
+            return [found,val]
 
-
-        word=list(map(lambda x:ord(x)-ord('A'),word))
-        pq=[]
-        for i in range(26):
-            for j in range(i+1,26):
-                heappush(pq,[0,i,j,0]) # cost,finger1,finger2,word_idx
-
-
-        while pq:
-            cost,i,j,word_idx=heappop(pq)
-            if word_idx==len(word):
-                return cost
-            k=word[word_idx]
-            heappush(pq,[cost+dist(i,k),k,j,word_idx+1]) # use left finger
-            heappush(pq,[cost+dist(j,k),i,k,word_idx+1]) # use left finger
-
+        g={1:[]}
+        for a,b in edges:
+            if a in g:
+                g[a].append(b)
+                g[b]=[]
+            else:
+                g[b].append(a)
+                g[a]=[]
+        found,val=f(1,t,0)
+        return val
 
 
 class Tester(unittest.TestCase):
-    def test1(self):
-        self.assertEqual(3, get_sol().minimumDistance(word = "CAKE"))
-    def test2(self):
-        self.assertEqual(6, get_sol().minimumDistance(word = "HAPPY"))
-    def test3(self):
-        self.assertEqual(3, get_sol().minimumDistance(word = "NEW"))
-    def test4(self):
-        self.assertEqual(7, get_sol().minimumDistance(word = "YEAR"))
-    def test5(self):
-        self.assertEqual(500, get_sol().minimumDistance(word = "KXGJRDQYJCDRTJXBHDVFOFFOIWFOWSARMADDJCUYMGIXMHOUTQRLFNUZASNTHJLQKPUYXOXWILIYFFHOKUALPTZWJVHADOXQFGMWTKREBPNOZOLAGSGCPEVCXQWVRMTIGCNARPWXKXAGTJYYZNOWQWJCBCLMUNMZUWYUYHJPMRAUNUJVPEMVNMWYSXTJPRLJNSUYFLBNOOJCVHKHMATKEFPCYDFTBHUFAUQVNVNFJMOJRBFPFDVDPXJXZJJMBSIK"))
+    def test01(self):
+        self.assertEqual(0.5, get_sol().frogPosition(4, [[1,2],[1,4],[2,3]], 2, 4))
+    def test02(self):
+        self.assertEqual(0.5, get_sol().frogPosition(4, [[1,2],[1,4],[2,3]], 3, 4))
+    def test03(self):
+        self.assertEqual(0.0, get_sol().frogPosition(6, [[2,1],[4,1],[5,1],[3,1],[6,3]], 7, 3))
+    def test04(self):
+        self.assertEqual(1.0, get_sol().frogPosition(1, [], 1, 1))
+    def test05(self):
+        self.assertEqual(0.0, get_sol().frogPosition(9, [[2,1],[3,2],[4,3],[5,3],[6,5],[7,3],[8,4],[9,5]], 9, 1))
+    def test06(self):
+        self.assertEqual(0.0, get_sol().frogPosition(5, [[2,1],[3,2],[5,3],[4,5]], 4, 1))
+    def test07(self):
+        self.assertEqual(0.16666666666666667, get_sol().frogPosition(7, [[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 20, 6))
+    def test08(self):
+        self.assertEqual(0.0, get_sol().frogPosition(9, [[2,1],[3,1],[4,2],[5,3],[6,5],[7,4],[8,7],[9,7]], 1, 8))
+    def test09(self):
+        self.assertEqual(0.16666666666666667, get_sol().frogPosition(7, [[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 2, 4))
+    def test10(self):
+        self.assertEqual(0.3333333333333333, get_sol().frogPosition( 7,[[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]], 1,  7))

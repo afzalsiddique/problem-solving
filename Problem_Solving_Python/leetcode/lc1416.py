@@ -4,6 +4,26 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     def numberOfArrays(self, s: str, k: int) -> int:
+        MOD=10**9+7
+        @cache
+        def dfs(i):
+            if i==len(s):
+                return 1
+            if s[i]=='0':
+                return 0
+            num=0
+            res=0
+            for j in range(i,len(s)):
+                num=num*10+ord(s[j])-ord('0')
+                if num>k:
+                    break
+                res+=dfs(j+1)
+                res%=MOD
+            return res
+
+        return dfs(0)
+class Solution2:
+    def numberOfArrays(self, s: str, k: int) -> int:
         def valid(s:str):
             if s[0]=='0': return False
             return int(s)<=k
@@ -25,26 +45,6 @@ class Solution:
         n=len(s)
         noOfDigits=len(str(k))
         return dp(0)
-class Solution2:
-    def numberOfArrays(self, s: str, k: int) -> int:
-        MOD=10**9+7
-        @cache
-        def dfs(i):
-            if i==len(s):
-                return 1
-            if s[i]=='0':
-                return 0
-            num=0
-            res=0
-            for j in range(i,len(s)):
-                num=num*10+ord(s[j])-ord('0')
-                if num>k:
-                    break
-                res+=dfs(j+1)
-                res%=MOD
-            return res
-
-        return dfs(0)
 
 
 

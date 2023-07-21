@@ -20,7 +20,7 @@ class Solution:
         maxHeap=MaxHeap()
         res=float('-inf')
         for x,y in points:
-            while maxHeap and x-maxHeap.topX()>k: # x is greater than topX. already the array is given this way
+            while maxHeap and x-maxHeap.topX()>k: # x is greater than topX as per given condition
                 maxHeap.heappop()
             if maxHeap:
                 res=max(res, maxHeap.topYminusX() + x + y)
