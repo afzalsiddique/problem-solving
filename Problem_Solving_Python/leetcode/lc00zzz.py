@@ -3,60 +3,40 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
-    def longestDecomposition(self, text: str) -> int:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        def getSign(nums):
+            if all(x>0 for x in nums): return 1
+            if all(x<0 for x in nums): return -1
+            return 0
         @cache
-        def dp(idx):
-            if idx>n-idx-1:
-                return 0
-            res=0
-            ch=text[idx]
-            ch_i=0
-            found=False
-            while pos[ch][ch_i]<idx:
-                ch_i+=1
-            iCopy=pos[ch][ch_i]
-            jStart=bisect_right(pos[ch],iCopy)
-            while jStart<len(pos[ch]) and pos[ch][jStart]<n-idx:
-                j=pos[ch][jStart]
-                i=iCopy
-                if j<=i:
-                    continue
-                if j>=n-idx:
-                    break
-                while i<n-i-1 and j<n-idx and text[i]==text[j]:
-                    i+=1
-                    j+=1
-                if j==n-idx:
-                    ans=2+dp(i)
-                    res=max(res,ans)
-                    found=True
-                    break
-                if found:
-                    break
-                jStart+=1
-            return max(res,1)
+        def dp(i,j):
+            if i==m or j==n: return 0
+            return max(
+                nums1[i]*nums2[j]+dp(i+1,j+1),
+                dp(i+1,j),
+                dp(i,j+1))
 
-        n=len(text)
-        pos=defaultdict(list)
-        for i,a in enumerate(text): pos[a].append(i)
-        res=dp(0)
+        m,n=len(nums1),len(nums2)
+        pairMax=max(nums1[i]*nums2[j] for i in range(m) for j in range(n))
+        res=dp(0,0)
+        sign1,sign2=getSign(nums1),getSign(nums2)
+        if sign1*sign2==-1: # all pos in one array and all neg in the other array
+            return pairMax
         return res
 
 
-class MyTestCase(unittest.TestCase):
+class Tester(unittest.TestCase):
     def test01(self):
-        self.assertEqual(5,get_sol().longestDecomposition("ghiabcadamabcghi"))
+        self.assertEqual(18,get_sol().maxDotProduct(nums1 = [2,1,-2,5], nums2 = [3,0,-6]))
     def test02(self):
-        self.assertEqual(1,get_sol().longestDecomposition("merchant"))
+        self.assertEqual(21,get_sol().maxDotProduct(nums1 = [3,-2], nums2 = [2,-6,7]))
     def test03(self):
-        self.assertEqual(11,get_sol().longestDecomposition("antaprezatepzapreanta"))
+        self.assertEqual(-1,get_sol().maxDotProduct(nums1 = [-1,-1], nums2 = [1,1]))
     def test04(self):
-        self.assertEqual(3,get_sol().longestDecomposition("helloadamhello"))
+        self.assertEqual(50,get_sol().maxDotProduct([-5,3,-5,-3,1], [-2,4,2,5,-5]))
     def test05(self):
-        self.assertEqual(2,get_sol().longestDecomposition("abcabc"))
-    def test06(self):
-        self.assertEqual(4,get_sol().longestDecomposition("ghiabcabcghi"))
-    def test07(self):
-        self.assertEqual(7,get_sol().longestDecomposition("ghiabcdefhelloadamhelloabcdefghi"))
-    def test08(self):
-        self.assertEqual(1000,get_sol().longestDecomposition("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+        self.assertEqual(72,get_sol().maxDotProduct([-3,-8,3], [7,-9]))
+    # def test06(self):
+    # def test07(self):
+    # def test08(self):
+    # def test09(self):

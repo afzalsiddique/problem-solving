@@ -17,8 +17,7 @@ class Solution:
                 cur=nums[i]
                 if last==INVALID:
                     res+=backtrack(nums[:i]+nums[i+1:],cur)
-                else:
-                    if check(last,cur):
+                elif check(last,cur):
                         res+=backtrack(nums[:i]+nums[i+1:],cur)
             return res
 

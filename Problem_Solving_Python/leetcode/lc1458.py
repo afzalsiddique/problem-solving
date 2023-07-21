@@ -6,9 +6,7 @@ class Solution:
     def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
         @cache
         def dp(i,j):
-            if i==m:
-                return 0
-            if j==n:
+            if i==m or j==n:
                 return 0
             option1=dp(i+1,j)
             option2=dp(i,j+1)
@@ -35,6 +33,28 @@ class Solution2:
                 else:
                     dp[i][j]=max(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]+nums1[i]*nums2[j],nums1[i]*nums2[j])
         return dp[-1][-1]
+
+class Solution3:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        def getSign(nums):
+            if all(x>0 for x in nums): return 1
+            if all(x<0 for x in nums): return -1
+            return 0
+        @cache
+        def dp(i,j):
+            if i==m or j==n: return 0
+            return max(
+                nums1[i]*nums2[j]+dp(i+1,j+1),
+                dp(i+1,j),
+                dp(i,j+1))
+
+        m,n=len(nums1),len(nums2)
+        pairMax=max(nums1[i]*nums2[j] for i in range(m) for j in range(n))
+        res=dp(0,0)
+        sign1,sign2=getSign(nums1),getSign(nums2)
+        if sign1*sign2==-1: # all pos in one array and all neg in the other array
+            return pairMax
+        return res
 
 class Tester(unittest.TestCase):
     def test01(self):

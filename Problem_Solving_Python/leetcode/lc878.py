@@ -31,11 +31,12 @@ class Solution:
         return beg % MOD
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual(2, get_sol().nthMagicalNumber(1,2,3))
-    def test2(self):
+    def test02(self):
         self.assertEqual(6, get_sol().nthMagicalNumber(4,2,3))
-    # def test3(self):
+    def test03(self):
+        self.assertEqual(999720007, get_sol().nthMagicalNumber(1000000000, 40000, 40000))
     # def test4(self):
     # def test5(self):
     # def test6(self):
