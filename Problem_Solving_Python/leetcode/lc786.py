@@ -3,6 +3,35 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # https://www.youtube.com/watch?v=ZwbSRpPOVHg&t=891s
+    def kthSmallestPrimeFraction(self, arr: List[int], k: int) -> List[int]:
+        def count(target):
+            num,den=arr[0],arr[-1]
+            res=0
+            i=0
+            for j in range(1,n):
+                while arr[i]<=target*arr[j]:
+                    i+=1
+                res+=i
+                if i-1>=0 and arr[i-1]*den>arr[j]*num:
+                    num=arr[i-1]
+                    den=arr[j]
+            return [res,num,den]
+
+
+        n=len(arr)
+        lo=0
+        hi=1
+        while lo<hi:
+            mid=(lo+hi)/2
+            cnt,num,den=count(mid)
+            if cnt==k:
+                return [num,den]
+            if cnt<k:
+                lo=mid
+            elif cnt>k:
+                hi=mid
+class Solution4:
     # https://leetcode.com/problems/k-th-smallest-prime-fraction/discuss/862410/C%2B%2B-Binary-Search-short-and-easy-Faster-than-99
     def kthSmallestPrimeFraction(self,arr, k):
         def getCnt(m):
@@ -69,7 +98,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual([2,5], get_sol().kthSmallestPrimeFraction([1,2,3,5], 3))
     def test02(self):
         self.assertEqual([1,7], get_sol().kthSmallestPrimeFraction([1,7], 1))
-    # def test03(self):
+    def test03(self):
+        self.assertEqual([13,17], get_sol().kthSmallestPrimeFraction([1,13,17,59], 6))
     # def test04(self):
     # def test05(self):
     # def test06(self):

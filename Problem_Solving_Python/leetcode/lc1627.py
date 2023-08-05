@@ -3,31 +3,54 @@ import unittest; from typing import List;
 
 def get_sol(): return Solution()
 class UnionFind:
-    def __init__(self,n):
-        self.n=n
-        self.par=[i for i in range(n+1)]
-        self.size=[1 for _ in range(n+1)]
-    def find(self,a):
-        pa=self.par[a]
-        if a!=pa:
-            self.par[a]=self.find(pa)
-        return self.par[a]
+    def __init__(self):
+        self.par={}
+        self.size={}
+    def __repr__(self): return str(self.par)
+    def add(self,a):
+        if a not in self.par:
+            self.par[a]=a
+            self.size[a]=1
     def union(self,a,b):
-        a,b=self.find(a),self.find(b)
+        self.add(a),self.add(b)
+        a=self.find(a)
+        b=self.find(b)
         if a!=b:
             if self.size[a]<self.size[b]:
                 a,b=b,a
+            self.par[b]=a
             self.size[a]+=self.size[b]
-            self.par[b]=self.par[a]
+    def find(self,a):
+        self.add(a)
+        if a!=self.par[a]:
+            self.par[a]=self.find(self.par[a])
+        return self.par[a]
     def sameGroup(self,a,b): return self.find(a)==self.find(b)
 class Solution:
+    # sieve + union find
+    def areConnected(self, n: int, threshold: int, queries: List[List[int]]) -> List[bool]:
+        uf=UnionFind()
+        prime = [True]*(n+1) # optional. increases performance
+        p = threshold+1
+        while p <= n:
+            if prime[p]:
+                for i in range(2*p, n+1, p):
+                    uf.union(p,i)
+                    prime[i] = False
+            p += 1
+        res=[]
+        for a,b in queries:
+            res.append(uf.find(a)==uf.find(b))
+        return res
+class Solution2:
+    # gcd + union find
     def areConnected(self, n: int, threshold: int, queries: List[List[int]]) -> List[bool]:
         def gcd(a,b):
             if a>b: return gcd(b,a)
             if a==0: return b
             return gcd(b%a,a)
 
-        uf=UnionFind(n)
+        uf=UnionFind()
         for u in range(threshold+1,n+1):
             i=2
             while u*i<=n:

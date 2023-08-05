@@ -101,26 +101,64 @@ class Solution2:
             return self.convert(digits)
         return ''
 
+
+class Solution3:
+    def largestMultipleOfThree(self, digits: List[int]) -> str:
+        def convert():
+            res=[]
+            for dig in sorted(count.keys(),reverse=True):
+                res.append(str(dig)*count[dig])
+            res=''.join(res)
+            if not res or res[0]!='0':
+                return res
+            return '0'
+
+        digits.sort()
+        count=Counter(digits)
+        summ=sum(digits)
+        if summ==0:
+            return '0'
+        remainder=summ%3
+        if remainder==0:
+            return convert()
+        # remove one digit
+        for dig in sorted(count.keys()):
+            if dig%3==remainder:
+                count[dig]-=1
+                return convert()
+        # remove two digits
+        for dig1 in sorted(count.keys()):
+            for dig2 in sorted(count.keys()):
+                if dig1==0 or dig2==0:
+                    continue
+                count[dig1]-=1
+                count[dig2]-=1
+                if count[dig1]>=0 and count[dig2]>=0 and (dig1+dig2)%3==remainder:
+                    return convert()
+                count[dig1]+=1 # backtrack
+                count[dig2]+=1
 class MyTestCase(unittest.TestCase):
-    def test1(self):
+    def test01(self):
         self.assertEqual('981', get_sol().largestMultipleOfThree([8,1,9]))
-    def test2(self):
+    def test02(self):
         self.assertEqual('8760', get_sol().largestMultipleOfThree([8,6,7,1,0]))
-    def test3(self):
+    def test03(self):
         self.assertEqual('', get_sol().largestMultipleOfThree([1]))
-    def test4(self):
+    def test04(self):
         self.assertEqual('0', get_sol().largestMultipleOfThree([0,0,0,0,0,0]))
-    def test5(self):
+    def test05(self):
         self.assertEqual('111', get_sol().largestMultipleOfThree([1,1,1]))
-    def test6(self):
+    def test06(self):
         self.assertEqual('', get_sol().largestMultipleOfThree([5,8]))
-    def test7(self):
+    def test07(self):
         self.assertEqual('966', get_sol().largestMultipleOfThree([9,8,6,8,6]))
-    def test8(self):
+    def test08(self):
         self.assertEqual('966', get_sol().largestMultipleOfThree([9,7,6,7,6]))
-    def test9(self):
+    def test09(self):
         self.assertEqual('111', get_sol().largestMultipleOfThree([1,1,1,2]))
     def test10(self):
         self.assertEqual('99999999999999999999999999999999999999999999999999999988888888888888888888888888888888888888888888888888888888877777777777777777777777777777777777777777777777777666666666666666666666666666666666666666666666666666666666555555555555555555555555555555555555555555555555554444444444444444444444444444444444444444444443333333333333333333333333333333333333333333333333333333332222222222222222222222222222222222222222222222221111111111111111111111111111111111111111111111110000000000000000000000000000000000', get_sol().largestMultipleOfThree([6,0,8,2,6,3,5,8,6,3,0,9,8,0,8,5,4,5,1,6,9,3,0,4,7,4,3,7,8,2,6,8,3,3,7,9,2,6,6,9,9,7,8,3,5,9,8,1,1,2,9,8,8,3,8,1,9,5,3,1,7,2,0,0,4,5,0,1,3,5,8,8,4,4,0,7,5,2,4,3,6,7,5,8,6,6,8,3,4,1,3,9,0,7,3,1,1,9,3,7,2,6,7,6,4,5,6,1,5,0,6,0,6,0,7,4,6,4,2,6,3,1,4,6,8,6,0,2,1,8,5,2,9,7,9,6,3,2,2,9,3,7,1,9,7,3,3,7,6,4,6,1,8,8,5,6,6,8,7,1,5,0,7,2,2,9,4,0,7,5,3,5,8,1,1,5,8,8,2,4,1,6,8,0,5,5,7,0,2,8,9,9,9,3,8,3,2,2,9,3,1,1,7,3,2,3,9,6,6,1,3,7,4,7,6,7,5,4,5,0,7,7,4,9,5,8,5,6,1,6,1,6,9,9,3,4,4,8,6,7,1,8,2,7,7,4,3,9,7,9,4,8,3,6,2,0,2,1,3,8,7,7,6,4,8,3,6,9,8,1,3,3,6,3,6,8,5,3,4,8,3,3,5,3,8,7,0,1,9,1,2,1,2,9,9,9,2,1,5,6,4,4,9,3,1,0,3,0,0,5,8,5,5,4,6,6,5,4,7,4,1,4,7,0,7,1,6,4,5,0,8,2,9,3,1,7,7,9,9,2,5,6,6,8,2,9,5,8,4,5,6,3,5,2,7,7,2,1,3,2,2,7,9,8,7,7,4,4,5,1,6,1,8,9,3,0,4,6,3,5,4,1,0,8,9,6,9,8,0,2,9,1,6,7,1,0,8,7,5,4,0,5,6,9,5,7,1,5,2,1,5,9,2,5,6,9,8,9,3,7,3,3,6,5,9,3,8,2,9,4,6,9,5,7,8,0,6,3,4,5,8,6,4,1,8,8,9,3,2,0,4,2,1,9,6,7,7,2,9,2,8,2,6,2,1,3,8,5,1,6,2,0,7,2,8,1,0,2,2,5,9,5,8,2,5,1,2,3,9,4,8,9,8,9,3,4,3,4,4,3]))
     def test11(self):
         self.assertEqual('7770', get_sol().largestMultipleOfThree([8,7,0,7,7]))
+    def test12(self):
+        self.assertEqual('0', get_sol().largestMultipleOfThree([0,0,0,0,0,1]))

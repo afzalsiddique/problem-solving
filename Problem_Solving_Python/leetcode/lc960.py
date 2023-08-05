@@ -25,7 +25,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(4, get_sol().minDeletionSize(["edcba"]))
     def test03(self):
         self.assertEqual(0, get_sol().minDeletionSize(["ghi","def","abc"]))
-    # def test04(self):
+    def test04(self):
+        self.assertEqual(2, get_sol().minDeletionSize(["baabab"]))
     # def test05(self):
     # def test06(self):
     # def test07(self):

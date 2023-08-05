@@ -23,6 +23,7 @@ class UnionFind:
         if a!=self.par[a]:
             self.par[a]=self.find(self.par[a])
         return self.par[a]
+    def sameGroup(self,a,b): return self.find(a)==self.find(b)
     def unionAll(self,li):
         if len(li)==0: return
         if len(li)==1:
