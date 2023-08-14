@@ -1,6 +1,4 @@
-with
-c as
-(
+with c as (
     select product_id,
         min(year) first_year
     from sales
