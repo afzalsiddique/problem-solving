@@ -28,3 +28,6 @@ class Tester(unittest.TestCase):
     def test01(self):
         n=1000000
         self.assertEqual(Correct().SieveOfEratosthenes(n), Solution().SieveOfEratosthenes(n))
+    def test02(self):
+        n=1000000
+        self.assertEqual(Correct().SieveOfEratosthenes(n), Solution().SieveOfEratosthenes(n))
