@@ -1,31 +1,27 @@
 from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union, Dict; from functools import cache; from operator import lt, gt
-from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list, ListNode
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
 class Solution:
-    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        def preorder(u, x, y): # (node, x-coordinate, y-coordinate)
-            nonlocal idx # global variable
-            if not u: return # base
-            idx+=1 # increment globally
-            di[x].append([y,idx,u.val])
-            preorder(u.left,x-1,y+1)
-            preorder(u.right,x+1,y+1)
-
-        di=defaultdict(list)
-        idx=0
-        preorder(root,0,0)
-        res=[]
-        for x in sorted(di.keys()):
-            li = sorted(di[x])
-            res.append([u for y,idx,u in li])
-        return res
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        hp=[[lList.val,lList] for lList in lists if lList]
+        heapify(hp)
+        dummy=ListNode(-99)
+        head=dummy
+        while hp:
+            top,ll=heappop(hp)
+            if ll.next:
+                ll=ll.next
+                heappush(hp,[ll.val,ll])
+            head.next(top)
+            head=head.next
+        return dummy.next
 
 
 class MyTestCase(unittest.TestCase):
     def test01(self):
-        self.assertEqual([[9],[3,15],[20],[7]], get_sol().verticalOrder(des([3,9,20,None,None,15,7])))
+        self.assertEqual(make_linked_list([1,1,2,3,4,4,5,6]), get_sol().mergeKLists(list(map(make_linked_list,[[1,4,5],[1,3,4],[2,6]]))))
     def test02(self):
         self.assertEqual([[4],[9],[3,0,1],[8],[7]], get_sol().verticalOrder(des([3,9,8,4,0,1,7])))
     def test03(self):

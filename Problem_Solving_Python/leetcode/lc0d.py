@@ -6,9 +6,9 @@ def get_sol(): return Solution()
 class Solution:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         def preorder(u, x, y): # (node, x-coordinate, y-coordinate)
-            nonlocal idx # global variable
+            nonlocal idx
             if not u: return # base
-            idx+=1 # increment globally
+            idx+=1
             di[x].append([y,idx,u.val])
             preorder(u.left,x-1,y+1)
             preorder(u.right,x+1,y+1)

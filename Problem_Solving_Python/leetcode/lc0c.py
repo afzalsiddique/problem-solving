@@ -5,22 +5,21 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        def preorder(u, x, y): # (node, x-coordinate, y-coordinate)
-            nonlocal idx # global variable
+        def preorder(u, x, y,par_x): # (node, x-coordinate, y-coordinate)
             if not u: return # base
-            idx+=1 # increment globally
-            di[x].append([y,idx,u.val])
-            preorder(u.left,x-1,y+1)
-            preorder(u.right,x+1,y+1)
+            di[x].append([y,par_x,u.val])
+            preorder(u.left,x-1,y+1,x)
+            preorder(u.right,x+1,y+1,x)
 
         di=defaultdict(list)
-        idx=0
-        preorder(root,0,0)
+        preorder(root,0,0,-1)
         res=[]
         for x in sorted(di.keys()):
             li = sorted(di[x])
-            res.append([u for y,idx,u in li])
+            print(x,li)
+            res.append([u for y,par_x,u in li])
         return res
+
 
 
 class MyTestCase(unittest.TestCase):
