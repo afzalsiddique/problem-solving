@@ -94,7 +94,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(make_linked_list([]),get_sol().mergeKLists(list(map(make_linked_list,[[]]))))
     def test03(self):
         self.assertEqual(make_linked_list([]),get_sol().mergeKLists(list(map(make_linked_list,[]))))
-    # def test04(self):
+    def test04(self):
+        self.assertEqual(make_linked_list([1,2]),get_sol().mergeKLists(list(map(make_linked_list,[[1,2],[]]))))
     # def test05(self):
     # def test06(self):
     # def test07(self):

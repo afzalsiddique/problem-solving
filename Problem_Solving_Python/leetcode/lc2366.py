@@ -9,19 +9,9 @@ class Solution:
         res=0
         right=nums[-1]
         for i in range(n-2,-1,-1):
-            tmp=nums[i]/right
-            if right<nums[i]  :
-                if ceil(tmp)!=floor(tmp):
-                    right=right-1
-                # else:
-                #     right=nums[i]
-            else:
-                right=min(right,nums[i])
-                # right=nums[i]
-                # right=min(nums[i],right-1)
-            # if ceil(tmp)!=floor(tmp):
-            #     right=right-1
-            res+=ceil(tmp)-1
+            noOfParts=ceil(nums[i]/right) # nums[i] will be divided into noOfParts
+            right=nums[i]//noOfParts # the smallest value after dividing
+            res+=noOfParts-1 # dividing into noOfParts will require (noOfParts-1) steps
         return res
 
 

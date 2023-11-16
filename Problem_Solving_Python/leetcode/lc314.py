@@ -4,17 +4,37 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
 class Solution:
+    def __init__(self):
+        #Creating a hash for mapping the index to nodes vector.
+        self.node_map : defaultdict[int,List] = defaultdict(list)
+        self.node_keys: List[int] = []
+    # Main executor function
+    def verticalOrder(self, root:'TreeNode')->List[List[int]]:
+        if not root:
+            return []
+        #create a queue for keeping nodes
+        queue = deque([(root,0)])
+        while queue:
+            current,level = queue.popleft()
+            self.node_map[level].append(current.val)
+            if current.left:
+                queue.append((current.left,level-1))
+            if current.right:
+                queue.append((current.right,level+1))
+        result = [self.node_map[key]  for key in sorted(self.node_map.keys())]
+        return result
+class Solution2:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         def preorder(u, x, y): # (node, x-coordinate, y-coordinate)
-            nonlocal idx # global variable
+            nonlocal clock # global variable
             if not u: return # base
-            idx+=1 # increment globally
-            di[x].append([y,idx,u.val])
+            clock+=1 # increment globally
+            di[x].append([y,clock,u.val])
             preorder(u.left,x-1,y+1)
             preorder(u.right,x+1,y+1)
 
         di=defaultdict(list)
-        idx=0
+        clock=0
         preorder(root,0,0)
         res=[]
         for x in sorted(di.keys()):
