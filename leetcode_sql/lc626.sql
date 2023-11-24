@@ -1,11 +1,11 @@
-SELECT
-	CASE
-		WHEN id % 2 <> 0 AND id = (SELECT COUNT(*) FROM seat) THEN id
-		WHEN id % 2 = 0 THEN id - 1
-		ELSE
-			id + 1
-	END as id,
-	student
-FROM seat
-ORDER BY id
-;
+with total_students as (
+    select count(*) total_no_of_students from seat
+)
+select 
+    case when id%2=1 and id=(select total_no_of_students from total_students) then id
+    when id%2=1 then id+1
+    else id-1
+    end id
+    , student
+from seat
+order by id

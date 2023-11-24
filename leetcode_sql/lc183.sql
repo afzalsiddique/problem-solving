@@ -1,2 +1,3 @@
-select name as customers from customers
-    where id not in (select distinct customerId from orders);
+select name from customers c
+    where c.id not in 
+        (select distinct customerId from orders)

@@ -1,25 +1,23 @@
-
-with c as (
-select delivery_id,
-    min(order_date)=min(customer_pref_delivery_date) Immediate
-    from delivery
-    group by customer_id
+WITH t1 AS -- first order of each customer
+(
+	SELECT  customer_id
+	       ,MIN(order_date) first_order
+	FROM delivery
+	GROUP BY  1
 )
-select round(sum(Immediate)/count(*)*100,2) immediate_percentage
-from c
-
---
-with f as (
-	select customer_id
-	from delivery
-	group by customer_id
-	having min(order_date)=min(customer_pref_delivery_date)
+, t2 as ( -- immediate order
+  SELECT  t1.customer_id
+        ,t1.first_order
+        ,customer_pref_delivery_date
+  FROM t1
+  JOIN delivery d
+  ON t1.customer_id = d.customer_id
+    and t1.first_order=d.order_date
+    and t1.first_order=d.customer_pref_delivery_date
 )
-
-
-select round(
-	(select count(*) from f)
-	/(select count(distinct customer_id) from Delivery)
-	*100,2)
-
-	immediate_percentage
+SELECT
+  round(
+    (SELECT COUNT(*) FROM t2) / (SELECT COUNT(*) FROM t1)*100 
+    ,2
+  )
+  AS immediate_percentage;

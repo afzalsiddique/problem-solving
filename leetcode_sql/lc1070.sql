@@ -1,16 +1,8 @@
-with c as (
-    select product_id,
-        min(year) first_year
-    from sales
-    group by product_id
+with min_year as (
+  select product_id, min(year) first_year
+  from sales
+  group by 1
 )
-
-select c.product_id,
-    c.first_year,
-    s.quantity,
-    s.price
-from c
-    inner join sales s
-        on s.product_id=c.product_id
-           and c.first_year=s.year
-;
+select product_id, year first_year, quantity, price
+from sales
+where (product_id, year) in (select * from min_year)

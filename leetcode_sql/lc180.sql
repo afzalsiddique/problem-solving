@@ -1,14 +1,11 @@
-select distinct num ConsecutiveNums
-from logs
-where (id+1,num) in (select * from logs)
-    and (id+2,num) in (select * from logs)
-;
--- 3 self joins
-select distinct a.num ConsecutiveNums
-from logs a
-	inner join logs b
-		on a.id+1=b.id
-			and a.num=b.num
-	inner join logs c
-		on b.id+1=c.id
-			and b.num=c.num
+select distinct l1.num ConsecutiveNums
+    -- ,l1.*
+    -- ,l2.*
+    -- ,l3.*
+from logs l1 
+join logs l2
+on l1.id+1=l2.id
+    and l1.num=l2.num
+join logs l3
+on l2.id+1=l3.id
+    and l2.num=l3.num
