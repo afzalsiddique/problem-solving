@@ -1,7 +1,20 @@
 import itertools; import math; import operator; import random; import re; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List
 
-# both min and max heap and two elements
+class Heap5(list):
+    # both min and max heap with list
+    def __init__(self,isMaxHeap=False):
+        super().__init__()
+        self.mul=-1 if isMaxHeap else 1
+    def top(self):
+        li=self[0]
+        return [x*self.mul for x in li]
+    def push(self, li):
+        heappush(self, [x*self.mul for x in li])
+    def heappop(self):
+        li=heappop(self)
+        return [x*self.mul for x in li]
 class Heap4(list):
+    # both min and max heap and two elements
     def __init__(self,isMaxHeap=False):
         super().__init__()
         self.mul=-1 if isMaxHeap else 1
