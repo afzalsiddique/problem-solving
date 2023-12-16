@@ -27,7 +27,7 @@ class Solution:
             # option1: do not add rod any ends. copy dp
             dpCopy=defaultdict(lambda :float('-inf'))
             for k,v in dp.items(): dpCopy[k]=v
-            # alternative. Instead of using dpCopy use a list. I don't think option1 is necessary
+            # alternative. Instead of using dpCopy use a list.
             # li = list(dp.items())
             # for diff,taller in li:
             for diff,taller in dp.items():
@@ -136,10 +136,14 @@ class Tester(unittest.TestCase):
     def test3(self):
         self.assertEqual(0, get_sol().tallestBillboard([1,2]))
     def test4(self):
-        self.assertEqual(1023, get_sol().tallestBillboard([1,2,4,8,16,32,64,128,256,512,50,50,50,150,150,150,100,100,100,123]))
+        self.assertEqual(40, get_sol().tallestBillboard([2]*8+[4]*8+[8]*4))
     def test5(self):
         self.assertEqual(6, get_sol().tallestBillboard([3,4,3,3,2]))
     def test6(self):
         self.assertEqual(756, get_sol().tallestBillboard([140,138,133,162,145,164,145,166,145,154,158]))
-    # def test7(self):
-    # def test8(self):
+    def test7(self):
+        self.assertEqual(5, get_sol().tallestBillboard([1,2,5,3]))
+    def test8(self):
+        self.assertEqual(20, get_sol().tallestBillboard([2]*20))
+    def test9(self):
+        self.assertEqual(1023, get_sol().tallestBillboard([1,2,4,8,16,32,64,128,256,512,50,50,50,150,150,150,100,100,100,123]))

@@ -70,3 +70,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(28,get_sol().maxPathSum(des([5,4,8,11,4])))
     def test05(self):
         self.assertEqual(-1,get_sol().maxPathSum(des([-1,-2,-3])))
+    def test06(self):
+        self.assertEqual(16,get_sol().maxPathSum(des([9,6,-3,None,None,-6,2,None,None,2,None,-6,-6,-6])))

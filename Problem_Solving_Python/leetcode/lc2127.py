@@ -3,6 +3,7 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    # https://leetcode.com/problems/maximum-employees-to-be-invited-to-a-meeting/
     def maximumInvitations(self, A: List[int]) -> int:
         # First, we find the largest circle.
         n, maxc = len(A), 0
@@ -44,6 +45,8 @@ class Solution:
 
             # If a is b's favorite and vise versa, we put them in 'pair'.
             if A[A[i]] == i and visited[i] == 0:
+            # alternative
+            # if A[A[i]] == i and (i,A[i]) not in pair and (A[i],i) not in pair: # use pair as set
                 pair.append([i, A[i]])
                 visited[i] = 1
                 visited[A[i]] = 1
@@ -89,8 +92,9 @@ class Tester(unittest.TestCase):
     def test1(self):
         self.assertEqual(3, get_sol().maximumInvitations([2,2,1,2]))
     def test2(self):
+        self.assertEqual(3, get_sol().maximumInvitations([1,2,0]))
+    def test3(self):
         self.assertEqual(4, get_sol().maximumInvitations([3,0,1,4,1]))
-    # def test3(self):
     # def test4(self):
     # def test5(self):
     # def test6(self):

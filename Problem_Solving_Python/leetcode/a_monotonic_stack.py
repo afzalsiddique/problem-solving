@@ -1,4 +1,4 @@
-from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt; from sortedcontainers import SortedList
+from itertools import accumulate; from math import floor,ceil; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt;
 from binary_tree_tester import *; from a_linked_list import make_linked_list
 def get_sol(): return Solution()
 class Solution:
@@ -33,6 +33,26 @@ class Solution:
             else:
                 nextSmaller.append(0)
         return nextSmaller[::-1]
+    def getNextSmaller(self,A):
+        n=len(A)
+        nextSmaller=[-1]*n
+        st=[]
+        for i in range(n):
+            while st and A[st[-1]]>A[i]:
+                idx=st.pop()
+                nextSmaller[idx]=i
+            st.append(i)
+        return nextSmaller
+    def getPrevSmaller(self,A):
+        n=len(A)
+        prevSmaller=[-1]*n
+        st=[]
+        for i in range(n-1,-1,-1): # one change here
+            while st and A[st[-1]]>A[i]:
+                idx=st.pop()
+                prevSmaller[idx]=i
+            st.append(i)
+        return prevSmaller
 
 
 class Tester(unittest.TestCase):
@@ -66,3 +86,5 @@ class Tester(unittest.TestCase):
     def test10(self):
         A=[3, 3]
         self.assertEqual( [0, 0], get_sol().getJustAfterPrevSmaller(A))
+    def test11(self):
+        self.assertEqual( [3,3,3,-1,-1], get_sol().getNextSmaller([1,2,3,0,1]))

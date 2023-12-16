@@ -118,7 +118,7 @@ class Tester(unittest.TestCase):
     def test05(self):
         self.assertEqual(12,get_sol().candy([29,51,87,87,72,12]))
     def test06(self):
-        self.assertEqual(12,get_sol().candy([1,2,3,4]))
+        self.assertEqual(10,get_sol().candy([1,2,3,4]))
     def test07(self):
         self.assertEqual(18,get_sol().candy([1,6,10,8,7,3,2]))
     def test08(self):

@@ -5,7 +5,7 @@ def get_sol(): return Solution()
 class Solution:
     def findMedianSortedArrays(self, A: List[int], B: List[int]) -> float:
         if len(A)>len(B):return self.findMedianSortedArrays(B, A)
-        A=[float('-inf')]+A+[float('inf')]
+        A=[float('-inf')]+A+[float('inf')] # remove this part. coz it makes complexity O(max(m,n))
         B=[float('-inf')]+B+[float('inf')]
         n1 = len(A)
         n2 = len(B)

@@ -1,6 +1,20 @@
 import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import lru_cache, cache; from heapq import *; import unittest; from typing import List;
 def get_sol(): return Solution2()
 # https://www.youtube.com/watch?v=ZYsuW19NMeo
+class Solution5:
+    def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+        @cache
+        def dp(i):
+            if i==n:
+                return 0
+            next_idx=bisect_left(startTime,endTime[i])
+            take=profit[i]+dp(next_idx)
+            skip=dp(i+1)
+            return max(take,skip)
+
+        n=len(startTime)
+        startTime,endTime,profit=zip(*sorted(zip(startTime,endTime,profit)))
+        return dp(0)
 class Solution:
     # dp denotes maximum profit when considering items[0 .... i]
     def jobScheduling(self, start: List[int], end: List[int], profit: List[int]) -> int:

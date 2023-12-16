@@ -4,46 +4,59 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
 class Solution:
-    def minimumReplacement(self, nums: List[int]) -> int:
-        n=len(nums)
-        res=0
-        right=nums[-1]
-        for i in range(n-2,-1,-1):
-            tmp=nums[i]/right
-            if right<nums[i]  :
-                if ceil(tmp)!=floor(tmp):
-                    right=right-1
-                # else:
-                #     right=nums[i]
-            else:
-                right=min(right,nums[i])
-                # right=nums[i]
-                # right=min(nums[i],right-1)
-            # if ceil(tmp)!=floor(tmp):
-            #     right=right-1
-            res+=ceil(tmp)-1
+    def tallestBillboard(self, rods: List[int]) -> int:
+        @cache
+        def dp(i,tall_plus_small,diff,t,s):
+            nonlocal res
+            # if t==(2, 3, 5) and s==(4,):
+            if t==(2,):
+                print('hey')
+            taller=list(t) if sum(t)>sum(s) else list(s)
+            shorter=list(t) if sum(t)<sum(s) else list(s)
+            if diff==0:
+                res=max(res,tall_plus_small//2)
+            if i==n:
+                return
+            small=(tall_plus_small-diff)//2
+            tall=small+diff
+            print('tall:',tall,'small:',small,'diff:',diff)
+            print(t,s,end='\n\n')
+            taller=tuple(taller+[rods[i]])
+            shorter=tuple(shorter)
+            add_to_tall=dp(i+1,tall+small+rods[i],tall+rods[i]-small,taller,shorter)
+
+
+            new_tall=max(tall,small+rods[i])
+            new_short=min(tall,small+rods[i])
+            taller=list(t) if sum(t)>(sum(s)+rods[i]) else list(s)+[rods[i]]
+            shorter=list(t) if sum(t)<(sum(s)+rods[i]) else list(s)+[rods[i]]
+            add_to_short=dp(i+1, new_tall+new_short,new_tall-new_short,tuple(taller),tuple(shorter))
+
+
+            taller=list(t) if sum(t)>sum(s) else list(s)
+            shorter=list(t) if sum(t)<sum(s) else list(s)
+            nothing=dp(i+1,tall_plus_small,diff,tuple(taller),tuple(shorter))
+
+            return
+
+        n=len(rods)
+        res=float('-inf')
+        dp(0,0,0,tuple([]),tuple([]))
         return res
-
-
-
-
 
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(2, get_sol().minimumReplacement([3,9,3]))
+        self.assertEqual(6, get_sol().tallestBillboard([1,2,3,6]))
     def test2(self):
-        self.assertEqual(0, get_sol().minimumReplacement([1,2,3,4,5]))
+        self.assertEqual(10, get_sol().tallestBillboard([1,2,3,4,5,6]))
     def test3(self):
-        self.assertEqual(4, get_sol().minimumReplacement([3,10,3]))
+        self.assertEqual(0, get_sol().tallestBillboard([1,2]))
     def test4(self):
-        self.assertEqual(8, get_sol().minimumReplacement([3,10,10,3]))
+        self.assertEqual(1023, get_sol().tallestBillboard([1,2,4,8,16,32,64,128,256,512,50,50,50,150,150,150,100,100,100,123]))
     def test5(self):
-        self.assertEqual(15, get_sol().minimumReplacement([16,1,11,23]))
+        self.assertEqual(6, get_sol().tallestBillboard([3,4,3,3,2]))
     def test6(self):
-        self.assertEqual(48, get_sol().minimumReplacement([24,11,16,1,11,23])) # 48=23+10+15
+        self.assertEqual(756, get_sol().tallestBillboard([140,138,133,162,145,164,145,166,145,154,158]))
     def test7(self):
-        self.assertEqual(73, get_sol().minimumReplacement([19,7,2,24,11,16,1,11,23]))
-    def test8(self):
-        self.assertEqual(6, get_sol().minimumReplacement([12,9,7,6]))
-    def test9(self):
-        self.assertEqual(6, get_sol().minimumReplacement([12,9,7,6,17,19,21]))
+        self.assertEqual(5, get_sol().tallestBillboard([1,2,5,3]))
+    # def test8(self):

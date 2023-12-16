@@ -4,40 +4,40 @@ from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
 class Solution:
-    def minimumReplacement(self, nums: List[int]) -> int:
-        n=len(nums)
-        res=0
-        right=nums[-1]
-        for i in range(n-2,-1,-1):
-            tmp=nums[i]/right
-            if right<nums[i]  :
-                if ceil(tmp)!=floor(tmp):
-                    right=floor(nums[i]/right-1)
-            else:
-                right=min(right,nums[i])
-            res+=ceil(tmp)-1
-        return res
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        NOT_VISITED,VISITING,VISITED=-1,0,1
+        def dfs(i):
+            if visits[i]==VISITED:
+                return True
+            if visits[i]==VISITING:
+                return False
+            visits[i]=VISITING
+            for j in g[i]:
+                if not dfs(j): return False
+            visits[i]=VISITED
+            return True
 
+        g=defaultdict(list)
+        for a,b in prerequisites: g[b].append(a)
+        visits=[NOT_VISITED]*numCourses
+        for i in range(numCourses):
+            dfs(i)
+        return all(visits[i]==1 for i in range(numCourses))
 
 
 
 
 class Tester(unittest.TestCase):
     def test1(self):
-        self.assertEqual(2, get_sol().minimumReplacement([3,9,3]))
+        self.assertEqual(True,get_sol().canFinish(2,[[1,0]]))
     def test2(self):
-        self.assertEqual(0, get_sol().minimumReplacement([1,2,3,4,5]))
+        self.assertEqual(False,get_sol().canFinish(2,[[1,0],[0,1]]))
     def test3(self):
-        self.assertEqual(4, get_sol().minimumReplacement([3,10,3]))
+        self.assertEqual(True,get_sol().canFinish(1, []))
     def test4(self):
-        self.assertEqual(8, get_sol().minimumReplacement([3,10,10,3]))
+        self.assertEqual(True,get_sol().canFinish(2, []))
     def test5(self):
-        self.assertEqual(15, get_sol().minimumReplacement([16,1,11,23]))
+        self.assertEqual(True,get_sol().canFinish(4, [[0,3],[1,3],[2,0],[2,1]]))
     def test6(self):
-        self.assertEqual(48, get_sol().minimumReplacement([24,11,16,1,11,23])) # 48=23+10+15
-    def test7(self):
-        self.assertEqual(73, get_sol().minimumReplacement([19,7,2,24,11,16,1,11,23]))
-    def test8(self):
-        self.assertEqual(6, get_sol().minimumReplacement([12,9,7,6]))
-    def test9(self):
-        self.assertEqual(6, get_sol().minimumReplacement([12,9,7,6,17,19,21]))
+        self.assertEqual(True,get_sol().canFinish(5, [[1,4],[2,4],[3,1],[3,2]]))
+    # def test7(self):

@@ -13,6 +13,28 @@ class Solution:
         all_pos = set(stones)
         if stones[1]!=1: return False
         return dp(1,1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Solution4:
     # dfs dp
     def canCross(self, stones: List[int]) -> bool:
