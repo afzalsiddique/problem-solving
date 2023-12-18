@@ -2,6 +2,7 @@ from itertools import accumulate,permutations; from math import floor,ceil,sqrt;
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
+# similar to 253
 class Solution:
     def fullBloomFlowers(self, flowers: List[List[int]], people: List[int]) -> List[int]:
         start,end=sorted(a for a,b in flowers),sorted(b for a,b in flowers)

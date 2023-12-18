@@ -12,7 +12,7 @@ class Solution:
             start,end=intervals[i]
             if start<last_end:
                 return False
-            last_end=max(last_end,end)
+            last_end=end
         return True
 
 

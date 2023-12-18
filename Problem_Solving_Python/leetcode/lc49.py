@@ -3,6 +3,12 @@ from binary_tree_tester import ser,des; from a_linked_list import make_linked_li
 def get_sol(): return Solution()
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        di=defaultdict(list)
+        for w in strs:
+            di[''.join(sorted(w))].append(w)
+        return di.values()
+class Solution3:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         li = []
         for word in strs:
             li.append("".join(sorted(word)))

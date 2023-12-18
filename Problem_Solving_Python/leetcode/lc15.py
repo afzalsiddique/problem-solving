@@ -10,9 +10,7 @@ class Solution2:
         res = []
         nums.sort()
         for i in range(len(nums) - 2):
-            # optimization
-            if nums[i] > 0:
-                break  # nums sorted, impossible for nums[i]+nums[l]+nums[r] == 0
+            if nums[i] > 0: break  # optimization. nums sorted, impossible for nums[i]+nums[l]+nums[r] == 0
             if i > 0 and nums[i] == nums[i - 1]: continue # prevent duplicates in result
             l, r = i + 1, len(nums) - 1
             while l < r:

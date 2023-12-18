@@ -2,6 +2,41 @@ import itertools; import math; import operator; import random; import string; fr
 def get_sol(): return Solution()
 class Solution:
     def winnerOfGame(self, colors: str) -> bool:
+        freq=defaultdict(int)
+        cnt=0
+        last='#'
+        for c in colors:
+            if c!=last:
+                freq[last]+=max(0,cnt-2)
+                cnt=1
+                last=c
+            else:
+                cnt+=1
+        freq[last] += max(0, cnt - 2)
+        return freq['A']>freq['B']
+class Solution3:
+    def winnerOfGame(self, colors: str) -> bool:
+        alice,bob=0,0
+        cnt=0
+        last='#'
+        for c in colors:
+            if c!=last:
+                if last=='A':
+                    alice+=max(0,cnt-2)
+                elif last=='B':
+                    bob+=max(0,cnt-2)
+                cnt=1
+                last=c
+            else:
+                cnt+=1
+        if last=='A':
+            alice+=max(0,cnt-2)
+        elif last=='B':
+            bob+=max(0,cnt-2)
+        return alice>bob
+
+class Solution2:
+    def winnerOfGame(self, colors: str) -> bool:
         n=len(colors)
         i=0
         a_counts = []
@@ -44,7 +79,10 @@ class MyTestCase(unittest.TestCase):
         colors = "BBBAAAABB"
         Output= True
         self.assertEqual(Output, get_sol().winnerOfGame(colors))
-    # def test5(self):
+    def test5(self):
+        colors = "AAAABBBB"
+        Output= False
+        self.assertEqual(Output, get_sol().winnerOfGame(colors))
     # def test6(self):
 
 

@@ -5,14 +5,41 @@ def get_sol(): return Solution()
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         n=len(s)
-        dp=[[0]*n for _ in range(n)]
+        if n==1: return s[0]
+        if n==2: return s if s[0]==s[1] else s[0]
+        dp=[[0]*n for _ in range(n)] # boolean should be used. 0 or 1 used for debugging purposes
+
+        for i in range(n):
+            dp[i][i]=1
+        for i in range(n-1):
+            if s[i]==s[i+1]:
+                dp[i][i+1]=1
+            else:
+                dp[i][i+1]=0
+        for i in range(n-2,-1,-1):
+            for j in range(i+2,n):
+                if s[i]==s[j] and dp[i+1][j-1]:
+                    dp[i][j]=dp[i+1][j-1]
+
+        max_length=0
+        max_i,max_j=-1,-1
+        for i in range(n):
+            for j in range(i,n):
+                if dp[i][j] and j-i+1>max_length:
+                    max_length=j-i+1
+                    max_i,max_j=i,j
+        return s[max_i:max_j+1]
+class Solution2:
+    def longestPalindrome(self, s: str) -> str:
+        n=len(s)
+        dp=[[False]*n for _ in range(n)]
         for i in range(n-1,-1,-1):
             for j in range(i,n):
                 if i==j:
-                    dp[i][j]=1
+                    dp[i][j]=True
                 elif s[i]==s[j]:
                     if j-i+1==2:
-                        dp[i][j]=1
+                        dp[i][j]=True
                     else:
                         dp[i][j]=dp[i+1][j-1]
 
@@ -26,28 +53,6 @@ class Solution:
                         maxx=j-i+1
                         start,end=i,j
         return s[start:end+1]
-class Solution2:
-    def longestPalindrome(self, s: str) -> str:
-        n=len(s)
-        dp = [[False]*n for _ in range(n)]
-        for i in range(n):
-            dp[i][i]=True
-        for i in range(n-1):
-            if s[i]==s[i+1]:
-                dp[i][i+1] = True
-        for i in reversed(range(n-2)):
-            for j in range(i+1,n):
-                if s[i]==s[j] and dp[i+1][j-1]:
-                    dp[i][j]=True
-
-        maxx = 0
-        res = ""
-        for i in reversed(range(n)):
-            for j in range(i,n):
-                if dp[i][j]==True and j-i+1>maxx:
-                    maxx = j-i+1
-                    res = s[i:j+1]
-        return res
 
 class Solution3:
     def longestPalindrome(self, s: str) -> str:

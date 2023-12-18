@@ -67,3 +67,11 @@ class Tester(unittest.TestCase):
         gridCopy=[row[:] for row in grid]
         self.assertEqual(3,get_sol().numIslands(grid))
         self.assertEqual(gridCopy if checkInput else True,grid if checkInput else True) # change if the original grid has been changed
+    def test03(self):
+        grid = [["1","1","1"],
+                ["0","1","0"],
+                ["0","1","0"]]
+        gridCopy=[row[:] for row in grid]
+        self.assertEqual(1,get_sol().numIslands(grid))
+        self.assertEqual(gridCopy if checkInput else True,grid if checkInput else True) # change if the original grid has been changed
+

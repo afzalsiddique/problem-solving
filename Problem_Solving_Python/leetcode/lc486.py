@@ -6,7 +6,7 @@ def get_sol(): return Solution()
 class Solution:
     # tabular dp
     # time O(n^2) space O(n^2)
-    def PredictTheWinner(self, nums: List[int]) -> bool:
+    def predictTheWinner(self, nums: List[int]) -> bool:
         n = len(nums)
         dp = [[0] * n for _ in range(n)]
         for i in range(n):
@@ -68,24 +68,24 @@ class MyTestCase(unittest.TestCase):
     def test01(self):
         nums = [1,5,2]
         Output= False
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))
     def test02(self):
         nums = [1,5,233,7]
         Output= True
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))
     def test03(self):
         nums = [1,2,99]
         Output= True
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))
     def test04(self):
         nums = [1000,1000,1000,0,0,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000]
         Output= True
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))
     def test05(self):
         nums = [1, 5, 3, 8, 2]
         Output= False
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))
     def test06(self):
         nums = [0]
         Output= True
-        self.assertEqual(Output,get_sol().PredictTheWinner(nums))
+        self.assertEqual(Output, get_sol().predictTheWinner(nums))

@@ -9,20 +9,23 @@ class ListNode:
         return str(self.val)+'->'+str(self.next)
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        def recur(node1,node2,carry):
-            if not node1 and not node2:
-                if carry:
-                    return ListNode(carry)
-                return None
-            val1=node1.val if node1 else 0
-            val2=node2.val if node2 else 0
-            val=val1+val2+carry
-            node=ListNode(val%10)
+        dummy=ListNode(-1)
+        head=dummy
+        carry=0
+        while l1 or l2:
+            a=l1.val if l1 else 0
+            b=l2.val if l2 else 0
+            val=a+b+carry
+            head.next=ListNode(val%10)
             carry=val//10
-            node.next=recur(node1.next if node1 else None,node2.next if node2 else None,carry)
-            return node
+            head=head.next
+            l1=l1.next if l1 else None
+            l2=l2.next if l2 else None
+        if carry:
+            head.next=ListNode(carry)
 
-        return recur(l1,l2,0)
+
+        return dummy.next
 class Solution5:
     def get_num(self,head):
         if head is None: return 0
@@ -38,6 +41,23 @@ class Solution5:
         li = li[::-1]
         head = self.make_linked_list(li,0)
         return head
+class Solution6:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        def recur(node1,node2,carry):
+            if not node1 and not node2:
+                if carry:
+                    return ListNode(carry)
+                return None
+            val1=node1.val if node1 else 0
+            val2=node2.val if node2 else 0
+            val=val1+val2+carry
+            node=ListNode(val%10)
+            carry=val//10
+            node.next=recur(node1.next if node1 else None,node2.next if node2 else None,carry)
+            return node
+
+        return recur(l1,l2,0)
+
 
 class Solution3:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
