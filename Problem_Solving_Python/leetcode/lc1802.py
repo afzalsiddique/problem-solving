@@ -1,5 +1,8 @@
-import itertools; import math; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from heapq import *; import unittest; from typing import List;
-def get_sol(): return Solution()
+from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt; import sortedcontainers
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list,ListNode
+from Problem_Solving_Python.template.binary_tree import deserialize,serialize
+def get_sol(*args): return Solution().maxValue(*args)
+
 class Solution:
     def maxValue(self, n: int, index: int, maxSum: int) -> int:
         def sum_range(lo, hi): # both inclusive
@@ -32,29 +35,56 @@ class Solution:
                 right=mid-1
         return left-1
 
+class Solution2:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        def sum_up_to_n(n): return n*(n+1)//2
+        def get_min_sum(available_space, max_value):
+            a = max_value
+            if a > available_space:
+                b = a - available_space
+                return sum_up_to_n(a) - sum_up_to_n(b)
+            return sum_up_to_n(a) + (available_space - a)
+
+        space_on_left, space_on_right = index, n - index - 1
+        l, r = 0, maxSum
+        while l <= r:
+            mid = (l + r) // 2
+            left_sum = get_min_sum(space_on_left, mid - 1)
+            right_sum = get_min_sum(space_on_right, mid - 1)
+            if left_sum + mid + right_sum <= maxSum:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return max(1,l - 1)
+
+
+Cases=[
+    4, 2, 6,
+    6, 1, 10,
+    4,0,4,
+    8,7,14
+]
+Expected=[2,3,1,4]
+PARAMETERS=3
 
 class MyTestCase(unittest.TestCase):
-    def test1(self):
-        n,index,maxSum = 4,  2,   6
-        Output= 2
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
-    def test2(self):
-        n,index,maxSum = 6,  1,   10
-        Output= 3
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
-    def test3(self):
-        n,index,maxSum = 8,  2,   100
-        Output= 14
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
-    def test4(self):
-        n,index,maxSum = 8, 7, 14
-        Output= 4
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
-    def test5(self):
-        n,index,maxSum = 4, 0, 4
-        Output= 1
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
-    def test6(self):
-        n,index,maxSum = 9, 1, 9
-        Output= 1
-        self.assertEqual(Output, get_sol().maxValue(n,index,maxSum))
+    def test00(self):
+        testNo=0
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    def test01(self):
+        testNo=1
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    def test02(self):
+        testNo=2
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    def test03(self):
+        testNo=3
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    def test04(self):
+        testNo=4
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    def test05(self):
+        testNo=5
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+
+

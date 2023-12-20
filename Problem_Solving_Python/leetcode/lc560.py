@@ -7,6 +7,7 @@ class Solution:
     def subarraySum(self, nums ,k):
         ## best example for thinking process ##
         # [5,5,10,-10,10], k= 10
+
         # There are two types
         # a. sub array starting from the beginning where prefix sum = k
         # b. sub arrays in the middle
@@ -30,7 +31,7 @@ class Solution:
         n = len(nums)
         ans=0
         mp = defaultdict(int)
-        pre = [0 for _ in range(n)]# could be replaced by currentSum. no need for this array
+        pre = [0 for _ in range(n)] # could be replaced by currentSum. no need for this array
         pre[0] = nums[0]
         for i in range(1,n):
             pre[i] = pre[i-1] + nums[i]
