@@ -17,15 +17,16 @@ class Solution2:
                 s = nums[i] + nums[l] + nums[r]
                 if s==0:
                     res.append([nums[i], nums[l], nums[r]])
-                    while l < r and nums[l] == nums[l + 1]: l += 1 # skip duplicates
-                    while l < r and nums[r] == nums[r - 1]: r -= 1
+                    while l+1<r and nums[l] == nums[l + 1]: l += 1 # LOOK AHEAD and skip duplicates
+                    while r-1>l and nums[r] == nums[r - 1]: r -= 1
                     l+=1
                     r-=1
-                if s < 0:
+                elif s < 0:
                     l += 1
-                elif s>0:
+                else:
                     r -= 1
         return res
+
 
 
 class Solution3:
@@ -94,4 +95,8 @@ class MyTestCase(unittest.TestCase):
     def test04(self):
         e=[[1,1,-2]]
         a=get_sol().threeSum([1,1,-2])
+        self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])
+    def test05(self):
+        e=[[-2,0,2]]
+        a=get_sol().threeSum([-2,0,0,2,2])
         self.assertEqual([sorted(x) for x in e],[sorted(x) for x in a])

@@ -6,7 +6,7 @@ def get_sol(): return Solution()
 
 class Solution:
     # this will not work if array is in the range [0,n] (inclusive). It has to be [1,n]
-    # floyd cycle detection by changing the input array
+    # floyd cycle detection by without changing the input array
     def findDuplicate(self, nums: List[int]) -> int:
         slow, fast = nums[0], nums[0]
         while True:
@@ -22,7 +22,7 @@ class Solution:
         return slow
 
 class Solution2:
-    # this will work even if the array contains 0
+    # this will work even if the array contains 0. But it changes the input array
     def findDuplicate(self, nums: List[int]) -> int:
         for i in range(len(nums)):
             idx = abs(nums[i])-1 # will work even if the array contains 0

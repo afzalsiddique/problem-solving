@@ -9,11 +9,9 @@ class MaxHeap(list):
 
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        mx_heap=MaxHeap()
-        mx_heap.push(1,2)
-        mx_heap.push(3,2)
-        mx_heap.push(2,2)
-        print(mx_heap)
+        di=defaultdict(int)
+        di[1]=2
+        di.pop(1)
 
 
 class Tester(unittest.TestCase):

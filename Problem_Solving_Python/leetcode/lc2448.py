@@ -3,7 +3,38 @@ from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 
 def get_sol(): return Solution()
+class Solution2:
+    # ternary search
+    def minCost(self, nums: List[int], cost: List[int]) -> int:
+        def calculate_cost(x):
+            return sum(abs(nums[i]-x)*cost[i] for i in range(n))
+
+        n=len(nums)
+        if n==1: return 0
+        nums,cost=zip(*sorted(zip(nums,cost)))
+        res=float('inf')
+        l,r=0,n-1
+        while l<=r:
+            m1=l+(r-l)//3
+            m2 = r-(r-l)//3
+            cost_m1=calculate_cost(nums[m1])
+            cost_m2=calculate_cost(nums[m2])
+            res=min(res,cost_m1,cost_m2)
+            if cost_m1<cost_m2:
+                r=m2-1
+            elif cost_m2<cost_m1:
+                l=m1+1
+            else:
+                l=m1+1
+                r=m2-1
+            # also works
+            # if cost_m1<cost_m2:
+            #     r=m2-1
+            # else:
+            #     l=m1+1
+        return res
 class Solution:
+    # binary search
     def minCost(self, nums: List[int], cost: List[int]) -> int:
         def calculate_cost(x):
             return sum(abs(nums[i]-x)*cost[i] for i in range(n))
@@ -39,6 +70,7 @@ class Tester(unittest.TestCase):
         self.assertEqual(0,get_sol().minCost([2,2,2,2,2], [4,2,8,1,3]))
     def test03(self):
         self.assertEqual(383,get_sol().minCost([6,5,8,2,9,8,8,2,4,8,8,2,1,8,8,6,3,8,9,7,7,9,3,9,4,3,7,5,1,3,6,3,1,2,6], [4,8,7,8,5,2,4,5,8,4,2,2,3,7,5,4,2,3,5,3,5,2,8,5,9,3,6,8,2,8,3,1,8,5,1]))
-    # def test04(self):
+    def test04(self):
+        self.assertEqual(1907611126748, get_sol().minCost([735103, 366367, 132236, 133334, 808160, 113001, 49051, 735598, 686615, 665317, 999793, 426087, 587000, 649989, 509946, 743518],    [724182, 447415, 723725, 902336, 600863, 287644, 13836, 665183, 448859, 917248, 397790, 898215, 790754, 320604, 468575, 825614]))
     # def test05(self):
     # def test06(self):

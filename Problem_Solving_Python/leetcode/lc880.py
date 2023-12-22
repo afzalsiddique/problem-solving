@@ -13,13 +13,13 @@ class Solution:
                 lengths.append(lengths[-1]*int(s[i]))
             else:
                 lengths.append(lengths[-1]+1)
-        # print(lengths)
-        i=len(s)
-        while i>0:
+        print(lengths)
+
+        for i in range(len(s)-1,-1,-1):
             k%=lengths[i-1]
             if k==0 and not s[i-1].isdigit():
                 return s[i-1]
-            i-=1
+
 class Solution2:
     # tle
     def decodeAtIndex(self, s: str, left: int) -> str:

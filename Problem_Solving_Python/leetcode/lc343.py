@@ -6,10 +6,7 @@ class Solution:
     def integerBreak(self, n: int) -> int:
         @cache
         def dp(left):
-            if left<0:
-                return float('-inf')
-            if left==0:
-                return 1
+            if left==0: return 1
             res=float('-inf')
             for i in range(1,left+1):
                 res=max(res, i*dp(left - i))
