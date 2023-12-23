@@ -3,8 +3,29 @@ from collections import deque
 from typing import List
 def get_sol(): return Solution()
 
-
 class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        li1 = []
+        opening = 0
+        for c in s:
+            if c == ')' and not opening: continue
+            if c == '(':
+                opening += 1
+            elif c==')':
+                opening -= 1
+            li1.append(c)
+
+        closing = 0
+        li2 = []
+        for c in reversed(li1):
+            if c == '(' and not closing: continue
+            if c == ')':
+                closing += 1
+            elif c=='(':
+                closing -= 1
+            li2.append(c)
+        return ''.join(li2[::-1])
+class Solution3:
     # time: O(n) # memory: O(1)
     def minRemoveToMakeValid(self, s: str) -> str:
         res=[]

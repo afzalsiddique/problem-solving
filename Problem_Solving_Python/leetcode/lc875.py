@@ -10,7 +10,7 @@ class Solution:
                 time+=ceil(a/speed)
             return time<=h
 
-        lo,hi=1,max(A)
+        lo,hi=1,max(A) # initialize with 1 to avoid divided by 0
         while lo<=hi:
             m=(lo+hi)//2
             if canEatAll(m):

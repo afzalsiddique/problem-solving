@@ -9,6 +9,8 @@ class Solution:
         st=[] # increasing stack of letters. maximum possible length is 26
         for i,c in enumerate(s):
             if c not in st:
+                # if the top char in the stack appears in the future and it is lexicographically greater
+                # then remove this char from the stack
                 while st and i<lastOccurence[st[-1]] and c<st[-1]:
                     st.pop()
                 st.append(c)

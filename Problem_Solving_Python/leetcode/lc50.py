@@ -2,6 +2,12 @@ from itertools import accumulate; from math import floor,ceil,sqrt; import opera
 # from ..template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
 class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n<0: return 1/self.myPow(x,-n)
+        if n==0: return 1
+        ans=self.myPow(x,n//2)
+        return ans*ans*(x if n%2 else 1)
+class Solution3:
     # extended problem where we have return the mod instead of actual answer
     # I am not 100% sure about the implementation
     def myPow(self, x: float, n: int) -> float:

@@ -2,16 +2,27 @@ from itertools import accumulate,permutations; from math import floor,ceil,sqrt;
 from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list,ListNode
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
 def get_sol(): return Solution()
-class MaxHeap(list):
-    def __init__(self): super().__init__()
-    def heappop(self): return heappop(self)[0]*(-1)
-    def push(self,a,b): heappush(self,[-a,-b])
-
 class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        di=defaultdict(int)
-        di[1]=2
-        di.pop(1)
+    def maxNonDecreasingLength(self, nums1: List[int], nums2: List[int]) -> int:
+        # @cache
+        def dp(i, last, li):
+            # def dp(i,last):
+            print(li)
+            if i == n: return 0
+            res = 0
+            if nums1[i] >= last:
+                # res=max(res,1+dp(i+1,nums1[i]))
+                res = max(res, 1 + dp(i + 1, nums1[i], li + [nums1[i]]))
+            if nums2[i] >= last:
+                # res=max(res,1+dp(i+1,nums2[i]))
+                res = max(res, 1 + dp(i + 1, nums2[i], li + [nums2[i]]))
+            # res=max(res,dp(i+1,min(nums1[i],nums2[i])))
+            res = max(res, dp(i + 1, min(nums1[i], nums2[i]), li + [min(nums1[i], nums2[i])]))
+            return res
+
+        n = len(nums1)
+        # return dp(0,float('-inf'))
+        return dp(0, float('-inf'), [])
 
 
 class Tester(unittest.TestCase):

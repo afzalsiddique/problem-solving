@@ -5,20 +5,20 @@ class Solution:
     def search(self, nums: List[int], target: int) -> int:
         l,r=0,len(nums)-1
         while l<=r:
-            mid=(l+r)//2
-            if nums[mid]==target:return mid
+            m=(l+r)//2
+            if nums[m]==target:return m
             if nums[l]==target: return l
             if nums[r]==target: return r
-            if nums[l]<nums[mid]:
-                if nums[l]<target<nums[mid]:
-                    r=mid-1
+            if nums[l]<nums[m]: # this portion is sorted
+                if nums[l]<target<nums[m]: # target is inside the sorted portion
+                    r=m-1
                 else:
-                    l=mid+1
-            else:
-                if nums[mid]<target<nums[r]:
-                    l=mid+1
+                    l=m+1
+            else: # this portion could be sorted or unsorted
+                if nums[m]<target<nums[r]: # target is inside the sorted portion
+                    l=m+1
                 else:
-                    r=mid-1
+                    r=m-1
         return -1
 class Solution5:
     def search(self, nums: List[int], target: int) -> int:

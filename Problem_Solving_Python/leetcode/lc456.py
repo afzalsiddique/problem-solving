@@ -9,13 +9,13 @@ class Solution:
         n=len(nums)
         min_list = list(itertools.accumulate(nums,min))
         st=[]
-        for j in reversed(range(n)):
-            numsi=min_list[j]
-            while st and st[-1]<=numsi: # stack contains elements which are strictly greater than numsi
+        for mid in reversed(range(n)):
+            left_min=min_list[mid]
+            while st and st[-1]<=left_min: # stack contains elements which are strictly greater than left_min
                 st.pop()
-            # if st and numsi<st[-1]<nums[j]: return True
-            if st and st[-1]<nums[j]: return True # because stack contains elements which are strictly greater than numsi
-            st.append(nums[j])
+            # if st and left_min<st[-1]<nums[mid]: return True # alternative
+            if st and st[-1]<nums[mid]: return True # because stack contains elements which are strictly greater than left_min
+            st.append(nums[mid])
         return False
 
 class Solution2:
@@ -49,3 +49,6 @@ class Tester(unittest.TestCase):
         self.assertEqual(Output,get_sol().find132pattern(nums))
     def test05(self):
         self.assertEqual(True,get_sol().find132pattern([3,5,0,3,4]))
+    def test06(self):
+        self.assertEqual(True, get_sol().find132pattern([1, 3, 2, 4, 5, 6, 7, 8, 9, 10]))
+

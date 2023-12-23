@@ -3,6 +3,26 @@ from binary_tree_tester import *; from a_linked_list import make_linked_list
 def get_sol(): return Solution3()
 class Solution:
     def countAndSay(self, n: int) -> str:
+        def helper(li):
+            n = len(li)
+            res = []
+            i = 0
+            while i < n:
+                cnt = 1
+                while i + 1 < n and li[i] == li[i + 1]:
+                    cnt += 1
+                    i += 1
+                res.append(str(cnt))
+                res.append(li[i])
+                i += 1
+            return res
+
+        res=list("1")
+        for _ in range(n-1):
+            res=helper(res)
+        return "".join(res)
+class Solution4:
+    def countAndSay(self, n: int) -> str:
         def helper(s:str):
             result = []
             j=0
