@@ -18,6 +18,9 @@ class Node:
         return str(self.val)
 
 class Solution:
+    # 1. Create new nodes after corresponding nodes
+    # 2. Copy random pointer
+    # 3. Separate the two linked list
     def copyRandomList(self, head: 'Node'):
         if not head:return None
         cur = head
@@ -39,12 +42,18 @@ class Solution:
             first.next=second.next
             first=second
             second=second.next
-        # this also works
+        # alternative 1
         # while second.next:
         #     first.next=second.next
         #     first=first.next
         #     second.next=first.next
         #     second=second.next
+        # alternative 2
+        # while first:
+        #     first.next = first.next.next
+        #     second.next = second.next.next if second.next else None
+        #     first = first.next
+        #     second = second.next
 
         # for some reason the judge does not detect this.
         # But I think the given linked list should completely detached from the new linked list

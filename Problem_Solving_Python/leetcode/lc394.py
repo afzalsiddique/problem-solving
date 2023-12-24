@@ -6,14 +6,15 @@ class Solution:
     def decodeString(self, s: str) -> str:
         st = []
         for c in s:
+            # if c=='[': continue # wrong. '2[2[y]]' -> 'yyyyyyyyyyyyyyyyyyyyyy' instead of '2222'
             if c == ']':
                 temp = []
-                while st[-1]!='[':
+                while st[-1]!='[': # pop everything inside []
                     temp.append(st.pop())
                 temp.reverse()
                 st.pop() # pop '['
                 cnt = []
-                while st and st[-1] in "0123456789":
+                while st and '0'<=st[-1]<='9': # pop num
                     cnt.append(st.pop())
                 cnt.reverse()
                 cnt = int("".join(cnt))
@@ -35,3 +36,15 @@ class mycase(unittest.TestCase):
         self.assertEqual("accaccaccaccaccacc",get_sol().decodeString("3[a2[c]]3[a2[c]]"))
     def test06(self):
         self.assertEqual("leetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcode",get_sol().decodeString("100[leetcode]"))
+    def test07(self):
+        self.assertEqual("fef",get_sol().decodeString("1[f]ef"))
+    def test08(self):
+        self.assertEqual("pqeeeepqeeeeef",get_sol().decodeString("2[pq4[e]]ef"))
+    def test09(self):
+        self.assertEqual("yyyy", get_sol().decodeString("2[2[y]]"))
+    def test10(self):
+        self.assertEqual("yypqyypqe", get_sol().decodeString("2[2[y]pq]e"))
+    def test11(self):
+        self.assertEqual("yypqjkjkjkjkjkjkjkjkyypqjkjkjkjkjkjkjkjke", get_sol().decodeString("2[2[y]pq4[2[jk]]]e"))
+    def test12(self):
+        self.assertEqual("zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef",get_sol().decodeString("3[z]2[2[y]pq4[2[jk]e1[f]]]ef"))

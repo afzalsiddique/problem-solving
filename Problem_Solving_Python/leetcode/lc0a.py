@@ -1,57 +1,49 @@
-from itertools import accumulate,permutations; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import heappop,heappush,heapify; import unittest; from typing import List, Optional, Union; from functools import cache; from operator import lt, gt; import sortedcontainers
-from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list,ListNode
+from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce, cache, cmp_to_key; from heapq import *; import unittest; from typing import List,Optional,Union; from functools import cache; from operator import lt, gt
+from binary_tree_tester import ser,des,TreeNode; from a_linked_list import make_linked_list
 from Problem_Solving_Python.template.binary_tree import deserialize,serialize
-def get_sol(*args): return Solution().maxValue(*args)
-
-
 class Solution:
-    def maxValue(self, n: int, index: int, maxSum: int) -> int:
-        def get_min_sum(available_space, max_value):
-            a = max_value
-            if a > available_space:
-                b = a - available_space
-                return a * (a + 1) // 2 - b * (b + 1) // 2
-            return a * (a + 1) // 2 + (available_space - a)
-
-        space_on_left, space_on_right = index, n - index - 1
-        l, r = 0, maxSum
-        while l <= r:
-            mid = (l + r) // 2
-            left = get_min_sum(space_on_left, mid - 1)
-            right = get_min_sum(space_on_right, mid - 1)
-            if left + mid + right <= maxSum:
-                l = mid + 1
+    def decodeString(self, s: str) -> str:
+        st=[]
+        for c in s:
+            if c==']':
+                li=[]
+                while st and 'a'<=st[-1]<='z':
+                    li.append(st.pop())
+                li.reverse()
+                st.pop()
+                num=[]
+                while st and '0'<=st[-1]<='9':
+                    num.append(st.pop())
+                num.reverse()
+                num=int(''.join(num) if num else '1')
+                st.append(''.join(li)*num)
             else:
-                r = mid - 1
-        return max(1,l - 1)
+                st.append(c)
+        return ''.join(st)
+
+class Correct:
+    def decodeString(self, s: str) -> str:
+        st = []
+        for c in s:
+            if c == ']':
+                temp = []
+                while st[-1]!='[': # pop everything inside []
+                    temp.append(st.pop())
+                temp.reverse()
+                st.pop() # pop '['
+                cnt = []
+                while st and st[-1] in "0123456789": # pop the num
+                    cnt.append(st.pop())
+                cnt.reverse()
+                cnt = int("".join(cnt))
+                temp = "".join(temp)*cnt
+                st.append(temp)
+            else:
+                st.append(c)
+        return "".join(st)
 
 
-Cases=[
-    4, 2, 6,
-    6, 1, 10,
-    4,0,4
-]
-Expected=[2,3,1]
-PARAMETERS=3
-
-class MyTestCase(unittest.TestCase):
-    def test00(self):
-        testNo=0
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+class Tester(unittest.TestCase):
     def test01(self):
-        testNo=1
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
-    def test02(self):
-        testNo=2
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
-    def test03(self):
-        testNo=3
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
-    def test04(self):
-        testNo=4
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
-    def test05(self):
-        testNo=5
-        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
-
-
+        a="2[2[y]pq]ef"
+        self.assertEqual(Correct().decodeString(a), Solution().decodeString(a))

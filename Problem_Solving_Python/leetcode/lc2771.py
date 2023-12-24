@@ -9,10 +9,10 @@ class Solution:
     # dpA means the maximum step ending with A[i].
     # dpB means the maximum step ending with B[i].
     # Then consider these 4 transitions:
-    # tA1 for A[i - 1] -> A[i]
-    # tA2 for B[i - 1] -> A[i]
-    # tB1 for A[i - 1] -> B[i]
-    # tB2 for B[i - 1] -> B[i]
+    # dpA1 for A[i - 1] -> A[i]
+    # dpA2 for B[i - 1] -> A[i]
+    # dpB1 for A[i - 1] -> B[i]
+    # dpB2 for B[i - 1] -> B[i]
     # We update
     # dp1 = max(t11, t21)
     # dp2 = max(t12, t22)

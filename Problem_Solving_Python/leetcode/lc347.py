@@ -1,6 +1,7 @@
 from itertools import accumulate; from math import floor,ceil,sqrt; import operator; import random; import string; from bisect import *; from collections import deque, defaultdict, Counter, OrderedDict; from functools import reduce,cache; from heapq import *; import unittest; from typing import List,Optional; from functools import cache; from operator import lt, gt
 from binary_tree_tester import ser,des; from a_linked_list import make_linked_list
-def get_sol(): return Solution()
+# def get_sol(): return Solution()
+def get_sol(*args): return Solution().topKFrequent(*args)
 
 class Solution:
     # bucket. Time: O(n)
@@ -94,7 +95,30 @@ class Solution3:
         # Return top k frequent elements
         return unique[n - k:]
 
+Cases=[
+    [1, 1, 1, 2, 2, 3],2,
+    [1],1
+]
+PARAMETERS=2
+Expected=[[1,2],[1]]
 
-class mycase(unittest.TestCase):
+
+class MyTestCase(unittest.TestCase):
+    def test00(self):
+        testNo=0
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
     def test01(self):
-        self.assertEqual([1,2],get_sol().topKFrequent([1,1,1,2,2,3], 2))
+        testNo=1
+        self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    # def test02(self):
+    #     testNo=2
+    #     self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    # def test03(self):
+    #     testNo=3
+    #     self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    # def test04(self):
+    #     testNo=4
+    #     self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))
+    # def test05(self):
+    #     testNo=5
+    #     self.assertEqual(Expected[testNo], get_sol(*Cases[testNo*PARAMETERS:(testNo+1)*PARAMETERS]))

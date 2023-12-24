@@ -3,9 +3,16 @@ from binary_tree_tester import ser,des; from a_linked_list import make_linked_li
 def get_sol(): return Solution2()
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
+        # length of longest subsequence ending at num
+        # {4:2,     2:2}
+        # {4:[3,4], 2:[1,2]}
         di = {num:1 for num in nums}
         sett = set(nums)
         for num in di:
+            # {4:[3,4], 2:[1,2]}
+            # for 4: check if we can increase the length
+            # {4:[1,2,3,4]}
+            # remove 2 from the sett
             prev = num - di[num]
             while prev in sett:
                 di[num] += di[prev]
@@ -16,9 +23,7 @@ class Solution2:
     # without using set
     def longestConsecutive(self, nums: List[int]) -> int:
         if len(nums)==0:return 0
-        di = defaultdict(int)
-        for num in nums:
-            di[num] = 1
+        di = defaultdict(int,{num:1 for num in nums})
         for num in nums:
             prev = num - di[num]
             while di[prev] != 0:

@@ -16,6 +16,28 @@ class Solution:
 
         n=len(s)
         return recur(0)
+
+
+class Solution5:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        def startsWith(i, word_i):
+            j = 0
+            m = len(wordDict[word_i])
+            while i < n and j < m and s[i] == wordDict[word_i][j]:
+                i += 1
+                j += 1
+            return j == m
+
+        @cache
+        def dp(i):
+            if i == n: return True
+            for word_i in range(len(wordDict)):
+                if startsWith(i, word_i) and dp(i + len(wordDict[word_i])):
+                    return True
+            return False
+
+        n = len(s)
+        return dp(0)
 class Solution4:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         di = {}

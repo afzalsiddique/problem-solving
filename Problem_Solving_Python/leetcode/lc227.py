@@ -4,6 +4,10 @@ import unittest;
 def get_sol(): return Solution()
 class Solution:
     # without stack
+    # a=-3; b=2
+    # floor(a/b)=-2; ceil(a/b)=-1; int(a/b)=-1
+    # a=3; b=2
+    # floor(a/b)=1; ceil(a/b)=2; int(a/b)=1
     def calculate(self, s: str) -> int:
         cur = 0
         prev=0
@@ -14,18 +18,18 @@ class Solution:
             if c == ' ': continue
             if c.isdigit():
                 cur = 10 * cur + int(c)
-                continue
-            if sign == '+':
-                result += prev
-                prev = cur
-            elif sign == '-':
-                result += prev
-                prev = -cur
-            elif sign == '*':
-                prev = prev * cur
-            elif sign == '/':
-                prev = int(prev / cur)
-            cur, sign = 0, c
+            else: # sign
+                if sign == '+':
+                    result += prev
+                    prev = cur
+                elif sign == '-':
+                    result += prev
+                    prev = -cur
+                elif sign == '*':
+                    prev = prev * cur
+                else: # sign == '/':
+                    prev = int(prev / cur)
+                cur, sign = 0, c
         return result + prev
 class Solution6:
     # no stack but simulates stack
@@ -86,13 +90,13 @@ class Solution4:
 class Solution5:
     # stack and replace
     def calculate(self, s: str) -> int:
-        s=s.replace(" ","")
+        # s=s.replace(" ","")
         s=s+"+"
         st,prev_sign,num = [],'+',0
         for c in s:
             if c.isdigit():
                 num=num*10+ord(c)-ord('0')
-            else:
+            elif c in '+-/*':
                 if prev_sign=='+':
                     st.append(num)
                 elif prev_sign=='-':

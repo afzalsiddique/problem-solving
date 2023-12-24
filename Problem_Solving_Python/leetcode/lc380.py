@@ -13,8 +13,9 @@ class RandomizedSet:
         self.li.append(val)
         return True
     def remove(self, val: int) -> bool:
+        # swap with the last element in the list and remove the last element
         if val not in self.di:return False
-        idx  = self.di[val]
+        idx = self.di[val]
         last=self.li[-1]
         self.li[idx]=last
         self.di[last]=idx

@@ -5,12 +5,12 @@ class Solution:
     # case [1,1,1,1,1] fails
     # lis
     def longestArithSeqLength(self, nums):
-        dp = {}
+        dp = {} # (num,diff) -> length
         for i in range(len(nums)):
             for j in range(i):
                 diff = nums[i]-nums[j]
                 if (nums[j],diff) in dp:
-                    dp[(nums[i],diff)] = dp[(nums[j],diff)] + 1
+                    dp[(nums[i],diff)] = 1+dp[(nums[j],diff)]
                 else:
                     dp[(nums[i],diff)] = 2
         return max(dp.values())
@@ -22,10 +22,18 @@ class Solution2:
             for j in range(i):
                 diff = nums[i]-nums[j]
                 if (j,diff) in dp:
-                    dp[(i,diff)] = dp[(j,diff)] + 1
+                    dp[(i,diff)] = 1+dp[(j,diff)]
                 else:
                     dp[(i,diff)] = 2
         return max(dp.values())
+class Solution3:
+    def longestArithSeqLength(self, nums: List[int]) -> int:
+        dp=defaultdict(int) # (num,diff) -> length
+        for i in range(len(nums)):
+            for j in range(i):
+                diff=nums[i]-nums[j]
+                dp[i,diff]=max(dp[i,diff],1+dp[j,diff])
+        return 1+max(dp.values())
 
 class Solution3:
     def longestArithSeqLength(self, nums):
