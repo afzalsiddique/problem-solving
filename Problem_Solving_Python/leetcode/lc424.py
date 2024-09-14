@@ -85,6 +85,24 @@ class Solution5:
                         res=max(res,right-left)
             return res
         return max(f(letter) for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+class Solution6:
+    def characterReplacement(self, s: str, k: int) -> int:
+        def maximum_replacement_possible():
+            return sum(freq.values())-max(freq.values() if freq else [0])
+        left,right=0,0
+        res=float('-inf')
+        freq=defaultdict(int)
+        while right<len(s):
+            while right<len(s) and maximum_replacement_possible()<=k:
+                freq[s[right]]+=1
+                right+=1
+            if maximum_replacement_possible()<=k:
+                res=max(res,right-left)
+            else:
+                res=max(res,right-left-1)
+            freq[s[left]]-=1
+            left+=1
+        return res
 
 class MyTestCase(unittest.TestCase):
     def test01(self):
